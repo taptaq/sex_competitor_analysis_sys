@@ -144,7 +144,7 @@ const Dashboard: React.FC = () => {
     competitors.forEach((comp) => {
       markdown += `## ${comp.name}\n`;
       markdown += `- **官网**: ${comp.domain}\n`;
-      markdown += `- **理念**: ${comp.philosophy || "暂无"}\n`;
+      markdown += `- **理念**: ${comp.philosophy?.map((p) => `"${p}"`).join(", ") || "暂无"}\n`;
       markdown += `- **情感评分**:\n`;
       markdown += `  - 材质: ${comp.sentiment.material}\n`;
       markdown += `  - 噪音: ${comp.sentiment.noise}\n`;
@@ -425,30 +425,28 @@ const Dashboard: React.FC = () => {
                       </p>
                     </div>
                     <div className="text-right shrink-0 flex items-center gap-3">
-                      {comp.focus && (
-                        <div
-                          className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                            comp.focus === "Female"
-                              ? "bg-pink-50 text-pink-600 border-pink-100"
-                              : comp.focus === "Male"
-                              ? "bg-blue-50 text-blue-600 border-blue-100"
-                              : "bg-purple-50 text-purple-600 border-purple-100"
-                          }`}
-                        >
-                          {comp.focus === "Female" ? (
-                            <Venus size={10} />
-                          ) : comp.focus === "Male" ? (
-                            <Mars size={10} />
-                          ) : (
-                            <VenusAndMars size={10} />
-                          )}
-                          {comp.focus === "Female"
-                            ? "女用"
+                      <div
+                        className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                          comp.focus === "Female"
+                            ? "bg-pink-50 text-pink-600 border-pink-100"
                             : comp.focus === "Male"
-                            ? "男用"
-                            : "通用"}
-                        </div>
-                      )}
+                            ? "bg-blue-50 text-blue-600 border-blue-100"
+                            : "bg-purple-50 text-purple-600 border-purple-100"
+                        }`}
+                      >
+                        {comp.focus === "Female" ? (
+                          <Venus size={10} />
+                        ) : comp.focus === "Male" ? (
+                          <Mars size={10} />
+                        ) : (
+                          <VenusAndMars size={10} />
+                        )}
+                        {comp.focus === "Female"
+                          ? "女用"
+                          : comp.focus === "Male"
+                          ? "男用"
+                          : "通用"}
+                      </div>
                       <button
                         className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
                         title="删除竞品"

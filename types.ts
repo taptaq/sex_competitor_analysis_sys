@@ -64,7 +64,7 @@ export interface Competitor {
   radarData?: { subject: string; A: number; fullMark: number }[];
   products?: Product[];
   ads?: AdCreative[];
-  philosophy?: string;
+  philosophy?: string[];
   focus?: 'Male' | 'Female' | 'Unisex';
   isDomestic?: boolean;
 }

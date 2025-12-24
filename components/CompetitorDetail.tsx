@@ -4,7 +4,6 @@ import { TagCloud } from "react-tagcloud";
 import { Product, AdCreative, ViewType } from "../types";
 import {
   Globe,
-  ShoppingCart,
   ShieldAlert,
   ChevronLeft,
   Star,
@@ -15,10 +14,6 @@ import {
   Trash2,
   Save,
   X,
-  Search,
-  PieChart,
-  Layout,
-  Clock,
   Venus,
   Mars,
   VenusAndMars,
@@ -284,6 +279,25 @@ const CompetitorDetail: React.FC = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleProductImageUploadDirect = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    product: Product
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const updatedProduct = {
+        ...product,
+        image: reader.result as string,
+      };
+      updateProduct(competitor.id, updatedProduct);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-20">
       <button
@@ -359,50 +373,55 @@ const CompetitorDetail: React.FC = () => {
                   {competitor.isDomestic ? "国内品牌" : "国际知名品牌"}
                 </span>
               </div>
-              {competitor.focus && (
-                <div className="flex items-center gap-3 text-sm">
-                  <div
-                    className={`${
-                      competitor.focus === "Female"
-                        ? "text-pink-500"
-                        : competitor.focus === "Male"
-                        ? "text-blue-500"
-                        : "text-purple-500"
-                    }`}
-                  >
-                    {competitor.focus === "Female" ? (
-                      <Venus size={18} />
-                    ) : competitor.focus === "Male" ? (
-                      <Mars size={18} />
-                    ) : (
-                      <VenusAndMars size={18} />
-                    )}
-                  </div>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-bold border ${
-                      competitor.focus === "Female"
-                        ? "bg-pink-50 text-pink-600 border-pink-100"
-                        : competitor.focus === "Male"
-                        ? "bg-blue-50 text-blue-600 border-blue-100"
-                        : "bg-purple-50 text-purple-600 border-purple-100"
-                    }`}
-                  >
-                    {competitor.focus === "Female"
-                      ? "专攻女用"
+              <div className="flex items-center gap-3 text-sm">
+                <div
+                  className={`${
+                    competitor.focus === "Female"
+                      ? "text-pink-500"
                       : competitor.focus === "Male"
-                      ? "专攻男用"
-                      : "男女兼用"}
-                  </span>
+                      ? "text-blue-500"
+                      : "text-purple-500"
+                  }`}
+                >
+                  {competitor.focus === "Female" ? (
+                    <Venus size={18} />
+                  ) : competitor.focus === "Male" ? (
+                    <Mars size={18} />
+                  ) : (
+                    <VenusAndMars size={18} />
+                  )}
                 </div>
-              )}
-              {competitor.philosophy && (
+                <span
+                  className={`px-2 py-0.5 rounded-full text-xs font-bold border ${
+                    competitor.focus === "Female"
+                      ? "bg-pink-50 text-pink-600 border-pink-100"
+                      : competitor.focus === "Male"
+                      ? "bg-blue-50 text-blue-600 border-blue-100"
+                      : "bg-purple-50 text-purple-600 border-purple-100"
+                  }`}
+                >
+                  {competitor.focus === "Female"
+                    ? "专攻女用"
+                    : competitor.focus === "Male"
+                    ? "专攻男用"
+                    : "男女兼用"}
+                </span>
+              </div>
+              {competitor.philosophy && competitor.philosophy.length > 0 && (
                 <div className="pt-4 border-t border-gray-100">
                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
                     品牌理念
                   </h4>
-                  <p className="text-sm text-gray-600 leading-relaxed italic">
-                    "{competitor.philosophy}"
-                  </p>
+                  <ul className="space-y-1.5">
+                    {competitor.philosophy.map((p, index) => (
+                      <li
+                        key={index}
+                        className="text-sm text-gray-600 leading-relaxed"
+                      >
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>
@@ -655,18 +674,42 @@ const CompetitorDetail: React.FC = () => {
                             </button>
                           </div>
 
-                          <div className="w-full md:w-48 bg-gray-50 flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 overflow-hidden shrink-0">
+                          <div className="w-full md:w-56 bg-gray-50 flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 overflow-hidden shrink-0 relative group/image">
                             {product.image ? (
-                              <img
-                                src={product.image}
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
-                                alt={product.name}
-                              />
+                              <>
+                                <img
+                                  src={product.image}
+                                  className="w-full h-full max-h-64 object-contain transition-transform duration-300"
+                                  alt={product.name}
+                                />
+                                <label className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors cursor-pointer flex items-center justify-center opacity-0 group-hover/image:opacity-100">
+                                  <div className="bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold text-gray-700">
+                                    <Camera size={14} />
+                                    <span>更换图片</span>
+                                  </div>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) =>
+                                      handleProductImageUploadDirect(e, product)
+                                    }
+                                  />
+                                </label>
+                              </>
                             ) : (
-                              <div className="flex flex-col items-center gap-2 text-gray-300">
-                                <ImageIcon size={40} />
-                                <span className="text-[10px]">暂无图片</span>
-                              </div>
+                              <label className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-400 cursor-pointer hover:bg-gray-100 transition-colors p-4">
+                                <Camera size={32} className="text-gray-300" />
+                                <span className="text-xs">点击上传图片</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={(e) =>
+                                    handleProductImageUploadDirect(e, product)
+                                  }
+                                />
+                              </label>
                             )}
                           </div>
 

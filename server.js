@@ -162,7 +162,7 @@ app.post('/api/ai/competitor', async (req, res) => {
             id: { type: Type.STRING },
             name: { type: Type.STRING },
             domain: { type: Type.STRING },
-            philosophy: { type: Type.STRING },
+            philosophy: { type: Type.ARRAY, items: { type: Type.STRING } },
             focus: { type: Type.STRING }, // 'Male' | 'Female' | 'Unisex'
             sentiment: { 
                 type: Type.OBJECT,
@@ -175,17 +175,17 @@ app.post('/api/ai/competitor', async (req, res) => {
                 }
             },
            products: {
-               type: Type.ARRAY,
-               items: {
-                   type: Type.OBJECT,
-                   properties: {
-                       id: { type: Type.STRING },
-                       name: { type: Type.STRING },
-                       price: { type: Type.NUMBER },
-                       tags: { type: Type.ARRAY, items: { type: Type.STRING } },
-                       competitorId: { type: Type.STRING }
-                   }
-               }
+            type: Type.ARRAY,
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    id: { type: Type.STRING },
+                    name: { type: Type.STRING },
+                    price: { type: Type.NUMBER },
+                    tags: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    competitorId: { type: Type.STRING }
+                }
+            }
            }
         }
     };
@@ -195,7 +195,7 @@ app.post('/api/ai/competitor', async (req, res) => {
     
     输出必须严格包含以下 JSON 字段，键名必须为英文：
     1. domain: 品牌官网域名。
-    2. philosophy: 品牌的经营理念，字数100字以内。
+    2. philosophy: 品牌的经营理念，数组，每个元素字数100字以内，最多3个元素。
     3. focus: 品牌产品的目标受众，必须且只能是以下三个英文单词之一：'Male' (专攻男用), 'Female' (专攻女用), 'Unisex' (男女兼用/跨性别)。
     4. sentiment: 一个对象，包含以下五个英文键名的得分（0-100分）：
        - material (材质安全性与亲肤感)
@@ -229,26 +229,26 @@ app.post('/api/ai/analyze', async (req, res) => {
             cons: { type: Type.ARRAY, items: { type: Type.STRING } },
             summary: { type: Type.STRING },
             prosKeywords: { 
-              type: Type.ARRAY, 
-              items: { 
-                type: Type.OBJECT,
-                properties: {
-                  value: { type: Type.STRING },
-                  count: { type: Type.NUMBER }
-                },
-                required: ["value", "count"]
-              } 
+                type: Type.ARRAY, 
+                items: { 
+                    type: Type.OBJECT,
+                    properties: {
+                    value: { type: Type.STRING },
+                    count: { type: Type.NUMBER }
+                    },
+                    required: ["value", "count"]
+                } 
             },
             consKeywords: { 
-              type: Type.ARRAY, 
-              items: { 
+                type: Type.ARRAY, 
+                items: { 
                 type: Type.OBJECT,
                 properties: {
-                  value: { type: Type.STRING },
-                  count: { type: Type.NUMBER }
+                    value: { type: Type.STRING },
+                    count: { type: Type.NUMBER }
                 },
                 required: ["value", "count"]
-              } 
+                } 
             }
         },
         required: ["pros", "cons", "summary", "prosKeywords", "consKeywords"]
@@ -277,7 +277,7 @@ app.post('/api/ai/analyze', async (req, res) => {
 
 // 4. Deep Product Comparison
 app.post('/api/ai/compare', async (req, res) => {
-    const { products, isDomestic } = req.body;
+    const { products } = req.body;
     const schema = {
         type: Type.OBJECT,
         properties: {
@@ -328,7 +328,7 @@ app.post('/api/ai/compare', async (req, res) => {
 
 // 3. Strategy Advice
 app.post('/api/ai/strategy' , async (req, res) => {
-    const { concept, isDomestic } = req.body;
+    const { concept } = req.body;
     const schema = {
         type: Type.OBJECT,
         properties: {

@@ -3,7 +3,7 @@
     "domain": "https://osuga.com/",
     "id": "datang",
     "name": "大人糖",
-    "philosophy": "让性变得更高级、更美好、更坦荡。致力于为现代女性提供高品质、有设计感的情趣用品，倡导正向的性观念。",
+    "philosophy": ["以情趣阳光化，让每个个体轻松自然地面对性需求", "去色情化设计和女性视角重塑行业标准", "拒绝用性别标签定义用户，而是关注性观念觉醒阶段"],
     "products": [
       {
         "id": "p-doudouniao",
@@ -168,7 +168,8 @@
               "count": 20
             }
           ]
-        }
+        },
+        "image": "https://img.lenyiin.com/app/hide.php?key=ZEFqYUlSMHNZWHRRUmlzVFQ2akYvK2NjRTMxQlEwMkZIRC8vY29ZPQ=="
       }
     ],
     "sentiment": {
@@ -185,7 +186,7 @@
     "id": "netease-wind",
     "name": "网易春风",
     "domain": "https://chunfeng.163.com",
-    "philosophy": "以科技赋能亲密健康，倡导理性、科学、私密的两性生活方式，通过高品质产品提升用户生活品质与情感连接。",
+    "philosophy": ["去色情化，塑造高级审美（简约、清新、优雅、文艺）", "亚洲专属设计（为亚洲年轻人定制）", "打造潮流文化（潮牌化）"],
     "sentiment": {
       "material": 85,
       "noise": 78,
@@ -233,13 +234,13 @@
       }
     ],
     "isDomestic": true,
-    "focus": "Female"
+    "focus": ""
   },
   {
     "id": "xiaoguaishou",
     "name": "小怪兽",
     "domain": "https://www.xiaoguaishou.com",
-    "philosophy": "以年轻用户为中心，融合科技与趣味设计，打造安全、私密、易用的情趣体验，倡导健康开放的两性关系观。",
+    "philosophy": ["不做同流合污的玩物，而是致力于成为“最懂女生的情趣健康伴侣”", "品牌定位精准聚焦于女性愉悦与健康领域", "以“年轻、趣味、互动科技”为导向"],
     "sentiment": {
       "material": 85,
       "noise": 78,
@@ -292,7 +293,7 @@
     "id": "zuiqingfeng",
     "name": "醉清风",
     "domain": "https://www.zuiqingfeng.com",
-    "philosophy": "以东方美学诠释亲密关系，专注安全、静谧与情感连接的产品设计，倡导健康开放的两性文化，让私密体验更优雅从容。",
+    "philosophy": ["以中国人的“性健康、性愉悦、性和谐”为使命", "以“打造 WOW 的客户体验”为核心目标", "以“分享快乐，情趣生活”为愿景", "将产品从“情趣工具”升维至“亲密关系解决方案”"],
     "sentiment": {
       "material": 85,
       "noise": 90,
@@ -339,13 +340,13 @@
       }
     ],
     "isDomestic": true,
-    "focus": "Female"
+    "focus": ""
   },
   {
     "id": "LELO",
     "name": "LELO",
     "domain": "www.lelo.com",
-    "philosophy": "LELO致力于通过高端设计、创新技术和安全材质，提供优雅、私密且愉悦的性健康产品，强调奢华体验和身体积极主义，在全球市场树立品质标杆。",
+    "philosophy": ["定位清晰而高端，被誉为“情趣用品中的CHANEL”", "协助知晓满足感超越性別、性取向、种族和年龄的人士", "将情趣用品从“功能性工具”提升为“生活艺术品”"],
     "sentiment": {
       "material": 95,
       "noise": 90,
@@ -389,14 +390,13 @@
       }
     ],
     "isDomestic": false,
-    "focus": "Female"
+    "focus": ""
   },
   {
     "id": "Tenga",
     "name": "Tenga",
     "domain": "https://www.tenga.co.jp",
-    "philosophy": "通过创新设计与高品质材料，打破性健康话题的禁忌，为男性提供安全、私密且愉悦的自慰体验，倡导积极健康的性观念。",
-    "focus": "Male",
+    "philosophy": ["不将性作为禁忌的东西，而作为丰富生活的东西", "“性欲和食欲、睡眠欲，其实是一样的，都有助于人的身心健康", "传递坦诚的性理念，让“性”更阳光", "包容性，性别平权（女性子品牌iroha由全女性团队设计）"],
     "sentiment": {
       "material": 90,
       "noise": 75,
@@ -466,6 +466,7 @@
         "competitorId": "NPG_PumpSystem"
       }
     ],
-    "isDomestic": false
+    "isDomestic": false,
+    "focus": ""
   }
 ]
