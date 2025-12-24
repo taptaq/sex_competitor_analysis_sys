@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   Radar,
@@ -12,45 +7,23 @@ import {
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
-  BarChart,
-  Bar,
   Legend,
 } from "recharts";
 import { useStore } from "../store";
 import {
-  Users,
-  MessageSquare,
-  AlertTriangle,
-  TrendingUp,
   Plus,
   Loader2,
   Sparkles,
   Trash2,
+  Venus,
+  Mars,
+  VenusAndMars,
   Download,
+  Share2,
+  FileText,
+  ChevronDown,
 } from "lucide-react";
 import { fetchCompetitorData } from "../services/gemini";
-
-const MARKET_OPPORTUNITY = [
-  { category: "入耳式吸吮", competition: 92, volume: 85 },
-  { category: "可穿戴震动", competition: 45, volume: 70 },
-  { category: "智能远程", competition: 60, volume: 75 },
-  { category: "环保材质", competition: 25, volume: 40 },
-  { category: "静音专利", competition: 75, volume: 82 },
-];
-
-const MetricCard = ({ title, value, icon, trend, color }: any) => (
-  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-    <div className="flex justify-between items-start mb-4">
-      <div className={`p-2 rounded-lg ${color} bg-opacity-10`}>
-        {React.cloneElement(icon, {
-          className: `w-5 h-5 ${color.replace("bg-", "text-")}`,
-        })}
-      </div>
-    </div>
-    <p className="text-sm text-gray-500 font-medium">{title}</p>
-    <h3 className="text-2xl font-bold mt-1">{value}</h3>
-  </div>
-);
 
 const Dashboard: React.FC = () => {
   const {
@@ -61,10 +34,14 @@ const Dashboard: React.FC = () => {
   } = useStore();
   const [isAdding, setIsAdding] = useState(false);
   const [newCompanyName, setNewCompanyName] = useState("");
+  const [isDomestic, setIsDomestic] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [hiddenPriceIds, setHiddenPriceIds] = useState<string[]>([]);
   const [radarCompAId, setRadarCompAId] = useState<string>("");
   const [radarCompBId, setRadarCompBId] = useState<string>("");
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [marketTab, setMarketTab] = useState<"all" | "domestic" | "foreign">(
+    "all"
+  );
 
   // Set default radar selection when competitors load
   React.useEffect(() => {
@@ -76,10 +53,23 @@ const Dashboard: React.FC = () => {
   }, [competitors]);
 
   const handleAddCompetitor = async () => {
-    if (!newCompanyName.trim()) return;
+    console.log("Adding competitor:", newCompanyName);
+    const trimmedName = newCompanyName.trim();
+    if (!trimmedName) return;
+
+    // Duplicate Check
+    const isDuplicate = competitors.some(
+      (c) => c.name.toLowerCase() === trimmedName.toLowerCase()
+    );
+    if (isDuplicate) {
+      alert(`品牌 "${trimmedName}" 已存在，请勿重复添加`);
+      return;
+    }
+
     setLoading(true);
     try {
-      const data = await fetchCompetitorData(newCompanyName);
+      const data = await fetchCompetitorData(trimmedName, isDomestic);
+      console.log("Fetched data:", data);
       addCompetitor(data);
       setNewCompanyName("");
       setIsAdding(false);
@@ -91,37 +81,10 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const togglePriceLine = (id: string) => {
-    setHiddenPriceIds((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
-    );
+  const toggleAdding = () => {
+    console.log("Toggle adding from", isAdding, "to", !isAdding);
+    setIsAdding((prev) => !prev);
   };
-
-  const getUnifiedPriceData = () => {
-    // Create a map of dates to price points
-    const dateMap: Record<string, any> = {};
-    const allDates = new Set<string>();
-
-    // Collect all unique dates from all competitors
-    competitors.forEach((c) =>
-      c.priceHistory.forEach((p) => allDates.add(p.date))
-    );
-
-    // Sort dates (assuming format like "1月", "2023-01", etc. - AI usually keeps it consistent, but for safety)
-    const sortedDates = Array.from(allDates); // Simple sort for now
-
-    sortedDates.forEach((date) => {
-      dateMap[date] = { date };
-      competitors.forEach((c) => {
-        const point = c.priceHistory.find((p) => p.date === date);
-        if (point) dateMap[date][c.id] = point.price;
-      });
-    });
-
-    return sortedDates.map((date) => dateMap[date]);
-  };
-
-  const unifiedPriceData = getUnifiedPriceData();
 
   const radarCompA =
     competitors.find((c) => c.id === radarCompAId) || competitors[0];
@@ -161,37 +124,122 @@ const Dashboard: React.FC = () => {
     },
   ];
 
+  const exportToJSON = () => {
+    const jsonString = JSON.stringify(competitors, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `market_competitors_${
+      new Date().toISOString().split("T")[0]
+    }.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setShowExportMenu(false);
+  };
+
+  const exportToMarkdown = () => {
+    let markdown = `# 市场竞品分析\n\n`;
+    competitors.forEach((comp) => {
+      markdown += `## ${comp.name}\n`;
+      markdown += `- **官网**: ${comp.domain}\n`;
+      markdown += `- **理念**: ${comp.philosophy || "暂无"}\n`;
+      markdown += `- **情感评分**:\n`;
+      markdown += `  - 材质: ${comp.sentiment.material}\n`;
+      markdown += `  - 噪音: ${comp.sentiment.noise}\n`;
+      markdown += `  - 私密性: ${comp.sentiment.privacy}\n`;
+      markdown += `  - 易用性: ${comp.sentiment.easeOfUse}\n`;
+      markdown += `  - 性价比: ${comp.sentiment.value}\n`;
+      if (comp.products && comp.products.length > 0) {
+        markdown += `- **核心产品**:\n`;
+        comp.products.forEach((prod) => {
+          markdown += `  - ${prod.name} (¥${prod.price})\n`;
+          if (prod.tags) markdown += `    - 标签: ${prod.tags.join(", ")}\n`;
+        });
+      }
+      markdown += `\n---\n\n`;
+    });
+
+    const blob = new Blob([markdown], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `market_mindmap_${
+      new Date().toISOString().split("T")[0]
+    }.md`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setShowExportMenu(false);
+  };
+
   return (
     <div className="space-y-8 pb-20">
-      <div className="flex justify-between items-center bg-purple-900 text-white p-6 rounded-2xl shadow-lg">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="p-1.5 bg-white/20 rounded-lg">
-              <Users size={18} className="text-white" />
-            </div>
-            <span className="text-sm font-medium text-purple-100">
-              监控竞品总数
-            </span>
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-purple-800 to-indigo-900 p-8 rounded-3xl text-white shadow-xl relative">
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-black italic tracking-tight">
+              MARKET OVERVIEW
+            </h2>
+            <p className="text-purple-200 font-medium text-sm">
+              实时追踪行业动态，洞察品牌竞争格局
+            </p>
           </div>
-          <h3 className="text-3xl font-bold">{competitors.length}</h3>
+
+          <div className="flex gap-3 relative">
+            <div className="relative">
+              <button
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-xl transition-all text-sm font-bold border border-white/20 active:scale-95 shadow-lg shadow-black/5"
+              >
+                <Download size={18} />
+                <span>报告导出</span>
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform duration-300 ${
+                    showExportMenu ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {showExportMenu && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowExportMenu(false)}
+                  />
+                  <div className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 py-3 z-50 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200">
+                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        选择导出格式
+                      </p>
+                    </div>
+                    <button
+                      onClick={exportToJSON}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-700 transition-all font-medium group"
+                    >
+                      <div className="p-1.5 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
+                        <Share2 size={14} className="text-blue-600" />
+                      </div>
+                      <span>原始数据 (JSON)</span>
+                    </button>
+                    <button
+                      onClick={exportToMarkdown}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-700 transition-all font-medium group"
+                    >
+                      <div className="p-1.5 bg-emerald-50 rounded-lg group-hover:bg-emerald-100 transition-colors">
+                        <FileText size={14} className="text-emerald-600" />
+                      </div>
+                      <span>markdown格式 (.md)</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-        <button
-          onClick={() => {
-            const jsonString = JSON.stringify(competitors, null, 2);
-            const blob = new Blob([jsonString], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "competitors.json";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }}
-          className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-colors text-sm font-medium border border-white/10"
-        >
-          <Download size={16} />
-          <span>导出为 JSON</span>
-        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -279,11 +327,37 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold">竞品快速入口</h3>
             <button
-              onClick={() => setIsAdding(!isAdding)}
-              className="text-xs text-purple-600 font-bold hover:bg-purple-50 px-2 py-1 rounded transition-colors flex items-center gap-1"
+              onClick={toggleAdding}
+              className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${
+                isAdding
+                  ? "bg-purple-100 text-purple-700"
+                  : "text-purple-600 hover:bg-purple-50"
+              }`}
             >
-              <Plus size={14} /> 新增
+              <Plus
+                size={14}
+                className={`transition-transform duration-300 ${
+                  isAdding ? "rotate-45" : ""
+                }`}
+              />
+              {isAdding ? "取消" : "新增"}
             </button>
+          </div>
+
+          <div className="flex bg-gray-100/50 p-1 rounded-lg mb-4">
+            {(["all", "domestic", "foreign"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setMarketTab(t)}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+                  marketTab === t
+                    ? "bg-white text-purple-600 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {t === "all" ? "全部" : t === "domestic" ? "国内" : "国外"}
+              </button>
+            ))}
           </div>
 
           {isAdding && (
@@ -299,6 +373,17 @@ const Dashboard: React.FC = () => {
                   className="flex-1 text-sm p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-purple-500 outline-none"
                   placeholder="例如: 杜蕾斯"
                 />
+                <label className="flex items-center gap-1 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={isDomestic}
+                    onChange={(e) => setIsDomestic(e.target.checked)}
+                    className="w-4 h-4 rounded text-purple-600"
+                  />
+                  <span className="text-xs text-gray-500 font-medium">
+                    国内品牌
+                  </span>
+                </label>
                 <button
                   onClick={handleAddCompetitor}
                   disabled={loading || !newCompanyName}
@@ -315,42 +400,70 @@ const Dashboard: React.FC = () => {
           )}
 
           {competitors?.length ? (
-            <div className="space-y-4 overflow-y-auto flex-1 max-h-[400px]">
-              {competitors.map((comp) => (
-                <div
-                  key={comp.id}
-                  className="group relative flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all"
-                >
+            <div className="space-y-4 overflow-y-auto flex-1 max-h-[400px] pr-1 scrollbar-thin scrollbar-thumb-gray-200">
+              {competitors
+                .filter((comp) => {
+                  if (marketTab === "all") return true;
+                  return marketTab === "domestic"
+                    ? comp.isDomestic
+                    : !comp.isDomestic;
+                })
+                .map((comp) => (
                   <div
-                    className="flex-1 min-w-0 cursor-pointer"
-                    onClick={() => setSelectedCompetitor(comp.id)}
+                    key={comp.id}
+                    className="group relative flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all"
                   >
-                    <h4 className="font-semibold text-sm truncate">
-                      {comp.name}
-                    </h4>
-                    <p className="text-xs text-gray-400 truncate">
-                      {comp.domain}
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0 flex items-center gap-2">
-                    <span className="text-xs font-bold text-purple-600 block max-w-[80px] truncate">
-                      {comp.platform.split("/")[0]}
-                    </span>
-                    <button
-                      className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
-                      title="删除竞品"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (confirm(`确定要删除 ${comp.name} 吗？`)) {
-                          removeCompetitor(comp.id);
-                        }
-                      }}
+                    <div
+                      className="flex-1 min-w-0 cursor-pointer"
+                      onClick={() => setSelectedCompetitor(comp.id)}
                     >
-                      <Trash2 size={14} />
-                    </button>
+                      <h4 className="font-semibold text-sm truncate">
+                        {comp.name}
+                      </h4>
+                      <p className="text-xs text-gray-400 truncate">
+                        {comp.domain}
+                      </p>
+                    </div>
+                    <div className="text-right shrink-0 flex items-center gap-3">
+                      {comp.focus && (
+                        <div
+                          className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                            comp.focus === "Female"
+                              ? "bg-pink-50 text-pink-600 border-pink-100"
+                              : comp.focus === "Male"
+                              ? "bg-blue-50 text-blue-600 border-blue-100"
+                              : "bg-purple-50 text-purple-600 border-purple-100"
+                          }`}
+                        >
+                          {comp.focus === "Female" ? (
+                            <Venus size={10} />
+                          ) : comp.focus === "Male" ? (
+                            <Mars size={10} />
+                          ) : (
+                            <VenusAndMars size={10} />
+                          )}
+                          {comp.focus === "Female"
+                            ? "女用"
+                            : comp.focus === "Male"
+                            ? "男用"
+                            : "通用"}
+                        </div>
+                      )}
+                      <button
+                        className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
+                        title="删除竞品"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (confirm(`确定要删除 ${comp.name} 吗？`)) {
+                            removeCompetitor(comp.id);
+                          }
+                        }}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           ) : (
             <div className="h-72 flex justify-center items-center">

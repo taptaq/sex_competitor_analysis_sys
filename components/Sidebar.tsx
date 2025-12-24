@@ -1,7 +1,7 @@
 import React from "react";
 import { useStore } from "../store";
 import { ViewType } from "../types";
-import { LayoutDashboard, Target, Zap, BarChart2 } from "lucide-react";
+import { LayoutDashboard, Zap, BarChart2, GitCompare } from "lucide-react";
 
 const Sidebar: React.FC = () => {
   const { currentView, setCurrentView } = useStore();
@@ -13,6 +13,11 @@ const Sidebar: React.FC = () => {
       label: "仪表盘首页",
     },
     {
+      type: ViewType.PRODUCT_COMPARISON,
+      icon: <GitCompare size={20} />,
+      label: "产品多维度对比",
+    },
+    {
       type: ViewType.STRATEGY_ADVISOR,
       icon: <Zap size={20} />,
       label: "创业压力测试",
@@ -20,7 +25,7 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 bg-slate-900 text-white flex flex-col">
+    <aside className="w-64 bg-slate-900 text-white flex flex-col h-screen sticky top-0">
       <div className="p-6 flex items-center gap-2 border-b border-slate-800">
         <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center">
           <BarChart2 size={20} />

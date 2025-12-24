@@ -25,6 +25,11 @@ interface AppState {
   setProductAnalysis: (competitorId: string, productId: string, analysis: ReviewAnalysis) => void;
   setProductReviews: (competitorId: string, productId: string, reviews: any[]) => void;
   fetchCompetitors: () => Promise<void>;
+  
+  // Selection
+  selectedProductIds: string[];
+  toggleProductSelection: (productId: string) => void;
+  clearSelection: () => void;
 }
 
 // Helper to save to server
@@ -197,5 +202,18 @@ export const useStore = create<AppState>((set, get) => ({
         saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
-  }
+  },
+
+  // Selection Actions
+  selectedProductIds: [],
+  toggleProductSelection: (productId) => {
+    set((state) => {
+      const isSelected = state.selectedProductIds.includes(productId);
+      const newSelection = isSelected 
+        ? state.selectedProductIds.filter(id => id !== productId)
+        : [...state.selectedProductIds, productId];
+      return { selectedProductIds: newSelection };
+    });
+  },
+  clearSelection: () => set({ selectedProductIds: [] }),
 }));

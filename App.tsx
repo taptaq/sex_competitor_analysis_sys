@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import CompetitorDetail from "./components/CompetitorDetail";
 import StrategyAdvisor from "./components/StrategyAdvisor";
+import GlobalProductComparison from "./components/GlobalProductComparison";
 
 const App: React.FC = () => {
   const { currentView, fetchCompetitors } = useStore();
@@ -21,6 +22,8 @@ const App: React.FC = () => {
         return <CompetitorDetail />;
       case ViewType.STRATEGY_ADVISOR:
         return <StrategyAdvisor />;
+      case ViewType.PRODUCT_COMPARISON:
+        return <GlobalProductComparison />;
       default:
         return <Dashboard />;
     }

@@ -2,10 +2,8 @@
   {
     "domain": "https://osuga.com/",
     "id": "datang",
-    "logo": "https://example.com/datang-logo.png",
     "name": "大人糖",
-    "platform": "天猫,京东,淘宝,品牌官网",
-    "priceHistory": [],
+    "philosophy": "让性变得更高级、更美好、更坦荡。致力于为现代女性提供高品质、有设计感的情趣用品，倡导正向的性观念。",
     "products": [
       {
         "id": "p-doudouniao",
@@ -18,7 +16,6 @@
           "静音设计",
           "USB充电"
         ],
-        "image": "https://example.com/doudouniao.png",
         "competitorId": "datang",
         "analysis": {
           "pros": [
@@ -180,6 +177,295 @@
       "noise": 85,
       "privacy": 92,
       "value": 78
-    }
+    },
+    "isDomestic": true,
+    "focus": "Female"
+  },
+  {
+    "id": "netease-wind",
+    "name": "网易春风",
+    "domain": "https://chunfeng.163.com",
+    "philosophy": "以科技赋能亲密健康，倡导理性、科学、私密的两性生活方式，通过高品质产品提升用户生活品质与情感连接。",
+    "sentiment": {
+      "material": 85,
+      "noise": 78,
+      "privacy": 92,
+      "easeOfUse": 80,
+      "value": 83
+    },
+    "products": [
+      {
+        "id": "cf-pro-1",
+        "name": "网易春风元气Pro",
+        "price": 599,
+        "tags": [
+          "振动器",
+          "硅胶材质",
+          "APP控制",
+          "静音设计",
+          "防水"
+        ],
+        "competitorId": "lovehoney-vibe-pro"
+      },
+      {
+        "id": "cf-basic-1",
+        "name": "网易春风悦动版",
+        "price": 399,
+        "tags": [
+          "入门级",
+          "便携",
+          "多频震动",
+          "USB充电"
+        ],
+        "competitorId": "xiaomi-soon-vibe-mini"
+      },
+      {
+        "id": "cf-couple-1",
+        "name": "网易春风情侣遥控款",
+        "price": 699,
+        "tags": [
+          "情侣玩具",
+          "远程控制",
+          "低噪电机",
+          "隐私包装"
+        ],
+        "competitorId": "satisfyer-couple-ring"
+      }
+    ],
+    "isDomestic": true,
+    "focus": "Female"
+  },
+  {
+    "id": "xiaoguaishou",
+    "name": "小怪兽",
+    "domain": "https://www.xiaoguaishou.com",
+    "philosophy": "以年轻用户为中心，融合科技与趣味设计，打造安全、私密、易用的情趣体验，倡导健康开放的两性关系观。",
+    "sentiment": {
+      "material": 85,
+      "noise": 78,
+      "privacy": 90,
+      "easeOfUse": 82,
+      "value": 88
+    },
+    "products": [
+      {
+        "id": "XGS-RB01",
+        "name": "小怪兽 熊抱振动棒",
+        "price": 369,
+        "tags": [
+          "硅胶材质",
+          "APP控制",
+          "静音马达",
+          "情侣互动"
+        ],
+        "competitorId": "LOVENSE-HORNY"
+      },
+      {
+        "id": "XGS-EY02",
+        "name": "小怪兽 眼镜蛇吮吸器",
+        "price": 429,
+        "tags": [
+          "负压吮吸",
+          "仿生设计",
+          "多频模式",
+          "防水"
+        ],
+        "competitorId": "SILENT-LOVE-SL9"
+      },
+      {
+        "id": "XGS-CPL01",
+        "name": "小怪兽 情侣对戒震动环",
+        "price": 299,
+        "tags": [
+          "可充电",
+          "远程控制",
+          "极简设计",
+          "隐私包装"
+        ],
+        "competitorId": "WE-VIBE-BOND"
+      }
+    ],
+    "isDomestic": true,
+    "focus": "Female"
+  },
+  {
+    "id": "zuiqingfeng",
+    "name": "醉清风",
+    "domain": "https://www.zuiqingfeng.com",
+    "philosophy": "以东方美学诠释亲密关系，专注安全、静谧与情感连接的产品设计，倡导健康开放的两性文化，让私密体验更优雅从容。",
+    "sentiment": {
+      "material": 85,
+      "noise": 90,
+      "privacy": 95,
+      "easeOfUse": 75,
+      "value": 80
+    },
+    "products": [
+      {
+        "id": "zqf-vb01",
+        "name": "月影兔震动棒",
+        "price": 369,
+        "tags": [
+          "硅胶材质",
+          "静音马达",
+          "磁吸充电",
+          "小红书爆款"
+        ],
+        "competitorId": "lelo-sona"
+      },
+      {
+        "id": "zqf-cp02",
+        "name": "缠绵情侣对杯按摩器",
+        "price": 599,
+        "tags": [
+          "蓝牙互联",
+          "远程控制",
+          "礼盒包装",
+          "情人节热销"
+        ],
+        "competitorId": "xiaomitoy-couple"
+      },
+      {
+        "id": "zqf-gv03",
+        "name": "流光G点按摩器",
+        "price": 429,
+        "tags": [
+          "人体工学设计",
+          "多频震动",
+          "防水等级IPX7",
+          "天猫旗舰店TOP3"
+        ],
+        "competitorId": "womanizer-pure"
+      }
+    ],
+    "isDomestic": true,
+    "focus": "Female"
+  },
+  {
+    "id": "LELO",
+    "name": "LELO",
+    "domain": "www.lelo.com",
+    "philosophy": "LELO致力于通过高端设计、创新技术和安全材质，提供优雅、私密且愉悦的性健康产品，强调奢华体验和身体积极主义，在全球市场树立品质标杆。",
+    "sentiment": {
+      "material": 95,
+      "noise": 90,
+      "privacy": 92,
+      "easeOfUse": 88,
+      "value": 80
+    },
+    "products": [
+      {
+        "id": "LELO_SONA_2",
+        "name": "SONA 2",
+        "price": 149.99,
+        "tags": [
+          "clitoral stimulator",
+          "sonic technology",
+          "waterproof"
+        ],
+        "competitorId": "WOMANIZER_PREMIUM_2"
+      },
+      {
+        "id": "LELO_HEX_CONDOM",
+        "name": "HEX Condoms",
+        "price": 19.99,
+        "tags": [
+          "condoms",
+          "hexagonal design",
+          "enhanced sensation"
+        ],
+        "competitorId": "DUREX_INVISIBLE"
+      },
+      {
+        "id": "LELO_TOR_2",
+        "name": "TOR 2",
+        "price": 199.99,
+        "tags": [
+          "couples toy",
+          "remote control",
+          "rechargeable"
+        ],
+        "competitorId": "WEVIBE_CHORUS"
+      }
+    ],
+    "isDomestic": false,
+    "focus": "Female"
+  },
+  {
+    "id": "Tenga",
+    "name": "Tenga",
+    "domain": "https://www.tenga.co.jp",
+    "philosophy": "通过创新设计与高品质材料，打破性健康话题的禁忌，为男性提供安全、私密且愉悦的自慰体验，倡导积极健康的性观念。",
+    "focus": "Male",
+    "sentiment": {
+      "material": 90,
+      "noise": 75,
+      "privacy": 95,
+      "easeOfUse": 85,
+      "value": 80
+    },
+    "products": [
+      {
+        "id": "TENGA_EGG_01",
+        "name": "TENGA蛋系列 - 超薄波纹款",
+        "price": 59,
+        "tags": [
+          "一次性使用",
+          "便携设计",
+          "超强刺激",
+          "入门首选"
+        ],
+        "competitorId": "Fleshlight_Sleeve"
+      },
+      {
+        "id": "TENGA_FLEX_CUP",
+        "name": "TENGA伸缩杯 - 标准款",
+        "price": 129,
+        "tags": [
+          "可重复使用",
+          "紧凑便携",
+          "内部纹理丰富",
+          "易清洗"
+        ],
+        "competitorId": "MysteryVibrator_MaleCup"
+      },
+      {
+        "id": "TENGA_3D_CUP",
+        "name": "TENGA 3D杯 - 极致紧致款",
+        "price": 159,
+        "tags": [
+          "立体结构",
+          "强吸附感",
+          "高弹性材质",
+          "深度刺激"
+        ],
+        "competitorId": "Fleshlight_Quickshot"
+      },
+      {
+        "id": "TENGA_SPINNER",
+        "name": "TENGA旋转大师",
+        "price": 299,
+        "tags": [
+          "电动旋转",
+          "多档调节",
+          "静音马达",
+          "高端体验"
+        ],
+        "competitorId": "Kiiroo_Onyx"
+      },
+      {
+        "id": "TENGA_VACUUM_PUMP",
+        "name": "TENGA真空增压杯",
+        "price": 249,
+        "tags": [
+          "负压技术",
+          "硬度增强",
+          "手动控制",
+          "训练辅助"
+        ],
+        "competitorId": "NPG_PumpSystem"
+      }
+    ],
+    "isDomestic": false
   }
 ]

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useStore } from "../store";
 import { TagCloud } from "react-tagcloud";
-import { Product, AdCreative, Review } from "../types";
+import { Product, AdCreative, ViewType } from "../types";
 import {
   Globe,
   ShoppingCart,
@@ -15,24 +15,18 @@ import {
   Trash2,
   Save,
   X,
+  Search,
+  PieChart,
+  Layout,
+  Clock,
+  Venus,
+  Mars,
+  VenusAndMars,
+  Camera,
+  Image as ImageIcon,
 } from "lucide-react";
 import { analyzeReviews } from "../services/gemini";
 import * as XLSX from "xlsx";
-
-const MOCK_ADS: AdCreative[] = [
-  {
-    id: "a1",
-    image: "https://picsum.photos/seed/adcn1/400/250",
-    text: "让愉悦自然发生。采用婴儿级液态硅胶，极致亲肤。",
-    highlights: ["极致亲肤", "婴儿级"],
-  },
-  {
-    id: "a2",
-    image: "https://picsum.photos/seed/adcn2/400/250",
-    text: "50分贝静音专利，深夜里的私密舞蹈。",
-    highlights: ["专利静音", "私密性"],
-  },
-];
 
 const CompetitorDetail: React.FC = () => {
   const {
@@ -50,9 +44,9 @@ const CompetitorDetail: React.FC = () => {
     setProductReviews,
     updateCompetitor,
   } = useStore();
-  const [activeTab, setActiveTab] = useState<"products" | "ads" | "reviews">(
-    "products"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "products" | "ads" | "reviews" | "comparison"
+  >("products");
   // Edit State
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [editingAdId, setEditingAdId] = useState<string | null>(null);
@@ -93,9 +87,11 @@ const CompetitorDetail: React.FC = () => {
     setAnalyzingProductId(product.id);
     try {
       const reviewTexts = product.reviews.map((r) => r.text);
-      console.info(reviewTexts, "---reviewTexts");
-      const analysis = await analyzeReviews(product.name, reviewTexts);
-      console.info(analysis, "---analysis");
+      const analysis = await analyzeReviews(
+        product.name,
+        reviewTexts,
+        competitor.isDomestic
+      );
       setProductAnalysis(competitor.id, product.id, analysis);
     } catch (error) {
       console.error("Analysis failed", error);
@@ -116,10 +112,10 @@ const CompetitorDetail: React.FC = () => {
         typeof tempProduct.tags === "string"
           ? (tempProduct.tags as string).split(",").map((t: string) => t.trim())
           : tempProduct.tags || [],
-      image: tempProduct.image || "https://via.placeholder.com/200",
       competitorId: competitor.id,
       reviews: tempProduct.reviews || [],
       analysis: tempProduct.analysis,
+      image: tempProduct.image,
     };
 
     if (editingProductId) {
@@ -139,7 +135,6 @@ const CompetitorDetail: React.FC = () => {
     const adToSave: AdCreative = {
       id: tempAd.id || `ad-${Date.now()}`,
       text: tempAd.text,
-      image: tempAd.image || "https://via.placeholder.com/400x250",
       highlights:
         typeof tempAd.highlights === "string"
           ? (tempAd.highlights as string)
@@ -230,27 +225,40 @@ const CompetitorDetail: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     productId: string
   ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    let allParsedReviews: any[] = [];
 
     try {
-      const data = await file.arrayBuffer();
-      const workbook = XLSX.read(data);
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const jsonData = XLSX.utils.sheet_to_json(sheet)?.map((item) => ({
-        ...(item as any),
-        时间:
-          item?.["时间"]?.split("-")?.length < 3
-            ? `${new Date().getFullYear()}-${item?.["时间"]}`
-            : item?.["时间"],
-      }));
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const data = await file.arrayBuffer();
+        const workbook = XLSX.read(data);
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(sheet)?.map((item) => ({
+          ...(item as any),
+          时间:
+            item?.["时间"]?.split("-")?.length < 3
+              ? `${new Date().getFullYear()}-${item?.["时间"]}`
+              : item?.["时间"],
+          评论点赞量:
+            item?.["评论点赞量"] === "有用" ? 0 : +item?.["评论点赞量"],
+        }));
 
-      console.info(jsonData, "---parsed excel data");
+        if (jsonData) {
+          allParsedReviews = [...allParsedReviews, ...jsonData];
+        }
+      }
 
-      if (jsonData.length > 0) {
-        setProductReviews(competitor.id, productId, jsonData as any[]);
-        alert(`成功导入 ${jsonData.length} 条评论`);
+      console.info(allParsedReviews, "---all parsed excel data");
+
+      if (allParsedReviews.length > 0) {
+        setProductReviews(competitor.id, productId, allParsedReviews);
+        alert(
+          `成功导入 ${allParsedReviews.length} 条评论 (来自 ${files.length} 个文件)`
+        );
       } else {
         alert("未找到有效评论数据");
       }
@@ -258,9 +266,22 @@ const CompetitorDetail: React.FC = () => {
       console.error("File upload error:", error);
       alert("文件解析失败");
     } finally {
-      // Clear input value to allow re-uploading the same file
       e.target.value = "";
     }
+  };
+
+  const handleProductImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setTempProduct({
+        ...tempProduct,
+        image: reader.result as string,
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -305,11 +326,19 @@ const CompetitorDetail: React.FC = () => {
               ) : (
                 <div className="flex items-center gap-2 group cursor-pointer">
                   <a
-                    href={competitor.domain}
+                    href={
+                      competitor?.domain?.trim()
+                        ? competitor.domain.trim().startsWith("http") ||
+                          competitor.domain.trim().startsWith("https")
+                          ? competitor.domain.trim()
+                          : `https://${competitor.domain.trim()}`
+                        : "#"
+                    }
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-gray-500 hover:text-purple-600 transition-colors"
                   >
-                    {competitor.domain}
+                    {competitor.domain || "未设置官网"}
                   </a>
                   <Pencil
                     onClick={() => {
@@ -327,15 +356,55 @@ const CompetitorDetail: React.FC = () => {
               <div className="flex items-center gap-3 text-sm">
                 <Globe className="text-gray-400" size={18} />
                 <span className="text-gray-600">
-                  {competitor.name.includes("国外")
-                    ? "国际知名品牌"
-                    : "国内品牌"}
+                  {competitor.isDomestic ? "国内品牌" : "国际知名品牌"}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <ShoppingCart className="text-gray-400" size={18} />
-                <span className="text-gray-600">{competitor.platform}</span>
-              </div>
+              {competitor.focus && (
+                <div className="flex items-center gap-3 text-sm">
+                  <div
+                    className={`${
+                      competitor.focus === "Female"
+                        ? "text-pink-500"
+                        : competitor.focus === "Male"
+                        ? "text-blue-500"
+                        : "text-purple-500"
+                    }`}
+                  >
+                    {competitor.focus === "Female" ? (
+                      <Venus size={18} />
+                    ) : competitor.focus === "Male" ? (
+                      <Mars size={18} />
+                    ) : (
+                      <VenusAndMars size={18} />
+                    )}
+                  </div>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-xs font-bold border ${
+                      competitor.focus === "Female"
+                        ? "bg-pink-50 text-pink-600 border-pink-100"
+                        : competitor.focus === "Male"
+                        ? "bg-blue-50 text-blue-600 border-blue-100"
+                        : "bg-purple-50 text-purple-600 border-purple-100"
+                    }`}
+                  >
+                    {competitor.focus === "Female"
+                      ? "专攻女用"
+                      : competitor.focus === "Male"
+                      ? "专攻男用"
+                      : "男女兼用"}
+                  </span>
+                </div>
+              )}
+              {competitor.philosophy && (
+                <div className="pt-4 border-t border-gray-100">
+                  <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                    品牌理念
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed italic">
+                    "{competitor.philosophy}"
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -358,7 +427,7 @@ const CompetitorDetail: React.FC = () => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab as any)}
-                  className={`flex-1 py-4 px-6 text-sm font-semibold border-b-2 transition-colors ${
+                  className={`flex-1 py-4 text-sm font-bold border-b-2 transition-colors ${
                     activeTab === tab
                       ? "border-purple-600 text-purple-600"
                       : "border-transparent text-gray-500 hover:text-gray-700"
@@ -374,7 +443,7 @@ const CompetitorDetail: React.FC = () => {
             <div className="p-6">
               {activeTab === "products" && (
                 <div className="space-y-8">
-                  <div className="flex justify-end">
+                  <div className="flex justify-end items-center">
                     <button
                       onClick={() => {
                         setIsAddingProduct(true);
@@ -431,6 +500,31 @@ const CompetitorDetail: React.FC = () => {
                             })
                           }
                         />
+                        <div className="col-span-2">
+                          <label className="flex items-center gap-2 cursor-pointer bg-gray-100 border border-dashed border-gray-300 text-gray-600 px-4 py-3 rounded-lg hover:bg-gray-200 transition-colors">
+                            {tempProduct.image ? (
+                              <img
+                                src={tempProduct.image}
+                                className="w-12 h-12 object-cover rounded shadow-sm"
+                                alt="Preview"
+                              />
+                            ) : (
+                              <Camera className="text-gray-400" size={20} />
+                            )}
+                            <div className="text-left">
+                              <p className="text-xs font-bold">上传产品图片</p>
+                              <p className="text-[10px] text-gray-500">
+                                支持 JPG/PNG/WEBP
+                              </p>
+                            </div>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={handleProductImageUpload}
+                            />
+                          </label>
+                        </div>
                       </div>
                       <div className="flex gap-2 justify-end">
                         <button
@@ -493,6 +587,33 @@ const CompetitorDetail: React.FC = () => {
                                 })
                               }
                             />
+                            <div className="col-span-2">
+                              <label className="flex items-center gap-2 cursor-pointer bg-white border border-dashed border-gray-300 text-gray-600 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                {tempProduct.image ? (
+                                  <img
+                                    src={tempProduct.image}
+                                    className="w-12 h-12 object-cover rounded shadow-sm"
+                                    alt="Preview"
+                                  />
+                                ) : (
+                                  <Camera className="text-gray-400" size={20} />
+                                )}
+                                <div className="text-left">
+                                  <p className="text-xs font-bold">
+                                    更换产品图片
+                                  </p>
+                                  <p className="text-[10px] text-gray-500">
+                                    点击上传新图片
+                                  </p>
+                                </div>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={handleProductImageUpload}
+                                />
+                              </label>
+                            </div>
                           </div>
                           <div className="flex gap-2 justify-end">
                             <button
@@ -512,7 +633,8 @@ const CompetitorDetail: React.FC = () => {
                       ) : (
                         <div className="flex flex-col md:flex-row relative">
                           {/* Product Actions */}
-                          <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity bg-white/80 p-1 rounded-lg backdrop-blur-sm shadow-sm z-10">
+                          <div className="absolute top-2 right-2 flex gap-1 opacity-100 transition-opacity bg-white/80 p-1 rounded-lg backdrop-blur-sm shadow-sm z-10">
+                            <div className="w-px h-4 bg-gray-200 mx-1 self-center" />
                             <button
                               onClick={() => {
                                 setEditingProductId(product.id);
@@ -531,6 +653,21 @@ const CompetitorDetail: React.FC = () => {
                             >
                               <Trash2 size={14} />
                             </button>
+                          </div>
+
+                          <div className="w-full md:w-48 bg-gray-50 flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 overflow-hidden shrink-0">
+                            {product.image ? (
+                              <img
+                                src={product.image}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
+                                alt={product.name}
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center gap-2 text-gray-300">
+                                <ImageIcon size={40} />
+                                <span className="text-[10px]">暂无图片</span>
+                              </div>
+                            )}
                           </div>
 
                           <div className="p-6 flex-1 flex flex-col">
@@ -881,6 +1018,7 @@ const CompetitorDetail: React.FC = () => {
                                       type="file"
                                       accept=".xlsx, .xls, .csv"
                                       className="hidden"
+                                      multiple
                                       onChange={(e) =>
                                         handleFileUpload(e, product.id)
                                       }

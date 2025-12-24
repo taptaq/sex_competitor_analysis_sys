@@ -1,11 +1,27 @@
 import { Competitor, ReviewAnalysis } from '../types';
 
-export const getStrategyAdvice = async (concept: string) => {
+export const getDeepComparison = async (products: any[], isDomestic: boolean = false) => {
+  try {
+    const res = await fetch('/api/ai/compare', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ products, isDomestic })
+    });
+    
+    if (!res.ok) throw new Error('Comparison analysis failed');
+    return await res.json();
+  } catch (error) {
+    console.error('AI Service Error:', error);
+    throw error;
+  }
+};
+
+export const getStrategyAdvice = async (concept: string , isDomestic: boolean = false) => {
   try {
     const res = await fetch('/api/ai/strategy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ concept })
+      body: JSON.stringify({ concept, isDomestic })
     });
     
     if (!res.ok) throw new Error('Strategy analysis failed');
@@ -20,12 +36,12 @@ export const getStrategyAdvice = async (concept: string) => {
   }
 };
 
-export const analyzeReviews = async (productName: string, reviews: string[]) => {
+export const analyzeReviews = async (productName: string, reviews: string[], isDomestic: boolean = false) => {
   try {
     const res = await fetch('/api/ai/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productName, reviews })
+      body: JSON.stringify({ productName, reviews, isDomestic })
     });
 
     if (!res.ok) throw new Error('Review analysis failed');
@@ -40,19 +56,20 @@ export const analyzeReviews = async (productName: string, reviews: string[]) => 
   }
 };
 
-export const fetchCompetitorData = async (companyName: string): Promise<Competitor> => {
+export const fetchCompetitorData = async (companyName: string, isDomestic: boolean = false): Promise<Competitor> => {
   try {
     const res = await fetch('/api/ai/competitor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ companyName })
+      body: JSON.stringify({ companyName, isDomestic })
     });
 
     if (!res.ok) {
        const err = await res.json();
        throw new Error(err.error || 'Competitor generation failed');
     }
-    return await res.json();
+    const data = await res.json();
+    return { ...data, isDomestic };
   } catch (error) {
      console.error('AI Service Error:', error);
      // Fallback mock
@@ -60,9 +77,8 @@ export const fetchCompetitorData = async (companyName: string): Promise<Competit
         id: `comp-${Date.now()}`,
         name: companyName,
         domain: 'example.com',
-        platform: 'Unknown',
+        isDomestic,
         sentiment: { material: 50, noise: 50, privacy: 50, easeOfUse: 50, value: 50 },
-        priceHistory: [],
         products: []
     } as Competitor;
   }

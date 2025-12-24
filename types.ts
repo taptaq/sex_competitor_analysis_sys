@@ -1,19 +1,5 @@
 
-export interface Competitor {
-  id: string;
-  name: string;
-  logo: string;
-  domain: string;
-  platform: string;
-  sentiment: {
-    material: number;
-    noise: number;
-    privacy: number;
-    easeOfUse: number;
-    value: number;
-  };
-  priceHistory: { date: string; price: number }[];
-}
+
 
 export interface ReviewAnalysis {
   pros: string[];
@@ -23,12 +9,28 @@ export interface ReviewAnalysis {
   consKeywords?: { value: string; count: number }[];
 }
 
+export interface ComparisonAnalysis {
+  winnerId: string;
+  bestValueReason: string;
+  comparisonScores: {
+    productId: string;
+    totalScore: number;
+    dimensions: {
+      label: string;
+      score: number;
+      reason: string;
+      deduction: string;
+    }[];
+  }[];
+  summary: string;
+}
+
 export interface Product {
   id: string;
   name: string;
   price: number;
   tags: string[];
-  image: string;
+  image?: string; // Base64 or URL
   competitorId: string;
   reviews?: Review[]; // Local reviews
   analysis?: ReviewAnalysis; // AI Analysis result
@@ -36,7 +38,6 @@ export interface Product {
 
 export interface AdCreative {
   id: string;
-  image: string;
   text: string;
   highlights: string[];
 }
@@ -51,9 +52,7 @@ export interface Review {
 export interface Competitor {
   id: string;
   name: string;
-  logo: string;
   domain: string;
-  platform: string;
   sentiment: {
     material: number;
     noise: number;
@@ -61,15 +60,18 @@ export interface Competitor {
     easeOfUse: number;
     value: number;
   };
-  priceHistory: { date: string; price: number }[];
   marketOpportunity?: { category: string; competition: number; volume: number }[];
   radarData?: { subject: string; A: number; fullMark: number }[];
   products?: Product[];
   ads?: AdCreative[];
+  philosophy?: string;
+  focus?: 'Male' | 'Female' | 'Unisex';
+  isDomestic?: boolean;
 }
 
 export enum ViewType {
   DASHBOARD = 'DASHBOARD',
   COMPETITOR_DETAIL = 'COMPETITOR_DETAIL',
   STRATEGY_ADVISOR = 'STRATEGY_ADVISOR',
+  PRODUCT_COMPARISON = 'PRODUCT_COMPARISON',
 }
