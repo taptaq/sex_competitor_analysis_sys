@@ -19,6 +19,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3001;
 const DATA_FILE = path.join(__dirname, 'competitors.json');
+const HISTORY_FILE = path.join(__dirname, 'comparison_history.json');
 
 // Initialize Gemini
 // Try standard API_KEY first, then VITE_ prefixed one for compatibility
@@ -117,6 +118,9 @@ app.use(express.json({ limit: '50mb' }));
 if (!fs.existsSync(DATA_FILE)) {
     fs.writeFileSync(DATA_FILE, '[]', 'utf8');
 }
+if (!fs.existsSync(HISTORY_FILE)) {
+    fs.writeFileSync(HISTORY_FILE, '[]', 'utf8');
+}
 
 // --- Status Check ---
 app.get('/api/status', (req, res) => {
@@ -148,6 +152,78 @@ app.post('/api/competitors', (req, res) => {
     } catch (error) {
         console.error('Error writing file:', error);
         res.status(500).json({ error: 'Failed to save data' });
+    }
+});
+
+// Read comparison history
+app.get('/api/comparison-history', (req, res) => {
+    try {
+        const data = fs.readFileSync(HISTORY_FILE, 'utf8');
+        res.json(JSON.parse(data));
+    } catch (error) {
+        console.error('Error reading history file:', error);
+        res.status(500).json({ error: 'Failed to read history' });
+    }
+});
+
+// Save comparison history
+app.post('/api/comparison-history', (req, res) => {
+    try {
+        const newRecord = req.body;
+        if (!newRecord.id || !newRecord.timestamp || !newRecord.analysis) {
+            return res.status(400).json({ error: 'Invalid record format' });
+        }
+        
+        let history = [];
+        if (fs.existsSync(HISTORY_FILE)) {
+            const data = fs.readFileSync(HISTORY_FILE, 'utf8');
+            history = JSON.parse(data);
+        }
+        
+        history.unshift(newRecord); // Add to beginning
+        // Keep only last 100 records
+        if (history.length > 100) {
+            history = history.slice(0, 100);
+        }
+        
+        fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2), 'utf8');
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error writing history file:', error);
+        res.status(500).json({ error: 'Failed to save history' });
+    }
+});
+
+// Delete single comparison history record
+app.delete('/api/comparison-history/:id', (req, res) => {
+    try {
+        const recordId = req.params.id;
+        
+        if (!fs.existsSync(HISTORY_FILE)) {
+            return res.status(404).json({ error: 'History file not found' });
+        }
+        
+        const data = fs.readFileSync(HISTORY_FILE, 'utf8');
+        let history = JSON.parse(data);
+        
+        history = history.filter((record) => record.id !== recordId);
+        
+        fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2), 'utf8');
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting history record:', error);
+        res.status(500).json({ error: 'Failed to delete history record' });
+    }
+});
+
+// Clear all comparison history
+app.delete('/api/comparison-history', (req, res) => {
+    try {
+        fs.writeFileSync(HISTORY_FILE, '[]', 'utf8');
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error clearing history:', error);
+        res.status(500).json({ error: 'Failed to clear history' });
     }
 });
 
@@ -278,44 +354,60 @@ app.post('/api/ai/analyze', async (req, res) => {
 // 4. Deep Product Comparison
 app.post('/api/ai/compare', async (req, res) => {
     const { products } = req.body;
+    const productIds = products.map(p => p.id);
+    
     const schema = {
         type: Type.OBJECT,
         properties: {
-            winnerId: { type: Type.STRING },
+            winnerName: { type: Type.STRING },
             bestValueReason: { type: Type.STRING },
             comparisonScores: {
                 type: Type.ARRAY,
                 items: {
                     type: Type.OBJECT,
                     properties: {
-                        dimension: { type: Type.STRING },
-                        scores: { 
-                            type: Type.OBJECT,
-                            additionalProperties: { type: Type.NUMBER }
-                        },
-                        reason: { type: Type.STRING },
-                        deduction: { type: Type.STRING }
+                        productId: { type: Type.STRING },
+                        totalScore: { type: Type.NUMBER },
+                        dimensions: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    label: { type: Type.STRING },
+                                    score: { type: Type.NUMBER },
+                                    reason: { type: Type.STRING },
+                                    deduction: { type: Type.STRING }
+                                },
+                                required: ["label", "score", "reason"]
+                            }
+                        }
                     },
-                    required: ["dimension", "scores", "reason", "deduction"]
+                    required: ["productId", "totalScore", "dimensions"]
                 }
             },
             summary: { type: Type.STRING }
         },
-        required: ["winnerId", "bestValueReason", "comparisonScores", "summary"]
+        required: ["winnerName", "bestValueReason", "comparisonScores", "summary"]
     };
 
     const prompt = `你是一位专业的情趣用品产品专家。请对以下几款情趣用品进行深度 PK 对比分析：
     ${JSON.stringify(products)}
     
     请输出 JSON 格式的详细对比结果，包含以下英文键名：
-    1. winnerId: 最终胜出的情趣用品产品 ID。
+    1. winnerName: 最终胜出的情趣用品产品名称（必须是两个比较产品的名称之一）。
     2. bestValueReason: 为什么该产品被认为是最佳选择（性价比/体验/创新）的详细理由。
-    3. comparisonScores: 一个对象数组，每个对象代表一个对比维度：
-       - dimension: 维度名称（如：振动强度、材质触感、静音静谧度、APP交互、续航能力等）
-       - scores: 每一个产品 ID 对应的 0-10 分得分（Object mapping id to score）
-       - reason: 该维度下的评分依据和对比说明。
-       - deduction: 该维度下表现较差产品的“扣分项”或主要不足。
-    4. summary: 对本轮情趣用品深度 PK 的综合总结。`;
+    3. comparisonScores: 一个对象数组，每个对象代表一个产品的得分情况，数组长度必须等于产品数量（${products.length}个）：
+       - productId: 产品 ID（必须是 ${productIds.join(", ")} 之一）
+       - name: 产品名称（必须是两个比较产品的名称之一）
+       - totalScore: 该产品的总分（0-100分）
+       - dimensions: 该产品在各个维度的得分数组，每个维度包含：
+         * label: 维度名称（如：外观设计、振动强度、材质触感、静音静谧度、APP交互、续航能力等）
+         * score: 该产品在此维度的得分（0-100分）
+         * reason: 该维度下的评分依据和对比说明
+         * deduction: （可选）该产品在此维度的"扣分项"或主要不足，如果表现良好可以为空字符串
+    4. summary: 对本轮情趣用品深度 PK 的综合总结。
+    
+    重要：comparisonScores 数组必须包含所有 ${products.length} 个产品，每个产品必须有相同的维度数量和维度名称。`;
 
     try {
         const data = await askAI(prompt, schema);

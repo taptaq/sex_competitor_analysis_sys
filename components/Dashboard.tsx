@@ -144,7 +144,24 @@ const Dashboard: React.FC = () => {
     competitors.forEach((comp) => {
       markdown += `## ${comp.name}\n`;
       markdown += `- **官网**: ${comp.domain}\n`;
-      markdown += `- **理念**: ${comp.philosophy?.map((p) => `"${p}"`).join(", ") || "暂无"}\n`;
+      markdown += `- **品牌类型**: ${comp.isDomestic ? "国内品牌" : "国际知名品牌"}\n`;
+      if (comp.focus) {
+        const focusText =
+          comp.focus === "Female"
+            ? "专攻女用"
+            : comp.focus === "Male"
+            ? "专攻男用"
+            : "男女兼用";
+        markdown += `- **专攻性别**: ${focusText}\n`;
+      }
+      if (comp.philosophy && comp.philosophy.length > 0) {
+        markdown += `- **品牌理念**:\n`;
+        comp.philosophy.forEach((p) => {
+          markdown += `  - "${p}"\n`;
+        });
+      } else {
+        markdown += `- **品牌理念**: 暂无\n`;
+      }
       markdown += `- **情感评分**:\n`;
       markdown += `  - 材质: ${comp.sentiment.material}\n`;
       markdown += `  - 噪音: ${comp.sentiment.noise}\n`;
@@ -155,7 +172,32 @@ const Dashboard: React.FC = () => {
         markdown += `- **核心产品**:\n`;
         comp.products.forEach((prod) => {
           markdown += `  - ${prod.name} (¥${prod.price})\n`;
-          if (prod.tags) markdown += `    - 标签: ${prod.tags.join(", ")}\n`;
+          if (prod.category) {
+            markdown += `    - 类型: ${prod.category}\n`;
+          }
+          if (prod.tags && prod.tags.length > 0) {
+            markdown += `    - 标签: ${prod.tags.join(", ")}\n`;
+          }
+          if (prod.link) {
+            markdown += `    - 链接: ${prod.link}\n`;
+          }
+          if (prod.analysis) {
+            if (prod.analysis.summary) {
+              markdown += `    - **分析概括**: ${prod.analysis.summary}\n`;
+            }
+            if (prod.analysis.prosKeywords && prod.analysis.prosKeywords.length > 0) {
+              const prosKeywordsText = prod.analysis.prosKeywords
+                .map((kw) => `${kw.value}(${kw.count})`)
+                .join(", ");
+              markdown += `    - **好评关键词**: ${prosKeywordsText}\n`;
+            }
+            if (prod.analysis.consKeywords && prod.analysis.consKeywords.length > 0) {
+              const consKeywordsText = prod.analysis.consKeywords
+                .map((kw) => `${kw.value}(${kw.count})`)
+                .join(", ");
+              markdown += `    - **差评关键词**: ${consKeywordsText}\n`;
+            }
+          }
         });
       }
       markdown += `\n---\n\n`;

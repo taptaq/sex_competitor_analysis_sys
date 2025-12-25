@@ -11,8 +11,10 @@ import {
   TrendingDown,
   GitCompare,
   Download,
-  FileText,
   Image as ImageIcon,
+  History,
+  Clock,
+  X,
 } from "lucide-react";
 import { getDeepComparison } from "../services/gemini";
 import { ComparisonAnalysis } from "../types";
@@ -33,14 +35,20 @@ const GlobalProductComparison: React.FC = () => {
   const [showDeductions, setShowDeductions] = useState<Record<string, boolean>>(
     {}
   );
+  const [showHistory, setShowHistory] = useState(false);
+  const [historyRecords, setHistoryRecords] = useState<any[]>([]);
+  const [historyProducts, setHistoryProducts] = useState<any[]>([]);
 
   // Find the currently selected brand object
   const selectedBrand = competitors.find((c) => c.id === selectedBrandId);
 
   // Find all selected products across all competitors for the comparison table
-  const selectedProductsForPK = competitors.flatMap((comp) =>
-    (comp.products || []).filter((prod) => selectedProductIds.includes(prod.id))
-  );
+  // 如果是从历史记录加载的，使用历史记录中的产品信息
+  const selectedProductsForPK = historyProducts.length > 0 
+    ? historyProducts 
+    : competitors.flatMap((comp) =>
+        (comp.products || []).filter((prod) => selectedProductIds.includes(prod.id))
+      );
 
   const handleDeepAnalysis = async () => {
     if (selectedProductsForPK.length < 2) {
@@ -48,6 +56,8 @@ const GlobalProductComparison: React.FC = () => {
       return;
     }
     setLoading(true);
+    // 清除历史记录中的产品信息，使用当前选中的产品
+    setHistoryProducts([]);
     try {
       // Check if any product is domestic to decide AI routing
       const hasDomestic = competitors.some(
@@ -60,6 +70,9 @@ const GlobalProductComparison: React.FC = () => {
         hasDomestic
       );
       setAnalysisResult(result);
+      
+      // Save to history
+      await saveAnalysisToHistory(result, selectedProductsForPK);
     } catch (error) {
       console.error("Deep analysis failed", error);
       alert("分析失败，请稍后重试");
@@ -68,8 +81,159 @@ const GlobalProductComparison: React.FC = () => {
     }
   };
 
+  const saveAnalysisToHistory = async (
+    analysis: ComparisonAnalysis,
+    products: any[]
+  ) => {
+    try {
+      const historyRecord = {
+        id: `history-${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        productIds: products.map((p) => p.id),
+        productNames: products.map((p) => p.name),
+        products: products, // 保存完整的产品信息，以便后续使用
+        analysis: analysis,
+      };
+
+      await fetch('/api/comparison-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(historyRecord),
+      });
+    } catch (error) {
+      console.error('Failed to save analysis history:', error);
+      // Don't show error to user, just log it
+    }
+  };
+
   const toggleDeduction = (productId: string) => {
     setShowDeductions((prev) => ({ ...prev, [productId]: !prev[productId] }));
+  };
+
+  const loadHistory = async () => {
+    try {
+      const res = await fetch('/api/comparison-history');
+      if (res.ok) {
+        const data = await res.json();
+        setHistoryRecords(data);
+      }
+    } catch (error) {
+      console.error('Failed to load history:', error);
+    }
+  };
+
+  const handleShowHistory = () => {
+    setShowHistory(!showHistory);
+    if (!showHistory) {
+      loadHistory();
+    }
+  };
+
+  const deleteHistoryRecord = async (recordId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // 阻止触发父元素的点击事件
+    if (!confirm('确定要删除这条历史记录吗？')) {
+      return;
+    }
+    
+    try {
+      const res = await fetch(`/api/comparison-history/${recordId}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        // 重新加载历史记录
+        loadHistory();
+        // 如果删除的是当前显示的分析结果，清空分析结果
+        if (analysisResult && historyRecords.find(r => r.id === recordId)?.analysis === analysisResult) {
+          setAnalysisResult(null);
+          setHistoryProducts([]);
+        }
+      } else {
+        alert('删除失败，请稍后重试');
+      }
+    } catch (error) {
+      console.error('Failed to delete history record:', error);
+      alert('删除失败，请稍后重试');
+    }
+  };
+
+  const clearAllHistory = async () => {
+    if (!confirm('确定要清空所有历史记录吗？此操作不可恢复！')) {
+      return;
+    }
+    
+    try {
+      const res = await fetch('/api/comparison-history', {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        setHistoryRecords([]);
+        setAnalysisResult(null);
+        setHistoryProducts([]);
+        alert('已清空所有历史记录');
+      } else {
+        alert('清空失败，请稍后重试');
+      }
+    } catch (error) {
+      console.error('Failed to clear history:', error);
+      alert('清空失败，请稍后重试');
+    }
+  };
+
+  const loadHistoryRecord = (record: any) => {
+    setAnalysisResult(record.analysis);
+    setShowHistory(false);
+    
+    // 如果历史记录中有完整的产品信息，直接使用
+    if (record.products && record.products.length > 0) {
+      setHistoryProducts(record.products);
+    } else {
+      // 否则尝试从当前系统中匹配产品
+      const matchedProducts: any[] = [];
+      
+      if (record.productIds && record.productIds.length > 0) {
+        // 先尝试通过 productIds 匹配
+        record.productIds.forEach((productId: string) => {
+          competitors.forEach((comp) => {
+            comp.products?.forEach((p) => {
+              if (p.id === productId && !matchedProducts.find(mp => mp.id === p.id)) {
+                matchedProducts.push(p);
+              }
+            });
+          });
+        });
+      }
+      
+      // 如果通过 ID 匹配不到，尝试通过名称匹配
+      if (matchedProducts.length === 0 && record.productNames && record.productNames.length > 0) {
+        record.productNames.forEach((productName: string) => {
+          competitors.forEach((comp) => {
+            comp.products?.forEach((p) => {
+              if (p.name === productName && !matchedProducts.find(mp => mp.id === p.id)) {
+                matchedProducts.push(p);
+              }
+            });
+          });
+        });
+      }
+      
+      setHistoryProducts(matchedProducts);
+      
+      // 同时设置选中的产品ID，以便在对比表格中显示
+      if (matchedProducts.length > 0) {
+        clearSelection();
+        matchedProducts.forEach((p) => {
+          if (!selectedProductIds.includes(p.id)) {
+            toggleProductSelection(p.id);
+          }
+        });
+      }
+    }
+    
+    // Scroll to analysis result
+    setTimeout(() => {
+      const element = document.querySelector('[data-analysis-result]');
+      element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
 
   const exportAnalysisReport = () => {
@@ -77,14 +241,14 @@ const GlobalProductComparison: React.FC = () => {
 
     let report = `# AI 产品深度对比 PK 报告\n\n`;
     report += `**胜出产品**: ${
-      selectedProductsForPK.find((p) => p.id === analysisResult.winnerId)?.name
+      selectedProductsForPK.find((p) => p.name === analysisResult.winnerName)?.name
     }\n`;
     report += `**推荐理由**: ${analysisResult.bestValueReason}\n\n`;
 
     report += `## 综合得分情况\n\n`;
     analysisResult.comparisonScores.forEach((scoreInfo) => {
       const product = selectedProductsForPK.find(
-        (p) => p.id === scoreInfo.productId
+        (p) => p.name === scoreInfo.name
       );
       report += `### ${product?.name} (总分: ${scoreInfo.totalScore})\n`;
       scoreInfo.dimensions.forEach((dim) => {
@@ -124,6 +288,12 @@ const GlobalProductComparison: React.FC = () => {
             </p>
           </div>
           <div className="flex gap-3">
+            <button
+              onClick={handleShowHistory}
+              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition font-medium border border-gray-200"
+            >
+              <History size={16} /> 历史记录
+            </button>
             {selectedProductIds.length > 0 && (
               <button
                 onClick={clearSelection}
@@ -218,9 +388,85 @@ const GlobalProductComparison: React.FC = () => {
         )}
       </div>
 
+      {/* History Panel */}
+      {showHistory && (
+        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+          <div className="flex justify-between items-center mb-4">
+            <h4 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+              <History size={20} /> 分析历史记录
+              {historyRecords.length > 0 && (
+                <span className="text-sm font-normal text-gray-500">
+                  ({historyRecords.length} 条)
+                </span>
+              )}
+            </h4>
+            <div className="flex items-center gap-2">
+              {historyRecords.length > 0 && (
+                <button
+                  onClick={clearAllHistory}
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg transition font-medium border border-red-200"
+                >
+                  <Trash2 size={14} /> 清空全部
+                </button>
+              )}
+              <button
+                onClick={() => setShowHistory(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+          {historyRecords.length === 0 ? (
+            <div className="text-center py-10 text-gray-400">
+              <p>暂无历史记录</p>
+            </div>
+          ) : (
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {historyRecords.map((record) => (
+                <div
+                  key={record.id}
+                  className="group relative p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all"
+                >
+                  <div
+                    onClick={() => loadHistoryRecord(record)}
+                    className="cursor-pointer"
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1">
+                        <h5 className="font-bold text-gray-800 text-sm mb-1">
+                          {record.productNames.join(' vs ')}
+                        </h5>
+                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                          <Clock size={12} />
+                          {new Date(record.timestamp).toLocaleString('zh-CN')}
+                        </p>
+                      </div>
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded font-bold">
+                        胜出: {record.analysis.winnerName}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-600 line-clamp-2">
+                      {record.analysis.summary}
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => deleteHistoryRecord(record.id, e)}
+                    className="absolute top-2 right-2 p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="删除此记录"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* AI Deep Analysis Results */}
       {analysisResult && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+        <div data-analysis-result className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
           <div className="bg-gradient-to-br from-purple-900 to-indigo-900 p-8 rounded-3xl text-white shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 p-10 opacity-10 rotate-12">
               <Sparkles size={120} />
@@ -235,7 +481,7 @@ const GlobalProductComparison: React.FC = () => {
                   <h4 className="text-2xl font-black italic">
                     PK 结论:{" "}
                     {selectedProductsForPK.find(
-                      (p) => p.id === analysisResult.winnerId
+                      (p) => p.name === analysisResult.winnerName
                     )?.name || "胜出者"}
                   </h4>
                   <p className="text-purple-200 text-sm mt-1">
@@ -257,7 +503,7 @@ const GlobalProductComparison: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {analysisResult.comparisonScores.map((scoreInfo) => {
                   const product = selectedProductsForPK.find(
-                    (p) => p.id === scoreInfo.productId
+                    (p) => p.name === scoreInfo.name
                   );
                   return (
                     <div
@@ -296,9 +542,9 @@ const GlobalProductComparison: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {analysisResult.comparisonScores.map((scoreInfo) => {
               const product = selectedProductsForPK.find(
-                (p) => p.id === scoreInfo.productId
+                (p) => p.name === scoreInfo.name
               );
-              const isWinner = scoreInfo.productId === analysisResult.winnerId;
+              const isWinner = scoreInfo.name === analysisResult.winnerName;
 
               return (
                 <div

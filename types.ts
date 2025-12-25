@@ -10,10 +10,11 @@ export interface ReviewAnalysis {
 }
 
 export interface ComparisonAnalysis {
-  winnerId: string;
+  winnerName: string;
   bestValueReason: string;
   comparisonScores: {
     productId: string;
+    name: string;
     totalScore: number;
     dimensions: {
       label: string;
@@ -31,6 +32,8 @@ export interface Product {
   price: number;
   tags: string[];
   image?: string; // Base64 or URL
+  category?: string; // 产品类型：跳蛋、震动棒、伸缩棒、AV棒等
+  link?: string; // 产品链接
   competitorId: string;
   reviews?: Review[]; // Local reviews
   analysis?: ReviewAnalysis; // AI Analysis result

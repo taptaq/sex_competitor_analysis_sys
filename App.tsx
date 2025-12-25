@@ -33,7 +33,7 @@ const App: React.FC = () => {
     <div className="flex h-screen bg-gray-50 text-gray-900 overflow-hidden">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-10">
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0" style={{ zIndex: 1000 }}>
           <h2 className="text-lg font-semibold text-gray-700 capitalize">
             {currentView.replace("_", " ")}
           </h2>

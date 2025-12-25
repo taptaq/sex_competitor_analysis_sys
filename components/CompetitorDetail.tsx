@@ -17,11 +17,25 @@ import {
   Venus,
   Mars,
   VenusAndMars,
-  Camera,
   Image as ImageIcon,
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
 } from "lucide-react";
 import { analyzeReviews } from "../services/gemini";
 import * as XLSX from "xlsx";
+
+// 产品类型列表
+const PRODUCT_CATEGORIES = [
+  "跳蛋",
+  "震动棒",
+  "伸缩棒",
+  "AV棒",
+  "飞机杯",
+  "倒模",
+  "按摩器",
+  "其他",
+];
 
 const CompetitorDetail: React.FC = () => {
   const {
@@ -47,6 +61,12 @@ const CompetitorDetail: React.FC = () => {
   const [editingAdId, setEditingAdId] = useState<string | null>(null);
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const [tempDomain, setTempDomain] = useState("");
+  const [isEditingFocus, setIsEditingFocus] = useState(false);
+  const [tempFocus, setTempFocus] = useState<string>("");
+  const [isEditingPhilosophy, setIsEditingPhilosophy] = useState(false);
+  const [tempPhilosophy, setTempPhilosophy] = useState<string[]>([]);
+  const [editingImageProductId, setEditingImageProductId] = useState<string | null>(null);
+  const [tempImageLink, setTempImageLink] = useState<string>("");
   // Analysis Edit State
   const [editingAnalysisProductId, setEditingAnalysisProductId] = useState<
     string | null
@@ -61,6 +81,8 @@ const CompetitorDetail: React.FC = () => {
   const [analyzingProductId, setAnalyzingProductId] = useState<string | null>(
     null
   );
+  const [priceSortOrder, setPriceSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   // Removed newReviewText state as we are moving to file import
 
   const competitor = competitors.find((c) => c.id === selectedCompetitorId);
@@ -69,9 +91,61 @@ const CompetitorDetail: React.FC = () => {
     return <div>Competitor not found</div>;
   }
 
+  // 筛选和排序产品列表
+  const filteredAndSortedProducts = [...(competitor.products || [])]
+    .filter((product) => {
+      if (selectedCategory === "all") return true;
+      if (selectedCategory === "uncategorized") return !product.category;
+      return product.category === selectedCategory;
+    })
+    .sort((a, b) => {
+      if (priceSortOrder === "none") return 0;
+      if (priceSortOrder === "asc") {
+        return a.price - b.price;
+      } else {
+        return b.price - a.price;
+      }
+    });
+
+  const handlePriceSort = () => {
+    if (priceSortOrder === "none") {
+      setPriceSortOrder("asc");
+    } else if (priceSortOrder === "asc") {
+      setPriceSortOrder("desc");
+    } else {
+      setPriceSortOrder("none");
+    }
+  };
+
   const handleSaveDomain = () => {
     updateCompetitor({ ...competitor, domain: tempDomain });
     setIsEditingDomain(false);
+  };
+
+  const handleSaveFocus = () => {
+    updateCompetitor({ ...competitor, focus: tempFocus });
+    setIsEditingFocus(false);
+  };
+
+  const handleSavePhilosophy = () => {
+    const filteredPhilosophy = tempPhilosophy.filter((p) => p.trim() !== "");
+    updateCompetitor({ ...competitor, philosophy: filteredPhilosophy });
+    setIsEditingPhilosophy(false);
+  };
+
+  const handlePhilosophyChange = (index: number, value: string) => {
+    const newPhilosophy = [...tempPhilosophy];
+    newPhilosophy[index] = value;
+    setTempPhilosophy(newPhilosophy);
+  };
+
+  const handlePhilosophyAdd = () => {
+    setTempPhilosophy([...tempPhilosophy, ""]);
+  };
+
+  const handlePhilosophyDelete = (index: number) => {
+    const newPhilosophy = tempPhilosophy.filter((_, i) => i !== index);
+    setTempPhilosophy(newPhilosophy);
   };
 
   const handleAnalyze = async (product: Product) => {
@@ -88,6 +162,8 @@ const CompetitorDetail: React.FC = () => {
         competitor.isDomestic
       );
       setProductAnalysis(competitor.id, product.id, analysis);
+      // 分析完成后清空评论
+      setProductReviews(competitor.id, product.id, []);
     } catch (error) {
       console.error("Analysis failed", error);
       alert("分析失败，请检查 API Key");
@@ -105,8 +181,10 @@ const CompetitorDetail: React.FC = () => {
       price: Number(tempProduct.price),
       tags:
         typeof tempProduct.tags === "string"
-          ? (tempProduct.tags as string).split(",").map((t: string) => t.trim())
+          ? (tempProduct.tags as string).split("，").map((t: string) => t.trim())
           : tempProduct.tags || [],
+      category: tempProduct.category,
+      link: tempProduct.link,
       competitorId: competitor.id,
       reviews: tempProduct.reviews || [],
       analysis: tempProduct.analysis,
@@ -265,37 +343,29 @@ const CompetitorDetail: React.FC = () => {
     }
   };
 
-  const handleProductImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setTempProduct({
-        ...tempProduct,
-        image: reader.result as string,
-      });
-    };
-    reader.readAsDataURL(file);
+  const handleProductImageLinkChange = (link: string) => {
+    setTempProduct({
+      ...tempProduct,
+      image: link,
+    });
   };
 
-  const handleProductImageUploadDirect = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    product: Product
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const updatedProduct = {
-        ...product,
-        image: reader.result as string,
-      };
-      updateProduct(competitor.id, updatedProduct);
+  const handleProductImageLinkChangeDirect = (product: Product, link: string) => {
+    const updatedProduct = {
+      ...product,
+      image: link,
     };
-    reader.readAsDataURL(file);
-    e.target.value = "";
+    updateProduct(competitor.id, updatedProduct);
+  };
+
+  const handleSaveImageLink = (product: Product) => {
+    const updatedProduct = {
+      ...product,
+      image: tempImageLink,
+    };
+    updateProduct(competitor.id, updatedProduct);
+    setEditingImageProductId(null);
+    setTempImageLink("");
   };
 
   return (
@@ -339,21 +409,25 @@ const CompetitorDetail: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2 group cursor-pointer">
-                  <a
-                    href={
-                      competitor?.domain?.trim()
-                        ? competitor.domain.trim().startsWith("http") ||
-                          competitor.domain.trim().startsWith("https")
-                          ? competitor.domain.trim()
-                          : `https://${competitor.domain.trim()}`
-                        : "#"
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-gray-500 hover:text-purple-600 transition-colors"
-                  >
-                    {competitor.domain || "未设置官网"}
-                  </a>
+                  {
+                    competitor?.domain ? (
+                      <a
+                        href={
+                          competitor?.domain?.trim()
+                            ? competitor.domain.trim().startsWith("http") ||
+                              competitor.domain.trim().startsWith("https")
+                              ? competitor.domain.trim()
+                              : `https://${competitor.domain.trim()}`
+                            : "#"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-gray-500 hover:text-purple-600 transition-colors"
+                      >
+                        {competitor.domain}
+                      </a>
+                    ) : <span className="text-sm text-gray-500 transition-colors">未设置官网</span>
+                  }
                   <Pencil
                     onClick={() => {
                       setTempDomain(competitor.domain);
@@ -373,57 +447,162 @@ const CompetitorDetail: React.FC = () => {
                   {competitor.isDomestic ? "国内品牌" : "国际知名品牌"}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <div
-                  className={`${
-                    competitor.focus === "Female"
-                      ? "text-pink-500"
-                      : competitor.focus === "Male"
-                      ? "text-blue-500"
-                      : "text-purple-500"
-                  }`}
-                >
-                  {competitor.focus === "Female" ? (
-                    <Venus size={18} />
-                  ) : competitor.focus === "Male" ? (
-                    <Mars size={18} />
-                  ) : (
-                    <VenusAndMars size={18} />
-                  )}
-                </div>
-                <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-bold border ${
-                    competitor.focus === "Female"
-                      ? "bg-pink-50 text-pink-600 border-pink-100"
-                      : competitor.focus === "Male"
-                      ? "bg-blue-50 text-blue-600 border-blue-100"
-                      : "bg-purple-50 text-purple-600 border-purple-100"
-                  }`}
-                >
-                  {competitor.focus === "Female"
-                    ? "专攻女用"
-                    : competitor.focus === "Male"
-                    ? "专攻男用"
-                    : "男女兼用"}
-                </span>
+              <div className="flex items-center gap-3 text-sm group/focus relative">
+                {isEditingFocus ? (
+                  <div className="flex items-center gap-2 w-full">
+                    <select
+                      className="flex-1 border rounded px-2 py-1 text-sm"
+                      value={tempFocus || "Unisex"}
+                      onChange={(e) => setTempFocus(e.target.value === "Unisex" ? "" : e.target.value)}
+                      autoFocus
+                    >
+                      <option value="Female">专攻女用</option>
+                      <option value="Male">专攻男用</option>
+                      <option value="Unisex">男女兼用</option>
+                    </select>
+                    <button
+                      onClick={handleSaveFocus}
+                      className="text-green-600 hover:text-green-700"
+                    >
+                      <Save size={16} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsEditingFocus(false);
+                        setTempFocus(competitor.focus || "");
+                      }}
+                      className="text-red-500 hover:text-red-600"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div
+                      className={`${
+                        competitor.focus === "Female"
+                          ? "text-pink-500"
+                          : competitor.focus === "Male"
+                          ? "text-blue-500"
+                          : "text-purple-500"
+                      }`}
+                    >
+                      {competitor.focus === "Female" ? (
+                        <Venus size={18} />
+                      ) : competitor.focus === "Male" ? (
+                        <Mars size={18} />
+                      ) : (
+                        <VenusAndMars size={18} />
+                      )}
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-xs font-bold border ${
+                        competitor.focus === "Female"
+                          ? "bg-pink-50 text-pink-600 border-pink-100"
+                          : competitor.focus === "Male"
+                          ? "bg-blue-50 text-blue-600 border-blue-100"
+                          : "bg-purple-50 text-purple-600 border-purple-100"
+                      }`}
+                    >
+                      {competitor.focus === "Female"
+                        ? "专攻女用"
+                        : competitor.focus === "Male"
+                        ? "专攻男用"
+                        : "男女兼用"}
+                    </span>
+                    <Pencil
+                      onClick={() => {
+                        setTempFocus(competitor.focus || "");
+                        setIsEditingFocus(true);
+                      }}
+                      size={12}
+                      className="text-gray-400 opacity-0 group-hover/focus:opacity-100 transition-opacity cursor-pointer"
+                    />
+                  </>
+                )}
               </div>
-              {competitor.philosophy && competitor.philosophy.length > 0 && (
-                <div className="pt-4 border-t border-gray-100">
-                  <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+              <div className="pt-4 border-t border-gray-100 group/philosophy relative">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                     品牌理念
                   </h4>
-                  <ul className="space-y-1.5">
-                    {competitor.philosophy.map((p, index) => (
-                      <li
-                        key={index}
-                        className="text-sm text-gray-600 leading-relaxed"
-                      >
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
+                  {!isEditingPhilosophy && (
+                    <Pencil
+                      onClick={() => {
+                        setTempPhilosophy(
+                          competitor.philosophy && competitor.philosophy.length > 0
+                            ? [...competitor.philosophy]
+                            : [""]
+                        );
+                        setIsEditingPhilosophy(true);
+                      }}
+                      size={12}
+                      className="text-gray-400 opacity-0 group-hover/philosophy:opacity-100 transition-opacity cursor-pointer"
+                    />
+                  )}
                 </div>
-              )}
+                {isEditingPhilosophy ? (
+                  <div className="space-y-2">
+                    {tempPhilosophy.map((p, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <input
+                          className="flex-1 text-sm p-2 border rounded"
+                          value={p}
+                          onChange={(e) =>
+                            handlePhilosophyChange(index, e.target.value)
+                          }
+                          placeholder={`理念 ${index + 1}`}
+                        />
+                        <button
+                          onClick={() => handlePhilosophyDelete(index)}
+                          className="text-red-400 hover:text-red-600"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ))}
+                    <div className="flex items-center gap-2 pt-2">
+                      <button
+                        onClick={handlePhilosophyAdd}
+                        className="flex items-center gap-1 px-2 py-1 text-xs text-purple-600 hover:bg-purple-50 rounded border border-purple-200"
+                      >
+                        <Plus size={12} /> 添加理念
+                      </button>
+                      <div className="flex-1" />
+                      <button
+                        onClick={() => {
+                          setIsEditingPhilosophy(false);
+                          setTempPhilosophy([]);
+                        }}
+                        className="px-2 py-1 text-xs text-gray-500 hover:text-gray-700"
+                      >
+                        取消
+                      </button>
+                      <button
+                        onClick={handleSavePhilosophy}
+                        className="px-2 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700"
+                      >
+                        保存
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  competitor.philosophy && competitor.philosophy.length > 0 ? (
+                    <ul className="space-y-1.5">
+                      {competitor.philosophy.map((p, index) => (
+                        <li
+                          key={index}
+                          className="text-sm text-gray-600 leading-relaxed"
+                        >
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-400 italic">暂无品牌理念</p>
+                  )
+                )}
+              </div>
             </div>
           </div>
 
@@ -462,7 +641,43 @@ const CompetitorDetail: React.FC = () => {
             <div className="p-6">
               {activeTab === "products" && (
                 <div className="space-y-8">
-                  <div className="flex justify-end items-center">
+                  <div className="flex justify-between items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <select
+                        className="text-sm text-gray-600 font-medium border border-gray-200 rounded-lg px-3 py-2 bg-white hover:bg-gray-50 transition"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                      >
+                        <option value="all">全部类型</option>
+                        {PRODUCT_CATEGORIES.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                        <option value="uncategorized">未分类</option>
+                      </select>
+                      <button
+                        onClick={handlePriceSort}
+                        className="flex items-center gap-2 text-sm text-gray-600 font-medium hover:bg-gray-50 px-3 py-2 rounded-lg transition border border-gray-200"
+                      >
+                        {priceSortOrder === "none" ? (
+                          <>
+                            <ArrowUpDown size={16} />
+                            按价格排序
+                          </>
+                        ) : priceSortOrder === "asc" ? (
+                          <>
+                            <ArrowUp size={16} />
+                            价格：低到高
+                          </>
+                        ) : (
+                          <>
+                            <ArrowDown size={16} />
+                            价格：高到低
+                          </>
+                        )}
+                      </button>
+                    </div>
                     <button
                       onClick={() => {
                         setIsAddingProduct(true);
@@ -504,12 +719,29 @@ const CompetitorDetail: React.FC = () => {
                             })
                           }
                         />
+                        <select
+                          className="p-2 border rounded"
+                          value={tempProduct.category || ""}
+                          onChange={(e) =>
+                            setTempProduct({
+                              ...tempProduct,
+                              category: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="">选择产品类型</option>
+                          {PRODUCT_CATEGORIES.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
                         <input
                           className="p-2 border rounded col-span-2"
                           placeholder="标签 (用逗号分隔)"
                           value={
                             Array.isArray(tempProduct.tags)
-                              ? tempProduct.tags.join(",")
+                              ? tempProduct.tags.join("，")
                               : tempProduct.tags || ""
                           }
                           onChange={(e) =>
@@ -520,29 +752,51 @@ const CompetitorDetail: React.FC = () => {
                           }
                         />
                         <div className="col-span-2">
-                          <label className="flex items-center gap-2 cursor-pointer bg-gray-100 border border-dashed border-gray-300 text-gray-600 px-4 py-3 rounded-lg hover:bg-gray-200 transition-colors">
-                            {tempProduct.image ? (
+                          <label className="text-xs text-gray-500 mb-1 block">
+                            产品图片链接
+                          </label>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              className="flex-1 p-2 border rounded"
+                              placeholder="请输入图片链接 (URL)"
+                              value={tempProduct.image || ""}
+                              onChange={(e) => handleProductImageLinkChange(e.target.value)}
+                            />
+                            {tempProduct.image && (
                               <img
                                 src={tempProduct.image}
                                 className="w-12 h-12 object-cover rounded shadow-sm"
                                 alt="Preview"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
+                                }}
                               />
-                            ) : (
-                              <Camera className="text-gray-400" size={20} />
                             )}
-                            <div className="text-left">
-                              <p className="text-xs font-bold">上传产品图片</p>
-                              <p className="text-[10px] text-gray-500">
-                                支持 JPG/PNG/WEBP
-                              </p>
-                            </div>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              onChange={handleProductImageUpload}
-                            />
+                          </div>
+                          <p className="text-[10px] text-gray-400 mt-1">
+                            支持图片 URL 链接
+                          </p>
+                        </div>
+                        <div className="col-span-2">
+                          <label className="text-xs text-gray-500 mb-1 block">
+                            产品链接
                           </label>
+                          <input
+                            type="text"
+                            className="w-full p-2 border rounded"
+                            placeholder="请输入产品链接 (URL)"
+                            value={tempProduct.link || ""}
+                            onChange={(e) =>
+                              setTempProduct({
+                                ...tempProduct,
+                                link: e.target.value,
+                              })
+                            }
+                          />
+                          <p className="text-[10px] text-gray-400 mt-1">
+                            产品购买或详情页面链接
+                          </p>
                         </div>
                       </div>
                       <div className="flex gap-2 justify-end">
@@ -562,7 +816,7 @@ const CompetitorDetail: React.FC = () => {
                     </div>
                   )}
 
-                  {competitor.products?.map((product) => (
+                  {filteredAndSortedProducts.map((product) => (
                     <div
                       key={product.id}
                       className="border border-gray-100 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow group/card"
@@ -591,12 +845,29 @@ const CompetitorDetail: React.FC = () => {
                                 })
                               }
                             />
+                            <select
+                              className="p-2 border rounded"
+                              value={tempProduct.category || ""}
+                              onChange={(e) =>
+                                setTempProduct({
+                                  ...tempProduct,
+                                  category: e.target.value,
+                                })
+                              }
+                            >
+                              <option value="">选择产品类型</option>
+                              {PRODUCT_CATEGORIES.map((category) => (
+                                <option key={category} value={category}>
+                                  {category}
+                                </option>
+                              ))}
+                            </select>
                             <input
                               className="p-2 border rounded col-span-2"
                               placeholder="标签 (用逗号分隔)"
                               value={
                                 Array.isArray(tempProduct.tags)
-                                  ? tempProduct.tags.join(",")
+                                  ? tempProduct.tags.join("，")
                                   : tempProduct.tags
                               }
                               onChange={(e) =>
@@ -607,31 +878,51 @@ const CompetitorDetail: React.FC = () => {
                               }
                             />
                             <div className="col-span-2">
-                              <label className="flex items-center gap-2 cursor-pointer bg-white border border-dashed border-gray-300 text-gray-600 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors">
-                                {tempProduct.image ? (
+                              <label className="text-xs text-gray-500 mb-1 block">
+                                产品图片链接
+                              </label>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="text"
+                                  className="flex-1 p-2 border rounded"
+                                  placeholder="请输入图片链接 (URL)"
+                                  value={tempProduct.image || ""}
+                                  onChange={(e) => handleProductImageLinkChange(e.target.value)}
+                                />
+                                {tempProduct.image && (
                                   <img
                                     src={tempProduct.image}
                                     className="w-12 h-12 object-cover rounded shadow-sm"
                                     alt="Preview"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                    }}
                                   />
-                                ) : (
-                                  <Camera className="text-gray-400" size={20} />
                                 )}
-                                <div className="text-left">
-                                  <p className="text-xs font-bold">
-                                    更换产品图片
-                                  </p>
-                                  <p className="text-[10px] text-gray-500">
-                                    点击上传新图片
-                                  </p>
-                                </div>
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  className="hidden"
-                                  onChange={handleProductImageUpload}
-                                />
+                              </div>
+                              <p className="text-[10px] text-gray-400 mt-1">
+                                支持图片 URL 链接
+                              </p>
+                            </div>
+                            <div className="col-span-2">
+                              <label className="text-xs text-gray-500 mb-1 block">
+                                产品链接
                               </label>
+                              <input
+                                type="text"
+                                className="w-full p-2 border rounded"
+                                placeholder="请输入产品链接 (URL)"
+                                value={tempProduct.link || ""}
+                                onChange={(e) =>
+                                  setTempProduct({
+                                    ...tempProduct,
+                                    link: e.target.value,
+                                  })
+                                }
+                              />
+                              <p className="text-[10px] text-gray-400 mt-1">
+                                产品购买或详情页面链接
+                              </p>
                             </div>
                           </div>
                           <div className="flex gap-2 justify-end">
@@ -675,50 +966,95 @@ const CompetitorDetail: React.FC = () => {
                           </div>
 
                           <div className="w-full md:w-56 bg-gray-50 flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 overflow-hidden shrink-0 relative group/image">
-                            {product.image ? (
+                            {editingImageProductId === product.id ? (
+                              <div className="w-full p-3 space-y-2">
+                                <input
+                                  type="text"
+                                  className="w-full p-2 border rounded text-xs"
+                                  placeholder="请输入图片链接 (URL)"
+                                  value={tempImageLink}
+                                  onChange={(e) => setTempImageLink(e.target.value)}
+                                  autoFocus
+                                />
+                                <div className="flex gap-2 justify-end">
+                                  <button
+                                    onClick={() => {
+                                      setEditingImageProductId(null);
+                                      setTempImageLink("");
+                                    }}
+                                    className="px-2 py-1 text-xs text-gray-500 hover:text-gray-700"
+                                  >
+                                    取消
+                                  </button>
+                                  <button
+                                    onClick={() => handleSaveImageLink(product)}
+                                    className="px-2 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700"
+                                  >
+                                    保存
+                                  </button>
+                                </div>
+                                {tempImageLink && (
+                                  <img
+                                    src={tempImageLink}
+                                    className="w-full max-h-32 object-contain rounded mt-2"
+                                    alt="Preview"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            ) : product.image ? (
                               <>
                                 <img
                                   src={product.image}
                                   className="w-full h-full max-h-64 object-contain transition-transform duration-300"
                                   alt={product.name}
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = "none";
+                                    e.currentTarget.nextElementSibling?.classList.remove("hidden");
+                                  }}
                                 />
-                                <label className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors cursor-pointer flex items-center justify-center opacity-0 group-hover/image:opacity-100">
-                                  <div className="bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold text-gray-700">
-                                    <Camera size={14} />
-                                    <span>更换图片</span>
-                                  </div>
-                                  <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={(e) =>
-                                      handleProductImageUploadDirect(e, product)
-                                    }
-                                  />
-                                </label>
+                                <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors cursor-pointer flex items-center justify-center opacity-0 group-hover/image:opacity-100">
+                                  <button
+                                    onClick={() => {
+                                      setTempImageLink(product.image || "");
+                                      setEditingImageProductId(product.id);
+                                    }}
+                                    className="bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold text-gray-700 hover:bg-white"
+                                  >
+                                    <Pencil size={14} />
+                                    <span>编辑链接</span>
+                                  </button>
+                                </div>
                               </>
                             ) : (
-                              <label className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-400 cursor-pointer hover:bg-gray-100 transition-colors p-4">
-                                <Camera size={32} className="text-gray-300" />
-                                <span className="text-xs">点击上传图片</span>
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  className="hidden"
-                                  onChange={(e) =>
-                                    handleProductImageUploadDirect(e, product)
-                                  }
-                                />
-                              </label>
+                              <button
+                                onClick={() => {
+                                  setTempImageLink("");
+                                  setEditingImageProductId(product.id);
+                                }}
+                                className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-400 hover:bg-gray-100 transition-colors p-4"
+                              >
+                                <ImageIcon size={32} className="text-gray-300" />
+                                <span className="text-xs">点击输入图片链接</span>
+                              </button>
                             )}
                           </div>
 
                           <div className="p-6 flex-1 flex flex-col">
                             <div className="flex justify-between items-start mb-2">
                               <div>
-                                <h4 className="font-bold text-lg text-gray-800">
-                                  {product.name}（ ¥{product.price}）
-                                </h4>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h4 className="font-bold text-lg text-gray-800">
+                                    {product.name}（ ¥{product.price}）
+                                  </h4>
+                                  {product.category && (
+                                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold border border-purple-200">
+                                      {product.category}
+                                    </span>
+                                  )}
+                                </div>
                                 <div className="flex flex-wrap gap-1 mt-2">
                                   {product.tags.map((tag) => (
                                     <span
@@ -729,6 +1065,24 @@ const CompetitorDetail: React.FC = () => {
                                     </span>
                                   ))}
                                 </div>
+                                {product.link && (
+                                  <div className="mt-2">
+                                    <a
+                                      href={
+                                        product.link.trim().startsWith("http") ||
+                                        product.link.trim().startsWith("https")
+                                          ? product.link.trim()
+                                          : `https://${product.link.trim()}`
+                                      }
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-xs text-purple-600 hover:text-purple-700 hover:underline flex items-center gap-1"
+                                    >
+                                      <Globe size={12} />
+                                      <span>查看产品链接</span>
+                                    </a>
+                                  </div>
+                                )}
                               </div>
                             </div>
 
