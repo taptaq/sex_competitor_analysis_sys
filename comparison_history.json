@@ -1,0 +1,414 @@
+[
+  {
+    "id": "history-1766637947881",
+    "timestamp": "2025-12-25T04:45:47.881Z",
+    "productIds": [
+      "p-doudouniao",
+      "prod-1766566957728"
+    ],
+    "productNames": [
+      "逗豆鸟",
+      "小海豹"
+    ],
+    "products": [
+      {
+        "id": "p-doudouniao",
+        "name": "逗豆鸟",
+        "price": 334,
+        "tags": [
+          "小巧便携",
+          "吸吮式",
+          "户外适用",
+          "静音设计（小于50db）",
+          "吮吸8档震动9档"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?id=623902207377&pisk=fWcsiLMYOmhUEXeOUqLFAlmv32PjccOrkZaxrqCNk5FTlSgjV-52IqSjd4mBSSoqkoijYkfZ05PqAtnZVG-gbjojkkiOgRljosaxkmYg0FvESVV0M3-rhQuiSGTe3Gc_DJ3K-rzOWBVRmwN0M3-fLseMNSm_iWFU5JLQurqADmeTvwE35GFYX-IKJrELD3XA3nYMN4C5s1Wrb08UN3CN_Xapmu3_Jy4EOPwtMlECMvlQ5RZ-Wb9rFRajebwi2HWaXYZmVzow91iSWcM8efIpAS0EFmaS6UB7cc0K_Jh9uT43iAH86jt5XVwS9fPid31z2v0xGJ3MVT4EH4lZhgyPauZwlt_QEsaQ4eTCntcghyi76mno1RU38ZLBRT5gBy4QMeTCnt2T-yJyRe6Ps&scene=taobao_shop&spm=a1z10.1-b-s.w5001-22759604903.3.74833ffe4KfZXE",
+        "competitorId": "datang",
+        "analysis": {
+          "pros": [
+            "物流速度快且发货隐私性极高，外包装无敏感信息，保护用户隐私。",
+            "产品外观设计精美，小巧可爱且造型独特，颜值在线，可作为隐蔽性摆件。",
+            "材质柔软亲肤，多为硅胶制成，手感舒适细腻，无异味，且使用安全放心。",
+            "操作简单方便，易于上手和清洗，支持Type-C或磁吸充电，且电量持久。",
+            "静音效果出色，声音比想象中小，低档位尤其柔和，提升使用体验。",
+            "使用效果普遍反馈极佳，吮吸感逼真，模式多样，能精准刺激敏感点，带来强烈愉悦感和高潮体验，被多位用户评价为“比男朋友还好用”。",
+            "品牌（大人糖）具有良好口碑，产品质量有保证，做工精良。",
+            "二代产品在静音和档位柔和度上有所升级，体验感更好，值得推荐。",
+            "部分用户反馈在活动期间购买价格划算，且赠品丰富，包装精致。"
+          ],
+          "cons": [
+            "部分用户反馈产品效果不佳或无感，认为其“鸡肋”，未达到预期效果。",
+            "产品价格被认为偏高，有用户觉得“不值这个价钱”，与便宜产品体验相似。",
+            "清洗时需注意避免进水，否则可能导致产品损坏。",
+            "有用户反映吮吸口略硬，影响亲肤体验。",
+            "充电方式不如旧款方便，或存在容易没电的问题。",
+            "有用户对产品真实性存疑，如“扫码扫不出”导致对正品保障的担忧。",
+            "部分用户认为品牌存在过度营销，投入在研发上的精力不足，导致产品体验下降，甚至表示“不会再回购”。",
+            "震动模式可能需要一段时间适应，或存在“震动没重点”的问题。"
+          ],
+          "summary": "“逗豆鸟便携式吸吮器”在用户中获得了普遍积极的评价，其最显著的优点是卓越的隐私保护、精美小巧的外观设计、柔软亲肤的材质、简便的操作与清洗、出色的静音表现以及核心功能带来的强烈愉悦感。许多用户对其“吮吸功能超绝”和“轻松高潮”的体验赞不绝口，认为它是提升生活情趣的必备好物。然而，产品也面临一些优化挑战，如部分用户反映效果不佳或认为其“鸡肋”，且价格偏高。此外，清洗进水、吮吸口偏硬以及充电便利性方面的反馈也需引起重视。部分消费者对品牌过度营销和产品创新不足提出质疑，影响了回购意愿。",
+          "prosKeywords": [
+            {
+              "value": "隐私发货",
+              "count": 50
+            },
+            {
+              "value": "效果好",
+              "count": 50
+            },
+            {
+              "value": "静音",
+              "count": 50
+            },
+            {
+              "value": "吮吸功能",
+              "count": 48
+            },
+            {
+              "value": "小巧",
+              "count": 45
+            },
+            {
+              "value": "柔软",
+              "count": 45
+            },
+            {
+              "value": "高潮",
+              "count": 45
+            },
+            {
+              "value": "亲肤",
+              "count": 40
+            },
+            {
+              "value": "品牌信赖",
+              "count": 40
+            },
+            {
+              "value": "质量好",
+              "count": 42
+            },
+            {
+              "value": "精致",
+              "count": 38
+            },
+            {
+              "value": "颜值高",
+              "count": 35
+            },
+            {
+              "value": "操作简单",
+              "count": 35
+            },
+            {
+              "value": "多档模式",
+              "count": 35
+            },
+            {
+              "value": "物流快",
+              "count": 30
+            },
+            {
+              "value": "清洗方便",
+              "count": 30
+            },
+            {
+              "value": "握感舒适",
+              "count": 30
+            },
+            {
+              "value": "电力持久",
+              "count": 25
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "没感觉",
+              "count": 50
+            },
+            {
+              "value": "价格贵",
+              "count": 48
+            },
+            {
+              "value": "效果不佳",
+              "count": 45
+            },
+            {
+              "value": "不值",
+              "count": 45
+            },
+            {
+              "value": "鸡肋",
+              "count": 40
+            },
+            {
+              "value": "不会回购",
+              "count": 40
+            },
+            {
+              "value": "过度营销",
+              "count": 38
+            },
+            {
+              "value": "充电不便",
+              "count": 35
+            },
+            {
+              "value": "正品存疑",
+              "count": 32
+            },
+            {
+              "value": "清洗进水",
+              "count": 30
+            },
+            {
+              "value": "吮吸口硬",
+              "count": 30
+            },
+            {
+              "value": "震动没重点",
+              "count": 25
+            },
+            {
+              "value": "需适应",
+              "count": 20
+            }
+          ]
+        },
+        "image": "https://img.lenyiin.com/app/hide.php?key=ZEFqYUlSMHNZWHRRUmlzVFQ2akYvK2NjRTMxQlEwMkZIRC8vY29ZPQ=="
+      },
+      {
+        "id": "prod-1766566957728",
+        "name": "小海豹",
+        "price": 350,
+        "tags": [
+          "入门级震动棒",
+          "适配多重敏感度",
+          "渐变强度记忆模式",
+          "IPX7防水",
+          "一清即净",
+          "体内外刺激（二选一）",
+          "吮吸3档震动7档"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?id=628616572066&pisk=fFiigk_HGW1SN0CgFeq67qOOEOLpX1Zb9jIYMoF28WPIDdavCq2qMXhTuSHTmKcQ9cFtBlPVnXk4_Z39CslK3fPTMxoY3mqsvVIY6CZm3bEDwQKJ2AM_joRJw4Bru6EzEN5NMrzU8wJqtj-J2AMhBRJ-L339dLqYy-r475zELWwc0Gl47WzUO-wV_oPwKv-P9_9SMiicorFlGvpQZ-8Dc7DatgDIxRuN5AFh3tVisPVywWjV0D2inxpsIG-uTV3qXkowTUEEF2haKuxcnJ0oLlyiG3s_bYkEuPmDkTNj-vu8-269CJmiEm2uS6JgGchimPiywMNZ-Di0X2dG2SaV49bFzHOPcJJxYZ_b7Jw3w6IVlURnPCm2KpbzIPyQQMpHKZtg7Jw3wpvhzoaadRSd.&scene=taobao_shop&spm=a1z10.1-b-s.w5001-22759604903.4.74833ffe4KfZXE",
+        "competitorId": "datang",
+        "analysis": {
+          "pros": [
+            "造型可爱、颜色清新，外观设计美观，像摆件一样隐蔽，适合新手使用",
+            "硅胶材质亲肤细腻，手感舒适，无异味，安全卫生",
+            "双功能设计（吮吸+震动），刺激感强，能快速达到高潮，体验感好",
+            "静音效果较好，隐私性强，使用时不打扰他人",
+            "防水设计，清洗方便，支持全身水洗",
+            "续航能力强，充电一次可使用较长时间，磁吸充电方便",
+            "隐私发货，包装严密，保护用户隐私",
+            "操作简单，档位调节灵活，适合不同需求",
+            "物流速度快，配送及时，服务态度好"
+          ],
+          "cons": [
+            "价格偏高，性价比一般，部分用户认为不值这个价",
+            "声音较大，静音效果不如宣传，在安静环境下可能被察觉",
+            "入体部分（尾巴）设计不合理，太硬，不舒服，部分用户无感或找不到G点",
+            "吮吸功能刺激过强，对新手不友好，缺乏循序渐进的过程",
+            "按键设计不灵敏，操作不便，缺乏显示功能",
+            "材质有异味，部分用户反映有塑料或橡胶味",
+            "产品尺寸偏大，握持不便，不适合所有人",
+            "售后服务一般，客服响应慢，退货政策严格（开封不退）",
+            "部分用户认为好评刷单，实际体验与宣传不符"
+          ],
+          "summary": "小海豹是一款设计可爱、功能多样的情趣用品，在材质、静音和隐私方面表现良好，适合新手和追求舒适体验的用户。然而，价格偏高、声音较大、入体设计不佳和刺激过强等问题限制了其竞争力，需在性价比和用户体验上进一步优化。",
+          "prosKeywords": [
+            {
+              "value": "手感",
+              "count": 45
+            },
+            {
+              "value": "可爱",
+              "count": 38
+            },
+            {
+              "value": "舒服",
+              "count": 35
+            },
+            {
+              "value": "静音",
+              "count": 30
+            },
+            {
+              "value": "清洗",
+              "count": 28
+            },
+            {
+              "value": "材质",
+              "count": 25
+            },
+            {
+              "value": "隐私",
+              "count": 22
+            },
+            {
+              "value": "新手",
+              "count": 20
+            },
+            {
+              "value": "续航",
+              "count": 18
+            },
+            {
+              "value": "刺激",
+              "count": 15
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "声音",
+              "count": 40
+            },
+            {
+              "value": "价格",
+              "count": 35
+            },
+            {
+              "value": "硬",
+              "count": 30
+            },
+            {
+              "value": "无感",
+              "count": 28
+            },
+            {
+              "value": "不值",
+              "count": 25
+            },
+            {
+              "value": "设计",
+              "count": 22
+            },
+            {
+              "value": "异味",
+              "count": 20
+            },
+            {
+              "value": "刺激",
+              "count": 18
+            },
+            {
+              "value": "客服",
+              "count": 15
+            },
+            {
+              "value": "退货",
+              "count": 12
+            }
+          ]
+        },
+        "image": "https://img.lenyiin.com/app/hide.php?key=SG9ISDZjZllwWGpZMHQvc1Jldll5K2NjRTMxQlEwMkZIRC8vY29ZPQ=="
+      }
+    ],
+    "analysis": {
+      "winnerName": "逗豆鸟",
+      "bestValueReason": "逗豆鸟在性价比、体验和创新方面表现更优。价格略低于小海豹（334元 vs 350元），但提供了更出色的静音设计（小于50db）、小巧便携性、以及用户反馈中更强烈的愉悦感和高潮体验。其吮吸功能被广泛赞誉，且隐私发货、材质亲肤等优点显著。尽管价格仍被部分用户认为偏高，但综合功能、用户满意度和品牌口碑，逗豆鸟提供了更高的价值。",
+      "comparisonScores": [
+        {
+          "productId": "p-doudouniao",
+          "totalScore": 85,
+          "dimensions": [
+            {
+              "label": "外观设计",
+              "score": 90,
+              "reason": "造型小巧可爱，颜值高，可作为隐蔽摆件，设计独特且精美。",
+              "deduction": "无"
+            },
+            {
+              "label": "振动强度",
+              "score": 88,
+              "reason": "吮吸8档震动9档，模式多样，能精准刺激敏感点，带来强烈愉悦感。",
+              "deduction": "部分用户反馈震动模式需适应或震动没重点。"
+            },
+            {
+              "label": "材质触感",
+              "score": 92,
+              "reason": "硅胶材质柔软亲肤，手感舒适细腻，无异味，使用安全。",
+              "deduction": "有用户反映吮吸口略硬，影响亲肤体验。"
+            },
+            {
+              "label": "静音静谧度",
+              "score": 95,
+              "reason": "静音设计出色，小于50db，低档位尤其柔和，隐私性强。",
+              "deduction": "无"
+            },
+            {
+              "label": "续航能力",
+              "score": 80,
+              "reason": "电量持久，支持Type-C或磁吸充电，但部分用户反馈充电方式不如旧款方便。",
+              "deduction": "存在容易没电的问题。"
+            },
+            {
+              "label": "操作便捷性",
+              "score": 85,
+              "reason": "操作简单方便，易于上手和清洗，档位调节灵活。",
+              "deduction": "无"
+            },
+            {
+              "label": "性价比",
+              "score": 75,
+              "reason": "价格334元，略低于小海豹，但功能全面，用户反馈效果好，性价比相对较高。",
+              "deduction": "部分用户认为价格偏高，与便宜产品体验相似。"
+            }
+          ]
+        },
+        {
+          "productId": "prod-1766566957728",
+          "totalScore": 72,
+          "dimensions": [
+            {
+              "label": "外观设计",
+              "score": 85,
+              "reason": "造型可爱，颜色清新，外观美观，像摆件一样隐蔽。",
+              "deduction": "无"
+            },
+            {
+              "label": "振动强度",
+              "score": 78,
+              "reason": "吮吸3档震动7档，刺激感强，能快速达到高潮，但刺激可能过强。",
+              "deduction": "吮吸功能对新手不友好，缺乏循序渐进过程。"
+            },
+            {
+              "label": "材质触感",
+              "score": 80,
+              "reason": "硅胶材质亲肤细腻，手感舒适，但部分用户反映有异味。",
+              "deduction": "材质有塑料或橡胶味。"
+            },
+            {
+              "label": "静音静谧度",
+              "score": 70,
+              "reason": "静音效果较好，但声音较大，在安静环境下可能被察觉。",
+              "deduction": "静音效果不如宣传。"
+            },
+            {
+              "label": "续航能力",
+              "score": 85,
+              "reason": "续航能力强，充电一次可使用较长时间，磁吸充电方便。",
+              "deduction": "无"
+            },
+            {
+              "label": "操作便捷性",
+              "score": 65,
+              "reason": "操作简单，但按键设计不灵敏，缺乏显示功能，操作不便。",
+              "deduction": "按键不灵敏，影响用户体验。"
+            },
+            {
+              "label": "性价比",
+              "score": 60,
+              "reason": "价格350元，高于逗豆鸟，但性价比一般，部分用户认为不值这个价。",
+              "deduction": "价格偏高，且入体设计不佳，影响整体价值。"
+            }
+          ]
+        }
+      ],
+      "summary": "本轮情趣用品深度PK对比了逗豆鸟和小海豹两款产品。逗豆鸟在总分上以85分领先小海豹的72分，主要优势在于静音设计、材质触感、振动强度和操作便捷性，其小巧便携和强烈愉悦感获得用户高度评价。小海豹在外观设计和续航能力上表现良好，但静音效果、操作便捷性和性价比方面存在不足，特别是入体设计硬和刺激过强的问题。综合来看，逗豆鸟凭借更全面的功能和更好的用户体验胜出，适合追求隐私、静音和高潮体验的用户，而小海豹则更适合新手或偏好可爱设计的用户，但需注意其局限性。"
+    }
+  }
+]
