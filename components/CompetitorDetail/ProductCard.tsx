@@ -16,18 +16,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import ProductForm from "./ProductForm";
-import PriceHistoryUpload from "./PriceHistoryUpload";
-
-const PRODUCT_CATEGORIES = [
-  "跳蛋",
-  "震动棒",
-  "伸缩棒",
-  "AV棒",
-  "飞机杯",
-  "倒模",
-  "按摩器",
-  "其他",
-];
 
 interface ProductCardProps {
   product: Product;
@@ -314,6 +302,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   {product.category && (
                     <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold border border-purple-200">
                       {product.category}
+                    </span>
+                  )}
+                  {product.gender && (
+                    <span className={`text-xs px-2 py-0.5 rounded font-bold border ${
+                      product.gender === 'Male' 
+                        ? 'bg-blue-100 text-blue-700 border-blue-200'
+                        : product.gender === 'Female'
+                        ? 'bg-pink-100 text-pink-700 border-pink-200'
+                        : 'bg-gray-100 text-gray-700 border-gray-200'
+                    }`}>
+                      {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
                     </span>
                   )}
                   {product.sales !== undefined && (

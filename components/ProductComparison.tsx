@@ -47,6 +47,17 @@ const ProductComparison: React.FC<ProductComparisonProps> = ({ products }) => {
                   <span className="text-sm font-bold text-gray-800 text-center line-clamp-2">
                     {product.name}
                   </span>
+                  {product.gender && (
+                    <span className={`text-xs px-2 py-0.5 rounded font-bold border ${
+                      product.gender === 'Male' 
+                        ? 'bg-blue-100 text-blue-700 border-blue-200'
+                        : product.gender === 'Female'
+                        ? 'bg-pink-100 text-pink-700 border-pink-200'
+                        : 'bg-gray-100 text-gray-700 border-gray-200'
+                    }`}>
+                      {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
+                    </span>
+                  )}
                 </div>
               </th>
             ))}

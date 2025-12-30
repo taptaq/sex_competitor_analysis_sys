@@ -379,7 +379,8 @@
             "originalPrice": 439
           }
         ],
-        "launchDate": "2019-07"
+        "launchDate": "2019-07",
+        "gender": "Female"
       },
       {
         "id": "prod-1766566957728",
@@ -866,7 +867,8 @@
             "originalPrice": 439
           }
         ],
-        "launchDate": "2020-10"
+        "launchDate": "2020-10",
+        "gender": "Female"
       },
       {
         "id": "prod-1766569597541",
@@ -1098,7 +1100,8 @@
             "finalPrice": 234
           }
         ],
-        "launchDate": "2025-05"
+        "launchDate": "2025-05",
+        "gender": "Female"
       },
       {
         "id": "prod-1766570443599",
@@ -1360,7 +1363,8 @@
             "finalPrice": 539
           }
         ],
-        "launchDate": "2021-12"
+        "launchDate": "2021-12",
+        "gender": "Female"
       },
       {
         "id": "prod-1766585728087",
@@ -1620,7 +1624,8 @@
             "originalPrice": 439
           }
         ],
-        "launchDate": "2025-07"
+        "launchDate": "2025-07",
+        "gender": "Female"
       }
     ],
     "sentiment": {
@@ -1667,10 +1672,744 @@
         "category": "跳蛋",
         "link": "https://detail.tmall.com/item.htm?abbucket=15&id=699580506804&pisk=g8wSzrVKhyeqQRjRJUS2l75GbcDQdiWwpHiLjkpyvYHJJvabS3rPrJJLOPasTzrK8JMQorhLUYrzl2aUX7zrUXWLhDo69DpK9mhxAclL82ryqS4aXLyPZvJIEvDd7NWNQ_qoKvCXt1EerKntf9J-JDHoHlAc_SWNQuqX40IaDOPrgktx0BpLJb3YD0uxvLd8Jx3xYqp-vLHKkiinkvpK92HxDDoMy0d8JIBx4cTKJ0HpMnnnXv3LJ4IbDqmIp2UKpiZvrdCo0Hg0VG77-6MfXcq-lppLe9cS5qAedpGr2owLPqZ40-iSNVhQmwe0ClE8IDwhXBgQY7Urmy61lxe7P8hjd99mUlNYPjN5RKG0Ml2KGSb6slq8P5hTets7RrEgsYeR-Luu9oeKu8IedVFajxi0LZv-RSFLUbDHyaibFlwQOgRXQVgPABtjspij7isXtB2oOma6Vhaytbnm0HIfcCJowmmjpisXtBc-mm5NciOwE&rn=392f34e3c233122198b4f9298ae2881a&skuId=5787674233654&spm=a1z10.5-b.w4011-23216582827.45.6f4c7683vEejgJ",
         "competitorId": "netease-wind",
+        "analysis": {
+          "pros": [
+            "用户满意度高，多数评价为5星好评",
+            "产品功能多样，包括智能遥控和APP互动",
+            "搭配润滑液等配件提升使用体验",
+            "部分用户反馈伴侣喜欢，增强亲密关系"
+          ],
+          "cons": [
+            "尺寸与宣传不符，实际到货偏大",
+            "产品噪音大，影响使用体验",
+            "存在用户偏好其他品牌（如啵啵汪）的对比",
+            "少数用户因伴侣反对而限制使用"
+          ],
+          "summary": "浪花Pro在情趣用品市场中表现良好，多数用户给予正面评价，尤其赞赏其智能功能和伴侣满意度，但需改进尺寸准确性和噪音控制以提升竞争力。",
+          "prosKeywords": [
+            {
+              "value": "非常好",
+              "count": 34
+            },
+            {
+              "value": "5星",
+              "count": 34
+            },
+            {
+              "value": "好评",
+              "count": 34
+            },
+            {
+              "value": "喜欢",
+              "count": 1
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "大",
+              "count": 1
+            },
+            {
+              "value": "声音",
+              "count": 1
+            },
+            {
+              "value": "贼大",
+              "count": 1
+            },
+            {
+              "value": "不如",
+              "count": 1
+            }
+          ]
+        },
         "image": "https://img.lenyiin.com/app/hide.php?key=b1pjRGFaQWRtbjY3K29pdlJyVXFyK2NjRTMxQlEwMkZIRC8vY29ZPQ==",
         "sales": 800,
         "priceHistory": [],
-        "launchDate": "2023-10"
+        "launchDate": "2023-10",
+        "gender": "Female"
+      },
+      {
+        "id": "prod-1767089767474",
+        "name": "甜甜棒",
+        "price": 295,
+        "tags": [
+          "吮吸/震动/拍打/摇摆一体",
+          "可拆吮吸头",
+          "体内外刺激",
+          "隐蔽造型（雪糕）",
+          "大容量电池",
+          "5档强度3档变频"
+        ],
+        "category": "震动棒",
+        "link": "e1575438104790059165741791172857546959324392209275369692951621311172156699979415114527696085343825236311054011232165828274475865",
+        "competitorId": "netease-wind",
+        "analysis": {
+          "pros": [
+            "外观设计吸引人，用户评价中提及外观好看",
+            "部分功能如拍打和吮吸效果受到新手用户认可",
+            "商家提供隐私保密发货和会员优惠活动，增强购买信心",
+            "存在一定数量的五星好评，表明有用户对产品满意"
+          ],
+          "cons": [
+            "噪音问题突出，多个用户反馈噪音大或超大声，影响使用体验",
+            "材质问题包括硅胶味重和偏硬，降低产品舒适度",
+            "部分用户认为产品中看不中用或使用效果一般，性价比不高",
+            "功能体验不全面，有用户未尝试所有模式，可能暗示操作复杂或效果不佳"
+          ],
+          "summary": "甜甜棒作为情趣用品，在外观设计和部分功能上获得正面反馈，但噪音和材质问题严重影响了用户体验，导致整体竞争力不足，需在降噪和材质改进上加强以提升市场表现。",
+          "prosKeywords": [
+            {
+              "value": "外观",
+              "count": 1
+            },
+            {
+              "value": "拍打",
+              "count": 1
+            },
+            {
+              "value": "吮吸",
+              "count": 1
+            },
+            {
+              "value": "好评",
+              "count": 15
+            },
+            {
+              "value": "还不错",
+              "count": 2
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "噪音",
+              "count": 4
+            },
+            {
+              "value": "硅胶味",
+              "count": 2
+            },
+            {
+              "value": "材质",
+              "count": 1
+            },
+            {
+              "value": "一般",
+              "count": 2
+            },
+            {
+              "value": "中看不中用",
+              "count": 1
+            }
+          ]
+        },
+        "image": "https://img.lenyiin.com/app/hide.php?key=U2hsNmlBWGNaZHYvNEZubTVDOUhMMDVncmc1Q1ZhZkZPR2c4dUg0PQ==",
+        "sales": 100,
+        "launchDate": "2024-07",
+        "gender": "Female"
+      },
+      {
+        "id": "prod-1767090185430",
+        "name": "岩石智能阴茎训练器",
+        "price": 210,
+        "tags": [
+          "科学脱敏训练",
+          "智能计时检测",
+          "体位传感器",
+          "40db",
+          "IPX7",
+          "结合训练课程",
+          "40°C智能加热"
+        ],
+        "category": "训练器",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=734888249096&pisk=geqg1qYhGXOSeCAFqIo17WEWBObpCcijQSKxMmhV8XlB6OwYXiS0g58tkt6_oIc3UVB_MSUniWPn_lQsMnA0T-pt7Vkw82ksHnkquqzHn8N3iq6sMjl0M-zOpgI8CRij0-fR2gKeCnc0sClq0t-EEAXKQjEUEVmj0_CDJnu1qmNMfWyGbekEOxxZgFPqTDkmTAJZ0SlE8Yk2bmo4g9mEhxxZQqo2YMkjTC-ZgnJeLxDyQj8Z392EOYhq0mPqY9DjTjoq0f_c9fhZGk5YFIombJaTxA0iaJbW0nA-QQhuQgKD0f4nZb--tn-4xA24eV-vbgcUWrrtYl5eNDy7J5knqivmKz2EbAVfVhiaUJzqSobvFja3Lz33RdBsKl2umY0MTOcbX5qm5u5JAfz3AomTJ1x-GqzLf4ZOThmzPRnTuWW20j4E3goM8USCanMFHk8XlVkIKbdp0E_z8x6rw9XHzA0ZdA-dK9YfjVkIKbBhKUoj7vMwv&rn=1026afa52b2298c8eb5fbc47b8b35321&spm=a1z10.5-b.w4011-23216582827.70.62ee3349OiMKKH",
+        "competitorId": "netease-wind",
+        "analysis": {
+          "pros": [
+            "升级了长度与震感",
+            "加热功能不错",
+            "做工比较细致",
+            "APP远程遥控功能",
+            "训练计划功能",
+            "产品设计有升级"
+          ],
+          "cons": [
+            "震感位置靠近入口，刺激不足",
+            "材质硬，使用不舒适",
+            "尺寸问题，难以完全进入或卡住",
+            "震动模式单一",
+            "加热效果不明显",
+            "APP训练计划需额外收费",
+            "系统感知不灵敏",
+            "功能简单，体验不佳",
+            "AI内容质量差",
+            "性价比低，用户感觉被骗"
+          ],
+          "summary": "该情趣用品在APP远程控制和加热功能上获得部分好评，但存在显著的尺寸、材质和功能体验问题，导致用户满意度低，整体竞争力较弱，需改进设计以提升用户体验。",
+          "prosKeywords": [
+            {
+              "value": "升级",
+              "count": 1
+            },
+            {
+              "value": "加热",
+              "count": 1
+            },
+            {
+              "value": "做工",
+              "count": 1
+            },
+            {
+              "value": "APP",
+              "count": 1
+            },
+            {
+              "value": "训练",
+              "count": 1
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "进不去",
+              "count": 2
+            },
+            {
+              "value": "硬",
+              "count": 2
+            },
+            {
+              "value": "震感",
+              "count": 2
+            },
+            {
+              "value": "加热",
+              "count": 2
+            },
+            {
+              "value": "APP",
+              "count": 2
+            },
+            {
+              "value": "功能",
+              "count": 2
+            },
+            {
+              "value": "没用",
+              "count": 2
+            },
+            {
+              "value": "卡住",
+              "count": 1
+            },
+            {
+              "value": "单一",
+              "count": 1
+            },
+            {
+              "value": "收费",
+              "count": 1
+            },
+            {
+              "value": "不灵敏",
+              "count": 1
+            },
+            {
+              "value": "AI",
+              "count": 1
+            },
+            {
+              "value": "骗钱",
+              "count": 1
+            }
+          ]
+        },
+        "image": "https://img.lenyiin.com/app/hide.php?key=dEpVUElNMXd2L2xkUS9TdjEzUkRvMDVncmc1Q1ZhZkZPR2c4dUg0PQ==",
+        "sales": 300,
+        "priceHistory": [
+          {
+            "date": "2025-02-22",
+            "finalPrice": 212,
+            "originalPrice": 224
+          },
+          {
+            "date": "2025-02-25",
+            "finalPrice": 212,
+            "originalPrice": 224
+          },
+          {
+            "date": "2025-07-26",
+            "finalPrice": 225,
+            "originalPrice": 349
+          },
+          {
+            "date": "2025-11-26",
+            "finalPrice": 210,
+            "originalPrice": 349
+          }
+        ],
+        "launchDate": "2023-06",
+        "gender": "Male"
+      },
+      {
+        "id": "prod-1767092115593",
+        "name": "元系列2代飞机杯",
+        "price": 1087.05,
+        "tags": [
+          "体积较大",
+          "双向旋转伸缩",
+          "体位识别（日本TDK6轴陀螺仪传感器）",
+          "底座加热烘干",
+          "远程遥控",
+          "视听触多维度升级",
+          "双核处理器芯片（响应更快）",
+          "内胆虚拟IP联动",
+          "防漏液结构",
+          "分离式结构（易清洁）",
+          "硬件拓展功能手柄",
+          "70db"
+        ],
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=676146628899&pisk=gQcozvXDAos_Rvs2sMPWUmh1yUvvP7NQzDCLvWEe3orf2UgKwBRnY0W8peTSKMqm78LSvDH0xmo04bp7v6jn02Q8U8zP3-z7J6zULJkc-VimxJT7vkrnv2kJkCdtP4NQT2x96CCVP6qnqarzze54-y8YzkhqS8VQThKhH6yWsWilN-7P8tz4cyfzzWoU0Sz30y5UTDr43PzFaWPEYEV4RyfzzJPFgIzQ09Sz88zV3P4dYMWPUE04cyPUYDyyoqrb8WrE6GtY2urIgH31YWVzc9Z0r8qZzuu-yjRgeTg8mvDIgx00U4WCT6l0r8c02jqbfWkrym2tEhfu64ksAPoP434mZVcnQmRAZW0qQXVqgn7Y4Agmt7hyJQPqZ0cznD7NU8ks2AymM3fbbxumJ-DXRTEKCyoQCXK1NuuE5fMTsBb3oA04ig5G3ORXb6a2JjWCd8zbolIAT99Z3yTaXEYcQz2zlz5voEXBZ8zbolLDoOPQUraPM&rn=1026afa52b2298c8eb5fbc47b8b35321&spm=a1z10.5-b.w4011-23216582827.74.62ee3349OiMKKH",
+        "competitorId": "netease-wind",
+        "analysis": {
+          "pros": [
+            "产品质量和质感好，对得起价格",
+            "内胆触感柔软，舒适度高，接近真人体验",
+            "功能齐全，科技感强，旋转等功能受好评",
+            "清洗方便，有热风风干和加热功能",
+            "包装保密性好，物流快速且无敏感标签",
+            "客服服务态度好，售后处理高效",
+            "赠品丰富，性价比高",
+            "操作简单，适合新手使用",
+            "可搭配APP使用，增强互动体验",
+            "体积大但好隐藏，提升体验感"
+          ],
+          "cons": [
+            "体积较大，手持不便，单手操作吃力",
+            "加热过程繁琐，需要提前准备时间",
+            "工作噪音大，影响私密性和体验",
+            "内胆易坏，部分内胆设计有缺陷",
+            "APP功能不够友好，界面跳转频繁",
+            "部分功能如伸缩强度不足，排气有问题",
+            "内胆匹配度说明不清，易卡住或漏水",
+            "加热效果不明显，等于没有",
+            "软件内容肋肋，趣味性不足",
+            "价格较高，不适合预算有限的用户"
+          ],
+          "summary": "元系列2代飞机杯在中国市场表现出较强的竞争力，以高质量、多功能和科技感吸引用户，尤其在舒适度、清洗便利和隐私保护方面受好评。然而，体积大、噪音问题和APP体验不足是主要短板，需优化以提升用户体验和市场份额。",
+          "prosKeywords": [
+            {
+              "value": "质量",
+              "count": 8
+            },
+            {
+              "value": "功能",
+              "count": 7
+            },
+            {
+              "value": "舒适",
+              "count": 6
+            },
+            {
+              "value": "清洗",
+              "count": 5
+            },
+            {
+              "value": "科技感",
+              "count": 4
+            },
+            {
+              "value": "客服",
+              "count": 3
+            },
+            {
+              "value": "赠品",
+              "count": 3
+            },
+            {
+              "value": "操作简单",
+              "count": 2
+            },
+            {
+              "value": "包装保密",
+              "count": 2
+            },
+            {
+              "value": "性价比",
+              "count": 2
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "体积大",
+              "count": 6
+            },
+            {
+              "value": "噪音",
+              "count": 5
+            },
+            {
+              "value": "内胆易坏",
+              "count": 4
+            },
+            {
+              "value": "加热麻烦",
+              "count": 4
+            },
+            {
+              "value": "APP问题",
+              "count": 3
+            },
+            {
+              "value": "功能不足",
+              "count": 3
+            },
+            {
+              "value": "漏水",
+              "count": 2
+            },
+            {
+              "value": "价格高",
+              "count": 2
+            },
+            {
+              "value": "手持不便",
+              "count": 2
+            },
+            {
+              "value": "排气问题",
+              "count": 2
+            }
+          ]
+        },
+        "image": "https://img.lenyiin.com/app/hide.php?key=aHRyYXZXT1k4MWtUT1MwWnhRTGIzVTVncmc1Q1ZhZkZPR2c4dUg0PQ==",
+        "sales": 300,
+        "priceHistory": [
+          {
+            "date": "2025-03-14",
+            "finalPrice": 1124.05,
+            "originalPrice": 1499
+          },
+          {
+            "date": "2025-04-18",
+            "finalPrice": 1132.71,
+            "originalPrice": 1499
+          },
+          {
+            "date": "2025-05-19",
+            "finalPrice": 1017.24,
+            "originalPrice": 1439
+          },
+          {
+            "date": "2025-08-11",
+            "finalPrice": 1181.35,
+            "originalPrice": 1439
+          },
+          {
+            "date": "2025-09-16",
+            "finalPrice": 1158.69,
+            "originalPrice": 1439
+          },
+          {
+            "date": "2025-10-04",
+            "finalPrice": 1126.6,
+            "originalPrice": 1439
+          },
+          {
+            "date": "2025-12-29",
+            "finalPrice": 1087.05,
+            "originalPrice": 1439
+          },
+          {
+            "date": "2025-12-30",
+            "finalPrice": 1087.05,
+            "originalPrice": 1439
+          }
+        ],
+        "launchDate": "2023-10",
+        "gender": "Male"
+      },
+      {
+        "id": "prod-1767092787764",
+        "name": "黑洞pro飞机杯",
+        "price": 373.55,
+        "tags": [
+          "旋转无极变速",
+          "大行程伸缩",
+          "底座加热烘干",
+          "多种场景配合玩法",
+          "显示屏",
+          "伸缩速率大（150-260次/分钟）",
+          "四重律动模式",
+          "三种不同纹理",
+          "远程操控"
+        ],
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=693715811628&pisk=g0k76wGLh2H2a4KJJa-VlDrMpPyQOnJNpMZKjDBPv8eRJJgjSgoyrvWKOVg_T4oL8vwIoqFKU8orlygEXbuzUWJKhkr19kBL9oFYAkPK8yoPqj0ZXTkyZJWQEJ2p7FJwQQmuKJC-RCd5q-EUX9pUJzBYEkotkFODQ0mu-g_pbjpwdr-niUCLJ2eYkkrQpTFLwnNYbkedeWB-DrU0vJeLwJeYkkrUJ_C8pn1Y4kb82uBLH-E_YweLp2BvHrqLpu3LpniYokhgzQqVArmWbEuzXSQG9aaAp9HbVSdq2rF4aHrzNdo7kFBL4u_gW0Ufp9Utr06ov2LCLRhilvNt7p60UcGYHuGXvsU81b3zm291ezHj2YUreEWzyYmx_vuvv9UIMfFK60LVGoGx4xNqBF6QZj3osWMeud2r_ck36Yp5SrPgAVw-GEBSWgRfQPayA6sbs9Zb7ntft6DuOog1VGgPt7E00MKXc1Wuwoqbpntft6V8moRwcn1NE&rn=1026afa52b2298c8eb5fbc47b8b35321&spm=a1z10.5-b.w4011-23216582827.78.62ee3349OiMKKH",
+        "competitorId": "netease-wind",
+        "analysis": {
+          "pros": [
+            "自动伸缩功能解放双手，提供便捷体验",
+            "加热和烘干功能实用，提升舒适度",
+            "隐私包装严密，保护用户隐私",
+            "材质柔软亲肤，内胆质量好且易清洗",
+            "多种模式可调节，可玩性高",
+            "外观设计时尚高档，质感优秀",
+            "APP智能控制功能强大，支持远程操作",
+            "物流快速，发货及时"
+          ],
+          "cons": [
+            "噪音较大，影响使用体验和隐私",
+            "体积和重量偏大，操作不便",
+            "通道长度较短，不适合所有用户",
+            "价格偏高，性价比争议",
+            "电动模式机械感强，不如手动自然",
+            "加热效果不稳定，部分用户反馈不佳",
+            "按钮设计不人性化，操作困难",
+            "续航和充电速度有待改进"
+          ],
+          "summary": "黑洞Pro飞机杯是一款高端智能情趣用品，以自动伸缩、加热烘干和隐私包装为核心优势，提供了便捷、舒适的体验，但噪音大、体积重和价格高等问题限制了其市场竞争力，适合追求科技感和隐私的用户，但需改进细节以提升整体满意度。",
+          "prosKeywords": [
+            {
+              "value": "自动",
+              "count": 45
+            },
+            {
+              "value": "加热",
+              "count": 38
+            },
+            {
+              "value": "隐私",
+              "count": 35
+            },
+            {
+              "value": "质量",
+              "count": 32
+            },
+            {
+              "value": "舒服",
+              "count": 28
+            },
+            {
+              "value": "清洗",
+              "count": 25
+            },
+            {
+              "value": "物流",
+              "count": 22
+            },
+            {
+              "value": "APP",
+              "count": 20
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "噪音",
+              "count": 40
+            },
+            {
+              "value": "声音",
+              "count": 35
+            },
+            {
+              "value": "重",
+              "count": 25
+            },
+            {
+              "value": "价格",
+              "count": 22
+            },
+            {
+              "value": "短",
+              "count": 18
+            },
+            {
+              "value": "机械",
+              "count": 15
+            },
+            {
+              "value": "加热",
+              "count": 12
+            },
+            {
+              "value": "操作",
+              "count": 10
+            }
+          ]
+        },
+        "image": "https://img.lenyiin.com/app/hide.php?key=cGdybm9pa2g1WmVUQm1YUm91bmc5MDVncmc1Q1ZhZkZPR2c4dUg0PQ==",
+        "sales": 300,
+        "priceHistory": [
+          {
+            "date": "2025-05-26",
+            "finalPrice": 294,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-05-29",
+            "finalPrice": 305.1,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-08-11",
+            "finalPrice": 381.35,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-08-27",
+            "finalPrice": 353.55,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-08-30",
+            "finalPrice": 375.53,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-09-16",
+            "finalPrice": 373.55,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-10-17",
+            "finalPrice": 369.05,
+            "originalPrice": 599
+          },
+          {
+            "date": "2025-12-27",
+            "finalPrice": 399,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-12-29",
+            "finalPrice": 373.55,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-12-30",
+            "finalPrice": 373.55,
+            "originalPrice": 509
+          }
+        ],
+        "launchDate": "2023-11",
+        "gender": "Male"
+      },
+      {
+        "id": "prod-1767093282279",
+        "name": "啵啵汪（阴蒂吮吸器）",
+        "price": 167,
+        "tags": [
+          "可联动浪花pro",
+          "虚拟恋人陪伴",
+          "360大吸口",
+          "震动尾巴",
+          "40度恒温加热",
+          "ASMR联动",
+          "双人情趣小游戏"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=699336485652&pisk=g6-jztYOVCKyX1Hx6SkzNd5ALrS6fYoUXR69KdE4BiIY6GOWt-Jqihr95BOC7IJO_hs6ZQQ90iJ2N1OwpERV0No9VOWUWlBYXzIRntQ9_1J4nUAepo-qoGr1mGjtTXoEYqvcjGQoF-vUi7BhpcWYXGIc2uCOCpmEYKv73tHeeD8VawFcUPE96ZCJet5RBSUv6gQRK_EABoIOwY6GwGBTkseRwtWgW5C96znR3OqYW1ET2zBFQGC96GHWe_X1X1dOXY9Jrb3cUR1khvlyyqNt0_vANlE9DcbfOt4afl9RHLt9H_9yU36fl6Q6EfKkAppvxOtipP16QEdVECiINgKXGnQ5fcZl0pTJGaTj1u_kypxOPUcQ-pvvGeQpD0MX1QpH-iKxso5DWLKOanHaf6LeKg6kbbqA1UL90ZjgMj6Wcpt65gS_Y61qCPw5-l65TYM7SPxc5TOQhJO4SZBlURHSFyrckTX5XYM7SPbAETuEFYaUm&rn=fdaa8c08191da7e16ddca1a83cd94627&spm=a1z10.5-b.w4011-23216582827.50.5a523d7biVQc5U",
+        "competitorId": "netease-wind",
+        "analysis": {
+          "pros": [
+            "产品设计美观，粉色外观受到女性用户喜爱，不显低俗",
+            "APP操控功能方便，支持单手操作，提升使用体验",
+            "静音效果好，适合私密环境使用，避免尴尬",
+            "吮吸功能有效，能带来强烈快感，用户反馈舒适度高",
+            "便携性强，适合宿舍或旅行使用",
+            "加热功能存在，增加舒适感"
+          ],
+          "cons": [
+            "AI恋人功能体验不佳，互动效果一般，免费解锁选项有限",
+            "震动功能较弱，部分用户反馈无感",
+            "加热功能可能过热，影响使用舒适度",
+            "存在刷单嫌疑，用户质疑商家诚信，影响信任度",
+            "部分用户认为不如初代产品，可能涉及质量或功能退步",
+            "价格或付费模式可能引起不满，如额外功能需付费"
+          ],
+          "summary": "啵啵汪Pro阴蒂吮吸器在设计和核心功能上表现突出，如静音、APP操控和有效吮吸，受到女性用户欢迎，适合中国市场注重隐私和便捷的需求。但AI互动、震动和加热功能有待优化，且刷单问题损害品牌信誉，需改进以提升整体竞争力。",
+          "prosKeywords": [
+            {
+              "value": "静音",
+              "count": 3
+            },
+            {
+              "value": "APP操控",
+              "count": 2
+            },
+            {
+              "value": "粉色",
+              "count": 1
+            },
+            {
+              "value": "好用",
+              "count": 1
+            },
+            {
+              "value": "舒服",
+              "count": 1
+            },
+            {
+              "value": "喜欢",
+              "count": 1
+            },
+            {
+              "value": "便携",
+              "count": 1
+            },
+            {
+              "value": "加热",
+              "count": 1
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "刷单",
+              "count": 1
+            },
+            {
+              "value": "AI互动",
+              "count": 1
+            },
+            {
+              "value": "震动",
+              "count": 1
+            },
+            {
+              "value": "过热",
+              "count": 1
+            },
+            {
+              "value": "不如初代",
+              "count": 1
+            },
+            {
+              "value": "付费",
+              "count": 1
+            }
+          ]
+        },
+        "image": "https://youke2.picui.cn/s1/2025/12/30/6953b5b80ad26.png",
+        "sales": 300,
+        "priceHistory": [
+          {
+            "date": "2025-01-20",
+            "finalPrice": 179,
+            "originalPrice": 229
+          },
+          {
+            "date": "2025-03-05",
+            "finalPrice": 162,
+            "originalPrice": 229
+          },
+          {
+            "date": "2025-03-30",
+            "finalPrice": 167,
+            "originalPrice": 229
+          }
+        ],
+        "launchDate": "2023-07",
+        "gender": "Female"
       }
     ],
     "isDomestic": true,
@@ -1854,7 +2593,8 @@
             "originalPrice": 219
           }
         ],
-        "launchDate": "2017-09"
+        "launchDate": "2017-09",
+        "gender": "Female"
       },
       {
         "id": "prod-1766643964782",
@@ -2031,7 +2771,8 @@
             "originalPrice": 439
           }
         ],
-        "launchDate": "2018-09"
+        "launchDate": "2018-09",
+        "gender": "Female"
       },
       {
         "id": "prod-1766644759893",
@@ -2040,7 +2781,7 @@
         "tags": [
           "仿生吮吸+舔舐",
           "手感Q软",
-          "5种吸舔3种震动模式",
+          "5吸舔3震动模式",
           "磁吸充电",
           "灯光",
           "双马达"
@@ -2213,7 +2954,8 @@
             "originalPrice": 429
           }
         ],
-        "launchDate": "2019-09"
+        "launchDate": "2019-09",
+        "gender": "Female"
       },
       {
         "id": "prod-1766744720458",
@@ -2341,7 +3083,8 @@
             "finalPrice": 351.02
           }
         ],
-        "launchDate": "2024-11"
+        "launchDate": "2024-11",
+        "gender": "Female"
       },
       {
         "id": "prod-1766745668730",
@@ -2976,7 +3719,8 @@
             "originalPrice": 199
           }
         ],
-        "launchDate": "2024-11"
+        "launchDate": "2024-11",
+        "gender": "Female"
       },
       {
         "id": "prod-1766746256445",
@@ -3105,7 +3849,8 @@
             "originalPrice": 179
           }
         ],
-        "launchDate": "2025-06"
+        "launchDate": "2025-06",
+        "gender": "Female"
       },
       {
         "id": "prod-1766746794042",
@@ -3258,7 +4003,8 @@
             "originalPrice": 289
           }
         ],
-        "launchDate": "2023-06"
+        "launchDate": "2023-06",
+        "gender": "Female"
       },
       {
         "id": "prod-1766747788088",
@@ -3425,7 +4171,8 @@
             "originalPrice": 299
           }
         ],
-        "launchDate": "2023-11"
+        "launchDate": "2023-11",
+        "gender": "Female"
       },
       {
         "id": "prod-1766987122959",
@@ -3573,7 +4320,8 @@
             "originalPrice": 459
           }
         ],
-        "launchDate": "2023-12"
+        "launchDate": "2023-12",
+        "gender": "Female"
       }
     ],
     "isDomestic": true,

@@ -21,6 +21,7 @@ const PRODUCT_CATEGORIES = [
   "飞机杯",
   "倒模",
   "按摩器",
+  "训练器",
   "其他",
 ];
 
@@ -249,13 +250,24 @@ const CompetitorReportAnalysis: React.FC = () => {
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
+                          <div className="flex items-center gap-2 mb-2 flex-wrap">
                             <h3 className="text-sm font-bold text-gray-800 truncate">
                               {product.name}
                             </h3>
                             {product.category && (
                               <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold border border-purple-200 shrink-0">
                                 {product.category}
+                              </span>
+                            )}
+                            {product.gender && (
+                              <span className={`text-xs px-2 py-0.5 rounded font-bold border shrink-0 ${
+                                product.gender === 'Male' 
+                                  ? 'bg-blue-100 text-blue-700 border-blue-200'
+                                  : product.gender === 'Female'
+                                  ? 'bg-pink-100 text-pink-700 border-pink-200'
+                                  : 'bg-gray-100 text-gray-700 border-gray-200'
+                              }`}>
+                                {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
                               </span>
                             )}
                           </div>

@@ -364,7 +364,20 @@ const GlobalProductComparison: React.FC = () => {
                     <h4 className="text-sm font-bold text-gray-800 truncate">
                       {product.name}
                     </h4>
-                    <p className="text-xs text-gray-500">¥ {product.price}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <p className="text-xs text-gray-500">¥ {product.price}</p>
+                      {product.gender && (
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold border ${
+                          product.gender === 'Male' 
+                            ? 'bg-blue-100 text-blue-700 border-blue-200'
+                            : product.gender === 'Female'
+                            ? 'bg-pink-100 text-pink-700 border-pink-200'
+                            : 'bg-gray-100 text-gray-700 border-gray-200'
+                        }`}>
+                          {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   {isSelected ? (
                     <CheckCircle2
@@ -511,10 +524,25 @@ const GlobalProductComparison: React.FC = () => {
                       className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-xs font-bold text-purple-300 truncate w-32">
-                          {product?.name}
-                        </span>
-                        <span className="text-lg font-black text-white">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1 mb-1">
+                            <span className="text-xs font-bold text-purple-300 truncate">
+                              {product?.name}
+                            </span>
+                            {product?.gender && (
+                              <span className={`text-[10px] px-1 py-0.5 rounded font-bold border shrink-0 ${
+                                product.gender === 'Male' 
+                                  ? 'bg-blue-500/30 text-blue-200 border-blue-400/30'
+                                  : product.gender === 'Female'
+                                  ? 'bg-pink-500/30 text-pink-200 border-pink-400/30'
+                                  : 'bg-gray-500/30 text-gray-200 border-gray-400/30'
+                              }`}>
+                                {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <span className="text-lg font-black text-white ml-2">
                           {scoreInfo.totalScore}{" "}
                           <span className="text-[10px] font-normal opacity-60">
                             pts

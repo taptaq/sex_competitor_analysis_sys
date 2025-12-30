@@ -11,6 +11,7 @@ const PRODUCT_CATEGORIES = [
   "飞机杯",
   "倒模",
   "按摩器",
+  "训练器",
   "其他",
 ];
 
@@ -19,6 +20,8 @@ interface ProductListProps {
   products: Product[];
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
+  selectedGender: string;
+  onGenderChange: (gender: string) => void;
   priceSortOrder: "none" | "asc" | "desc";
   salesSortOrder: "none" | "asc" | "desc";
   onPriceSort: () => void;
@@ -61,6 +64,8 @@ const ProductList: React.FC<ProductListProps> = ({
   products,
   selectedCategory,
   onCategoryChange,
+  selectedGender,
+  onGenderChange,
   priceSortOrder,
   salesSortOrder,
   onPriceSort,
@@ -112,6 +117,17 @@ const ProductList: React.FC<ProductListProps> = ({
               </option>
             ))}
             <option value="uncategorized">未分类</option>
+          </select>
+          <select
+            className="text-sm text-gray-600 font-medium border border-gray-200 rounded-lg px-3 py-2 bg-white hover:bg-gray-50 transition"
+            value={selectedGender}
+            onChange={(e) => onGenderChange(e.target.value)}
+          >
+            <option value="all">全部性别</option>
+            <option value="Male">男用</option>
+            <option value="Female">女用</option>
+            <option value="Unisex">通用</option>
+            <option value="none">未标注</option>
           </select>
           <button
             onClick={onPriceSort}

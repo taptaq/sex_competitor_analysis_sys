@@ -10,6 +10,7 @@ const PRODUCT_CATEGORIES = [
   "飞机杯",
   "倒模",
   "按摩器",
+  "训练器",
   "其他",
 ];
 
@@ -89,6 +90,21 @@ const ProductForm: React.FC<ProductFormProps> = ({
               {category}
             </option>
           ))}
+        </select>
+        <select
+          className="p-2 border rounded"
+          value={product.gender || ""}
+          onChange={(e) =>
+            onProductChange({
+              ...product,
+              gender: e.target.value as 'Male' | 'Female' | 'Unisex' | undefined,
+            })
+          }
+        >
+          <option value="">选择适用性别</option>
+          <option value="Male">男用</option>
+          <option value="Female">女用</option>
+          <option value="Unisex">通用</option>
         </select>
         <input
           className="p-2 border rounded"

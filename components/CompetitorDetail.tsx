@@ -45,6 +45,7 @@ const CompetitorDetail: React.FC = () => {
   const [priceSortOrder, setPriceSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [salesSortOrder, setSalesSortOrder] = useState<"none" | "asc" | "desc">("none");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedGender, setSelectedGender] = useState<string>("all");
   const [showPriceChartModal, setShowPriceChartModal] = useState(false);
   const [selectedProductForChart, setSelectedProductForChart] = useState<Product | null>(null);
   
@@ -61,9 +62,23 @@ const CompetitorDetail: React.FC = () => {
 
   const filteredAndSortedProducts = [...(competitor.products || [])]
     .filter((product) => {
-      if (selectedCategory === "all") return true;
-      if (selectedCategory === "uncategorized") return !product.category;
-      return product.category === selectedCategory;
+      // 类别筛选
+      if (selectedCategory !== "all") {
+        if (selectedCategory === "uncategorized") {
+          if (product.category) return false;
+        } else {
+          if (product.category !== selectedCategory) return false;
+        }
+      }
+      // 性别筛选
+      if (selectedGender !== "all") {
+        if (selectedGender === "none") {
+          if (product.gender) return false;
+        } else {
+          if (product.gender !== selectedGender) return false;
+        }
+      }
+      return true;
     })
     .sort((a, b) => {
       if (salesSortOrder !== "none") {
@@ -150,6 +165,7 @@ const CompetitorDetail: React.FC = () => {
       sales: tempProduct.sales ? Number(tempProduct.sales) : undefined,
       priceHistory: tempProduct.priceHistory,
       launchDate: tempProduct.launchDate,
+      gender: tempProduct.gender,
     };
 
     if (editingProductId) {
@@ -415,6 +431,8 @@ const CompetitorDetail: React.FC = () => {
                     products={filteredAndSortedProducts}
                     selectedCategory={selectedCategory}
                     onCategoryChange={setSelectedCategory}
+                    selectedGender={selectedGender}
+                    onGenderChange={setSelectedGender}
                     priceSortOrder={priceSortOrder}
                     salesSortOrder={salesSortOrder}
                     onPriceSort={handlePriceSort}

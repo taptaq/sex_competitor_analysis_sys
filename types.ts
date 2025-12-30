@@ -81,6 +81,7 @@ export interface Product {
   priceHistory?: PriceHistory[]; // 价格历史数据
   sales?: number; // 销量
   launchDate?: string; // 上市时间 (YYYY-MM)
+  gender?: 'Male' | 'Female' | 'Unisex'; // 产品适用性别：男用、女用、通用
 }
 
 export interface AdCreative {
