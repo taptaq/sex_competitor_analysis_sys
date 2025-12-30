@@ -1649,7 +1649,30 @@
       "easeOfUse": 80,
       "value": 83
     },
-    "products": [],
+    "products": [
+      {
+        "id": "prod-1767007957145",
+        "name": "浪花pro",
+        "price": 149,
+        "tags": [
+          "APP互动",
+          "双人互动",
+          "流线设计",
+          "多模式强震动",
+          "ASMR联动（自己上传对应的音频",
+          "结合感官刺激）",
+          "IPX7",
+          "体内外刺激"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=699580506804&pisk=g8wSzrVKhyeqQRjRJUS2l75GbcDQdiWwpHiLjkpyvYHJJvabS3rPrJJLOPasTzrK8JMQorhLUYrzl2aUX7zrUXWLhDo69DpK9mhxAclL82ryqS4aXLyPZvJIEvDd7NWNQ_qoKvCXt1EerKntf9J-JDHoHlAc_SWNQuqX40IaDOPrgktx0BpLJb3YD0uxvLd8Jx3xYqp-vLHKkiinkvpK92HxDDoMy0d8JIBx4cTKJ0HpMnnnXv3LJ4IbDqmIp2UKpiZvrdCo0Hg0VG77-6MfXcq-lppLe9cS5qAedpGr2owLPqZ40-iSNVhQmwe0ClE8IDwhXBgQY7Urmy61lxe7P8hjd99mUlNYPjN5RKG0Ml2KGSb6slq8P5hTets7RrEgsYeR-Luu9oeKu8IedVFajxi0LZv-RSFLUbDHyaibFlwQOgRXQVgPABtjspij7isXtB2oOma6Vhaytbnm0HIfcCJowmmjpisXtBc-mm5NciOwE&rn=392f34e3c233122198b4f9298ae2881a&skuId=5787674233654&spm=a1z10.5-b.w4011-23216582827.45.6f4c7683vEejgJ",
+        "competitorId": "netease-wind",
+        "image": "https://img.lenyiin.com/app/hide.php?key=b1pjRGFaQWRtbjY3K29pdlJyVXFyK2NjRTMxQlEwMkZIRC8vY29ZPQ==",
+        "sales": 800,
+        "priceHistory": [],
+        "launchDate": "2023-10"
+      }
+    ],
     "isDomestic": true,
     "focus": ""
   },

@@ -60,6 +60,7 @@ const ProductKnowledgeBase: React.FC = () => {
       features: [] as string[],
       priceRange: null as { operator: string; value: number } | null,
       salesRange: null as { operator: string; value: number } | null,
+      launchDateRange: null as { operator: string; value: string } | null,
       keywords: [] as string[],
     };
 
@@ -110,13 +111,53 @@ const ProductKnowledgeBase: React.FC = () => {
       conditions.salesRange = { operator, value };
     }
 
+    // 提取上市日期条件（支持多种格式：2024年上市、2024年后上市、2024年前上市、2024-05上市等）
+    // 注意：近几年上市相关的查询将直接使用AI分析，不在这里设置筛选条件
+    // 先检查相对时间表达：近几年上市、最近几年上市、近N年上市
+    let recentYearsMatch = lowerQuery.match(/近\s*(\d+)?\s*年\s*上市/);
+    if (!recentYearsMatch) {
+      recentYearsMatch = lowerQuery.match(/最近\s*(\d+)?\s*年\s*上市/);
+    }
+    
+    // 如果匹配到"近几年"，不设置筛选条件，让AI来处理
+    if (!recentYearsMatch) {
+      // 匹配格式：年份（4位数字）+ 可选月份（1-2位数字）+ 可选操作符（前/后/年）
+      let dateMatch = lowerQuery.match(/(\d{4})\s*年?\s*(前|后|之前|之后|以前|以后)?\s*上市/);
+      if (!dateMatch) {
+        // 尝试匹配：2024-05上市、2024/05上市、2024.05上市
+        dateMatch = lowerQuery.match(/(\d{4})[-/.](\d{1,2})\s*上市/);
+        if (dateMatch) {
+          const year = dateMatch[1];
+          const month = dateMatch[2].padStart(2, '0');
+          conditions.launchDateRange = { operator: '等于', value: `${year}-${month}` };
+        }
+      } else {
+        const year = dateMatch[1];
+        const operator = dateMatch[2] || '等于';
+        // 如果没有指定月份，默认使用年份的第一天和最后一天
+        if (operator === '等于' || !operator) {
+          conditions.launchDateRange = { operator: '等于', value: year };
+        } else if (operator.includes('前') || operator.includes('之前') || operator.includes('以前')) {
+          conditions.launchDateRange = { operator: '之前', value: year };
+        } else if (operator.includes('后') || operator.includes('之后') || operator.includes('以后')) {
+          conditions.launchDateRange = { operator: '之后', value: year };
+        }
+      }
+    }
+
     // 提取其他关键词
     const words = lowerQuery.split(/[\s，。、]+/).filter((w) => w.length > 1);
     words.forEach((word) => {
+      // 排除日期相关的词（年、月、上市、前、后等）
+      const isDateRelated = word.includes('年') || word.includes('月') || 
+                           word.includes('上市') || word.includes('前') || 
+                           word.includes('后') || word.match(/^\d{4}$/);
+      
       if (
         !categoryKeywords.some((c) => word.includes(c.toLowerCase())) &&
         !featureKeywords.some((f) => word.includes(f.toLowerCase())) &&
         !word.match(/^\d+$/) &&
+        !isDateRelated &&
         !['的', '具有', '功能', '产品', '类型', '类别'].includes(word)
       ) {
         conditions.keywords.push(word);
@@ -260,6 +301,75 @@ const ProductKnowledgeBase: React.FC = () => {
       }
     }
 
+    // 上市日期条件
+    if (conditions.launchDateRange && product.launchDate) {
+      const { operator, value } = conditions.launchDateRange;
+      const launchDate = product.launchDate; // 格式：YYYY-MM
+      let dateMatched = false;
+
+      // 解析日期值
+      const valueYear = parseInt(value.split('-')[0]);
+      const valueMonth = value.includes('-') ? parseInt(value.split('-')[1]) : null;
+      const productYear = parseInt(launchDate.split('-')[0]);
+      const productMonth = launchDate.includes('-') ? parseInt(launchDate.split('-')[1]) : null;
+
+      if (operator === '等于') {
+        if (valueMonth === null) {
+          // 只比较年份
+          if (productYear === valueYear) {
+            dateMatched = true;
+            matchedFields.push(`上市日期: ${launchDate} (${valueYear}年)`);
+          }
+        } else {
+          // 比较年月
+          if (productYear === valueYear && productMonth === valueMonth) {
+            dateMatched = true;
+            matchedFields.push(`上市日期: ${launchDate}`);
+          }
+        }
+      } else if (operator === '之前' || operator.includes('前') || operator.includes('以前')) {
+        // 之前：产品上市日期必须早于指定日期
+        if (valueMonth === null) {
+          // 只比较年份
+          if (productYear < valueYear) {
+            dateMatched = true;
+            matchedFields.push(`上市日期: ${launchDate} (${valueYear}年前)`);
+          }
+        } else {
+          // 比较年月
+          const valueDate = new Date(valueYear, valueMonth - 1);
+          const productDate = new Date(productYear, (productMonth || 1) - 1);
+          if (productDate < valueDate) {
+            dateMatched = true;
+            matchedFields.push(`上市日期: ${launchDate} (${value}之前)`);
+          }
+        }
+      } else if (operator === '之后' || operator.includes('后') || operator.includes('以后')) {
+        // 之后：产品上市日期必须晚于指定日期
+        if (valueMonth === null) {
+          // 只比较年份
+          if (productYear > valueYear) {
+            dateMatched = true;
+            matchedFields.push(`上市日期: ${launchDate} (${valueYear}年后)`);
+          }
+        } else {
+          // 比较年月
+          const valueDate = new Date(valueYear, valueMonth - 1);
+          const productDate = new Date(productYear, (productMonth || 1) - 1);
+          if (productDate > valueDate) {
+            dateMatched = true;
+            matchedFields.push(`上市日期: ${launchDate} (${value}之后)`);
+          }
+        }
+      }
+
+      if (!dateMatched) {
+        allMatched = false;
+      } else {
+        score += 5;
+      }
+    }
+
     return { matched: allMatched, matchedFields, score };
   };
 
@@ -275,7 +385,8 @@ const ProductKnowledgeBase: React.FC = () => {
       conditions.categories.length > 0 ||
       conditions.features.length > 0 ||
       conditions.priceRange !== null ||
-      conditions.salesRange !== null;
+      conditions.salesRange !== null ||
+      conditions.launchDateRange !== null;
 
     competitors.forEach((competitor) => {
       competitor.products?.forEach((product) => {
@@ -358,6 +469,55 @@ const ProductKnowledgeBase: React.FC = () => {
     setAiAnalysis("");
 
     try {
+      // 检查是否包含"近几年"相关查询，如果是则直接使用AI分析
+      const lowerQuery = query.toLowerCase();
+      const hasRecentYearsQuery = /近\s*(\d+)?\s*年\s*上市/.test(lowerQuery) || 
+                                  /最近\s*(\d+)?\s*年\s*上市/.test(lowerQuery);
+
+      // 如果包含"近几年"查询，直接使用AI分析
+      if (hasRecentYearsQuery) {
+        setUseAI(true);
+        // 收集所有已存储的产品信息
+        const allProducts = competitors.flatMap((comp) =>
+          (comp.products || []).map((prod) => ({
+            product: prod,
+            competitor: comp,
+          }))
+        );
+
+        if (allProducts.length === 0) {
+          setSearchResults([]);
+          setAiAnalysis("知识库中暂无产品数据");
+          setIsSearching(false);
+          return;
+        }
+
+        const aiResult = await queryProductKnowledgeBase(query, allProducts);
+        setAiAnalysis(aiResult.analysis || "");
+
+        // AI返回的产品ID列表
+        if (aiResult.productIds && aiResult.productIds.length > 0) {
+          const aiResults: SearchResult[] = [];
+          aiResult.productIds.forEach((productId: string) => {
+            competitors.forEach((comp) => {
+              const product = comp.products?.find((p) => p.id === productId);
+              if (product) {
+                aiResults.push({
+                  product,
+                  competitor: comp,
+                  aiAnalysis: aiResult.analysis,
+                });
+              }
+            });
+          });
+          setSearchResults(aiResults);
+        } else {
+          setSearchResults([]);
+        }
+        setIsSearching(false);
+        return;
+      }
+
       // 先尝试简单筛选（基于已存储的产品信息）
       const simpleResults = simpleFilter(query);
 
@@ -484,7 +644,7 @@ const ProductKnowledgeBase: React.FC = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="例如：价格低于100的跳蛋、销量大于1w的产品、静音震动棒..."
+              placeholder="例如：价格低于100的跳蛋、销量大于1w的产品、近几年上市的静音震动棒..."
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
@@ -514,6 +674,7 @@ const ProductKnowledgeBase: React.FC = () => {
             <li>按产品名称、类别、标签搜索</li>
             <li>按价格范围搜索：如"低于100"、"100-200"</li>
             <li>按销量搜索：如"销量大于1w"</li>
+            <li>按上市日期搜索：如"2024年上市"、"2024年后上市"、"2024-05上市"、"近几年上市"、"近3年上市"</li>
             <li>按竞品名称搜索</li>
             <li>复杂查询将自动使用AI分析</li>
           </ul>
@@ -599,7 +760,7 @@ const ProductKnowledgeBase: React.FC = () => {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
                       <div>
                         <div className="text-sm text-gray-500">价格</div>
                         <div className="text-lg font-semibold text-gray-900">
@@ -621,6 +782,21 @@ const ProductKnowledgeBase: React.FC = () => {
                             {result.product.sales >= 10000
                               ? `${(result.product.sales / 10000).toFixed(1)}w+`
                               : `${result.product.sales.toLocaleString()}+`}
+                          </div>
+                        </div>
+                      )}
+                      {result.product.launchDate && (
+                        <div>
+                          <div className="text-sm text-gray-500">上市日期</div>
+                          <div className="text-lg font-semibold text-gray-900">
+                            {(() => {
+                              const date = result.product.launchDate;
+                              if (date.includes('-')) {
+                                const [year, month] = date.split('-');
+                                return `${year}年${month}月`;
+                              }
+                              return `${date}年`;
+                            })()}
                           </div>
                         </div>
                       )}
