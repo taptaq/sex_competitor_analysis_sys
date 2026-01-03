@@ -240,3 +240,48 @@ export const generateRecommendedConfig = async (
     throw error;
   }
 };
+
+export const recognizeProductImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const res = await fetch('/api/ai/ocr-product', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.detail || 'OCR failed');
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('OCR Service Error:', error);
+    throw error;
+  }
+};
+
+export const analyzePriceHistory = async (
+  productName: string,
+  priceHistory: Array<{ date: string; finalPrice: number; originalPrice?: number }>,
+  currentPrice: number,
+  isDomestic: boolean = false
+) => {
+  try {
+    const res = await fetch('/api/ai/price-analysis', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productName, priceHistory, currentPrice, isDomestic })
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.detail || 'Price analysis failed');
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('Price Analysis Service Error:', error);
+    throw error;
+  }
+};

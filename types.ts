@@ -67,6 +67,24 @@ export interface PriceHistory {
   originalPrice?: number; // 券面价（可选）
 }
 
+export interface PriceAnalysis {
+  trend: string; // 价格趋势分析
+  priceRange: string; // 价格区间分析
+  fluctuation: string; // 价格波动分析
+  recommendations: string[]; // 定价建议
+  summary: string; // 综合分析总结
+}
+
+export interface ProductSpecs {
+  dimensions?: string; // 产品尺寸，如 "长x宽x高" 或 "直径x长度"
+  material?: string; // 产品材质
+  noiseLevel?: string; // 噪音值，如 "≤45dB"
+  usageTime?: string; // 使用时长，如 "60分钟"
+  chargingTime?: string; // 充电时长，如 "2小时"
+  controlMethod?: string; // 控制方式，如 "APP控制"、"按键控制"、"遥控器"
+  weight?: string; // 重量，如 "200g"
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -82,6 +100,8 @@ export interface Product {
   sales?: number; // 销量
   launchDate?: string; // 上市时间 (YYYY-MM)
   gender?: 'Male' | 'Female' | 'Unisex'; // 产品适用性别：男用、女用、通用
+  priceAnalysis?: PriceAnalysis; // 价格走势分析结果
+  specs?: ProductSpecs; // 产品规格参数
 }
 
 export interface AdCreative {

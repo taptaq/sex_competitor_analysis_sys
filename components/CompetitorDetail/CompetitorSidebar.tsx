@@ -11,12 +11,21 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   competitor,
   onUpdateCompetitor,
 }) => {
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [tempName, setTempName] = useState("");
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const [tempDomain, setTempDomain] = useState("");
   const [isEditingFocus, setIsEditingFocus] = useState(false);
   const [tempFocus, setTempFocus] = useState<string>("");
   const [isEditingPhilosophy, setIsEditingPhilosophy] = useState(false);
   const [tempPhilosophy, setTempPhilosophy] = useState<string[]>([]);
+
+  const handleSaveName = () => {
+    if (tempName.trim()) {
+      onUpdateCompetitor({ ...competitor, name: tempName.trim() });
+      setIsEditingName(false);
+    }
+  };
 
   const handleSaveDomain = () => {
     onUpdateCompetitor({ ...competitor, domain: tempDomain });
@@ -52,7 +61,54 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   return (
     <div className="lg:col-span-1 space-y-6">
       <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative group">
-        <h1 className="text-xl font-bold text-center">{competitor.name}</h1>
+        {isEditingName ? (
+          <div className="flex items-center gap-2 justify-center mb-6">
+            <input
+              className="border rounded px-3 py-2 text-xl font-bold text-center w-full"
+              autoFocus
+              value={tempName}
+              onChange={(e) => setTempName(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSaveName();
+                } else if (e.key === "Escape") {
+                  setIsEditingName(false);
+                  setTempName(competitor.name);
+                }
+              }}
+            />
+            <button
+              onClick={handleSaveName}
+              className="text-green-600 hover:text-green-700"
+              title="保存"
+            >
+              <Save size={18} />
+            </button>
+            <button
+              onClick={() => {
+                setIsEditingName(false);
+                setTempName(competitor.name);
+              }}
+              className="text-red-500 hover:text-red-600"
+              title="取消"
+            >
+              <X size={18} />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-2 mb-6 group/name relative">
+            <h1 className="text-xl font-bold text-center">{competitor.name}</h1>
+            <Pencil
+              onClick={() => {
+                setTempName(competitor.name);
+                setIsEditingName(true);
+              }}
+              size={14}
+              className="text-gray-400 opacity-0 group-hover/name:opacity-100 transition-opacity cursor-pointer"
+              title="编辑品牌名"
+            />
+          </div>
+        )}
 
         {/* Domain Editing */}
         <div className="flex justify-center items-center mb-6 mt-1">

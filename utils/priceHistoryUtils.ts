@@ -19,7 +19,7 @@ export const parsePriceHistoryFromFiles = async (
       ...(item as any),
       日期:
         item?.["日期"]?.split("-")?.length < 3
-          ? `${new Date().getFullYear()}-${item?.["日期"]}`
+          ? `2025-${item?.["日期"]}`
           : item?.["日期"],
     })) as any[];
 

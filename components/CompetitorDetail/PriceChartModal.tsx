@@ -1,6 +1,7 @@
-import React from "react";
-import { Product } from "../../types";
-import { X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Product, PriceAnalysis } from "../../types";
+import { X, Sparkles, Loader2 } from "lucide-react";
+import { analyzePriceHistory } from "../../services/gemini";
 import {
   LineChart,
   Line,
@@ -16,14 +17,65 @@ interface PriceChartModalProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
+  isDomestic?: boolean;
+  onUpdateProduct?: (product: Product) => void;
 }
 
 const PriceChartModal: React.FC<PriceChartModalProps> = ({
   product,
   isOpen,
   onClose,
+  isDomestic = true,
+  onUpdateProduct,
 }) => {
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
+
+  // 如果有保存的分析结果，自动显示
+  useEffect(() => {
+    if (product && product.priceAnalysis) {
+      setShowAnalysis(true);
+    } else {
+      setShowAnalysis(false);
+    }
+  }, [product?.priceAnalysis, product?.id]);
+
   if (!isOpen || !product) return null;
+
+  // 如果有保存的分析结果，直接使用
+  const priceAnalysis = product.priceAnalysis || null;
+
+  const handleAnalyzePrice = async () => {
+    if (!product.priceHistory || product.priceHistory.length === 0) {
+      alert("暂无价格历史数据，无法进行分析");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setShowAnalysis(true);
+    try {
+      const analysis = await analyzePriceHistory(
+        product.name,
+        product.priceHistory,
+        product.price,
+        isDomestic
+      );
+      
+      // 保存分析结果到产品数据
+      if (onUpdateProduct) {
+        const updatedProduct = {
+          ...product,
+          priceAnalysis: analysis,
+        };
+        onUpdateProduct(updatedProduct);
+      }
+    } catch (error) {
+      console.error("Price analysis failed:", error);
+      alert("价格分析失败，请稍后重试");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   const hasOriginalPrice = product.priceHistory?.some(
     (h) => h.originalPrice !== undefined
@@ -39,7 +91,7 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
       <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* 弹窗头部 */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <div>
+          <div className="flex-1">
             <h2 className="text-xl font-bold text-gray-800">
               {product.name} - 价格走势图
             </h2>
@@ -47,12 +99,33 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
               共 {product.priceHistory?.length || 0} 条价格记录
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <X size={20} />
-          </button>
+          <div className="flex items-center gap-3">
+            {product.priceHistory && product.priceHistory.length > 0 && (
+              <button
+                onClick={handleAnalyzePrice}
+                disabled={isAnalyzing}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+              >
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>分析中...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={16} />
+                    <span>{priceAnalysis ? "重新分析" : "AI 价格分析"}</span>
+                  </>
+                )}
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         {/* 图表内容 */}
@@ -176,6 +249,53 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
                   </LineChart>
                 </ResponsiveContainer>
               </div>
+
+              {/* AI 价格分析结果 */}
+              {showAnalysis && (
+                <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6 border border-purple-200">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Sparkles className="text-purple-600" size={20} />
+                    <h3 className="text-lg font-bold text-purple-900">AI 价格走势分析</h3>
+                  </div>
+                  {isAnalyzing ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="animate-spin text-purple-600" size={32} />
+                      <span className="ml-3 text-purple-700">正在分析价格走势...</span>
+                    </div>
+                  ) : priceAnalysis ? (
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="text-sm font-bold text-purple-800 mb-2">价格趋势</h4>
+                        <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.trend}</p>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <h4 className="text-sm font-bold text-purple-800 mb-2">价格区间</h4>
+                          <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.priceRange}</p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-purple-800 mb-2">价格波动</h4>
+                          <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.fluctuation}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-purple-800 mb-2">定价建议</h4>
+                        <ul className="list-disc list-inside space-y-1">
+                          {priceAnalysis.recommendations.map((rec, index) => (
+                            <li key={index} className="text-sm text-purple-700">{rec}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="pt-3 border-t border-purple-200">
+                        <h4 className="text-sm font-bold text-purple-800 mb-2">综合分析</h4>
+                        <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.summary}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-purple-600">分析失败，请重试</p>
+                  )}
+                </div>
+              )}
 
               {/* 价格数据表格 */}
               <div className="bg-gray-50 rounded-lg p-4">

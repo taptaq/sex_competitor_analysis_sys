@@ -4,8 +4,10 @@ import time
 from typing import List, Dict, Any, Optional, Union
 from enum import Enum
 from pathlib import Path
+import shutil
+import tempfile
 
-from fastapi import FastAPI, HTTPException, Request, Body
+from fastapi import FastAPI, HTTPException, Request, Body, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import uvicorn
@@ -724,6 +726,77 @@ async def ai_knowledge_base(req: KBRequest):
 
     return await ask_ai(prompt, schema)
 
+
+# AI 8. Product OCR (Qwen-VL)
+@app.post("/api/ai/ocr-product")
+async def ai_ocr_product(file: UploadFile = File(...)):
+    if not QWEN_API_KEY:
+        raise HTTPException(status_code=500, detail="QWEN_API_KEY not found")
+
+    # Save uploaded file to temp
+    suffix = Path(file.filename).suffix
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        shutil.copyfileobj(file.file, tmp)
+        tmp_path = tmp.name
+
+    try:
+        # Construct prompt for Qwen-VL
+        # Note: Qwen-VL in DashScope usually uses MultiModalConversation, but let's check basic generation or just use the OpenAI-compatible interface if possible? 
+        # The existing code uses dashscope.Generation.call for text.
+        # For VL, we typically use dashscope.MultiModalConversation.call
+        
+        # Schema for output
+        schema = {
+            "name": "Product Name",
+            "price": 100,
+            "category": "跳蛋", 
+            "tags": ["tag1", "tag2"],
+            "gender": "Female"
+        }
+        
+        messages = [
+            {
+                "role": "system",
+                "content": [
+                    {"text": f"你是一位电商数据录入助手。请分析商品图片，提取以下信息并以严格的 JSON 格式返回：\n1. name: 商品名称 (String)\n2. price: 价格 (Number, 提取主要显示价格)\n3. category: 类别 (String, 必须是以下之一: 跳蛋, 震动棒, 伸缩棒, AV棒, 飞机杯, 倒模, 按摩器, 训练器, 其他)\n4. tags: 标签 (Array of Strings, 提取3-5个关键卖点)\n5. gender: 适用性别 (String, Enum: 'Male', 'Female', 'Unisex')\n\n如果无法识别某项，请留空或使用默认值。直接返回 JSON，不要包含 Markdown 标记。"}
+                ]
+            },
+            {
+                "role": "user",
+                "content": [
+                    {"image": f"file://{tmp_path}"},
+                    {"text": "请提取商品信息"}
+                ]
+            }
+        ]
+
+        response = dashscope.MultiModalConversation.call(
+            api_key=QWEN_API_KEY,
+            model='qwen3-vl-plus',
+            messages=messages,
+            result_format='message'
+        )
+
+        if response.status_code == 200:
+            content = response.output.choices[0].message.content[0]['text']
+            # Clean up JSON
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+            
+            return json.loads(content)
+        else:
+            raise Exception(f"Qwen-VL Failed: {response.code} - {response.message}")
+
+    except Exception as e:
+        print(f"OCR Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        # Cleanup temp file
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+
 # AI 7. ProductForge: Generate Product Analysis
 class ProductAnalysisRequest(BaseModel):
     config: Dict
@@ -1043,6 +1116,78 @@ async def ai_product_image(req: ImageRequest):
     except Exception as e:
         print(f"[Image Generation] Error: {e}")
         raise HTTPException(status_code=500, detail=f"Image generation failed: {str(e)}")
+
+# AI 11. Price History Analysis
+class PriceAnalysisRequest(BaseModel):
+    productName: str
+    priceHistory: List[Dict]
+    currentPrice: float
+    isDomestic: bool = True
+
+@app.post("/api/ai/price-analysis")
+async def ai_price_analysis(req: PriceAnalysisRequest):
+    schema = {
+        "type": "object",
+        "properties": {
+            "trend": { "type": "string" },
+            "priceRange": { "type": "string" },
+            "fluctuation": { "type": "string" },
+            "recommendations": { "type": "array", "items": { "type": "string" } },
+            "summary": { "type": "string" }
+        },
+        "required": ["trend", "priceRange", "fluctuation", "recommendations", "summary"]
+    }
+
+    # 计算价格统计数据
+    finalPrices = [h.get('finalPrice', 0) for h in req.priceHistory]
+    originalPrices = [h.get('originalPrice') for h in req.priceHistory if h.get('originalPrice') is not None]
+    
+    minPrice = min(finalPrices) if finalPrices else req.currentPrice
+    maxPrice = max(finalPrices) if finalPrices else req.currentPrice
+    avgPrice = sum(finalPrices) / len(finalPrices) if finalPrices else req.currentPrice
+    
+    priceData = []
+    for h in req.priceHistory:
+        priceData.append(f"日期: {h.get('date')}, 到手价: ¥{h.get('finalPrice', 0):.2f}" + 
+                        (f", 页面价: ¥{h.get('originalPrice'):.2f}" if h.get('originalPrice') else ""))
+
+    prompt = f"""你是一位专业的情趣用品行业价格分析师。请分析以下产品的价格走势数据：
+
+产品名称：{req.productName}
+当前价格：¥{req.currentPrice:.2f}
+
+价格历史数据（共 {len(req.priceHistory)} 条记录）：
+{chr(10).join(priceData)}
+
+价格统计：
+- 最低到手价：¥{minPrice:.2f}
+- 最高到手价：¥{maxPrice:.2f}
+- 平均到手价：¥{avgPrice:.2f}
+- 价格波动幅度：{((maxPrice - minPrice) / minPrice * 100):.1f}%
+
+{"请结合中国情趣用品市场的实际情况，包括电商平台（淘宝、天猫、京东、小红书等）的定价策略。" if req.isDomestic else "请结合全球情趣用品市场的定价策略。"}
+
+请输出 JSON 格式的价格走势分析报告，包含以下英文键名（但所有字符串值必须使用简体中文）：
+1. trend: 价格趋势分析（200-300字，必须使用中文），包括：
+   - 整体价格走势（上涨/下跌/波动）
+   - 价格变化的时间节点和原因推测
+   - 与市场平均价格的对比
+2. priceRange: 价格区间分析（100-200字，必须使用中文），说明：
+   - 产品的价格定位（低端/中端/高端）
+   - 价格区间的合理性
+3. fluctuation: 价格波动分析（100-200字，必须使用中文），分析：
+   - 价格波动的频率和幅度
+   - 可能的促销策略或市场因素
+4. recommendations: 定价建议（Array of Strings，至少3条，每个字符串必须使用中文），包括：
+   - 基于历史数据的定价建议
+   - 促销时机建议
+   - 价格优化建议
+5. summary: 综合分析总结（200-300字，必须使用中文）
+
+**重要：所有字符串值（trend, priceRange, fluctuation, recommendations数组中的每个元素, summary）都必须使用简体中文，不要使用英文。**
+请确保分析专业、深入且具有实际参考价值。"""
+
+    return await ask_ai(prompt, schema)
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=3001, reload=True)

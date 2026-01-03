@@ -166,6 +166,8 @@ const CompetitorDetail: React.FC = () => {
       priceHistory: tempProduct.priceHistory,
       launchDate: tempProduct.launchDate,
       gender: tempProduct.gender,
+      priceAnalysis: tempProduct.priceAnalysis,
+      specs: tempProduct.specs,
     };
 
     if (editingProductId) {
@@ -236,7 +238,7 @@ const CompetitorDetail: React.FC = () => {
           ...(item as any),
           时间:
             item?.["时间"]?.split("-")?.length < 3
-              ? `${new Date().getFullYear()}-${item?.["时间"]}`
+              ? `2025-${item?.["时间"]}`
               : item?.["时间"],
           评论点赞量:
             item?.["评论点赞量"] === "有用" ? 0 : +item?.["评论点赞量"],
@@ -546,6 +548,12 @@ const CompetitorDetail: React.FC = () => {
         onClose={() => {
           setShowPriceChartModal(false);
           setSelectedProductForChart(null);
+        }}
+        isDomestic={competitor.isDomestic}
+        onUpdateProduct={(updatedProduct) => {
+          updateProduct(competitor.id, updatedProduct);
+          // 更新当前选中的产品，以便立即显示分析结果
+          setSelectedProductForChart(updatedProduct);
         }}
       />
     </div>

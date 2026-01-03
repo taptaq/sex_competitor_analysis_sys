@@ -1,6 +1,7 @@
 import React from "react";
 import { Product, PriceHistory } from "../../types";
-import { Upload, X } from "lucide-react";
+import { Upload, X, ScanLine, Loader2 } from "lucide-react";
+import { recognizeProductImage } from "../../services/gemini";
 
 const PRODUCT_CATEGORIES = [
   "跳蛋",
@@ -18,11 +19,15 @@ interface ProductFormProps {
   product: Partial<Product>;
   onProductChange: (product: Partial<Product>) => void;
   onImageLinkChange: (link: string) => void;
-  onPriceHistoryUpload: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  onPriceHistoryUpload: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => Promise<void>;
   onSave: () => void;
   onCancel: () => void;
   isEditing?: boolean;
 }
+
+// ... (existing constants)
 
 const ProductForm: React.FC<ProductFormProps> = ({
   product,
@@ -33,12 +38,71 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onCancel,
   isEditing = false,
 }) => {
+  const [scanning, setScanning] = React.useState(false);
+
+  const handleOCRUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setScanning(true);
+    try {
+      const data = await recognizeProductImage(files[0]);
+      onProductChange({
+        ...product,
+        name: data.name || product.name,
+        price: data.price ? Number(data.price) : product.price,
+        category: data.category || product.category,
+        tags: data.tags || product.tags,
+        gender: data.gender || product.gender,
+      });
+      alert("识别成功！已自动填充信息。");
+    } catch (error) {
+      console.error(error);
+      alert("识别失败，请重试");
+    } finally {
+      setScanning(false);
+      e.target.value = "";
+    }
+  };
+
   return (
-    <div className={`${isEditing ? "p-6 bg-gray-50" : "border-2 border-dashed border-purple-200 rounded-xl p-6 bg-purple-50"}`}>
-      <h4 className="font-bold text-gray-700 mb-4">
-        {isEditing ? "编辑产品" : "添加新产品"}
-      </h4>
+    <div
+      className={`${
+        isEditing
+          ? "p-6 bg-gray-50"
+          : "border-2 border-dashed border-purple-200 rounded-xl p-6 bg-purple-50"
+      }`}
+    >
+      <div className="flex justify-between items-center mb-4">
+        <h4 className="font-bold text-gray-700">
+          {isEditing ? "编辑产品" : "添加新产品"}
+        </h4>
+
+        {/* OCR Button */}
+        <label
+          className={`flex items-center gap-2 cursor-pointer bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-3 py-1.5 rounded-lg hover:from-purple-600 hover:to-indigo-700 transition-all shadow-sm ${
+            scanning ? "opacity-70 pointer-events-none" : ""
+          }`}
+        >
+          {scanning ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <ScanLine size={16} />
+          )}
+          <span className="text-xs font-bold">智能识别 (OCR)</span>
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleOCRUpload}
+            disabled={scanning}
+          />
+        </label>
+      </div>
+
       <div className="grid grid-cols-2 gap-4 mb-4">
+        {/* ... existing inputs ... */}
+
         <input
           className="p-2 border rounded"
           placeholder="产品名称"
@@ -97,7 +161,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
           onChange={(e) =>
             onProductChange({
               ...product,
-              gender: e.target.value as 'Male' | 'Female' | 'Unisex' | undefined,
+              gender: e.target.value as
+                | "Male"
+                | "Female"
+                | "Unisex"
+                | undefined,
             })
           }
         >
@@ -118,9 +186,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
             })
           }
         />
-        <input
-          className="p-2 border rounded col-span-2"
+        <textarea
+          className="p-3 h-20 border rounded col-span-2 resize-none"
           placeholder="标签 (用逗号分隔)"
+          rows={3}
           value={
             Array.isArray(product.tags)
               ? product.tags.join("，")
@@ -156,14 +225,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
               />
             )}
           </div>
-          <p className="text-[10px] text-gray-400 mt-1">
-            支持图片 URL 链接
-          </p>
+          <p className="text-[10px] text-gray-400 mt-1">支持图片 URL 链接</p>
         </div>
         <div className="col-span-2">
-          <label className="text-xs text-gray-500 mb-1 block">
-            产品链接
-          </label>
+          <label className="text-xs text-gray-500 mb-1 block">产品链接</label>
           <input
             type="text"
             className="w-full p-2 border rounded"
@@ -227,4 +292,3 @@ const ProductForm: React.FC<ProductFormProps> = ({
 };
 
 export default ProductForm;
-

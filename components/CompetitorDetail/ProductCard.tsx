@@ -1,5 +1,5 @@
-import React from "react";
-import { Product, Competitor } from "../../types";
+import React, { useState, useEffect } from "react";
+import { Product, Competitor, ProductSpecs } from "../../types";
 import { TagCloud } from "react-tagcloud";
 import {
   Globe,
@@ -14,6 +14,7 @@ import {
   Image as ImageIcon,
   Heart,
   TrendingUp,
+  Package,
 } from "lucide-react";
 import ProductForm from "./ProductForm";
 
@@ -51,6 +52,175 @@ interface ProductCardProps {
   onStartEditImage: (productId: string) => void;
 }
 
+// 产品规格参数弹窗组件
+interface ProductSpecsModalProps {
+  product: Product;
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (specs: ProductSpecs) => void;
+}
+
+const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
+  product,
+  isOpen,
+  onClose,
+  onSave,
+}) => {
+  const [specs, setSpecs] = useState<ProductSpecs>({});
+
+  // 当产品变化时，更新规格参数
+  useEffect(() => {
+    if (isOpen && product) {
+      setSpecs(product.specs || {});
+    }
+  }, [isOpen, product?.specs, product?.id]);
+
+  if (!isOpen) return null;
+
+  const handleSave = () => {
+    onSave(specs);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        {/* 弹窗头部 */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">
+              {product.name} - 产品规格参数
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              填写产品的详细规格参数信息
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* 规格参数表单 */}
+        <div className="flex-1 p-6 overflow-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                产品尺寸
+              </label>
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                placeholder="如：长x宽x高 或 直径x长度"
+                value={specs.dimensions || ""}
+                onChange={(e) => setSpecs({ ...specs, dimensions: e.target.value })}
+                rows={3}
+              />
+              <p className="text-xs text-gray-500 mt-1">例如：120x45x35mm 或 Φ35x120mm</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                产品材质
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="如：医用硅胶、TPE、ABS等"
+                value={specs.material || ""}
+                onChange={(e) => setSpecs({ ...specs, material: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                噪音值
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="如：≤45dB"
+                value={specs.noiseLevel || ""}
+                onChange={(e) => setSpecs({ ...specs, noiseLevel: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                使用时长
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="如：60分钟"
+                value={specs.usageTime || ""}
+                onChange={(e) => setSpecs({ ...specs, usageTime: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                充电时长
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="如：2小时"
+                value={specs.chargingTime || ""}
+                onChange={(e) => setSpecs({ ...specs, chargingTime: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                控制方式
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="如：APP控制、按键控制、遥控器"
+                value={specs.controlMethod || ""}
+                onChange={(e) => setSpecs({ ...specs, controlMethod: e.target.value })}
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                重量
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="如：200g"
+                value={specs.weight || ""}
+                onChange={(e) => setSpecs({ ...specs, weight: e.target.value })}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* 弹窗底部按钮 */}
+        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            取消
+          </button>
+          <button
+            onClick={handleSave}
+            className="px-4 py-2 text-sm font-medium bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+          >
+            <Save size={16} />
+            保存
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   competitor,
@@ -84,6 +254,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onCancelImageEdit,
   onStartEditImage,
 }) => {
+  const [showSpecsModal, setShowSpecsModal] = useState(false);
+
   // Helper functions for analysis editing
   const handleArrayChange = (
     field: "pros" | "cons",
@@ -327,6 +499,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold border border-blue-200">
                       上市: {product.launchDate.split('-')[0]}年{product.launchDate.split('-')[1]}月
                     </span>
+                  )}
+                  {product.specs && (
+                    <button
+                      onClick={() => setShowSpecsModal(true)}
+                      className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-bold border border-orange-200 hover:bg-orange-200 transition-colors flex items-center gap-1"
+                      title="查看规格参数"
+                    >
+                      <Package size={12} />
+                      规格参数
+                    </button>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -723,10 +905,35 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   查看价格走势
                 </button>
               </div>
+              <div className="flex gap-3 items-end">
+                <div className="flex-1">
+                  <label className="text-xs text-gray-500 mb-1 block">
+                    产品规格参数
+                  </label>
+                  <button
+                    onClick={() => setShowSpecsModal(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-orange-700 transition-colors"
+                  >
+                    <Package size={16} />
+                    {product.specs ? "编辑规格参数" : "添加规格参数"}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* 产品规格参数弹窗 */}
+      <ProductSpecsModal
+        product={product}
+        isOpen={showSpecsModal}
+        onClose={() => setShowSpecsModal(false)}
+        onSave={(specs) => {
+          onUpdateProduct({ ...product, specs });
+          setShowSpecsModal(false);
+        }}
+      />
     </div>
   );
 };
