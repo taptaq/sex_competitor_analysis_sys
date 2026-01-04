@@ -69,7 +69,8 @@ export const fetchCompetitorData = async (companyName: string, isDomestic: boole
        throw new Error(err.error || 'Competitor generation failed');
     }
     const data = await res.json();
-    return { ...data, isDomestic };
+    // 确保 foundedDate 字段被正确传递
+    return { ...data, isDomestic, foundedDate: data.foundedDate || undefined };
   } catch (error) {
      console.error('AI Service Error:', error);
      // Fallback mock
@@ -79,7 +80,8 @@ export const fetchCompetitorData = async (companyName: string, isDomestic: boole
         domain: 'example.com',
         isDomestic,
         sentiment: { material: 50, noise: 50, privacy: 50, easeOfUse: 50, value: 50 },
-        products: []
+        products: [],
+        foundedDate: undefined
     } as Competitor;
   }
 };

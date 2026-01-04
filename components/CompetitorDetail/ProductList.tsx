@@ -181,42 +181,64 @@ const ProductList: React.FC<ProductListProps> = ({
       </div>
 
       {/* Product cards will be rendered here */}
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          competitor={competitor}
-          onUpdateProduct={onUpdateProduct}
-          onRemoveProduct={onRemoveProduct}
-          onAnalyzeProduct={onAnalyzeProduct}
-          onUpdateProductAnalysis={onUpdateProductAnalysis}
-          onUploadReviews={onUploadReviews}
-          onUploadPriceHistory={onUploadPriceHistory}
-          onClearPriceHistory={onClearPriceHistory}
-          onShowPriceChart={onShowPriceChart}
-          onToggleFavorite={onToggleFavorite}
-          isProductFavorite={isProductFavorite}
-          analyzingProductId={analyzingProductId}
-          editingProductId={editingProductId}
-          tempProduct={tempProduct}
-          onTempProductChange={onTempProductChange}
-          onStartEdit={onStartEdit}
-          onSaveProduct={onSaveProduct}
-          onCancelEdit={onCancelEdit}
-          editingAnalysisProductId={editingAnalysisProductId}
-          tempAnalysis={tempAnalysis}
-          onTempAnalysisChange={onTempAnalysisChange}
-          onStartEditAnalysis={onStartEditAnalysis}
-          onSaveAnalysis={onSaveAnalysis}
-          onCancelAnalysisEdit={onCancelAnalysisEdit}
-          editingImageProductId={editingImageProductId}
-          tempImageLink={tempImageLink}
-          onTempImageLinkChange={onTempImageLinkChange}
-          onSaveImageLink={onSaveImageLink}
-          onCancelImageEdit={onCancelImageEdit}
-          onStartEditImage={onStartEditImage}
-        />
-      ))}
+      {products.length > 0 ? (
+        products.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            competitor={competitor}
+            onUpdateProduct={onUpdateProduct}
+            onRemoveProduct={onRemoveProduct}
+            onAnalyzeProduct={onAnalyzeProduct}
+            onUpdateProductAnalysis={onUpdateProductAnalysis}
+            onUploadReviews={onUploadReviews}
+            onUploadPriceHistory={onUploadPriceHistory}
+            onClearPriceHistory={onClearPriceHistory}
+            onShowPriceChart={onShowPriceChart}
+            onToggleFavorite={onToggleFavorite}
+            isProductFavorite={isProductFavorite}
+            analyzingProductId={analyzingProductId}
+            editingProductId={editingProductId}
+            tempProduct={tempProduct}
+            onTempProductChange={onTempProductChange}
+            onStartEdit={onStartEdit}
+            onSaveProduct={onSaveProduct}
+            onCancelEdit={onCancelEdit}
+            editingAnalysisProductId={editingAnalysisProductId}
+            tempAnalysis={tempAnalysis}
+            onTempAnalysisChange={onTempAnalysisChange}
+            onStartEditAnalysis={onStartEditAnalysis}
+            onSaveAnalysis={onSaveAnalysis}
+            onCancelAnalysisEdit={onCancelAnalysisEdit}
+            editingImageProductId={editingImageProductId}
+            tempImageLink={tempImageLink}
+            onTempImageLinkChange={onTempImageLinkChange}
+            onSaveImageLink={onSaveImageLink}
+            onCancelImageEdit={onCancelImageEdit}
+            onStartEditImage={onStartEditImage}
+          />
+        ))
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16 bg-gray-50 rounded-xl border border-gray-200">
+          <p className="text-gray-500 text-lg font-medium mb-2">暂无产品数据</p>
+          <p className="text-gray-400 text-sm mb-4">
+            {selectedCategory !== "all" || selectedGender !== "all"
+              ? "当前筛选条件下没有匹配的产品"
+              : "点击上方「新增产品」按钮添加第一个产品"}
+          </p>
+          {(selectedCategory !== "all" || selectedGender !== "all") && (
+            <button
+              onClick={() => {
+                onCategoryChange("all");
+                onGenderChange("all");
+              }}
+              className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+            >
+              清除筛选条件
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

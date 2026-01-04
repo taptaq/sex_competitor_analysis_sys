@@ -282,19 +282,7 @@ async def ai_competitor(req: CompetitorRequest):
                     "value": { "type": "number" }
                 }
             },
-           "products": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": { "type": "string" },
-                    "name": { "type": "string" },
-                    "price": { "type": "number" },
-                    "tags": { "type": "array", "items": { "type": "string" } },
-                    "competitorId": { "type": "string" }
-                }
-            }
-           }
+            "foundedDate": { "type": "string" }
         }
     }
 
@@ -311,7 +299,7 @@ async def ai_competitor(req: CompetitorRequest):
        - privacy (隐私包装与防漏光设计)
        - easeOfUse (操作便捷性与APP交互)
        - value (价格竞争力与耐用度)
-    5. products: 代表性情趣用品核心产品数组（每一个产品的 name 和 tags 都必须翻译成中文，严禁出现英文），每个产品包含 id, name, price (数值型字段), tags (字符串数组), competitorId。
+    5. foundedDate: 品牌的创立日期，格式为 "YYYY"（如 "2020"）。如果无法确定具体日期，请使用年份格式 "YYYY"。如果完全无法确定，可以返回空字符串 ""。
     
     输出必须是合法的 JSON 格式。"""
 
@@ -362,6 +350,8 @@ async def ai_analyze(req: AnalyzeRequest):
 
     prompt = f"""你是一位专业的情趣用品行业用户体验分析师。请分析情趣用品 "{req.productName}" 的以下用户评价数据：
     {chr(10).join(req.reviews)}
+    
+    注意：每条评论可能包含主评论和追评内容（如追评1、追评2等），请综合分析主评论和所有追评内容，全面了解用户的真实体验和反馈。
     
     {"请结合中国市场的消费习惯和语境。" if req.isDomestic else "请结合全球市场的消费语境。"}
     

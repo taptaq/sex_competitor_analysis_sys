@@ -129,7 +129,46 @@ const CompetitorDetail: React.FC = () => {
     }
     setAnalyzingProductId(product.id);
     try {
-      const reviewTexts = product.reviews.map((r) => r.text);
+      // 提取评论文本，包括主评论和追评内容
+      const reviewTexts = product.reviews.map((r) => {
+        let reviewData: any;
+        
+        // 尝试解析 JSON 字符串
+        try {
+          reviewData = JSON.parse(r.text);
+        } catch {
+          // 如果不是 JSON，直接使用文本
+          return r.text;
+        }
+        
+        // 如果是对象，提取所有文本字段
+        if (typeof reviewData === 'object' && reviewData !== null) {
+          const texts: string[] = [];
+          
+          // 提取主评论（可能的字段名：评论、评价、内容等）
+          const mainReviewFields = ['评论', '评价', '内容', 'review', 'comment', 'content', '评论内容'];
+          for (const field of mainReviewFields) {
+            if (reviewData[field] && typeof reviewData[field] === 'string' && reviewData[field].trim()) {
+              texts.push(reviewData[field].trim());
+              break; // 只取第一个匹配的字段
+            }
+          }
+          
+          // 提取所有追评字段（追评1、追评2、追评3 等）
+          const followupPattern = /^(追评|追评1|追评2|追加评论)[\d]*$/i;
+          Object.keys(reviewData).forEach((key) => {
+            if (followupPattern.test(key) && reviewData[key] && typeof reviewData[key] === 'string' && reviewData[key].trim()) {
+              texts.push(reviewData[key].trim());
+            }
+          });
+          
+          // 如果没有找到任何文本，返回原始 JSON 字符串
+          return texts.length > 0 ? texts.join('\n') : r.text;
+        }
+        
+        return r.text;
+      });
+
       const analysis = await analyzeReviews(
         product.name,
         reviewTexts,
@@ -374,7 +413,7 @@ const CompetitorDetail: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 pb-20">
+    <div className="max-w-7xl mx-auto space-y-6 pb-20">
       <button
         onClick={() => setSelectedCompetitor(null)}
         className="flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors"

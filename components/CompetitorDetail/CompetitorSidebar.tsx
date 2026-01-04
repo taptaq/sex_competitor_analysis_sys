@@ -19,6 +19,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [tempFocus, setTempFocus] = useState<string>("");
   const [isEditingPhilosophy, setIsEditingPhilosophy] = useState(false);
   const [tempPhilosophy, setTempPhilosophy] = useState<string[]>([]);
+  const [isEditingFoundedDate, setIsEditingFoundedDate] = useState(false);
+  const [tempFoundedDate, setTempFoundedDate] = useState("");
 
   const handleSaveName = () => {
     if (tempName.trim()) {
@@ -41,6 +43,11 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     const filteredPhilosophy = tempPhilosophy.filter((p) => p.trim() !== "");
     onUpdateCompetitor({ ...competitor, philosophy: filteredPhilosophy });
     setIsEditingPhilosophy(false);
+  };
+
+  const handleSaveFoundedDate = () => {
+    onUpdateCompetitor({ ...competitor, foundedDate: tempFoundedDate.trim() || undefined });
+    setIsEditingFoundedDate(false);
   };
 
   const handlePhilosophyChange = (index: number, value: string) => {
@@ -322,6 +329,70 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
               ) : (
                 <p className="text-sm text-gray-400 italic">暂无品牌理念</p>
               )
+            )}
+          </div>
+
+          {/* 创立日期 */}
+          <div className="pt-4 border-t border-gray-100 group/foundedDate relative">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                创立日期
+              </h4>
+              {!isEditingFoundedDate && (
+                <Pencil
+                  onClick={() => {
+                    setTempFoundedDate(competitor.foundedDate || "");
+                    setIsEditingFoundedDate(true);
+                  }}
+                  size={12}
+                  className="text-gray-400 opacity-0 group-hover/foundedDate:opacity-100 transition-opacity cursor-pointer"
+                />
+              )}
+            </div>
+            {isEditingFoundedDate ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  className="flex-1 text-sm p-2 border rounded"
+                  value={tempFoundedDate}
+                  onChange={(e) => setTempFoundedDate(e.target.value)}
+                  placeholder="如：2020-01 或 2020"
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      handleSaveFoundedDate();
+                    } else if (e.key === "Escape") {
+                      setIsEditingFoundedDate(false);
+                      setTempFoundedDate(competitor.foundedDate || "");
+                    }
+                  }}
+                  autoFocus
+                />
+                <button
+                  onClick={handleSaveFoundedDate}
+                  className="text-green-600 hover:text-green-700"
+                  title="保存"
+                >
+                  <Save size={14} />
+                </button>
+                <button
+                  onClick={() => {
+                    setIsEditingFoundedDate(false);
+                    setTempFoundedDate(competitor.foundedDate || "");
+                  }}
+                  className="text-red-500 hover:text-red-600"
+                  title="取消"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-600">
+                {competitor.foundedDate
+                  ? competitor.foundedDate.includes("-")
+                    ? `${competitor.foundedDate.split("-")[0]}年${competitor.foundedDate.split("-")[1]}月`
+                    : `${competitor.foundedDate}年`
+                  : "未设置"}
+              </p>
             )}
           </div>
         </div>

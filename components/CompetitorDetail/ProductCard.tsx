@@ -124,12 +124,12 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 产品材质
               </label>
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：医用硅胶、TPE、ABS等"
                 value={specs.material || ""}
                 onChange={(e) => setSpecs({ ...specs, material: e.target.value })}
+                rows={3}
               />
             </div>
 
@@ -137,12 +137,12 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 噪音值
               </label>
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：≤45dB"
                 value={specs.noiseLevel || ""}
                 onChange={(e) => setSpecs({ ...specs, noiseLevel: e.target.value })}
+                rows={3}
               />
             </div>
 
@@ -150,12 +150,12 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 使用时长
               </label>
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：60分钟"
                 value={specs.usageTime || ""}
                 onChange={(e) => setSpecs({ ...specs, usageTime: e.target.value })}
+                rows={3}
               />
             </div>
 
@@ -163,12 +163,12 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 充电时长
               </label>
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：2小时"
                 value={specs.chargingTime || ""}
                 onChange={(e) => setSpecs({ ...specs, chargingTime: e.target.value })}
+                rows={3}
               />
             </div>
 
@@ -176,26 +176,40 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 控制方式
               </label>
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：APP控制、按键控制、遥控器"
                 value={specs.controlMethod || ""}
                 onChange={(e) => setSpecs({ ...specs, controlMethod: e.target.value })}
+                rows={3}
               />
             </div>
 
-            <div className="md:col-span-2">
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 重量
               </label>
-              <input
-                type="text"
-                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：200g"
                 value={specs.weight || ""}
                 onChange={(e) => setSpecs({ ...specs, weight: e.target.value })}
+                rows={3}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                防水防尘等级
+              </label>
+              <textarea
+                className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                placeholder="如：IPX7、IPX4、IP67"
+                value={specs.ipRating || ""}
+                onChange={(e) => setSpecs({ ...specs, ipRating: e.target.value })}
+                rows={3}
+              />
+              <p className="text-xs text-gray-500 mt-1">例如：IPX7（防水7级）、IP67（防尘6级+防水7级）</p>
             </div>
           </div>
         </div>

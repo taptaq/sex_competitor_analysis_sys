@@ -413,7 +413,7 @@ const Dashboard: React.FC = () => {
                   value={newCompanyName}
                   onChange={(e) => setNewCompanyName(e.target.value)}
                   className="flex-1 text-sm p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-purple-500 outline-none"
-                  placeholder="例如: 杜蕾斯"
+                  placeholder="例如: 杜蕾斯、小怪兽、大人糖..."
                 />
                 <label className="flex items-center gap-1 cursor-pointer select-none">
                   <input

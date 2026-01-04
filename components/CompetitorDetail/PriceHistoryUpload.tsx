@@ -43,7 +43,11 @@ const PriceHistoryUpload: React.FC<PriceHistoryUploadProps> = ({
         }) as any[];
 
         // 解析价格数据，支持日期、到手价、页面价列
-        const priceData = jsonData
+        const priceData: Array<{
+          date: string;
+          finalPrice: number;
+          originalPrice?: number;
+        }> = jsonData
           .map((item) => {
             const dateStr = item["日期"] || "";
             const finalPriceValue = item["到手价"] || 0;
@@ -89,13 +93,11 @@ const PriceHistoryUpload: React.FC<PriceHistoryUploadProps> = ({
 
             return { date, finalPrice, originalPrice };
           })
-          .filter(
-            (item): item is {
-              date: string;
-              finalPrice: number;
-              originalPrice?: number;
-            } => item !== null
-          );
+          .filter((item) => item !== null) as Array<{
+            date: string;
+            finalPrice: number;
+            originalPrice?: number;
+          }>;
 
         allPriceData = [...allPriceData, ...priceData];
       }

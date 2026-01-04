@@ -83,6 +83,7 @@ export interface ProductSpecs {
   chargingTime?: string; // 充电时长，如 "2小时"
   controlMethod?: string; // 控制方式，如 "APP控制"、"按键控制"、"遥控器"
   weight?: string; // 重量，如 "200g"
+  ipRating?: string; // 防水防尘等级，如 "IPX7"、"IPX4"、"IP67" 等
 }
 
 export interface Product {
@@ -135,6 +136,7 @@ export interface Competitor {
   philosophy?: string[];
   focus?: 'Male' | 'Female' | 'Unisex';
   isDomestic?: boolean;
+  foundedDate?: string; // 创立日期，格式：YYYY-MM 或 YYYY
 }
 
 export enum ViewType {
