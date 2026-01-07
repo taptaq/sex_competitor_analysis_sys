@@ -65,7 +65,7 @@ const ProductKnowledgeBase: React.FC = () => {
     };
 
     // 提取类别关键词（常见产品类别）
-    const categoryKeywords = ['跳蛋', '震动棒', '伸缩棒', 'av棒', '飞机杯', '倒模', '按摩器', '训练器'];
+    const categoryKeywords = ['跳蛋', '震动棒', '伸缩棒', '缩阴球', 'av棒', '飞机杯', '倒模', '按摩器', '训练器', '阴茎环'];
     categoryKeywords.forEach((cat) => {
       if (lowerQuery.includes(cat.toLowerCase())) {
         conditions.categories.push(cat);

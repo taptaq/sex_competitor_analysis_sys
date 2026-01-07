@@ -282,7 +282,8 @@ async def ai_competitor(req: CompetitorRequest):
                     "value": { "type": "number" }
                 }
             },
-            "foundedDate": { "type": "string" }
+            "foundedDate": { "type": "string" },
+            "country": { "type": "string" }
         }
     }
 
@@ -299,9 +300,13 @@ async def ai_competitor(req: CompetitorRequest):
        - privacy (隐私包装与防漏光设计)
        - easeOfUse (操作便捷性与APP交互)
        - value (价格竞争力与耐用度)
-    5. foundedDate: 品牌的创立日期，格式为 "YYYY"（如 "2020"）。如果无法确定具体日期，请使用年份格式 "YYYY"。如果完全无法确定，可以返回空字符串 ""。
+    5. foundedDate: 品牌的创立日期，格式为 "YYYY-MM"（如 "2020-01"）或 "YYYY"（如 "2020"）。如果无法确定具体日期，请使用年份格式 "YYYY"。如果完全无法确定，可以返回空字符串 ""。"""
     
-    输出必须是合法的 JSON 格式。"""
+    country_instruction = ""
+    if not is_domestic:
+        country_instruction = "\n    6. country: 品牌所在国家（仅用于国际品牌，如：美国、日本、德国、英国等）。如果是中国品牌，返回空字符串。"
+    
+    prompt += country_instruction + "\n    \n    输出必须是合法的 JSON 格式。"""
 
     data = await ask_ai(prompt, schema)
     if 'id' not in data or data['id'] == '1':
@@ -309,9 +314,13 @@ async def ai_competitor(req: CompetitorRequest):
     return data
 
 # AI 2. Analyze Reviews
+class ReviewItem(BaseModel):
+    text: str
+    likeCount: Optional[int] = None
+
 class AnalyzeRequest(BaseModel):
     productName: str
-    reviews: List[str]
+    reviews: List[ReviewItem]
     isDomestic: bool = True
 
 @app.post("/api/ai/analyze")
@@ -348,19 +357,42 @@ async def ai_analyze(req: AnalyzeRequest):
         "required": ["pros", "cons", "summary", "prosKeywords", "consKeywords"]
     }
 
-    prompt = f"""你是一位专业的情趣用品行业用户体验分析师。请分析情趣用品 "{req.productName}" 的以下用户评价数据：
-    {chr(10).join(req.reviews)}
+    # 格式化评论数据，包含文本和点赞量
+    reviewTexts = []
+    totalLikes = 0
+    highLikeCount = 0
     
-    注意：每条评论可能包含主评论和追评内容（如追评1、追评2等），请综合分析主评论和所有追评内容，全面了解用户的真实体验和反馈。
+    for review in req.reviews:
+        likeCount = review.likeCount or 0
+        if likeCount > 0:
+            totalLikes += likeCount
+            if likeCount >= 5:  # 点赞量>=10的评论视为高点赞评论
+                highLikeCount += 1
+            reviewTexts.append(f"[点赞量: {likeCount}] {review.text}")
+        else:
+            reviewTexts.append(review.text)
+    
+    avgLikes = totalLikes / len(req.reviews) if req.reviews else 0
+    
+    prompt = f"""你是一位专业的情趣用品行业用户体验分析师。请分析情趣用品 "{req.productName}" 的以下用户评价数据：
+    {chr(10).join(reviewTexts)}
+    
+    注意：
+    1. 每条评论可能包含主评论和追评内容（如追评1、追评2等），请综合分析主评论和所有追评内容，全面了解用户的真实体验和反馈。
+    2. 评论数据中标注了每条评论的点赞量（如 [点赞量: 15]），点赞量高的评论通常代表更多用户的认同，请重点关注高点赞量评论中的观点和反馈。
+    3. 统计信息：共 {len(req.reviews)} 条评论，总点赞量 {totalLikes}，平均点赞量 {avgLikes:.1f}，高点赞量评论（≥5）共 {highLikeCount} 条。
+    4. 在分析时，请优先考虑高点赞量评论中的观点，这些观点往往更能代表大多数用户的真实感受。
     
     {"请结合中国市场的消费习惯和语境。" if req.isDomestic else "请结合全球市场的消费语境。"}
     
-    请输出 JSON 格式的深度分析报告，包含以下英文键名：
-    1. pros: 该款情趣用品的主要优点列表 (Array of Strings)。
-    2. cons: 该款情趣用品的主要改进点或吐槽点列表 (Array of Strings)。
-    3. summary: 对该情趣用品整体竞争力的简短总结 (String)。
-    4. prosKeywords: 好评点中的高频词列表 (Array of Objects with {{value: string, count: number}})。
-    5. consKeywords: 差评点中的高频词列表 (Array of Objects with {{value: string, count: number}})。"""
+    请输出 JSON 格式的深度分析报告，包含以下英文键名（但所有字符串值必须使用简体中文）：
+    1. pros: 该款情趣用品的主要优点列表 (Array of Strings，每个字符串必须使用中文)，优先参考高点赞量评论中的正面反馈。
+    2. cons: 该款情趣用品的主要改进点或吐槽点列表 (Array of Strings，每个字符串必须使用中文)，优先参考高点赞量评论中的负面反馈。
+    3. summary: 对该情趣用品整体竞争力的简短总结 (String，必须使用中文)，需结合点赞量数据说明用户认可度。
+    4. prosKeywords: 好评点中的高频词列表 (Array of Objects with {{value: string, count: number}}，value 字段必须使用中文)，优先提取高点赞量评论中的关键词。
+    5. consKeywords: 差评点中的高频词列表 (Array of Objects with {{value: string, count: number}}，value 字段必须使用中文)，优先提取高点赞量评论中的关键词。
+    
+    **重要：所有字符串值（pros 数组中的每个元素、cons 数组中的每个元素、summary、prosKeywords 和 consKeywords 数组中每个对象的 value 字段）都必须使用简体中文，不要使用英文。**"""
 
     return await ask_ai(prompt, schema)
 
@@ -748,7 +780,7 @@ async def ai_ocr_product(file: UploadFile = File(...)):
             {
                 "role": "system",
                 "content": [
-                    {"text": f"你是一位电商数据录入助手。请分析商品图片，提取以下信息并以严格的 JSON 格式返回：\n1. name: 商品名称 (String)\n2. price: 价格 (Number, 提取主要显示价格)\n3. category: 类别 (String, 必须是以下之一: 跳蛋, 震动棒, 伸缩棒, AV棒, 飞机杯, 倒模, 按摩器, 训练器, 其他)\n4. tags: 标签 (Array of Strings, 提取3-5个关键卖点)\n5. gender: 适用性别 (String, Enum: 'Male', 'Female', 'Unisex')\n\n如果无法识别某项，请留空或使用默认值。直接返回 JSON，不要包含 Markdown 标记。"}
+                    {"text": f"你是一位电商数据录入助手。请分析商品图片，提取以下信息并以严格的 JSON 格式返回：\n1. name: 商品名称 (String)\n2. price: 价格 (Number, 提取主要显示价格)\n3. category: 类别 (String, 必须是以下之一: 跳蛋, 震动棒, 伸缩棒, 缩阴球, AV棒, 飞机杯, 倒模, 按摩器, 训练器, 阴茎环, 其他)\n4. tags: 标签 (Array of Strings, 提取3-5个关键卖点)\n5. gender: 适用性别 (String, Enum: 'Male', 'Female', 'Unisex')\n\n如果无法识别某项，请留空或使用默认值。直接返回 JSON，不要包含 Markdown 标记。"}
                 ]
             },
             {
@@ -1038,7 +1070,7 @@ async def ai_rec_config(req: RecConfigRequest):
 
     ## 输出要求
     请直接输出一个完整的ProductConfig JSON对象，确保：
-    1. category 符合目标性别（男性: 飞机杯/前列腺按摩器; 女性: 震动棒/跳蛋/吮吸器）
+    1. category 符合目标性别（男性: 飞机杯/前列腺按摩器/阴茎环等; 女性: 震动棒/跳蛋/吮吸器等）
     2. background 和 features 简洁描述设计理念和核心卖点
     3. 所有数组字段（material, drive, mainControl, etc.）至少包含一个选项
     4. 确保选择的组件能满足所有必备功能
@@ -1122,10 +1154,11 @@ async def ai_price_analysis(req: PriceAnalysisRequest):
             "trend": { "type": "string" },
             "priceRange": { "type": "string" },
             "fluctuation": { "type": "string" },
+            "discountAnalysis": { "type": "string" },
             "recommendations": { "type": "array", "items": { "type": "string" } },
             "summary": { "type": "string" }
         },
-        "required": ["trend", "priceRange", "fluctuation", "recommendations", "summary"]
+        "required": ["trend", "priceRange", "fluctuation", "discountAnalysis", "recommendations", "summary"]
     }
 
     # 计算价格统计数据
@@ -1136,10 +1169,26 @@ async def ai_price_analysis(req: PriceAnalysisRequest):
     maxPrice = max(finalPrices) if finalPrices else req.currentPrice
     avgPrice = sum(finalPrices) / len(finalPrices) if finalPrices else req.currentPrice
     
+    # 计算优惠力度统计数据
+    discounts = []
+    for h in req.priceHistory:
+        if h.get('originalPrice') and h.get('finalPrice'):
+            discount = ((h.get('originalPrice') - h.get('finalPrice')) / h.get('originalPrice')) * 100
+            discounts.append(discount)
+    
+    avgDiscount = sum(discounts) / len(discounts) if discounts else 0
+    maxDiscount = max(discounts) if discounts else 0
+    minDiscount = min(discounts) if discounts else 0
+    hasDiscount = len(discounts) > 0
+    
     priceData = []
     for h in req.priceHistory:
+        discountInfo = ""
+        if h.get('originalPrice') and h.get('finalPrice'):
+            discount = ((h.get('originalPrice') - h.get('finalPrice')) / h.get('originalPrice')) * 100
+            discountInfo = f", 优惠力度: {discount:.1f}%"
         priceData.append(f"日期: {h.get('date')}, 到手价: ¥{h.get('finalPrice', 0):.2f}" + 
-                        (f", 页面价: ¥{h.get('originalPrice'):.2f}" if h.get('originalPrice') else ""))
+                        (f", 页面价: ¥{h.get('originalPrice'):.2f}" if h.get('originalPrice') else "") + discountInfo)
 
     prompt = f"""你是一位专业的情趣用品行业价格分析师。请分析以下产品的价格走势数据：
 
@@ -1153,7 +1202,18 @@ async def ai_price_analysis(req: PriceAnalysisRequest):
 - 最低到手价：¥{minPrice:.2f}
 - 最高到手价：¥{maxPrice:.2f}
 - 平均到手价：¥{avgPrice:.2f}
-- 价格波动幅度：{((maxPrice - minPrice) / minPrice * 100):.1f}%
+- 价格波动幅度：{((maxPrice - minPrice) / minPrice * 100):.1f}%"""
+    
+    discountStats = ""
+    if hasDiscount:
+        discountStats = f"""
+优惠力度统计：
+- 平均优惠力度：{avgDiscount:.1f}%
+- 最大优惠力度：{maxDiscount:.1f}%
+- 最小优惠力度：{minDiscount:.1f}%
+- 有优惠记录：{len(discounts)} 条（共 {len(req.priceHistory)} 条记录）"""
+    
+    prompt = prompt + discountStats + f"""
 
 {"请结合中国情趣用品市场的实际情况，包括电商平台（淘宝、天猫、京东、小红书等）的定价策略。" if req.isDomestic else "请结合全球情趣用品市场的定价策略。"}
 
@@ -1168,13 +1228,19 @@ async def ai_price_analysis(req: PriceAnalysisRequest):
 3. fluctuation: 价格波动分析（100-200字，必须使用中文），分析：
    - 价格波动的频率和幅度
    - 可能的促销策略或市场因素
-4. recommendations: 定价建议（Array of Strings，至少3条，每个字符串必须使用中文），包括：
+4. discountAnalysis: 优惠力度分析（150-250字，必须使用中文），分析：
+   - 优惠力度的整体水平和变化趋势
+   - 优惠策略的特点（如：是否经常打折、优惠幅度是否稳定等）
+   - 优惠力度与价格走势的关系
+   - 优惠策略对销量的可能影响
+   {"注意：如果数据中没有页面价信息，请说明无法分析优惠力度。" if not hasDiscount else ""}
+5. recommendations: 定价建议（Array of Strings，至少3条，每个字符串必须使用中文），包括：
    - 基于历史数据的定价建议
    - 促销时机建议
    - 价格优化建议
-5. summary: 综合分析总结（200-300字，必须使用中文）
+6. summary: 综合分析总结（200-300字，必须使用中文）
 
-**重要：所有字符串值（trend, priceRange, fluctuation, recommendations数组中的每个元素, summary）都必须使用简体中文，不要使用英文。**
+**重要：所有字符串值（trend, priceRange, fluctuation, discountAnalysis, recommendations数组中的每个元素, summary）都必须使用简体中文，不要使用英文。**
 请确保分析专业、深入且具有实际参考价值。"""
 
     return await ask_ai(prompt, schema)

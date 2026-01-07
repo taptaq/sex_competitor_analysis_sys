@@ -5373,77 +5373,283 @@
     },
     "products": [
       {
-        "id": "TENGA_EGG_01",
-        "name": "TENGA蛋系列 - 超薄波纹款",
-        "price": 59,
+        "id": "prod-1767774579308",
+        "name": "ATH标准版真空吮吸飞机杯",
+        "price": 67.7,
         "tags": [
-          "一次性使用",
-          "便携设计",
-          "超强刺激",
-          "入门首选"
+          "真空吮吸",
+          "螺旋型结构"
         ],
-        "competitorId": "Fleshlight_Sleeve"
-      },
-      {
-        "id": "TENGA_FLEX_CUP",
-        "name": "TENGA伸缩杯 - 标准款",
-        "price": 129,
-        "tags": [
-          "可重复使用",
-          "紧凑便携",
-          "内部纹理丰富",
-          "易清洗"
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=41960426739&pisk=gFASRVvdGHd2Hog-vuu4cSwhAU1BAqlwJy_pSeFzJ_CRJWtXj4XdYU5IRnj2ag8PwM1BShtP49yyGrQOPwELe6EYMit8TTRB-W_pJH0lY4D2rUfh9cowdf8krycIc6A5yShvoN7LyxW-Dgw06coZ_XM8k6iSbUzhRiOA5NCdygCpkq_GSzCdpaLxlwQU2MIJvE3fmw_8w7BLDrQC5kCdvThYHwbOJJFR2j3f-iId96KdMq_hDMCd9UYqEZzCmUgwIJs2tS5WyiNL9QhhFGs3LWNCQaLX9UIXuERfPTsOdeQiRCT9yCbBtVeCAeJJ4ZxI1m1vN3ORh6GQi_86H36XFDNfnKLM9t9mfRYMy39OBQhjPHtvSdfJwDVPqpLv9iR-8Ws9QFffoBo0wM9vpQWltun5lQT6Opsy75S142wQlOVClGujlJ2HZ9_Xf66ExKWRoZzKlqwaZTQcl63jlJ2heZbqQqgbQ7f..&rn=3df6684a0d9a5083d76721b26f0cc3fd&spm=a1z10.5-b-s.w4011-25428877037.58.4fc71207H7kT6F",
+        "competitorId": "Tenga",
+        "analysis": {
+          "pros": [
+            "真空吸力强，包裹感好",
+            "材质柔软舒适，无异味",
+            "清洗方便，易于维护",
+            "设计隐蔽，便于携带",
+            "物流速度快，服务好",
+            "品牌信誉高，质量可靠",
+            "刺激度适中，适合新手",
+            "性价比高，价格合理",
+            "隐私保护到位，包装保密",
+            "客服专业，推荐精准"
+          ],
+          "cons": [
+            "包装简陋，隐私保护差",
+            "质量差，易破损或开裂",
+            "尺寸太小，不适合较大用户",
+            "材质硬，使用不舒适",
+            "噪音大，影响体验",
+            "吸力调节孔设计缺陷",
+            "润滑油赠送不足或缺失",
+            "物流服务差，快递慢",
+            "价格偏高，性价比低",
+            "疑似假货或二手产品"
+          ],
+          "summary": "该情趣用品在真空吸力和包裹感方面获得部分用户认可，尤其在高点赞量评论中，正面反馈集中在柔软材质和便捷清洗上。然而，负面评价更为突出，高点赞量评论中频繁吐槽包装简陋、质量差和尺寸问题，导致整体用户认可度较低。平均点赞量仅2.5，表明多数用户不满意，产品在质量和隐私保护方面急需改进以提升竞争力。",
+          "prosKeywords": [
+            {
+              "value": "吸力",
+              "count": 45
+            },
+            {
+              "value": "柔软",
+              "count": 38
+            },
+            {
+              "value": "清洗",
+              "count": 32
+            },
+            {
+              "value": "包裹感",
+              "count": 28
+            },
+            {
+              "value": "物流",
+              "count": 25
+            },
+            {
+              "value": "品牌",
+              "count": 22
+            },
+            {
+              "value": "隐蔽",
+              "count": 18
+            },
+            {
+              "value": "刺激",
+              "count": 15
+            },
+            {
+              "value": "性价比",
+              "count": 12
+            },
+            {
+              "value": "客服",
+              "count": 10
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "包装",
+              "count": 120
+            },
+            {
+              "value": "质量",
+              "count": 95
+            },
+            {
+              "value": "尺寸",
+              "count": 70
+            },
+            {
+              "value": "硬",
+              "count": 55
+            },
+            {
+              "value": "噪音",
+              "count": 40
+            },
+            {
+              "value": "破损",
+              "count": 38
+            },
+            {
+              "value": "润滑油",
+              "count": 35
+            },
+            {
+              "value": "物流差",
+              "count": 30
+            },
+            {
+              "value": "价格",
+              "count": 25
+            },
+            {
+              "value": "假货",
+              "count": 20
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260107/695e1782b62a5.png",
+        "sales": 100000,
+        "priceHistory": [
+          {
+            "date": "2025-05-18",
+            "finalPrice": 68,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-06-01",
+            "finalPrice": 61.2,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-06-06",
+            "finalPrice": 68,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-06-07",
+            "finalPrice": 68,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-06-27",
+            "finalPrice": 72,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-07-24",
+            "finalPrice": 72,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-08-20",
+            "finalPrice": 72,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-08-24",
+            "finalPrice": 72,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-09-11",
+            "finalPrice": 68.4,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-09-24",
+            "finalPrice": 68.4,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-09-25",
+            "finalPrice": 68.4,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-09-26",
+            "finalPrice": 68.4,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-10-11",
+            "finalPrice": 69,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-10-14",
+            "finalPrice": 69,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-10-29",
+            "finalPrice": 61.2,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-11-10",
+            "finalPrice": 61.2,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-11-17",
+            "finalPrice": 67.7,
+            "originalPrice": 77
+          },
+          {
+            "date": "2025-11-20",
+            "finalPrice": 69,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-12-01",
+            "finalPrice": 69,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-12-04",
+            "finalPrice": 69,
+            "originalPrice": 80
+          },
+          {
+            "date": "2025-12-22",
+            "finalPrice": 67.7,
+            "originalPrice": 77
+          },
+          {
+            "date": "2025-12-29",
+            "finalPrice": 69,
+            "originalPrice": 80
+          },
+          {
+            "date": "2026-01-03",
+            "finalPrice": 69,
+            "originalPrice": 80
+          },
+          {
+            "date": "2026-01-06",
+            "finalPrice": 67.7,
+            "originalPrice": 77
+          },
+          {
+            "date": "2026-01-07",
+            "finalPrice": 67.7,
+            "originalPrice": 77
+          }
         ],
-        "competitorId": "MysteryVibrator_MaleCup"
-      },
-      {
-        "id": "TENGA_3D_CUP",
-        "name": "TENGA 3D杯 - 极致紧致款",
-        "price": 159,
-        "tags": [
-          "立体结构",
-          "强吸附感",
-          "高弹性材质",
-          "深度刺激"
-        ],
-        "competitorId": "Fleshlight_Quickshot"
-      },
-      {
-        "id": "TENGA_SPINNER",
-        "name": "TENGA旋转大师",
-        "price": 299,
-        "tags": [
-          "电动旋转",
-          "多档调节",
-          "静音马达",
-          "高端体验"
-        ],
-        "competitorId": "Kiiroo_Onyx"
-      },
-      {
-        "id": "TENGA_VACUUM_PUMP",
-        "name": "TENGA真空增压杯",
-        "price": 249,
-        "tags": [
-          "负压技术",
-          "硬度增强",
-          "手动控制",
-          "训练辅助"
-        ],
-        "competitorId": "NPG_PumpSystem"
+        "launchDate": "2014-07",
+        "gender": "Male",
+        "specs": {
+          "dimensions": "长69mm宽69mm高120mm",
+          "weight": "170g",
+          "material": "TPE",
+          "noiseLevel": "无",
+          "usageTime": "无",
+          "chargingTime": "无",
+          "controlMethod": "手动",
+          "ipRating": "无"
+        }
       }
     ],
     "isDomestic": false,
-    "focus": ""
+    "focus": "Male",
+    "country": "日本",
+    "foundedDate": "2005"
   },
   {
     "id": "LELO",
     "name": "LELO",
     "domain": "https://www.lelo.com",
     "philosophy": [
-      "将高端设计与人体工学结合，打造艺术品级的情趣用品，提升亲密体验的质感与尊严。",
-      "倡导健康、开放的性观念，通过创新科技促进情感连接与自我探索。",
-      "坚持环保材料与可持续生产，确保产品安全、可信赖且对环境负责。"
+      "定位高端，被誉为“情趣用品中的CHANEL”",
+      "协助知晓满足感超越性別、性取向、种族和年龄的人士",
+      "设计美学优先，将情趣用品从“功能性工具”提升为“生活艺术品”"
     ],
     "focus": "Unisex",
     "sentiment": {
@@ -5455,46 +5661,2054 @@
     },
     "products": [
       {
-        "id": "LELO_SONA_2",
-        "name": "sona2代声波震动器",
-        "price": 189,
+        "id": "prod-1767596673940",
+        "name": "beads缩阴球",
+        "price": 238,
         "tags": [
-          "女性专用",
-          "声波穿透技术",
-          "防水设计",
-          "静音运行",
-          "高端硅胶材质"
+          "修复紧致盆底肌",
+          "内置重力珠",
+          "多种组合定制化训练"
         ],
-        "competitorId": "LELO"
+        "category": "缩阴球",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=38558505572&pisk=gW_iYSi3hpMSp1MUrx8_bySSH4qpWFTXnt3vHEp4YpJBkGBvWMAVptYvksy1nZvFGGF6DRGcxO1yXtfb1IJV3tvAXkUR11TXu8C0yzC67xkWyOAwQyP2wIha9hynbyYvu8e8oDhefRLV6PO_qwoeNpRZ7ERat2R9wER2_EPHLIAW3VW2uWVHiCJqunuZTyRkZEuZuCuETQdqbcuw0WfedI823t-at6JBgEJ2rwwpBdJf8-EoHEPlAN7HshvPtugqon3JbLJ9L8uV3C2WU1JnuqJPhMsFgtymkUS5KZxPer0BW_je8Cj3gDJwqGW9Ot4o7d7h_NJO7J39QN1F2ZBUgqJcYg-V41yKxBjF6wxdz80DfMW1VnbYpzTO2_QX4NziFpKWiTYNxJuGUg7KY0zQUqOUMwojchRBtLHKumZrl0c-uWVn4CxwOCuLtWmbShRBtLF3t08XbBOZJ&rn=57ae31d9324b3198dc6868000b829269&spm=a1z10.3-b.w4011-16623383610.68.37d56363LW586T&sku_properties=251391307%3A3259958",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "显著改善盆底肌紧致度，提升肌肉控制力",
+            "使用后明显减少漏尿问题，尤其适合产后女性",
+            "佩戴舒适，长时间使用几乎无感",
+            "设计人性化，支持多种重量组合，便于渐进式训练",
+            "产品质量高，材质安全，易于清洁和消毒",
+            "包装精美且私密性强，适合作为礼物赠送",
+            "配有便携收纳袋和润滑凝胶样品，使用体验更佳",
+            "可有效增强性爱时的肌肉收缩感和亲密体验"
+          ],
+          "cons": [
+            "部分用户反映球体噪音明显，安静环境中可听见咔哒声",
+            "尺寸选择混乱，迷你款对某些用户仍过大或过小",
+            "不同颜色球体仅重量不同，但宣传称“三种尺寸”存在误导",
+            "硅胶吊带易丢失或损坏，且官方不提供替换配件",
+            "较轻的球体对肌肉较强者缺乏挑战性，锻炼效果有限",
+            "插入后可能滑落或移位，导致不适甚至挤压疼痛",
+            "无法退货，出于卫生原因购买后难以退换",
+            "存在发错货情况（如收到蜡烛而非产品），品控管理差"
+          ],
+          "summary": "综合102条用户评价与270次点赞可见，该产品在盆底肌修复和用户体验方面获得广泛认可，尤其是高点赞量评论普遍肯定其有效性与高品质设计。尽管存在尺寸不适、噪音和售后缺失等问题，但整体用户满意度较高，是一款具备市场竞争力的专业级缩阴训练产品。",
+          "prosKeywords": [
+            {
+              "value": "盆底肌紧致",
+              "count": 8
+            },
+            {
+              "value": "改善漏尿",
+              "count": 7
+            },
+            {
+              "value": "佩戴舒适",
+              "count": 6
+            },
+            {
+              "value": "质量好",
+              "count": 6
+            },
+            {
+              "value": "渐进训练",
+              "count": 5
+            },
+            {
+              "value": "易于清洁",
+              "count": 5
+            },
+            {
+              "value": "增强性爱感受",
+              "count": 4
+            },
+            {
+              "value": "包装精美",
+              "count": 4
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "噪音大",
+              "count": 9
+            },
+            {
+              "value": "尺寸不合适",
+              "count": 8
+            },
+            {
+              "value": "误导宣传",
+              "count": 6
+            },
+            {
+              "value": "无法退货",
+              "count": 6
+            },
+            {
+              "value": "吊带丢失不补",
+              "count": 5
+            },
+            {
+              "value": "容易滑落",
+              "count": 5
+            },
+            {
+              "value": "重量太轻",
+              "count": 4
+            },
+            {
+              "value": "发错货",
+              "count": 4
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260105/695b5800ec270.png",
+        "sales": 10000,
+        "priceHistory": [
+          {
+            "date": "2025-01-13",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-01-18",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-01-25",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-01-26",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-01-27",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-01-30",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-02-01",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-02-03",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-15",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-17",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-18",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-19",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-22",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-23",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-25",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-27",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-05-31",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-06-01",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-06-02",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-06-06",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-06-10",
+            "finalPrice": 238,
+            "originalPrice": 268
+          },
+          {
+            "date": "2025-06-12",
+            "finalPrice": 238,
+            "originalPrice": 268
+          }
+        ],
+        "launchDate": "2003-12",
+        "gender": "Female",
+        "specs": {
+          "weight": "不同颜色重量不一样：28g / 38g / 60g",
+          "ipRating": "IP",
+          "material": "硅胶",
+          "dimensions": "不同颜色直径不一样：29mm / 35mm"
+        }
       },
       {
-        "id": "LELO_HUGO_2",
-        "name": "雨果2代男性自慰器",
-        "price": 169,
+        "id": "prod-1767608318149",
+        "name": "SONA3 汐汐贝吮吸跳蛋",
+        "price": 669,
         "tags": [
-          "男性专用",
-          "自动抽插功能",
-          "可调节吸力",
-          "封闭式结构",
-          "易于清洁"
+          "异地遥控",
+          "声波吮吸",
+          "16级强度10种模式",
+          "强压增速",
+          "4种互动模式（旋转手机/摇摆手机/手动调节/语音控制）",
+          "更大更深的吮吸口"
         ],
-        "competitorId": "Fleshlight_Quickshot"
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=601894799080&pisk=g9kjmDGTFVHyBH-vWZ-PP21hXI2113JeGGZtxcBVX-evfOgor5BZ0Ix6fzgguSyYuOwsfV0a6AzZCiDSROW2oImOCRy98eJeLmA0IRLU8UDrhZq4j1pa6tE8nl8GamdyLmm0Si_9YbpeCUJH2FCTWVe8ylqUBsCYX3N8YleOH5Bx2zUuXReT6On82lZhWiETD318jl_ODPBveLEgDPeTBVe8woz8WRFxW0K7jzUt_lR04GaocHkJ3kT6aEdYkOBtFoNJamU8pJxa0Stt0zpN8pqYGsoYPOBtFfHi7RUBFaUrXDcTNA9c3RmrOVGtyhBT5bEIRku2etwtw4MQ90YCnrG-oAw4tds_VXi-lYe6Oiqrh0H31xYfergo2XympUXsJ0oEn7D6RaUigk28cbtOwrFO416URr-11gNhCuaeV31GsxV_V2geezBbMuqPX3t5TtVYquw9V31GsSEu4B-WV6Wc.&rn=57ae31d9324b3198dc6868000b829269&spm=a1z10.3-b.w4011-16623383610.73.37d56363LW586T",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "外观简约大气，质感高级，配色和设计感出众",
+            "吮吸力强劲且刺激到位，能快速达到高潮，体验感强烈",
+            "操作简单直观，档位丰富，支持APP远程控制，使用便捷",
+            "运行声音小，隐私性好，关门后几乎听不到，适合非独居用户",
+            "防水性能好，清洗方便，可重复使用且卫生",
+            "小巧便携，握感舒适，符合人体工学设计，解放双手",
+            "包装隐秘，物流快速，信息保护到位，购物体验安心",
+            "支持设备锁功能，隐私安全有保障，贴心实用",
+            "续航时间长，充电快，兼容旧款充电器，使用成本低"
+          ],
+          "cons": [
+            "价格虚高，性价比低，相比两三百元的国产品品无明显优势",
+            "部分用户认为三代不如二代好用，吮吸口设计变大或变小影响体验",
+            "震感过强，最低档位也过于刺激，敏感用户难以适应",
+            "存在自动切换模式或运行中停止的问题，稳定性欠佳",
+            "与低价产品相比性能提升不明显，贵价难服众",
+            "部分用户未感受到明显乐趣，需较长时间摸索使用方法",
+            "充电接口设计存疑，防水密封性可能不足，存在安全隐患"
+          ],
+          "summary": "SONA3 汐汐贝整体用户认可度较高，尤其在高点赞量评论中展现出强劲的市场口碑。尽管存在价格争议和个别用户体验落差，但其出色的质感、强大的吮吸性能、静音设计及品牌信赖度使其在高端情趣用品市场具备显著竞争力。8条高赞好评（含24赞爆款差评）表明用户群体分化明显：忠实用户高度推崇，而对性价比敏感者则强烈质疑。总体来看，该产品在高端定位下仍保持较强用户粘性和推荐意愿。",
+          "prosKeywords": [
+            {
+              "value": "吮吸力强",
+              "count": 9
+            },
+            {
+              "value": "声音小",
+              "count": 7
+            },
+            {
+              "value": "操作简单",
+              "count": 6
+            },
+            {
+              "value": "质感好",
+              "count": 6
+            },
+            {
+              "value": "清洗方便",
+              "count": 5
+            },
+            {
+              "value": "便携小巧",
+              "count": 5
+            },
+            {
+              "value": "APP控制",
+              "count": 4
+            },
+            {
+              "value": "刺激到位",
+              "count": 4
+            },
+            {
+              "value": "包装隐秘",
+              "count": 4
+            },
+            {
+              "value": "续航长",
+              "count": 3
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "价格虚高",
+              "count": 6
+            },
+            {
+              "value": "不如二代",
+              "count": 5
+            },
+            {
+              "value": "震感太强",
+              "count": 5
+            },
+            {
+              "value": "性价比低",
+              "count": 4
+            },
+            {
+              "value": "自动变模式",
+              "count": 3
+            },
+            {
+              "value": "噪音大",
+              "count": 2
+            },
+            {
+              "value": "充电接口问题",
+              "count": 2
+            },
+            {
+              "value": "需摸索使用",
+              "count": 2
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260105/695b84ec31a19.png",
+        "sales": 10000,
+        "priceHistory": [
+          {
+            "date": "2025-05-22",
+            "finalPrice": 798,
+            "originalPrice": 918
+          },
+          {
+            "date": "2025-05-26",
+            "finalPrice": 798,
+            "originalPrice": 918
+          },
+          {
+            "date": "2025-05-27",
+            "finalPrice": 798,
+            "originalPrice": 918
+          },
+          {
+            "date": "2025-06-08",
+            "finalPrice": 798,
+            "originalPrice": 918
+          },
+          {
+            "date": "2025-06-09",
+            "finalPrice": 798,
+            "originalPrice": 918
+          },
+          {
+            "date": "2025-06-12",
+            "finalPrice": 798,
+            "originalPrice": 918
+          },
+          {
+            "date": "2025-06-14",
+            "finalPrice": 798,
+            "originalPrice": 918
+          },
+          {
+            "date": "2025-07-15",
+            "finalPrice": 879,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-07-16",
+            "finalPrice": 879,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-07-19",
+            "finalPrice": 879,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-07-20",
+            "finalPrice": 879,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-07-22",
+            "finalPrice": 879,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-07-24",
+            "finalPrice": 879,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-07-27",
+            "finalPrice": 879,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-18",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-20",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-22",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-24",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-25",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-26",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-27",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-28",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-29",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-09-30",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-01",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-02",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-03",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-04",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-05",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-06",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-07",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-08",
+            "finalPrice": 881,
+            "originalPrice": 979
+          },
+          {
+            "date": "2025-10-23",
+            "finalPrice": 669,
+            "originalPrice": 794
+          },
+          {
+            "date": "2025-10-24",
+            "finalPrice": 669,
+            "originalPrice": 794
+          },
+          {
+            "date": "2025-10-25",
+            "finalPrice": 669,
+            "originalPrice": 794
+          },
+          {
+            "date": "2025-10-27",
+            "finalPrice": 669,
+            "originalPrice": 794
+          }
+        ],
+        "launchDate": "2025-09",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长112mm宽51mm高55mm\n吮吸外围：22mm\n吮吸口深度：18mm\n吮吸腔口：10.8mm",
+          "material": "硅胶+ABS",
+          "noiseLevel": "50db",
+          "weight": "128g",
+          "ipRating": "IPX7",
+          "usageTime": "2小时",
+          "controlMethod": "APP+按键",
+          "chargingTime": "2小时"
+        }
       },
       {
-        "id": "LELO_TIANI_4",
-        "name": "蒂艾4代情侣遥控震动环",
-        "price": 159,
+        "id": "prod-1767609854058",
+        "name": "Mia3 米娅三代口红跳蛋",
+        "price": 519,
         "tags": [
-          "情侣共用",
-          "远程控制",
-          "柔性贴合设计",
-          "无线同步震动",
-          "充电式续航"
+          "口红造型",
+          "8频震动",
+          "USB接口直插充电",
+          "SilentDrive 静音马达技术"
         ],
-        "competitorId": "WeVibe_Vector"
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=38570316780&pisk=g7sScD_pc6I4_V289byqG1gipzxIO-raPv9dI9nrp3K8dD1cienFUz2QdI1HaU-JaDtCd6feJMRFAYjf1DozZzXKAH-L_5rabT4kxHFw_SjVVbvpLXEE2QEvqpPnuTU4bTXktYGLQZEaASzMhy3p96KvMpvwv43Jp-TvQpKK2enRHIdDpHKpJDBvHp9i9Yppe-OvEdGJ9QL-kjpkpHdd9ehYhpAveHKd9teXKf8urKkBiTwNDuJ_OlZuaQoKvi9WkrWJM_50LKTSYTOYqjVJeUgPeIiKvi_dx6-p1oGvg9BGJEsQq0-h3N1CJseKvB_vC19NaonWvZCffFB010A5k_jB4FqIdK_1H_svAPMk3g6AjesuNmd5itQwqGFmA1BVQgYcA5GvtaJMDL_bpqdJJg8jbCOzd2MXSD9X_-wj-2jkRK11_odxVUpD3vebhVokyKvXv-wj-2YJnKzah-gZq&rn=57ae31d9324b3198dc6868000b829269&spm=a1z10.3-b.w4011-16623383610.84.37d56363LW586T",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "充电式设计方便，USB头设计便捷，无需额外携带充电线",
+            "体积小巧，便于携带和收纳，适合旅行或日常随身使用",
+            "外观设计时尚低调，形似口红，具有高隐蔽性和美观性",
+            "震动模式丰富，提供多种档位选择，满足不同偏好",
+            "运行非常安静，低档位几乎无声，适合私密环境使用",
+            "防水性能良好，可在洗澡时安全使用",
+            "采用高品质、身体安全材质，触感顺滑舒适",
+            "客服服务耐心细致，响应及时，提升购买体验"
+          ],
+          "cons": [
+            "部分用户认为震感偏弱，尤其在最高档位也缺乏足够强度",
+            "价格偏高，与实际体验不符，性价比受到质疑",
+            "开关按钮设计不佳，操作困难，启动过程不顺畅",
+            "盖子存在质量问题，容易戴不上或无法闭合",
+            "仅支持插电使用时关机，存在使用逻辑缺陷",
+            "设置菜单繁琐复杂，影响使用便利性",
+            "品牌售后政策严格，不支持退货，引发用户不满",
+            "相比早期型号（如第一代Mia），性能有所退步"
+          ],
+          "summary": "尽管有部分用户对 Mia3 米娅三代的震感强度和价格提出质疑，但整体来看，其小巧便携的设计、出色的静音效果、优质的材质和良好的防水性能获得了较多认可。虽然高点赞量评论数量较少（最高点赞量仅为2），但从高频反馈看，‘安静’‘便携’‘隐蔽’‘质感好’等优点被反复提及，表明产品在高端私密场景中具备较强竞争力。然而，负面评价集中于‘震感不足’‘盖子缺陷’和‘不可退货’等问题，可能影响口碑扩散。总体而言，该产品在注重隐私与设计感的用户群体中仍具吸引力，但需优化核心性能与售后服务以提升用户满意度。",
+          "prosKeywords": [
+            {
+              "value": "小巧",
+              "count": 14
+            },
+            {
+              "value": "安静",
+              "count": 13
+            },
+            {
+              "value": "便携",
+              "count": 12
+            },
+            {
+              "value": "设计时尚",
+              "count": 10
+            },
+            {
+              "value": "USB充电",
+              "count": 9
+            },
+            {
+              "value": "防水",
+              "count": 8
+            },
+            {
+              "value": "震动模式多",
+              "count": 7
+            },
+            {
+              "value": "质感好",
+              "count": 7
+            },
+            {
+              "value": "隐蔽性强",
+              "count": 6
+            },
+            {
+              "value": "客服好",
+              "count": 5
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "震感弱",
+              "count": 11
+            },
+            {
+              "value": "贵",
+              "count": 9
+            },
+            {
+              "value": "盖子问题",
+              "count": 7
+            },
+            {
+              "value": "操作繁琐",
+              "count": 6
+            },
+            {
+              "value": "不能退货",
+              "count": 5
+            },
+            {
+              "value": "开关难用",
+              "count": 5
+            },
+            {
+              "value": "性价比低",
+              "count": 5
+            },
+            {
+              "value": "性能不如前代",
+              "count": 4
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260105/695b94db8faa9.png",
+        "sales": 6000,
+        "priceHistory": [
+          {
+            "date": "2025-01-16",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-01-17",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-01-21",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-01-22",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-01-24",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-01-29",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-01-31",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-02-01",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-02-02",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-02-03",
+            "finalPrice": 499,
+            "originalPrice": 559
+          },
+          {
+            "date": "2025-05-15",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-05-17",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-05-21",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-05-23",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-05-26",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-05-31",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-06-03",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-06-10",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-06-15",
+            "finalPrice": 519,
+            "originalPrice": 579
+          },
+          {
+            "date": "2025-06-19",
+            "finalPrice": 519,
+            "originalPrice": 579
+          }
+        ],
+        "launchDate": "2023-10",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长111mm宽22mm高22mm",
+          "weight": "36g",
+          "chargingTime": "2小时",
+          "usageTime": "1.5小时",
+          "noiseLevel": "45db",
+          "controlMethod": "按键",
+          "ipRating": "IPX7",
+          "material": "硅胶"
+        }
+      },
+      {
+        "id": "prod-1767611253172",
+        "name": "gigi3 G点按摩震动棒",
+        "price": 929,
+        "tags": [
+          "异地操控",
+          "G点刺激",
+          "10重震感"
+        ],
+        "category": "震动棒",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=38558041592&pisk=gBSKcf2R6RHdTkE_MD4gZ8oAdjeiyPXeX6WjqQAnP1CO_sKktTOl23CN1UsHx9f9NsfJEMjlFYp5sHTP-QAHw3BPMRV0moXFL3-3iSqDmpHK_nlIOeGofO9X2ps6IwtFL3-7wAm7ooBFtwkthY9WCRpkUQg5NpZs5CJoRQ1WOFG6UL-WN_1W5A9yhLGIV2gsfCJrN29IVO96EKHBF_t7BF9W1QtWR_6_BLR6NfRqbQzWi0Qn2A58Cfw1O_s9pedfBroS2VJiiQBID0nWWNhvM9grV0s9peI9Z6yQF3_CK1LcJSnpm9_VaK1IOWpOvtIRl1Ziv3B1lgK1f5MMOZWO2HjQEkt1v6IBW_MjRe_VtZTOjWnwGN6OEFQaU2AluL1yugVqYB653i7DDuHJBZB6XgoRmiBCCjAvE2wTB4uyRd5MARHMCc3rJdd0I6grzF32BI2T84uyRdJ9iRxiz48tu&rn=57ae31d9324b3198dc6868000b829269&spm=a1z10.3-b.w4011-16623383610.89.37d56363LW586T",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "静音效果出色，使用时不用担心被他人听到",
+            "材质高级，硅胶柔软顺滑，贴肤感舒适",
+            "设计符合人体工学，能够精准刺激G点",
+            "支持防水使用，可在淋浴或浴缸中使用",
+            "电池续航时间长，充电一次可多次使用",
+            "可通过手机应用远程控制，增加伴侣互动乐趣",
+            "外观精致美观，颜色优雅，适合做礼物",
+            "清洁方便，使用后冲洗即可保持卫生",
+            "多档震动模式，满足不同强度需求",
+            "体积小巧便携，适合旅行或日常携带"
+          ],
+          "cons": [
+            "价格偏高，部分用户认为性价比不足",
+            "必须依赖手机应用才能解锁全部功能，强制注册令人不适",
+            "充电接口为老旧探针式设计，非主流USB-C，且影响防水性能",
+            "说明书印刷字体过小，内容简略，需在线下载完整指南",
+            "应用需要提供过多个人数据，存在隐私顾虑",
+            "按键过于灵敏，容易误触导致模式切换",
+            "部分用户反馈初次使用后出现尿路感染，可能存在卫生隐患",
+            "应用连接不稳定，偶有断连或配对失败问题",
+            "充电线较短，使用不便",
+            "低档位震动强度不足，前几档体验感较弱"
+          ],
+          "summary": "综合73条用户评论与点赞量分析，该产品在高点赞评论中展现出极强的用户认可度，尤其在静音性、材质质感、人体工学设计和应用互联体验方面表现突出。尽管仅有1条评论点赞量超过5，但其高频正面反馈高度集中于‘高品质’‘静音’‘舒适’等关键词，反映出核心优势已被广泛认同。然而，价格偏高、强制使用应用、隐私担忧及充电设计落后等问题在多条评论中反复提及，成为阻碍大众接受的主要障碍。整体来看，这是一款面向高端市场的精品，适合追求品质与仪式感的用户，但在用户体验细节上仍有优化空间。",
+          "prosKeywords": [
+            {
+              "value": "静音",
+              "count": 18
+            },
+            {
+              "value": "材质好",
+              "count": 16
+            },
+            {
+              "value": "设计好",
+              "count": 14
+            },
+            {
+              "value": "防水",
+              "count": 12
+            },
+            {
+              "value": "续航长",
+              "count": 11
+            },
+            {
+              "value": "多模式",
+              "count": 10
+            },
+            {
+              "value": "易清洁",
+              "count": 9
+            },
+            {
+              "value": "应用控制",
+              "count": 9
+            },
+            {
+              "value": "小巧便携",
+              "count": 8
+            },
+            {
+              "value": "手感舒适",
+              "count": 8
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "价格高",
+              "count": 15
+            },
+            {
+              "value": "强制应用",
+              "count": 13
+            },
+            {
+              "value": "隐私问题",
+              "count": 11
+            },
+            {
+              "value": "充电不便",
+              "count": 10
+            },
+            {
+              "value": "说明书差",
+              "count": 9
+            },
+            {
+              "value": "按键敏感",
+              "count": 8
+            },
+            {
+              "value": "防水存疑",
+              "count": 7
+            },
+            {
+              "value": "连接不稳定",
+              "count": 6
+            },
+            {
+              "value": "低档无力",
+              "count": 5
+            },
+            {
+              "value": "卫生风险",
+              "count": 4
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260105/695b99e07b7bf.png",
+        "sales": 3000,
+        "priceHistory": [
+          {
+            "date": "2025-01-01",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-01-04",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-01-05",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-01-10",
+            "finalPrice": 789,
+            "originalPrice": 909
+          },
+          {
+            "date": "2025-01-14",
+            "finalPrice": 789,
+            "originalPrice": 909
+          },
+          {
+            "date": "2025-01-15",
+            "finalPrice": 789,
+            "originalPrice": 909
+          },
+          {
+            "date": "2025-01-26",
+            "finalPrice": 789,
+            "originalPrice": 909
+          },
+          {
+            "date": "2025-01-29",
+            "finalPrice": 789,
+            "originalPrice": 909
+          },
+          {
+            "date": "2025-05-14",
+            "finalPrice": 770,
+            "originalPrice": 900
+          },
+          {
+            "date": "2025-05-15",
+            "finalPrice": 770,
+            "originalPrice": 900
+          },
+          {
+            "date": "2025-06-10",
+            "finalPrice": 780,
+            "originalPrice": 900
+          },
+          {
+            "date": "2025-06-12",
+            "finalPrice": 780,
+            "originalPrice": 900
+          },
+          {
+            "date": "2025-06-16",
+            "finalPrice": 780,
+            "originalPrice": 900
+          },
+          {
+            "date": "2025-06-19",
+            "finalPrice": 780,
+            "originalPrice": 900
+          },
+          {
+            "date": "2025-07-15",
+            "finalPrice": 839,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-07-18",
+            "finalPrice": 839,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-07-19",
+            "finalPrice": 839,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-07-22",
+            "finalPrice": 839,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-07-23",
+            "finalPrice": 839,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-07-25",
+            "finalPrice": 839,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-07-29",
+            "finalPrice": 839,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-09-18",
+            "finalPrice": 845,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-09-20",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-09-22",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-09-24",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-09-26",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-09-28",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-09-30",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-10-02",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-10-04",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-10-06",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-10-08",
+            "finalPrice": 835,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-10-10",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-10-11",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-10-13",
+            "finalPrice": 831,
+            "originalPrice": 841
+          },
+          {
+            "date": "2025-10-15",
+            "finalPrice": 831,
+            "originalPrice": 841
+          },
+          {
+            "date": "2025-10-17",
+            "finalPrice": 831,
+            "originalPrice": 841
+          },
+          {
+            "date": "2025-10-19",
+            "finalPrice": 831,
+            "originalPrice": 841
+          },
+          {
+            "date": "2025-10-21",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-10-23",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-10-25",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-10-27",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-10-29",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-10-31",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-02",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-04",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-06",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-08",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-10",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-12",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-14",
+            "finalPrice": 780,
+            "originalPrice": 790
+          },
+          {
+            "date": "2025-11-17",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-11-19",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-11-20",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-11-22",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-11-24",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-11-26",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-11-27",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-11-29",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-12-01",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-12-03",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-12-05",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-12-08",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-12-10",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-12-12",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-12-14",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-12-17",
+            "finalPrice": 929,
+            "originalPrice": 939
+          },
+          {
+            "date": "2025-12-20",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-12-25",
+            "finalPrice": 810,
+            "originalPrice": 820
+          },
+          {
+            "date": "2025-12-27",
+            "finalPrice": 929,
+            "originalPrice": 939
+          }
+        ],
+        "launchDate": "2024-09",
+        "gender": "Female",
+        "specs": {
+          "material": "硅胶+ABS",
+          "dimensions": "长163mm宽35mm高42mm",
+          "weight": "87g",
+          "noiseLevel": "50",
+          "chargingTime": "2小时",
+          "controlMethod": "APP+按键",
+          "ipRating": "IPX7",
+          "usageTime": "2小时"
+        }
+      },
+      {
+        "id": "prod-1767667247611",
+        "name": "lyla2跳蛋",
+        "price": 629,
+        "tags": [
+          "体感遥控器操控震动（12m）",
+          "8种震动模式组合"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=38581529147&pisk=gJ2ic_Ohl2TWcZLFEEk1_9PWkLfL6AMjorpxkx3VT2uIH5UxBWm4JrDxHo7_o-0Uc5IsMNt0tPZr6rqffmu4ur0Y66B8flMj3aEceTEsQE8SercZ_XkUA0Rwb6hZrCutnaQRetfwYxbGylL6qw2Eq0kqbVk2TMm-jIkqgcrFxmov7quaukSnRmLquql28Hot2Ckq7KJeYmno0hlZueSnc2uq3xzqLMmj8qkq3f-5JV3ZlJ7AZEHVqxJVumcizluHEkwnbd3dFVp4jJiaL-Wr8KoLKccizlyP6Boom7yo1z7p6VPuMzm8W9Jgrlzgabyw8wDbv74mqRSyZq4_YRhUQidSAxNaaAycrFriZJytCWbke4PQ0-cUfaASvSr8BS4ORKuTZkznwJLpevygSRlnUgzpTQWCzKiFDJRXGfoIx4Lp3I1yhQxJ3MjHaccZAcJdxMAfIfoIx4IhxQkj_Diwp&rn=57ae31d9324b3198dc6868000b829269&spm=a1z10.3-b.w4011-16623383610.97.37d56363LW586T",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "产品材质优良，手感舒适，硅胶质感顺滑且坚固",
+            "振动强度足够，模式多样，能够提供令人满意的体验",
+            "外观设计精致小巧，颜色不俗气，便于携带和旅行使用",
+            "充电方便快捷，电池续航表现良好，可长时间使用",
+            "防水性能优秀，清洁简单，适合多种场景使用",
+            "情侣互动体验极佳，遥控功能增添情趣和神秘感",
+            "包装精美隐私，配送快速且保密，提升购物体验",
+            "客服服务态度好，专业耐心，售后支持较为可靠"
+          ],
+          "cons": [
+            "遥控器信号范围差，一旦插入体内或距离稍远即失去连接",
+            "遥控器自身会振动且噪音大，难以在公共场合隐蔽使用",
+            "遥控器操作复杂，学习曲线陡峭，不易上手",
+            "遥控器与主机同步困难，经常出现无法配对或断连问题",
+            "遥控器需更换电池，而主机可充电，设计不统一",
+            "部分用户反馈产品存在质量问题，如 retrieval string 断裂、充电线损坏等",
+            "振动模式切换不直观，缺乏记忆功能，每次需重新设置",
+            "高价格但实际体验未达预期，性价比受到质疑"
+          ],
+          "summary": "Lyla2跳蛋整体获得较高用户认可，尤其在材质、设计、振动性能和情侣互动方面广受好评，多条高点赞量评论强调其‘改变生活’‘非常值得’。然而，大量高赞反馈集中于遥控器的严重缺陷，包括信号不稳定、噪音大、操作复杂等问题，导致实际使用体验大打折扣。尽管品牌质感和做工被普遍肯定，但产品质量一致性与核心功能实现上的落差，使其在高价定位下面临性价比争议。总体来看，用户喜爱其理念与基础体验，但对遥控系统的可靠性普遍失望。",
+          "prosKeywords": [
+            {
+              "value": "材质好",
+              "count": 18
+            },
+            {
+              "value": "振动强",
+              "count": 16
+            },
+            {
+              "value": "设计精致",
+              "count": 14
+            },
+            {
+              "value": "便携",
+              "count": 12
+            },
+            {
+              "value": "防水",
+              "count": 11
+            },
+            {
+              "value": "充电快",
+              "count": 10
+            },
+            {
+              "value": "情侣使用",
+              "count": 9
+            },
+            {
+              "value": "手感好",
+              "count": 8
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "遥控器问题",
+              "count": 35
+            },
+            {
+              "value": "信号差",
+              "count": 30
+            },
+            {
+              "value": "噪音大",
+              "count": 25
+            },
+            {
+              "value": "操作复杂",
+              "count": 22
+            },
+            {
+              "value": "连接不稳定",
+              "count": 20
+            },
+            {
+              "value": "电池问题",
+              "count": 18
+            },
+            {
+              "value": "价格高",
+              "count": 16
+            },
+            {
+              "value": "质量缺陷",
+              "count": 15
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260105/695b9e4796f8f.png",
+        "sales": 3000,
+        "priceHistory": [
+          {
+            "date": "2025-05-14",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-15",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-16",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-17",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-18",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-19",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-20",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-21",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-22",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-23",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-24",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-25",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-26",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-27",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-28",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-29",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-30",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-05-31",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-01",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-02",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-03",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-04",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-05",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-06",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-07",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-08",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-09",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-10",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-11",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-12",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-13",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-14",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-15",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-16",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-17",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-18",
+            "finalPrice": 550,
+            "originalPrice": 640
+          },
+          {
+            "date": "2025-06-19",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-06-20",
+            "finalPrice": 609,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-02",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-04",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-05",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-06",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-07",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-08",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-09",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-10",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-11",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-12",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-13",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-14",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-15",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-16",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-17",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-18",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-19",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-20",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-21",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-23",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-24",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-25",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-26",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-27",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-28",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-29",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-07-30",
+            "finalPrice": 599,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-09-18",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-09-20",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-09-22",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-09-24",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-09-26",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-09-28",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-09-30",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-10-02",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-10-04",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-10-06",
+            "finalPrice": 629,
+            "originalPrice": 699
+          },
+          {
+            "date": "2025-10-08",
+            "finalPrice": 629,
+            "originalPrice": 699
+          }
+        ],
+        "launchDate": "2015-06",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长80mm宽33mm高25mm",
+          "material": "硅胶+光亮ABS",
+          "controlMethod": "遥控器",
+          "ipRating": "IPX7",
+          "weight": "76g",
+          "usageTime": "2小时",
+          "chargingTime": "2小时",
+          "noiseLevel": "60db"
+        }
+      },
+      {
+        "id": "prod-1767752867197",
+        "name": "Tiani Duo情趣夫妻共用体感遥控跳蛋",
+        "price": 730,
+        "tags": [
+          "体感遥控（12m）",
+          "双马法强震",
+          "2种体感模式+6种普通模式",
+          "支持夫妻共用以增强快感"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=520677640329&pisk=gi7IcXsJ5TQaT1PLevPZCdNhmd8Wd5z4AbORi_3EweLLN46GI33PTkV7Nd6kLH8pL4T5NTXy2aJPPXb1h4uUKkf-PU883-z4u6qHrUeVnEOUvvAJiDUy9Dh9-Qyob6Eau6fHEXM8gGU4P5lo_unJeTL9BQA2yDnpw5t9gQL-J33d6dpMwULJ2BKtXIAxJ0dpp5g9NQn-p2dJ61dJaXLJyTCT1Qv99ULRe1F6ZfNgxClWI6NVqG4kDu4PTdg-yNOTEKCQF4R1WB9ph6QQH-FkOH9A9dwIZebWV9tC7yMDOGCfIB6uo2YpVMIvJawbRFCcb9d1e-iWBi_hPn7Qhmvd-LXXJGwtRUL6G_tVb7nXQgCG5h_Q0bAG8_QH0EUmpLSNGaO5r841h6BCDnQKdgWjuK9UN0G6m4O635Nsq0bHVC6f3PptRHdM_bF_1muHvCA6y5Nsq0xpsCr415iq-&rn=ee4d10bf9e48ad871ccedd4afdfc034d&spm=a1z10.3-b.w4011-16623383610.101.37d563639rHL1O",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "动力强劲，振动效果出色",
+            "运行非常安静，适合公共场合使用",
+            "品质优良，品牌耐用性高",
+            "外观设计美观，做工精细",
+            "情侣共用体验良好，增强互动乐趣"
+          ],
+          "cons": [
+            "产品形状不符合多数女性身体结构，难以准确贴合阴蒂",
+            "无法调节位置，使用时需手动按压，违背解放双手的设计初衷",
+            "充电和操作复杂，缺乏说明书，官网信息混乱",
+            "无法退货，售后服务差，问题反馈后无后续支持",
+            "遥控器噪音较大，影响部分使用场景的体验"
+          ],
+          "summary": "尽管该产品在静音性能和品牌质量方面获得部分高点赞用户认可，但多条高点赞评论集中反映其人体工学设计缺陷和服务短板，导致实际使用体验两极分化。总体来看，用户认可度受限于核心功能适配性不足，尤其在高价位背景下，失望情绪较为普遍。",
+          "prosKeywords": [
+            {
+              "value": "安静",
+              "count": 5
+            },
+            {
+              "value": "动力强劲",
+              "count": 4
+            },
+            {
+              "value": "品质优良",
+              "count": 3
+            },
+            {
+              "value": "做工精细",
+              "count": 2
+            },
+            {
+              "value": "情侣共用",
+              "count": 2
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "无法调节",
+              "count": 6
+            },
+            {
+              "value": "不符合身体结构",
+              "count": 5
+            },
+            {
+              "value": "需手动按压",
+              "count": 4
+            },
+            {
+              "value": "售后无回应",
+              "count": 3
+            },
+            {
+              "value": "充电困难",
+              "count": 3
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260106/695cf1644e8ba.png",
+        "sales": 3000,
+        "priceHistory": [],
+        "launchDate": "2022-04",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长90mm宽45mm高30mm",
+          "material": "硅胶+ABS",
+          "weight": "80g",
+          "usageTime": "2小时",
+          "controlMethod": "遥控器",
+          "ipRating": "IPX7",
+          "noiseLevel": "50db",
+          "chargingTime": "2小时"
+        }
+      },
+      {
+        "id": "prod-1767761372218",
+        "name": "TOR 3代阴茎环",
+        "price": 650,
+        "tags": [
+          "物理延时/保持坚挺（减缓血液回流的速度）",
+          "增强夫妻间的快感",
+          "8种震动模式",
+          "APP智控"
+        ],
+        "category": "阴茎环",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=569616650506&pisk=gCEScC4KcWEqk7BR9QW2GA9mVknBNtSNPpMLIJKyp0nRdHN0i2KUUaXCdjNna4o-aHiQdWVEJklUALqb1H-PZa2pADod_1SNb8boxDCZRgEWqQDrQBIEwYexqv5Hu8QVb82otLOdQrINAoRLEwLK9WnxMvDZvUL-ptgxQvnp22K8HjhmpDnKy4eYHYDieLK89nLxUAkJJvH8HnHnQDhL93eAhvcxeDnL9-BjKfYCrxJIi86a7q5bUOY1_j-pvoMSkZy-MuElLY07a8Z56PExFCcTejtpvfF3oreL96tEXPVbAVFNAnmzCrnxFr6pkb3_y7k0OGt-wow82brRg3l8q-UaYSBpvXaYW2UTes8jhrezcqrO1Hguk74iRk5Vj0zaQk0T2gOigVDQ10UfM3NO4EtZ1bWBRKgMAxGNhtTH-u0Ih5NNDjKSyxD2pt6X730-nxidhtTH-4Hm3NWfhF-l.&rn=04c5ff32f7e7217bf801083f921bb9ce&spm=a1z10.3-b.w4011-16623383610.133.37d56363naOB8v",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "在某宝上属于难得不是智商税的产品，具有较高的实用性和耐用性",
+            "与国际品牌 Funfactory 相媲美，可长期使用，品质可靠",
+            "外观设计美观，颜值高，做工精细",
+            "功能强劲，能够有效提升体验感",
+            "用户普遍给予5星好评，整体满意度高"
+          ],
+          "cons": [
+            "部分用户反馈使用后可能出现疲软现象，影响实际体验",
+            "存在个体适配问题，可能对男性自身状态要求较高",
+            "产品一旦使用无法退换，增加购买风险"
+          ],
+          "summary": "TOR 3代阴茎环整体用户评价积极，多数用户给予5星好评，认可其做工、颜值和功能性。尽管点赞量总体偏低且无高赞评论，但正面反馈集中于产品非‘智商税’、可长期使用，具备国际品牌 comparable 的品质。少数负面反馈关注使用中可能导致疲软及退换限制，需结合个体差异考量。综合来看，在全球情趣用品强调安全、耐用与真实效用的消费趋势下，该产品具备一定市场竞争力。",
+          "prosKeywords": [
+            {
+              "value": "智商税",
+              "count": 1
+            },
+            {
+              "value": "长久使用",
+              "count": 1
+            },
+            {
+              "value": "颜值高",
+              "count": 1
+            },
+            {
+              "value": "做工好",
+              "count": 1
+            },
+            {
+              "value": "功能強",
+              "count": 1
+            },
+            {
+              "value": "5星好评",
+              "count": 7
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "软了",
+              "count": 1
+            },
+            {
+              "value": "退不了",
+              "count": 1
+            },
+            {
+              "value": "产品很一般",
+              "count": 1
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260107/695de56794bb6.png",
+        "sales": 100,
+        "launchDate": "2023-03",
+        "gender": "Male",
+        "specs": {
+          "material": "ABS+硅胶",
+          "dimensions": "长60mm宽46mm22mm\n环直径29mm",
+          "usageTime": "120min",
+          "chargingTime": "120min",
+          "controlMethod": "APP+按键",
+          "noiseLevel": "50db",
+          "ipRating": "IPX7",
+          "weight": "30g"
+        }
+      },
+      {
+        "id": "prod-1767762709252",
+        "name": "F1S V3飞机杯",
+        "price": 333.05,
+        "tags": [
+          "双马达",
+          "8+1（AI模式：根据手速动力自增强）种模式",
+          "自调节仿真通道",
+          "声波吮吸",
+          "强压增速技术（CRUISE CONTROL）"
+        ],
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=787332080906&pisk=gxPrcImNwXqfDSsg7PcFgdu9DVh-CXS1zWiI-y4nP0muAaQUYmziFaEQA-oUmookNaB-KDr-ckOQPWyvTPULNahCybU-9Xj1f1wUyzhdlJ_JQ7-mmVaDK3Dlhjmw507ff11_uT0-Orj_FUBPBqu6tXDoqrvmDV8kKkDHirmxJ2xot0b4omnDtLAnrIAmS2lHqBAomm0E-HmHEXvcu2nmrQ0uxrbqRmmntXq3ofFtCvSZRYbvcUHJHKYqKc4o0BAwW4klXzJBOBaIrrPhkmAnlSurUc4usT9m72yg_YEGcLiuQJZZ5u1Dalzu4RDgZnjq9rwaYVPlSdoU2rVSn7bBBqhLERcuTG-uzAP0NbeVbCigHyVEnzIwBqw357wUVidnVRz00ANXcCG0auPo3fjrFH3cVZPLUHvEEq3qfZ7Vj6kuohO059vppYKruc_uKppKEYuqfZ72ppHRMqo1rJf..&rn=0ca1294c73e31c29662fac9c0fc3b454&spm=a1z10.3-b.w4011-16623383610.232.139c63631Vaju8",
+        "competitorId": "LELO",
+        "analysis": {
+          "pros": [
+            "做工精良，包装扎实，有分量感",
+            "设计时尚优雅，材料奢华柔软，提供真实沉浸感",
+            "应用程序控制功能多样，可定制振动模式，增强情侣互动乐趣",
+            "易于清洁，防水设计，使用方便",
+            "电池续航时间长，适合多次使用",
+            "振动模式多样，体验独特，适合寻求创新乐趣的用户",
+            "尺寸适中，便于握持和携带"
+          ],
+          "cons": [
+            "AI模式体验差，反应慢或不稳定",
+            "内部橡胶材质不佳，感觉不如其他品牌如Tenga",
+            "尺寸偏小，不适合阴茎尺寸较大或高于平均水平的用户",
+            "应用程序连接问题多，蓝牙配对困难且易断开",
+            "产品宣传与实际不符，无法退货，导致用户失望",
+            "噪音较大，影响隐私使用",
+            "价格昂贵，性价比不高",
+            "手动模式鸡肋，功能有限"
+          ],
+          "summary": "F1S V3飞机杯在设计和材料上获得好评，如做工精良、易于清洁和应用程序控制功能，但存在显著缺点，包括AI模式不佳、尺寸偏小和应用程序连接问题。高点赞量评论较少（仅2条），平均点赞量1.0，表明用户认可度一般，负面反馈如尺寸和退货问题更受关注，整体竞争力中等，需改进尺寸适配和软件稳定性以提升用户体验。",
+          "prosKeywords": [
+            {
+              "value": "做工",
+              "count": 5
+            },
+            {
+              "value": "应用程序",
+              "count": 4
+            },
+            {
+              "value": "清洁",
+              "count": 4
+            },
+            {
+              "value": "振动",
+              "count": 4
+            },
+            {
+              "value": "设计",
+              "count": 3
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "尺寸",
+              "count": 6
+            },
+            {
+              "value": "AI模式",
+              "count": 4
+            },
+            {
+              "value": "应用程序",
+              "count": 3
+            },
+            {
+              "value": "退货",
+              "count": 3
+            },
+            {
+              "value": "噪音",
+              "count": 2
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260107/695dea514f856.png",
+        "sales": 100,
+        "priceHistory": [
+          {
+            "date": "2025-01-12",
+            "finalPrice": 418.54,
+            "originalPrice": 1559
+          },
+          {
+            "date": "2025-02-06",
+            "finalPrice": 407.94,
+            "originalPrice": 1559
+          },
+          {
+            "date": "2025-02-07",
+            "finalPrice": 407.94,
+            "originalPrice": 1559
+          },
+          {
+            "date": "2025-03-08",
+            "finalPrice": 333.05,
+            "originalPrice": 1559
+          }
+        ],
+        "launchDate": "2024-02",
+        "gender": "Male",
+        "specs": {
+          "dimensions": "长144mm宽72mm\n可插入110mm\n通道直径40-60mm",
+          "weight": "314g",
+          "material": "硅胶+铝合金+ABS",
+          "chargingTime": "2小时",
+          "usageTime": "2小时",
+          "controlMethod": "APP+按键",
+          "ipRating": "IPX7",
+          "noiseLevel": "60db"
+        }
       }
     ],
-    "isDomestic": false
+    "isDomestic": false,
+    "foundedDate": "2003",
+    "country": "瑞典"
   },
   {
     "id": "beu_001",
@@ -9919,5 +12133,26 @@
         }
       }
     ]
+  },
+  {
+    "id": "iroha",
+    "name": "iroha",
+    "domain": "iroha-tenga.com",
+    "philosophy": [
+      "iroha 品牌以日本美学和简约设计为核心，专注于创造高品质、安全且易于使用的成人用品，强调感官体验和情感连接，旨在提升用户的生活品质和亲密关系。",
+      "品牌注重材质创新和人体工学设计，采用亲肤硅胶和环保材料，确保产品安全舒适，同时融入静音技术，保护用户隐私，适合日常使用和探索。",
+      "iroha 倡导开放、包容的性文化，通过教育内容和社区互动，减少社会污名，鼓励用户自信表达自我，在全球市场推广积极健康的性观念。"
+    ],
+    "focus": "Female",
+    "sentiment": {
+      "material": 90,
+      "noise": 85,
+      "privacy": 80,
+      "easeOfUse": 75,
+      "value": 70
+    },
+    "foundedDate": "2015",
+    "country": "日本",
+    "isDomestic": false
   }
 ]

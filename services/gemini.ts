@@ -36,12 +36,21 @@ export const getStrategyAdvice = async (concept: string , isDomestic: boolean = 
   }
 };
 
-export const analyzeReviews = async (productName: string, reviews: string[], isDomestic: boolean = false) => {
+export const analyzeReviews = async (
+  productName: string, 
+  reviews: Array<{ text: string; likeCount?: number }> | string[], 
+  isDomestic: boolean = false
+) => {
   try {
+    // 兼容旧格式（字符串数组）和新格式（对象数组）
+    const reviewData = Array.isArray(reviews) && reviews.length > 0 && typeof reviews[0] === 'string'
+      ? reviews.map(text => ({ text, likeCount: undefined }))
+      : reviews as Array<{ text: string; likeCount?: number }>;
+
     const res = await fetch('/api/ai/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productName, reviews, isDomestic })
+      body: JSON.stringify({ productName, reviews: reviewData, isDomestic })
     });
 
     if (!res.ok) throw new Error('Review analysis failed');
@@ -69,8 +78,13 @@ export const fetchCompetitorData = async (companyName: string, isDomestic: boole
        throw new Error(err.error || 'Competitor generation failed');
     }
     const data = await res.json();
-    // 确保 foundedDate 字段被正确传递
-    return { ...data, isDomestic, foundedDate: data.foundedDate || undefined };
+    // 确保 foundedDate 和 country 字段被正确传递
+    return { 
+      ...data, 
+      isDomestic, 
+      foundedDate: data.foundedDate || undefined,
+      country: data.country || undefined
+    };
   } catch (error) {
      console.error('AI Service Error:', error);
      // Fallback mock

@@ -22,6 +22,8 @@ import {
   Share2,
   FileText,
   ChevronDown,
+  Calendar,
+  Filter,
 } from "lucide-react";
 import { fetchCompetitorData } from "../services/gemini";
 
@@ -40,6 +42,9 @@ const Dashboard: React.FC = () => {
   const [radarCompBId, setRadarCompBId] = useState<string>("");
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [marketTab, setMarketTab] = useState<"all" | "domestic" | "foreign">(
+    "all"
+  );
+  const [dateFilter, setDateFilter] = useState<"all" | "before2010" | "2010-2015" | "2015-2020" | "after2020">(
     "all"
   );
 
@@ -284,7 +289,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold">用户情感雷达</h3>
@@ -365,7 +370,7 @@ const Dashboard: React.FC = () => {
           )}
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col">
+        <div className="lg:col-span-3 bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold">竞品快速入口</h3>
             <button
@@ -386,20 +391,36 @@ const Dashboard: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex bg-gray-100/50 p-1 rounded-lg mb-4">
-            {(["all", "domestic", "foreign"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setMarketTab(t)}
-                className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
-                  marketTab === t
-                    ? "bg-white text-purple-600 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
+          <div className="space-y-2 mb-4">
+            <div className="flex bg-gray-100/50 p-1 rounded-lg">
+              {(["all", "domestic", "foreign"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setMarketTab(t)}
+                  className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
+                    marketTab === t
+                      ? "bg-white text-purple-600 shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  {t === "all" ? "全部" : t === "domestic" ? "国内" : "国外"}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <Filter size={12} className="text-gray-400" />
+              <select
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value as typeof dateFilter)}
+                className="flex-1 text-xs border border-gray-200 rounded-md px-2 py-1.5 bg-white focus:ring-2 focus:ring-purple-500 outline-none"
               >
-                {t === "all" ? "全部" : t === "domestic" ? "国内" : "国外"}
-              </button>
-            ))}
+                <option value="all">全部年份</option>
+                <option value="before2010">2010年之前</option>
+                <option value="2010-2015">2010-2015年</option>
+                <option value="2015-2020">2015-2020年</option>
+                <option value="after2020">2020年之后</option>
+              </select>
+            </div>
           </div>
 
           {isAdding && (
@@ -445,65 +466,115 @@ const Dashboard: React.FC = () => {
             <div className="space-y-4 overflow-y-auto flex-1 max-h-[400px] pr-1 scrollbar-thin scrollbar-thumb-gray-200">
               {competitors
                 .filter((comp) => {
-                  if (marketTab === "all") return true;
-                  return marketTab === "domestic"
-                    ? comp.isDomestic
-                    : !comp.isDomestic;
+                  // 市场类型筛选
+                  if (marketTab !== "all") {
+                    const matchesMarket = marketTab === "domestic"
+                      ? comp.isDomestic
+                      : !comp.isDomestic;
+                    if (!matchesMarket) return false;
+                  }
+
+                  // 日期筛选
+                  if (dateFilter !== "all") {
+                    // 如果没有创立日期，在非"全部"筛选时隐藏
+                    if (!comp.foundedDate) return false;
+                    
+                    const foundedYear = parseInt(comp.foundedDate.split("-")[0] || comp.foundedDate);
+                    if (isNaN(foundedYear)) return false; // 如果日期格式不正确，隐藏该条目
+
+                    switch (dateFilter) {
+                      case "before2010":
+                        if (foundedYear >= 2010) return false;
+                        break;
+                      case "2010-2015":
+                        if (foundedYear < 2010 || foundedYear >= 2015) return false;
+                        break;
+                      case "2015-2020":
+                        if (foundedYear < 2015 || foundedYear >= 2020) return false;
+                        break;
+                      case "after2020":
+                        if (foundedYear < 2020) return false;
+                        break;
+                    }
+                  }
+
+                  return true;
                 })
-                .map((comp) => (
-                  <div
-                    key={comp.id}
-                    className="group relative flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all"
-                  >
+                .map((comp) => {
+                  // 格式化创立日期
+                  const formatFoundedDate = (date?: string) => {
+                    if (!date) return null;
+                    const year = date.split("-")[0] || date;
+                    const month = date.includes("-") ? date.split("-")[1] : null;
+                    return month ? `${year}年${parseInt(month)}月` : `${year}年`;
+                  };
+
+                  return (
                     <div
-                      className="flex-1 min-w-0 cursor-pointer"
-                      onClick={() => setSelectedCompetitor(comp.id)}
+                      key={comp.id}
+                      className="group relative flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all"
                     >
-                      <h4 className="font-semibold text-sm truncate">
-                        {comp.name}
-                      </h4>
-                      <p className="text-xs text-gray-400 truncate">
-                        {comp.domain}
-                      </p>
-                    </div>
-                    <div className="text-right shrink-0 flex items-center gap-3">
                       <div
-                        className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                          comp.focus === "Female"
-                            ? "bg-pink-50 text-pink-600 border-pink-100"
-                            : comp.focus === "Male"
-                            ? "bg-blue-50 text-blue-600 border-blue-100"
-                            : "bg-purple-50 text-purple-600 border-purple-100"
-                        }`}
+                        className="flex-1 min-w-0 cursor-pointer"
+                        onClick={() => setSelectedCompetitor(comp.id)}
                       >
-                        {comp.focus === "Female" ? (
-                          <Venus size={10} />
-                        ) : comp.focus === "Male" ? (
-                          <Mars size={10} />
-                        ) : (
-                          <VenusAndMars size={10} />
-                        )}
-                        {comp.focus === "Female"
-                          ? "女用"
-                          : comp.focus === "Male"
-                          ? "男用"
-                          : "通用"}
+                        <h4 className="font-semibold text-sm truncate">
+                          {comp.name}
+                        </h4>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <p className="text-xs text-gray-400 truncate">
+                            {comp.domain || '无官网地址'}
+                          </p>
+                          {comp.foundedDate && (
+                            <>
+                              <span className="text-xs text-gray-300">•</span>
+                              <div className="flex items-center gap-1 text-xs text-gray-500">
+                                <Calendar size={10} />
+                                <span>{formatFoundedDate(comp.foundedDate)}</span>
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
-                      <button
-                        className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
-                        title="删除竞品"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (confirm(`确定要删除 ${comp.name} 吗？`)) {
-                            removeCompetitor(comp.id);
-                          }
-                        }}
-                      >
-                        <Trash2 size={14} />
-                      </button>
+                      <div className="text-right shrink-0 flex items-center gap-3">
+                        <div
+                          className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                            comp.focus === "Female"
+                              ? "bg-pink-50 text-pink-600 border-pink-100"
+                              : comp.focus === "Male"
+                              ? "bg-blue-50 text-blue-600 border-blue-100"
+                              : "bg-purple-50 text-purple-600 border-purple-100"
+                          }`}
+                        >
+                          {comp.focus === "Female" ? (
+                            <Venus size={10} />
+                          ) : comp.focus === "Male" ? (
+                            <Mars size={10} />
+                          ) : (
+                            <VenusAndMars size={10} />
+                          )}
+                          {comp.focus === "Female"
+                            ? "女用"
+                            : comp.focus === "Male"
+                            ? "男用"
+                            : "通用"}
+                        </div>
+                        <button
+                          className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
+                          title="删除竞品"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (confirm(`确定要删除 ${comp.name} 吗？`)) {
+                              removeCompetitor(comp.id);
+                            }
+                          }}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           ) : (
             <div className="h-72 flex justify-center items-center">

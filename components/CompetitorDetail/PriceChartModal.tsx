@@ -183,6 +183,7 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
                       finalPrice: h.finalPrice,
                       originalPrice: h.originalPrice,
                       dateLabel: new Date(h.date).toLocaleDateString("zh-CN", {
+                        year: "numeric",
                         month: "short",
                         day: "numeric",
                       }),
@@ -278,6 +279,12 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
                           <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.fluctuation}</p>
                         </div>
                       </div>
+                      {priceAnalysis.discountAnalysis && (
+                        <div>
+                          <h4 className="text-sm font-bold text-purple-800 mb-2">优惠力度分析</h4>
+                          <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.discountAnalysis}</p>
+                        </div>
+                      )}
                       <div>
                         <h4 className="text-sm font-bold text-purple-800 mb-2">定价建议</h4>
                         <ul className="list-disc list-inside space-y-1">

@@ -21,6 +21,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [tempPhilosophy, setTempPhilosophy] = useState<string[]>([]);
   const [isEditingFoundedDate, setIsEditingFoundedDate] = useState(false);
   const [tempFoundedDate, setTempFoundedDate] = useState("");
+  const [isEditingCountry, setIsEditingCountry] = useState(false);
+  const [tempCountry, setTempCountry] = useState("");
 
   const handleSaveName = () => {
     if (tempName.trim()) {
@@ -48,6 +50,11 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const handleSaveFoundedDate = () => {
     onUpdateCompetitor({ ...competitor, foundedDate: tempFoundedDate.trim() || undefined });
     setIsEditingFoundedDate(false);
+  };
+
+  const handleSaveCountry = () => {
+    onUpdateCompetitor({ ...competitor, country: tempCountry.trim() || undefined });
+    setIsEditingCountry(false);
   };
 
   const handlePhilosophyChange = (index: number, value: string) => {
@@ -395,6 +402,68 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
               </p>
             )}
           </div>
+
+          {/* 国家名（仅国外品牌显示） */}
+          {!competitor.isDomestic && (
+            <div className="pt-4 border-t border-gray-100 group/country relative">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  国家
+                </h4>
+                {!isEditingCountry && (
+                  <Pencil
+                    onClick={() => {
+                      setTempCountry(competitor.country || "");
+                      setIsEditingCountry(true);
+                    }}
+                    size={12}
+                    className="text-gray-400 opacity-0 group-hover/country:opacity-100 transition-opacity cursor-pointer"
+                  />
+                )}
+              </div>
+              {isEditingCountry ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    className="flex-1 text-sm p-2 border rounded"
+                    value={tempCountry}
+                    onChange={(e) => setTempCountry(e.target.value)}
+                    placeholder="如：美国、日本、德国等"
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleSaveCountry();
+                      } else if (e.key === "Escape") {
+                        setIsEditingCountry(false);
+                        setTempCountry(competitor.country || "");
+                      }
+                    }}
+                    autoFocus
+                  />
+                  <button
+                    onClick={handleSaveCountry}
+                    className="text-green-600 hover:text-green-700"
+                    title="保存"
+                  >
+                    <Save size={14} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsEditingCountry(false);
+                      setTempCountry(competitor.country || "");
+                    }}
+                    className="text-red-500 hover:text-red-600"
+                    title="取消"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-600">
+                  {competitor.country || "未设置"}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

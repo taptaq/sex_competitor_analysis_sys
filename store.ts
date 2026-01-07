@@ -63,10 +63,11 @@ interface AppState {
 const saveToServer = async (competitors: Competitor[]) => {
   try {
     // Strip reviews from products to avoid saving them to file (memory only)
-    // Ensure all competitor fields including foundedDate are preserved
+    // Ensure all competitor fields including foundedDate and country are preserved
     const competitorsToSave = competitors.map(comp => ({
       ...comp,
       foundedDate: comp.foundedDate || undefined, // Ensure foundedDate is preserved
+      country: comp.country || undefined, // Ensure country is preserved
       products: comp.products?.map(prod => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { reviews, ...rest } = prod;

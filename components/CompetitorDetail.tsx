@@ -129,21 +129,39 @@ const CompetitorDetail: React.FC = () => {
     }
     setAnalyzingProductId(product.id);
     try {
-      // 提取评论文本，包括主评论和追评内容
-      const reviewTexts = product.reviews.map((r) => {
+      // 提取评论文本和点赞量，包括主评论和追评内容
+      const reviewDataList = product.reviews.map((r) => {
         let reviewData: any;
+        let likeCount: number | undefined = undefined;
         
         // 尝试解析 JSON 字符串
         try {
           reviewData = JSON.parse(r.text);
         } catch {
           // 如果不是 JSON，直接使用文本
-          return r.text;
+          return {
+            text: r.text,
+            likeCount: undefined
+          };
         }
         
-        // 如果是对象，提取所有文本字段
+        // 如果是对象，提取所有文本字段和点赞量
         if (typeof reviewData === 'object' && reviewData !== null) {
           const texts: string[] = [];
+          
+          // 提取点赞量（可能的字段名：评论点赞量、点赞量、likeCount等）
+          const likeFields = ['评论点赞量', '点赞量', 'likeCount', 'likes', '点赞数'];
+          for (const field of likeFields) {
+            if (reviewData[field] !== undefined && reviewData[field] !== null) {
+              const likeValue = reviewData[field];
+              if (typeof likeValue === 'number') {
+                likeCount = likeValue;
+              } else if (typeof likeValue === 'string' && likeValue !== '有用' && !isNaN(Number(likeValue))) {
+                likeCount = Number(likeValue);
+              }
+              break; // 只取第一个匹配的字段
+            }
+          }
           
           // 提取主评论（可能的字段名：评论、评价、内容等）
           const mainReviewFields = ['评论', '评价', '内容', 'review', 'comment', 'content', '评论内容'];
@@ -163,15 +181,21 @@ const CompetitorDetail: React.FC = () => {
           });
           
           // 如果没有找到任何文本，返回原始 JSON 字符串
-          return texts.length > 0 ? texts.join('\n') : r.text;
+          return {
+            text: texts.length > 0 ? texts.join('\n') : r.text,
+            likeCount: likeCount
+          };
         }
         
-        return r.text;
+        return {
+          text: r.text,
+          likeCount: undefined
+        };
       });
 
       const analysis = await analyzeReviews(
         product.name,
-        reviewTexts,
+        reviewDataList,
         competitor.isDomestic
       );
       setProductAnalysis(competitor.id, product.id, analysis);
