@@ -1,6 +1,7 @@
 import os
 import json
 import time
+import asyncio
 from typing import List, Dict, Any, Optional, Union
 from enum import Enum
 from pathlib import Path
@@ -17,6 +18,10 @@ from pydantic import BaseModel
 import dashscope
 from openai import OpenAI
 import requests
+from google import genai
+from PIL import Image
+import io
+import base64
 
 # Load env vars
 env_loaded_local = load_dotenv(dotenv_path='.env.local')
@@ -57,6 +62,13 @@ if DEEPSEEK_API_KEY:
     print(f"[INFO] DEEPSEEK_API_KEY loaded: {DEEPSEEK_API_KEY[:10]}...")
 else:
     print("[WARNING] DEEPSEEK_API_KEY not found. DeepSeek features will not work.")
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+if GOOGLE_API_KEY:
+    print(f"[INFO] GOOGLE_API_KEY loaded: {GOOGLE_API_KEY[:10]}...")
+else:
+    print("[WARNING] GOOGLE_API_KEY not found. Google GenAI features will not work.")
+
 deepseek_client = None
 if DEEPSEEK_API_KEY:
     deepseek_client = OpenAI(
@@ -104,23 +116,51 @@ async def ask_ai(prompt_input: Union[str, Dict], schema: Dict) -> Dict:
                 {'role': 'system', 'content': f'你是一位专业分析师。输出必须且只能是符合此 JSON Schema 的 JSON 对象：{json.dumps(schema, ensure_ascii=False)}。请确保所有 Key 名采用英文。'},
                 {'role': 'user', 'content': prompt_str}
             ]
-            response = dashscope.Generation.call(
-                model="qwen-plus",
-                messages=messages,
-                result_format='message',  # set the result to be "message" format.
-                enable_search=True
-            )
             
-            if response.status_code == 200:
-                content = response.output.choices[0].message.content
-                # Attempt to extract JSON if it's wrapped in markdown
-                if "```json" in content:
-                    content = content.split("```json")[1].split("```")[0].strip()
-                elif "```" in content:
-                     content = content.split("```")[1].split("```")[0].strip()
-                return json.loads(content)
-            else:
-                raise Exception(f"Qwen API failed: {response.code} - {response.message}")
+            # 添加重试机制处理 SSL 连接问题
+            max_retries = 3
+            retry_delay = 2  # 秒
+            
+            for attempt in range(max_retries):
+                try:
+                    response = dashscope.Generation.call(
+                        model="qwen-plus",
+                        messages=messages,
+                        result_format='message',  # set the result to be "message" format.
+                        enable_search=True
+                    )
+                    
+                    if response.status_code == 200:
+                        content = response.output.choices[0].message.content
+                        # Attempt to extract JSON if it's wrapped in markdown
+                        if "```json" in content:
+                            content = content.split("```json")[1].split("```")[0].strip()
+                        elif "```" in content:
+                             content = content.split("```")[1].split("```")[0].strip()
+                        return json.loads(content)
+                    else:
+                        error_msg = f"Qwen API failed: {response.code} - {response.message}"
+                        if attempt < max_retries - 1:
+                            print(f"[Qwen] Attempt {attempt + 1} failed: {error_msg}, retrying...")
+                            await asyncio.sleep(retry_delay)
+                            continue
+                        raise Exception(error_msg)
+                        
+                except Exception as e:
+                    error_str = str(e)
+                    # 检查是否是 SSL 相关错误
+                    if "SSL" in error_str or "SSLError" in error_str or "EOF" in error_str:
+                        if attempt < max_retries - 1:
+                            print(f"[Qwen] SSL error on attempt {attempt + 1}: {error_str}, retrying in {retry_delay}s...")
+                            await asyncio.sleep(retry_delay)
+                            retry_delay *= 2  # 指数退避
+                            continue
+                        else:
+                            print(f"[Qwen] SSL error after {max_retries} attempts: {error_str}")
+                            raise Exception(f"Qwen API SSL connection failed after {max_retries} attempts: {error_str}")
+                    else:
+                        # 非 SSL 错误直接抛出
+                        raise
         
         providers.append({'name': 'Qwen', 'call': call_qwen})
 
@@ -378,7 +418,7 @@ async def ai_analyze(req: AnalyzeRequest):
     {chr(10).join(reviewTexts)}
     
     注意：
-    1. 每条评论可能包含主评论和追评内容（如追评1、追评2等），请综合分析主评论和所有追评内容，全面了解用户的真实体验和反馈。
+    1. 每条评论可能包含主评论和追评内容（如追评1、追评2、追评3等），请综合分析主评论和所有追评内容，全面了解用户的真实体验和反馈。
     2. 评论数据中标注了每条评论的点赞量（如 [点赞量: 15]），点赞量高的评论通常代表更多用户的认同，请重点关注高点赞量评论中的观点和反馈。
     3. 统计信息：共 {len(req.reviews)} 条评论，总点赞量 {totalLikes}，平均点赞量 {avgLikes:.1f}，高点赞量评论（≥5）共 {highLikeCount} 条。
     4. 在分析时，请优先考虑高点赞量评论中的观点，这些观点往往更能代表大多数用户的真实感受。
@@ -792,14 +832,31 @@ async def ai_ocr_product(file: UploadFile = File(...)):
             }
         ]
 
-        response = dashscope.MultiModalConversation.call(
-            api_key=QWEN_API_KEY,
-            model='qwen3-vl-plus',
-            messages=messages,
-            result_format='message'
-        )
+        # 添加重试机制处理 SSL 连接问题
+        max_retries = 3
+        retry_delay = 2
+        response = None
+        
+        for attempt in range(max_retries):
+            try:
+                response = dashscope.MultiModalConversation.call(
+                    api_key=QWEN_API_KEY,
+                    model='qwen3-vl-plus',
+                    messages=messages,
+                    result_format='message'
+                )
+                break  # 成功则跳出循环
+            except Exception as e:
+                error_str = str(e)
+                if ("SSL" in error_str or "SSLError" in error_str or "EOF" in error_str) and attempt < max_retries - 1:
+                    print(f"[Qwen-VL] SSL error on attempt {attempt + 1}: {error_str}, retrying in {retry_delay}s...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2
+                    continue
+                else:
+                    raise
 
-        if response.status_code == 200:
+        if response and response.status_code == 200:
             content = response.output.choices[0].message.content[0]['text']
             # Clean up JSON
             if "```json" in content:
@@ -1089,48 +1146,98 @@ class ImageRequest(BaseModel):
 async def ai_product_image(req: ImageRequest):
     config = req.config
     
-    if not QWEN_API_KEY:
-        raise HTTPException(status_code=500, detail="Qwen API not configured. Please set QWEN_API_KEY or DASHSCOPE_API_KEY")
+    # Prompt construction
+    prompt_parts = []
+    if config.get('category'): prompt_parts.append(config['category'])
+    if config.get('gender') == 'male': prompt_parts.append('男性用品')
+    elif config.get('gender') == 'female': prompt_parts.append('女性用品')
+    
+    if config.get('material'): prompt_parts.append(f"材质：{'、'.join(config['material'])}")
+    if config.get('color'): prompt_parts.append(f"颜色：{'、'.join(config['color'])}")
+    if config.get('features'): prompt_parts.append(f"功能特点：{config['features']}")
+    if config.get('background'): prompt_parts.append(f"背景：{config['background']}")
+    
+    details = []
+    if config.get('drive'): details.append(f"驱动系统：{'、'.join(config['drive'])}")
+    if config.get('heating'): details.append(f"加热系统：{'、'.join(config['heating'])}")
+    if config.get('texture'): details.append(f"纹理：{'、'.join(config['texture'])}")
+    if details: prompt_parts.append('，'.join(details))
+    
+    prompt = '，'.join(prompt_parts) or '情趣用品产品概念图'
+    prompt += '，产品设计图，专业产品摄影风格，白色背景，高清细节，3D渲染效果'
+    
+    print(f"[Image Generation] Prompt: {prompt}")
 
+    # 1. Try Google GenAI (Gemini 2.5 Flash Image)
+    if GOOGLE_API_KEY:
+        print("[Image Generation] Attempting Google GenAI...")
+        try:
+            client = genai.Client(api_key=GOOGLE_API_KEY)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash-image",
+                contents=prompt,
+            )
+            
+            generated_image = None
+            for part in response.parts:
+                if part.inline_data:
+                    generated_image = part.as_image()
+                    break
+            
+            if generated_image:
+                # Convert PIL Image to Base64 Data URI
+                buffered = io.BytesIO()
+                generated_image.save(buffered, format="PNG")
+                img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+                data_uri = f"data:image/png;base64,{img_str}"
+                
+                print(f"[Image Generation] Google GenAI Success")
+                return {"imageUrl": data_uri}
+            else:
+                print("[Image Generation] Google GenAI returned no image data.")
+                # Fall through to Qwen
+
+        except Exception as e:
+            print(f"[Image Generation] Google GenAI error: {e}")
+            # Fall through to Qwen
+
+    # 2. Fallback to Qwen (Wan2.5) -- EXISTING LOGIC
+    if not QWEN_API_KEY:
+        raise HTTPException(status_code=500, detail="Qwen API not configured and Google GenAI failed/not configured.")
+
+    print("[Image Generation] Falling back to Qwen...")
     try:
-        prompt_parts = []
-        if config.get('category'): prompt_parts.append(config['category'])
-        if config.get('gender') == 'male': prompt_parts.append('男性用品')
-        elif config.get('gender') == 'female': prompt_parts.append('女性用品')
+        # 添加重试机制处理 SSL 连接问题
+        max_retries = 3
+        retry_delay = 2
+        rsp = None
         
-        if config.get('material'): prompt_parts.append(f"材质：{'、'.join(config['material'])}")
-        if config.get('color'): prompt_parts.append(f"颜色：{'、'.join(config['color'])}")
-        if config.get('features'): prompt_parts.append(f"功能特点：{config['features']}")
-        if config.get('background'): prompt_parts.append(f"背景：{config['background']}")
+        for attempt in range(max_retries):
+            try:
+                rsp = dashscope.ImageSynthesis.call(
+                    api_key=QWEN_API_KEY,
+                    model="wan2.5-t2i-preview",
+                    prompt=prompt,
+                    n=1,
+                    size='1280*1280',
+                    prompt_extend=True,
+                    watermark=False,
+                    seed=12345,
+                )
+                break  # 成功则跳出循环
+            except Exception as e:
+                error_str = str(e)
+                if ("SSL" in error_str or "SSLError" in error_str or "EOF" in error_str) and attempt < max_retries - 1:
+                    print(f"[Image Generation] SSL error on attempt {attempt + 1}: {error_str}, retrying in {retry_delay}s...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2
+                    continue
+                else:
+                    raise
         
-        details = []
-        if config.get('drive'): details.append(f"驱动系统：{'、'.join(config['drive'])}")
-        if config.get('heating'): details.append(f"加热系统：{'、'.join(config['heating'])}")
-        if config.get('texture'): details.append(f"纹理：{'、'.join(config['texture'])}")
-        if details: prompt_parts.append('，'.join(details))
-        
-        prompt = '，'.join(prompt_parts) or '情趣用品产品概念图'
-        prompt += '，产品设计图，专业产品摄影风格，白色背景，高清细节，3D渲染效果'
-        
-        print(f"[Image Generation] Prompt: {prompt}")
-        
-        # Use Python SDK if possible, but requests is fine for specific API call
-        # The schema uses dashscope.Application or Generation. But for Image, use ImageSynthesis
-        
-        rsp = dashscope.ImageSynthesis.call(
-            api_key=QWEN_API_KEY,
-            model="wan2.5-t2i-preview",
-            prompt=prompt,
-            n=1,
-            size='1280*1280',
-            prompt_extend=True,
-            watermark=False,
-            seed=12345,
-        )
-        
-        if rsp.status_code == 200:
+        if rsp and rsp.status_code == 200:
             image_url = rsp.output.results[0].url
-            print(f"[Image Generation] Success: {image_url}")
+            print(f"[Image Generation] Qwen Success: {image_url}")
             return {"imageUrl": image_url}
         else:
             raise Exception(f"DashScope API error: {rsp.code} - {rsp.message}")
@@ -1242,6 +1349,195 @@ async def ai_price_analysis(req: PriceAnalysisRequest):
 
 **重要：所有字符串值（trend, priceRange, fluctuation, discountAnalysis, recommendations数组中的每个元素, summary）都必须使用简体中文，不要使用英文。**
 请确保分析专业、深入且具有实际参考价值。"""
+
+    return await ask_ai(prompt, schema)
+
+# AI 12. Brand Characteristics Analysis
+class BrandCharacteristicsRequest(BaseModel):
+    competitor: Dict
+    isDomestic: bool = True
+
+@app.post("/api/ai/brand-characteristics")
+async def ai_brand_characteristics(req: BrandCharacteristicsRequest):
+    schema = {
+        "type": "object",
+        "properties": {
+            "brandPositioning": { "type": "string" },
+            "productCharacteristics": { "type": "string" },
+            "priceStrategy": { "type": "string" },
+            "targetAudience": { "type": "string" },
+            "competitiveAdvantages": { "type": "array", "items": { "type": "string" } },
+            "brandPersonality": { "type": "string" },
+            "sloganCreativity": { "type": "string" },
+            "summary": { "type": "string" },
+            "wordCloudKeywords": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "value": { "type": "string" },
+                        "count": { "type": "number" }
+                    },
+                    "required": ["value", "count"]
+                }
+            }
+        },
+        "required": ["brandPositioning", "productCharacteristics", "priceStrategy", "targetAudience", "competitiveAdvantages", "brandPersonality", "sloganCreativity", "summary", "wordCloudKeywords"]
+    }
+
+    competitor = req.competitor
+    brandName = competitor.get('name', '')
+    philosophy = competitor.get('philosophy', [])
+    products = competitor.get('products', [])
+    ads = competitor.get('ads', [])
+    focus = competitor.get('focus', '')
+    isDomestic = req.isDomestic
+
+    # 统计产品信息
+    productCount = len(products)
+    categories = {}
+    priceRanges = []
+    allTags = []
+    genderDistribution = {'Male': 0, 'Female': 0, 'Unisex': 0}
+    
+    for product in products:
+        # 统计类别
+        category = product.get('category', '未分类')
+        categories[category] = categories.get(category, 0) + 1
+        
+        # 统计价格
+        price = product.get('price', 0)
+        if price > 0:
+            priceRanges.append(price)
+        
+        # 统计标签
+        tags = product.get('tags', [])
+        if isinstance(tags, list):
+            allTags.extend(tags)
+        
+        # 统计性别分布
+        gender = product.get('gender', 'Unisex')
+        if gender in genderDistribution:
+            genderDistribution[gender] += 1
+
+    avgPrice = sum(priceRanges) / len(priceRanges) if priceRanges else 0
+    minPrice = min(priceRanges) if priceRanges else 0
+    maxPrice = max(priceRanges) if priceRanges else 0
+
+    # 构建产品信息文本
+    productInfo = f"共 {productCount} 款产品"
+    if categories:
+        categoryList = ", ".join([f"{k}({v}款)" for k, v in categories.items()])
+        productInfo += f"，类别分布：{categoryList}"
+    if priceRanges:
+        productInfo += f"\n价格区间：¥{minPrice:.2f} - ¥{maxPrice:.2f}，平均价格：¥{avgPrice:.2f}"
+    if allTags:
+        # 统计最常见的标签
+        from collections import Counter
+        tagCounts = Counter(allTags)
+        topTags = [tag for tag, _ in tagCounts.most_common(10)]
+        productInfo += f"\n产品标签（前10）：{', '.join(topTags)}"
+    
+    genderInfo = ""
+    if genderDistribution['Male'] > 0 or genderDistribution['Female'] > 0 or genderDistribution['Unisex'] > 0:
+        genderInfo = f"产品性别分布：男用 {genderDistribution['Male']} 款，女用 {genderDistribution['Female']} 款，通用 {genderDistribution['Unisex']} 款"
+
+    philosophyText = "\n".join([f"- {p}" for p in philosophy]) if philosophy else "暂无品牌理念"
+
+    focusText = ""
+    if focus == "Female":
+        focusText = "专攻女用市场"
+    elif focus == "Male":
+        focusText = "专攻男用市场"
+    else:
+        focusText = "男女兼用市场"
+
+    adsText = ""
+    if ads:
+        adsList = []
+        for ad in ads:
+            adInfo = f"- {ad.get('text', '')}"
+            if ad.get('highlights'):
+                adInfo += f" (卖点：{', '.join(ad.get('highlights'))})"
+            adsList.append(adInfo)
+        adsText = "\n".join(adsList)
+    else:
+        adsText = "暂无具体宣传文案信息"
+
+    prompt = f"""你是一位专业的情趣用品行业品牌分析师。请基于以下信息，深入分析该品牌的特点：
+
+品牌名称：{brandName}
+品牌类型：{"国内品牌" if isDomestic else "国际知名品牌"}
+品牌定位：{focusText}
+
+品牌理念：
+{philosophyText}
+
+产品信息：
+{productInfo}
+{genderInfo if genderInfo else ""}
+
+现有宣传语/广告创意：
+{adsText}
+
+{"请结合中国情趣用品市场的实际情况，包括消费者偏好、市场趋势、竞争格局等。" if isDomestic else "请结合全球情趣用品市场的实际情况，包括不同地区的消费者偏好、市场趋势、竞争格局等。"}
+
+请输出 JSON 格式的品牌特点分析报告，包含以下英文键名（但所有字符串值必须使用简体中文）：
+1. brandPositioning: 品牌定位分析（50-100字，必须使用中文），包括：
+   - 品牌在市场中的定位（高端/中端/低端，专业/大众等）
+   - 品牌理念如何体现在定位中
+   - 与同类品牌的差异化定位
+2. productCharacteristics: 产品特征分析（50-100字，必须使用中文），包括：
+   - 产品线的整体特征（类别分布、功能特点等）
+   - 产品标签和关键词反映的产品特色
+   - 产品设计理念和功能定位
+   - 产品创新点和独特卖点
+3. priceStrategy: 价格策略分析（50-100字，必须使用中文），包括：
+   - 价格区间定位和定价策略
+   - 价格与产品定位的匹配度
+   - 价格竞争力分析
+   - 价格策略对品牌形象的影响
+4. targetAudience: 目标受众分析（50-100字，必须使用中文），包括：
+   - 基于产品性别分布和品牌定位的目标用户群体
+   - 目标用户的消费能力和消费习惯
+   - 品牌如何通过产品和理念吸引目标受众
+5. competitiveAdvantages: 竞争优势（Array of Strings，至少4条，每个字符串必须使用中文），包括：
+   - 基于品牌理念、产品特征、价格策略等方面的竞争优势
+   - 每条优势要具体且有说服力
+6. brandPersonality: 品牌个性（50-100字，必须使用中文），描述：
+   - 品牌展现出的个性特征（如：专业、时尚、亲民、高端等）
+   - 品牌个性如何通过理念和产品体现
+   - 品牌个性对消费者的吸引力
+7. sloganCreativity: 宣传语与创意分析（50-100字，必须使用中文），要求：
+   - 深入分析上述提供的现有宣传语/广告创意（如果有），总结其核心诉求和风格
+   - 品牌在营销创意上的独特之处（如：视觉风格、情感表达、社会议题等）
+   - 宣传语如何契合品牌定位和产品特点
+   - 结合现有文案，针对品牌的调性，提出更具冲击力和吸引力的创意宣传建议
+8. summary: 综合分析总结（100-150字，必须使用中文），包括：
+   - 品牌特点的综合概括
+   - 品牌的核心竞争力
+   - 品牌在市场中的定位和价值
+   - 品牌发展的优势和潜在挑战
+9. wordCloudKeywords: 词云关键词（Array of Objects，必须包含3-5个关键词，每个对象包含value和count字段），要求：
+   - value: 关键词（2-4个中文字符，必须使用中文）
+   - count: 词频权重（1-10之间的整数，数值越大表示该关键词越重要，最重要的关键词权重应该最高）
+   - **必须严格过滤掉以下无用词：**
+     * 停用词：的、了、在、是、我、有、和、就、不、人、都、一、一个、上、也、很、到、说、要、去、你、会、着、没有、看、好、自己、这
+     * 连接词：为、与、及、等、或、而、但、以、从、对、向、在、于、由、被、让、给、把、用、因、由于、通过、按照、根据
+     * 助动词：可以、能够、应该、需要、必须、可能、如果、那么、因为、所以
+     * 代词：这个、那个、这些、那些、什么、怎么、如何、为什么
+     * 连词：以及、并且、而且、同时、另外、此外、因此、所以、然而、但是、不过、虽然、尽管、即使、如果、假如、要是、只要、只有、除非
+     * 介词：通过、根据、按照、依据、基于、针对、对于、关于、有关、涉及、包括、含有、具有、拥有、存在、出现、发生、产生、形成、建立
+     * 动词：进行、开展、实施、执行、完成、实现、达到、获得、取得、得到、接受、采用、使用、利用、运用、应用、采取、选择、决定
+     * 抽象名词：方面、领域、范围、区域、地区、地方、位置、地点、场所、空间、时间、时期、阶段、过程、步骤、方法、方式、手段、途径、渠道、功能、作用、效果、影响、结果、后果
+     * 通用词：品牌、产品、市场、用户、消费者、价格、策略、定位、特点、分析
+   - 关键词应该反映品牌的核心特点、产品特征、市场定位、竞争优势等有意义的词汇
+   - 优先选择能够代表品牌独特性和核心竞争力的词汇
+   - 只选择最重要的3-5个关键词，确保每个关键词都具有高度代表性
+   - 词频权重应该根据关键词的重要性和代表性合理分配，最重要的关键词权重为10，次重要的依次递减
+
+**重要：所有字符串值（brandPositioning, productCharacteristics, priceStrategy, targetAudience, competitiveAdvantages数组中的每个元素, brandPersonality, sloganCreativity, summary, wordCloudKeywords数组中的每个对象的value字段）都必须使用简体中文，不要使用英文。**
+请确保分析专业、深入且具有实际参考价值，要结合品牌理念、产品特征和价格等因素进行综合分析。"""
 
     return await ask_ai(prompt, schema)
 

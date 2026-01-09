@@ -76,6 +76,18 @@ export interface PriceAnalysis {
   summary: string; // 综合分析总结
 }
 
+export interface BrandCharacteristicAnalysis {
+  brandPositioning: string; // 品牌定位分析
+  productCharacteristics: string; // 产品特征分析
+  priceStrategy: string; // 价格策略分析
+  targetAudience: string; // 目标受众分析
+  competitiveAdvantages: string[]; // 竞争优势
+  brandPersonality: string; // 品牌个性
+  sloganCreativity: string; // 宣传语与创意分析
+  summary: string; // 综合分析总结
+  wordCloudKeywords?: Array<{ value: string; count: number }>; // AI生成的词云关键词（已过滤无用词）
+}
+
 export interface ProductSpecs {
   dimensions?: string; // 产品尺寸，如 "长x宽x高" 或 "直径x长度"
   material?: string; // 产品材质
@@ -139,6 +151,7 @@ export interface Competitor {
   isDomestic?: boolean;
   foundedDate?: string; // 创立日期，格式：YYYY-MM 或 YYYY
   country?: string; // 国家名（仅用于国外品牌）
+  brandCharacteristicAnalysis?: BrandCharacteristicAnalysis; // 品牌特点分析结果
 }
 
 export enum ViewType {

@@ -173,7 +173,7 @@ const CompetitorDetail: React.FC = () => {
           }
           
           // 提取所有追评字段（追评1、追评2、追评3 等）
-          const followupPattern = /^(追评|追评1|追评2|追加评论)[\d]*$/i;
+          const followupPattern = /^(追评|追评1|追评2|追评3|追加评论)[\d]*$/i;
           Object.keys(reviewData).forEach((key) => {
             if (followupPattern.test(key) && reviewData[key] && typeof reviewData[key] === 'string' && reviewData[key].trim()) {
               texts.push(reviewData[key].trim());
@@ -446,15 +446,17 @@ const CompetitorDetail: React.FC = () => {
         <span className="font-medium">返回仪表盘</span>
       </button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8">
         {/* Sidebar Info */}
-        <CompetitorSidebar
-          competitor={competitor}
-          onUpdateCompetitor={updateCompetitor}
-        />
+        <div className="lg:col-span-2">
+          <CompetitorSidebar
+            competitor={competitor}
+            onUpdateCompetitor={updateCompetitor}
+          />
+        </div>
 
         {/* Main Content */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="lg:col-span-4 space-y-6">
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="flex border-b border-gray-100">
               {["products", "ads"].map((tab) => (

@@ -18,7 +18,8 @@
           "吸吮式",
           "户外适用",
           "静音设计（小于50db）",
-          "吮吸8档震动9档"
+          "吮吸8档震动9档",
+          "双马达"
         ],
         "category": "跳蛋",
         "link": "https://detail.tmall.com/item.htm?id=623902207377&pisk=fWcsiLMYOmhUEXeOUqLFAlmv32PjccOrkZaxrqCNk5FTlSgjV-52IqSjd4mBSSoqkoijYkfZ05PqAtnZVG-gbjojkkiOgRljosaxkmYg0FvESVV0M3-rhQuiSGTe3Gc_DJ3K-rzOWBVRmwN0M3-fLseMNSm_iWFU5JLQurqADmeTvwE35GFYX-IKJrELD3XA3nYMN4C5s1Wrb08UN3CN_Xapmu3_Jy4EOPwtMlECMvlQ5RZ-Wb9rFRajebwi2HWaXYZmVzow91iSWcM8efIpAS0EFmaS6UB7cc0K_Jh9uT43iAH86jt5XVwS9fPid31z2v0xGJ3MVT4EH4lZhgyPauZwlt_QEsaQ4eTCntcghyi76mno1RU38ZLBRT5gBy4QMeTCnt2T-yJyRe6Ps&scene=taobao_shop&spm=a1z10.1-b-s.w5001-22759604903.3.74833ffe4KfZXE",
@@ -380,7 +381,17 @@
           }
         ],
         "launchDate": "2019-07",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "noiseLevel": "50db",
+          "material": "硅胶+ABS",
+          "dimensions": "宽56mm高78mm",
+          "weight": "133g",
+          "usageTime": "80min",
+          "controlMethod": "按键",
+          "ipRating": "IPX7",
+          "chargingTime": "2.5小时"
+        }
       },
       {
         "id": "prod-1766566957728",
@@ -868,7 +879,17 @@
           }
         ],
         "launchDate": "2020-10",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长90mm宽128mm高90mm",
+          "material": "硅胶+ABS",
+          "weight": "133g",
+          "chargingTime": "2.5小时",
+          "ipRating": "IPX7",
+          "usageTime": "90min",
+          "controlMethod": "按键",
+          "noiseLevel": "50db"
+        }
       },
       {
         "id": "prod-1766569597541",
@@ -1101,7 +1122,17 @@
           }
         ],
         "launchDate": "2025-05",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长103mm宽63mm高59mm",
+          "material": "20度食品级硅胶",
+          "weight": "163g",
+          "ipRating": "IPX7",
+          "controlMethod": "按键",
+          "chargingTime": "180min",
+          "usageTime": "90min",
+          "noiseLevel": "50db"
+        }
       },
       {
         "id": "prod-1766570443599",
@@ -1364,7 +1395,17 @@
           }
         ],
         "launchDate": "2021-12",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长102mm宽82.6mm高51.9mm",
+          "material": "硅胶+PC",
+          "noiseLevel": "50db",
+          "weight": "150g",
+          "ipRating": "IPX6",
+          "controlMethod": "按键",
+          "usageTime": "90min",
+          "chargingTime": "1.5小时"
+        }
       },
       {
         "id": "prod-1766585728087",
@@ -1625,7 +1666,214 @@
           }
         ],
         "launchDate": "2025-07",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "noiseLevel": "55db",
+          "dimensions": "长200.3mm宽77.3mm高45mm",
+          "material": "硅胶",
+          "ipRating": "IPX6",
+          "controlMethod": "按键",
+          "weight": "192.6g",
+          "chargingTime": "1.5小时",
+          "usageTime": "90min"
+        }
+      },
+      {
+        "id": "prod-1767938410934",
+        "name": "双生潮震动棒",
+        "price": 434,
+        "tags": [
+          "分体式",
+          "5种玩法（入体伸缩、震动、体外吮吸、震动、体内外同时震动）",
+          "8mm伸缩距离",
+          "可无线遥控",
+          "4档强度5档变频"
+        ],
+        "category": "震动棒",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=957291780130&pisk=g-HI4qc8C4Hand-pyw-N5CO1Aj2WOhJ2VgZ-m0BF2JeLV8iSl7Wyt07S1m06x8ur2zgS7PXETBVzPgasJTPEF0X7203kxz-H_Dm3E8L2ub9qxDDI4JTId6UTWcqApuda9t2V76T2uKJW9GeWREoeEt1ijoZYekUL9NK_0k6Le7EKXhZ84wU8J4n9fPqP9TUd9OCTVkE8e6EdW5EUVwQ8eWUtXPq8ekeRehiTSuw8y4eJfchZABqNVPmB04MH8V1G2Z4OeTH_A5dZvPnEj3r8OpoQWd_CmkFCTDU1eTHswDTBHr91WPo-mbFsFpXUEcljPb392TUS6ogb02JOd8ht5xNxjE63Rf3nFJPDFgZsGc3IB8OfxlkIXxVSKe6TRVmtgJDvSTgxbmk3sYTfWzcUmREI13CTJ7IrBtzb8315fSX7fr-6f_foK7ZslqPfGUPLjlSJfh1VKWEgf8K6f_fu9lqwght1g9f..&rn=509942e5cee0e729980949a1f1d12281&spm=a1z10.3-b-s.w4011-22759604939.95.7e17311azl330U",
+        "competitorId": "datang",
+        "analysis": {
+          "pros": [
+            "分体设计灵活，吮吸、震动和伸缩头可单独或组合使用，玩法多样",
+            "材质安全亲肤，采用婴儿级硅胶，触感柔软舒适且无异味",
+            "隐私保护到位，包装采用匿名快递，外包装无敏感信息",
+            "多档位强度可调，适配不同敏感度需求，新手友好",
+            "品牌信誉好，用户普遍认可大人糖的品质和客服服务",
+            "性价比高，一款产品覆盖多种功能，相当于购买多个玩具",
+            "操作简单易上手，配有详细说明书和教学视频",
+            "续航能力强，充电方便且使用时间长",
+            "静音设计良好，多数用户反馈运行时声音小，隐私性强",
+            "有助于女性探索身体，提升自我认知和愉悦感"
+          ],
+          "cons": [
+            "部分用户反映产品材质偏硬，入体时可能引起不适或疼痛",
+            "噪音问题突出，高点赞量评论多次提到伸缩功能声音大，像打桩机",
+            "震动头效果鸡肋，有用户反馈震感弱或存在感低",
+            "尺寸设计可能偏大，对新手或敏感体质用户不够友好",
+            "充电接口设计小众，部分用户认为不够便捷",
+            "价格波动引发不满，有用户遇到刚购买就降价的情况",
+            "售后服务争议，部分用户反馈客服响应慢或退货困难",
+            "产品清洁后仍可能引发不适，如发痒等卫生问题",
+            "部分功能实际体验与宣传不符，用户期待落差大",
+            "不适合宿舍或合租环境使用，噪音可能影响隐私"
+          ],
+          "summary": "双生潮震动棒作为一款多功能情趣用品，在分体设计、材质安全和隐私保护方面获得用户高度认可，尤其在高点赞量评论中，正面反馈集中在玩法多样、品牌可靠和性价比高。然而，产品在噪音控制、材质硬度和尺寸适配性上存在明显改进点，高点赞量差评多次强调噪音大和入体不适问题，影响了部分用户体验。整体来看，该产品在市场上具有较强的竞争力，但需优化细节以提升用户满意度，尤其是在降低噪音和改善材质柔软度方面。",
+          "prosKeywords": [
+            {
+              "value": "分体设计",
+              "count": 45
+            },
+            {
+              "value": "材质安全",
+              "count": 38
+            },
+            {
+              "value": "隐私保护",
+              "count": 32
+            },
+            {
+              "value": "多档位",
+              "count": 28
+            },
+            {
+              "value": "品牌可靠",
+              "count": 25
+            },
+            {
+              "value": "性价比高",
+              "count": 22
+            },
+            {
+              "value": "操作简单",
+              "count": 20
+            },
+            {
+              "value": "续航强",
+              "count": 18
+            },
+            {
+              "value": "静音",
+              "count": 15
+            },
+            {
+              "value": "新手友好",
+              "count": 12
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "噪音大",
+              "count": 40
+            },
+            {
+              "value": "材质硬",
+              "count": 35
+            },
+            {
+              "value": "入体不适",
+              "count": 30
+            },
+            {
+              "value": "尺寸偏大",
+              "count": 25
+            },
+            {
+              "value": "充电不便",
+              "count": 20
+            },
+            {
+              "value": "价格波动",
+              "count": 18
+            },
+            {
+              "value": "售后服务差",
+              "count": 15
+            },
+            {
+              "value": "清洁问题",
+              "count": 12
+            },
+            {
+              "value": "体验不符宣传",
+              "count": 10
+            },
+            {
+              "value": "不适合合租",
+              "count": 8
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260109/6960994415030.png",
+        "sales": 10000,
+        "priceHistory": [
+          {
+            "date": "2025-07-24",
+            "finalPrice": 459,
+            "originalPrice": 499
+          },
+          {
+            "date": "2025-08-02",
+            "finalPrice": 459,
+            "originalPrice": 499
+          },
+          {
+            "date": "2025-09-08",
+            "finalPrice": 459,
+            "originalPrice": 539
+          },
+          {
+            "date": "2025-09-11",
+            "finalPrice": 459,
+            "originalPrice": 539
+          },
+          {
+            "date": "2025-09-14",
+            "finalPrice": 459,
+            "originalPrice": 539
+          },
+          {
+            "date": "2025-10-22",
+            "finalPrice": 439,
+            "originalPrice": 539
+          },
+          {
+            "date": "2025-11-10",
+            "finalPrice": 370.85,
+            "originalPrice": 539
+          },
+          {
+            "date": "2025-11-11",
+            "finalPrice": 439,
+            "originalPrice": 539
+          },
+          {
+            "date": "2025-12-03",
+            "finalPrice": 405.71,
+            "originalPrice": 539
+          },
+          {
+            "date": "2025-12-19",
+            "finalPrice": 434,
+            "originalPrice": 539
+          },
+          {
+            "date": "2026-01-09",
+            "finalPrice": 434,
+            "originalPrice": 539
+          }
+        ],
+        "launchDate": "2025-09",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长232mm宽34.5mm高69mm",
+          "material": "硅胶+ABS",
+          "noiseLevel": "50db",
+          "weight": "176.3g",
+          "ipRating": "IPX7",
+          "chargingTime": "1.5小时",
+          "usageTime": "60min",
+          "controlMethod": "遥控+按键"
+        }
       }
     ],
     "sentiment": {
@@ -1637,7 +1885,39 @@
     },
     "isDomestic": true,
     "focus": "Female",
-    "foundedDate": "2019"
+    "foundedDate": "2019",
+    "brandCharacteristicAnalysis": {
+      "brandPositioning": "大人糖品牌定位为国内中高端女用情趣用品专业品牌。其定位体现在：一是专攻女用市场，聚焦女性用户需求，区别于传统以男性视角为主的品牌；二是倡导情趣阳光化理念，通过去色情化设计和女性视角重塑行业标准，定位为专业、健康、时尚的女性情趣品牌；三是价格区间在234-539元，平均360元，属于中高端定位，与大众低价品牌形成差异化。与同类品牌相比，大人糖更注重女性体验和性观念觉醒，而非单纯的功能性产品，这使其在市场中具有独特的差异化定位。",
+      "productCharacteristics": "大人糖产品线以女用情趣用品为主，共5款产品，包括4款跳蛋和1款震动棒，类别分布集中，专注于小巧便携、静音设计等功能。产品标签如小巧便携、吸吮式、户外适用、静音设计（小于50db）、IPX7防水等，反映了产品注重隐私、便捷和多功能性。设计理念强调去色情化和女性视角，例如吸吮式设计和适配多重敏感度，旨在提升女性用户体验。创新点包括吮吸8档震动9档、渐变强度记忆模式等，独特卖点在于结合技术功能与人性化设计，如静音和防水特性，满足现代女性对品质和隐私的需求。整体产品特征体现了品牌对女性市场的深度理解和专业专注。",
+      "priceStrategy": "大人糖的价格策略定位为中高端，价格区间为234-539元，平均价格360元。这一定价策略与品牌定位高度匹配，中高端价格反映了产品的高品质和专业性，避免了低价竞争，提升了品牌形象。价格竞争力方面，在女用情趣用品市场中，此价格区间属于合理范围，既能吸引有一定消费能力的女性用户，又不会过于昂贵而失去市场。价格策略对品牌形象的影响是积极的，它强化了品牌的专业和高端感，有助于建立消费者信任和忠诚度，同时通过合理定价维持市场竞争力。",
+      "targetAudience": "大人糖的目标受众主要是中国女性消费者，特别是年轻至中年女性，她们对性观念较为开放，注重生活品质和隐私。基于产品性别分布（女用5款），目标用户群体包括单身女性、情侣中的女性以及性观念觉醒阶段的女性。这些用户通常具有中等以上消费能力，愿意为高品质、设计感强的产品付费，消费习惯偏向线上购买，注重产品口碑和用户体验。品牌通过去色情化设计、女性视角理念和静音便携等功能，吸引目标受众，满足她们对自然、轻松面对性需求的心理诉求，从而建立情感连接和市场认同。",
+      "competitiveAdvantages": [
+        "专攻女用市场，深度理解女性需求，形成差异化定位",
+        "倡导情趣阳光化理念，去色情化设计提升品牌形象和用户接受度",
+        "产品功能创新，如吸吮式设计和静音技术，增强用户体验",
+        "中高端价格策略，平衡品质与市场竞争力，强化品牌专业感"
+      ],
+      "brandPersonality": "大人糖展现出专业、时尚、亲民的品牌个性。专业体现在对女用市场的专注和产品技术细节，如静音设计和防水功能；时尚通过去色情化设计和现代理念传递，使品牌显得前卫和健康；亲民则源于倡导情趣阳光化，让用户轻松面对性需求，降低使用门槛。品牌个性通过理念和产品体现，例如小巧便携的设计和女性视角，吸引消费者追求品质生活和自我表达。这种个性对消费者具有吸引力，因为它结合了专业可靠与情感共鸣，帮助品牌在竞争激烈的市场中脱颖而出。",
+      "summary": "大人糖作为国内专攻女用市场的情趣用品品牌，以情趣阳光化理念为核心，通过去色情化设计和女性视角重塑行业标准。品牌定位中高端，产品线集中在跳蛋和震动棒，注重小巧便携、静音等实用功能，价格策略合理匹配定位。核心竞争力在于深度聚焦女性需求、创新产品设计和健康品牌理念，这使其在中国情趣用品市场中占据独特位置，吸引性观念觉醒的女性消费者。优势包括差异化定位和用户情感连接，但潜在挑战可能来自市场竞争加剧和消费者观念变化，需持续创新以维持优势。总体而言，大人糖代表了情趣用品行业向专业化、人性化发展的趋势，具有较高的市场价值和发展潜力。",
+      "wordCloudKeywords": [
+        {
+          "value": "女性视角",
+          "count": 10
+        },
+        {
+          "value": "静音设计",
+          "count": 8
+        },
+        {
+          "value": "阳光化",
+          "count": 7
+        },
+        {
+          "value": "吸吮式",
+          "count": 6
+        }
+      ]
+    }
   },
   {
     "id": "netease-wind",
@@ -1728,7 +2008,17 @@
         "sales": 800,
         "priceHistory": [],
         "launchDate": "2023-10",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长102.5mm宽106.5mm高32mm",
+          "material": "硅胶+ABS+尼龙",
+          "noiseLevel": "44db",
+          "weight": "71g",
+          "ipRating": "IPX7",
+          "controlMethod": "APP+按键",
+          "usageTime": "35min",
+          "chargingTime": "60min"
+        }
       },
       {
         "id": "prod-1767089767474",
@@ -1807,7 +2097,16 @@
         "image": "https://img.lenyiin.com/app/hide.php?key=U2hsNmlBWGNaZHYvNEZubTVDOUhMMDVncmc1Q1ZhZkZPR2c4dUg0PQ==",
         "sales": 100,
         "launchDate": "2024-07",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长15cm\n入体5.1cm\n直径2.3cm",
+          "material": "液态硅胶",
+          "noiseLevel": "50db",
+          "usageTime": "1 - 1.5小时",
+          "ipRating": "IPX7",
+          "chargingTime": "0.8 - 1小时",
+          "controlMethod": "按键"
+        }
       },
       {
         "id": "prod-1767090185430",
@@ -1949,7 +2248,17 @@
           }
         ],
         "launchDate": "2023-06",
-        "gender": "Male"
+        "gender": "Male",
+        "specs": {
+          "dimensions": "长103.2mm宽72.6mm高42.4mm",
+          "material": "硅胶+ABS",
+          "usageTime": "70min",
+          "weight": "126g",
+          "ipRating": "IPX7",
+          "noiseLevel": "40db",
+          "controlMethod": "APP+按键",
+          "chargingTime": "2小时"
+        }
       },
       {
         "id": "prod-1767092115593",
@@ -1970,7 +2279,7 @@
           "70db"
         ],
         "category": "飞机杯",
-        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=676146628899&pisk=gQcozvXDAos_Rvs2sMPWUmh1yUvvP7NQzDCLvWEe3orf2UgKwBRnY0W8peTSKMqm78LSvDH0xmo04bp7v6jn02Q8U8zP3-z7J6zULJkc-VimxJT7vkrnv2kJkCdtP4NQT2x96CCVP6qnqarzze54-y8YzkhqS8VQThKhH6yWsWilN-7P8tz4cyfzzWoU0Sz30y5UTDr43PzFaWPEYEV4RyfzzJPFgIzQ09Sz88zV3P4dYMWPUE04cyPUYDyyoqrb8WrE6GtY2urIgH31YWVzc9Z0r8qZzuu-yjRgeTg8mvDIgx00U4WCT6l0r8c02jqbfWkrym2tEhfu64ksAPoP434mZVcnQmRAZW0qQXVqgn7Y4Agmt7hyJQPqZ0cznD7NU8ks2AymM3fbbxumJ-DXRTEKCyoQCXK1NuuE5fMTsBb3oA04ig5G3ORXb6a2JjWCd8zbolIAT99Z3yTaXEYcQz2zlz5voEXBZ8zbolLDoOPQUraPM&rn=1026afa52b2298c8eb5fbc47b8b35321&spm=a1z10.5-b.w4011-23216582827.74.62ee3349OiMKKH",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=840256400026&pisk=gGxEzOfqvgAsmpGD3KjrbA85YDIdmglbZ315ELvld6f3A2LzapOeAQ6BFzry_IQuVpgKUY5ww6_CxXIPEIOAOTaBKGqG3TNlE_blSGfwtu_B4LEPELA-p_MK5ppd2gcjGUoXpphGlJayYyfijdB0Z_01-TmSAQcjGmir-RjrTj9I2cuWStWcq9fh-GDNEtqhqwqojAWlFWfltQviQ1B5ZWqu-ljGUtFlqufkINXfhuflqgbgS1BAq_AlqA7G6TjlZQjo6p7fzjW5-AUeDlEj1-SGipfaqoyACwqMLzZ7VjWhJsbG_uX6b97FipxmZO9GUExVJIc_R6Y2PIWXOcqegpAeoZx3sfSJCERP3HD0u_RpIH_MxYaABgLHoMxrgWvFuhxCvFl4csY9E37MpjzACUvXAURI6ufBudANlhN_cGxeTHbNmgSTwOcIQ3LUZz7hBO5jQAlm4wvieVvmPzURJWWNGvYuyzQh8O5jQAz8ywnOQsMHr&rn=b82941a58531c9d367972847c48b7a92&spm=a1z10.5-b.w4011-23216582827.57.65946c81BYeKQb",
         "competitorId": "netease-wind",
         "analysis": {
           "pros": [
@@ -2128,7 +2437,17 @@
           }
         ],
         "launchDate": "2023-10",
-        "gender": "Male"
+        "gender": "Male",
+        "specs": {
+          "usageTime": "60min",
+          "noiseLevel": "60db",
+          "material": "硅胶",
+          "dimensions": "长105mm宽118mm高298mm",
+          "weight": "1085g",
+          "ipRating": "IPX7",
+          "controlMethod": "APP+按键",
+          "chargingTime": "3-4小时"
+        }
       },
       {
         "id": "prod-1767092787764",
@@ -2293,7 +2612,17 @@
           }
         ],
         "launchDate": "2023-11",
-        "gender": "Male"
+        "gender": "Male",
+        "specs": {
+          "dimensions": "长78mm宽88mm高260mm",
+          "weight": "830g",
+          "controlMethod": "APP+按键",
+          "ipRating": "IPX7",
+          "noiseLevel": "65db",
+          "chargingTime": "2小时",
+          "material": "ABS+TPE",
+          "usageTime": "1 - 2小时"
+        }
       },
       {
         "id": "prod-1767093282279",
@@ -2410,7 +2739,17 @@
           }
         ],
         "launchDate": "2023-07",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长65.9mm宽54mm高124mm",
+          "noiseLevel": "55db",
+          "material": "硅胶+ABS",
+          "ipRating": "IPX7",
+          "chargingTime": "120min",
+          "usageTime": "60min",
+          "controlMethod": "按键+APP",
+          "weight": "160g"
+        }
       }
     ],
     "isDomestic": true,
@@ -2596,7 +2935,17 @@
           }
         ],
         "launchDate": "2017-09",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长90mm宽61mm高33mm",
+          "material": "硅胶",
+          "ipRating": "IPX6",
+          "controlMethod": "遥控",
+          "noiseLevel": "30db",
+          "chargingTime": "3小时",
+          "usageTime": "1小时",
+          "weight": "130g"
+        }
       },
       {
         "id": "prod-1766643964782",
@@ -2774,7 +3123,17 @@
           }
         ],
         "launchDate": "2018-09",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长33mm宽90mm高68mm",
+          "material": "silica30度液态硅胶",
+          "ipRating": "IPX6",
+          "noiseLevel": "30db",
+          "usageTime": "1小时",
+          "chargingTime": "3小时",
+          "controlMethod": "APP+按键",
+          "weight": "286g"
+        }
       },
       {
         "id": "prod-1766644759893",
@@ -2957,7 +3316,17 @@
           }
         ],
         "launchDate": "2019-09",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "noiseLevel": "50db",
+          "dimensions": "长68mm宽49mm高82mm",
+          "ipRating": "IPX6",
+          "material": "双层硅胶",
+          "controlMethod": "APP+按键",
+          "usageTime": "1小时",
+          "chargingTime": "3小时",
+          "weight": "140g"
+        }
       },
       {
         "id": "prod-1766744720458",
@@ -3086,7 +3455,17 @@
           }
         ],
         "launchDate": "2024-11",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "noiseLevel": "50db",
+          "dimensions": "长137mm宽65mm高29mm",
+          "material": "硅胶",
+          "usageTime": "1小时",
+          "ipRating": "IPX7",
+          "controlMethod": "APP+按键",
+          "chargingTime": "3小时",
+          "weight": "209g"
+        }
       },
       {
         "id": "prod-1766745668730",
@@ -3722,7 +4101,17 @@
           }
         ],
         "launchDate": "2024-11",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "controlMethod": "遥控手柄",
+          "material": "20度液态硅胶+ABS",
+          "ipRating": "IP67",
+          "noiseLevel": "50db",
+          "usageTime": "1小时",
+          "chargingTime": "3小时",
+          "weight": "103g",
+          "dimensions": "恶魔蛋：长45mm宽26.8mm高26.8mm\n震动蛋：长44mm宽22.4mm高22.4mm "
+        }
       },
       {
         "id": "prod-1766746256445",
@@ -3852,7 +4241,17 @@
           }
         ],
         "launchDate": "2025-06",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "material": "跳蛋：固态硅胶+ABS\n戒指按摩器：液态硅胶",
+          "dimensions": "跳蛋：长30mm宽35mm高177mm\n戒指按摩器：长57mm宽46mm高29mm",
+          "ipRating": "IPX7",
+          "controlMethod": "遥控",
+          "noiseLevel": "45db",
+          "usageTime": "1小时",
+          "chargingTime": "3小时",
+          "weight": "两个总体：238g"
+        }
       },
       {
         "id": "prod-1766746794042",
@@ -4006,7 +4405,17 @@
           }
         ],
         "launchDate": "2023-06",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长99mm宽62mm高32mm",
+          "material": "硅胶",
+          "noiseLevel": "40db",
+          "controlMethod": "APP+按键",
+          "ipRating": "IP67",
+          "chargingTime": "2.5小时",
+          "usageTime": "60min",
+          "weight": "70g"
+        }
       },
       {
         "id": "prod-1766747788088",
@@ -4174,7 +4583,17 @@
           }
         ],
         "launchDate": "2023-11",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "noiseLevel": "40db",
+          "dimensions": "探蜜棒：长176mm宽30mm\n乳夹：长57mm宽46mm高29mm",
+          "ipRating": "IP67",
+          "controlMethod": "APP+按键",
+          "usageTime": "1小时",
+          "chargingTime": "3小时",
+          "material": "硅胶",
+          "weight": "蜜棒：90g\n乳夹：40g"
+        }
       },
       {
         "id": "prod-1766987122959",
@@ -4323,7 +4742,17 @@
           }
         ],
         "launchDate": "2023-12",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长179mm宽30mm高30mm",
+          "material": "硅胶",
+          "noiseLevel": "50db",
+          "usageTime": "1小时",
+          "chargingTime": "3小时",
+          "controlMethod": "APP+按键",
+          "ipRating": "IP67",
+          "weight": "254g"
+        }
       }
     ],
     "isDomestic": true,
@@ -4511,7 +4940,17 @@
             "finalPrice": 36.6,
             "originalPrice": 75
           }
-        ]
+        ],
+        "specs": {
+          "dimensions": "长86mm宽31mm",
+          "material": "硅胶+ABS",
+          "noiseLevel": "50db",
+          "weight": "44.5g",
+          "chargingTime": "60 - 90min",
+          "usageTime": "60min",
+          "controlMethod": "遥控+按键",
+          "ipRating": "IPX6"
+        }
       },
       {
         "id": "prod-1767358692685",
@@ -4708,6 +5147,16 @@
             "价格优化建议包括实施动态定价策略，利用数据分析工具监控市场趋势和竞争对手价格，适时调整折扣幅度，同时加强品牌营销以支撑中端定位。"
           ],
           "summary": "综合分析显示，青媞跳蛋2.0作为中端情趣用品，价格走势波动明显，受电商平台促销和市场季节性因素影响较大。历史数据表明，价格在¥153.59至¥211.00区间内变化，平均到手价¥194.15，当前价格¥195.10处于合理范围。波动幅度37.4%反映了行业特点，但需注意过度促销可能削弱品牌价值。与中国情趣用品市场相比，该产品定价策略符合主流电商平台模式，通过短期折扣吸引消费者。建议未来优化定价时，平衡促销与稳定性，关注大促时机，并利用数据驱动决策以提升竞争力。总体而言，产品具有市场潜力，但需加强价格管理以应对激烈竞争。"
+        },
+        "specs": {
+          "material": "硅胶",
+          "dimensions": "吮吸跳蛋：长5.55cm宽3.05cm高3.2cm\n震动跳蛋：长5.2cm宽2.8cm",
+          "noiseLevel": "50db",
+          "usageTime": "80min",
+          "chargingTime": "1.5小时",
+          "controlMethod": "APP+按键",
+          "weight": "106.5g",
+          "ipRating": "IPX7"
         }
       },
       {
@@ -4854,7 +5303,17 @@
           }
         ],
         "launchDate": "2023-10",
-        "gender": "Female"
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长265mm宽45mm",
+          "noiseLevel": "60db",
+          "material": "硅胶+ABS",
+          "weight": "466g",
+          "chargingTime": "120min",
+          "usageTime": "80min",
+          "controlMethod": "按键",
+          "ipRating": "IPX7"
+        }
       },
       {
         "id": "prod-1767361651709",
@@ -5633,6 +6092,903 @@
           "usageTime": "无",
           "chargingTime": "无",
           "controlMethod": "手动",
+          "ipRating": "无"
+        }
+      },
+      {
+        "id": "prod-1767780844549",
+        "name": "spinner旋吸飞机杯",
+        "price": 128,
+        "tags": [
+          "腔内负压吮吸感",
+          "紧缚杯体夹紧感",
+          "回转螺旋饶舌感",
+          "弹力伸缩律动感",
+          "结构刮擦齿磨感",
+          "内置弹簧（自动旋转+吮吸）",
+          "开口可翻自带底座（易清洗晾干）",
+          "几何结构内壁（替换传统的仿生结构）",
+          "6款类型内壁",
+          "2019年度红点奖"
+        ],
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=574526551861&pisk=gQ8q8b6EkNvStYMHTBbZz8lsHcbAyNkCjF61sCAGGtXcCjKaQd675iivCf-yILIfnxnAsPJHe1NXiP2or150iO4ci3Pw9LJNXjB1IOJ6snGSR2OvMNQM_vgIRZbtqUv4nr4is_f19b10nDhC9NQidAr7Si3FWKoOnbggq_XR_rXGmdfuEs6lsobMITjlt14cSNviaaf16-fgoPjursBum-XGigqlO650I1jmaQXR1s4DINcPrTCGSOvGSf5hAGkF1ic8exHT0yk-q9dcUP4MoVIVLjWRw_8z2iXFqESFxUzd09AcUPDVjziRE68oB-69zQYc6L07uNRl_p7D4Y42QIxpB6vmz-f2mBRC4FH37_KkHg124fqlnBXPoT8t6PBDcCY1bED31tYvhUSpW-k5CHOWogJnFzJObnxhoFkErgrzB_DjaFK4IlScw_WIabkn7iAo76yrjlEOD-5PdjxgXlIc0_WIabrTXi3Ra9GDj&rn=3df6684a0d9a5083d76721b26f0cc3fd&spm=a1z10.5-b-s.w4011-25428877037.59.4fc71207H7kT6F",
+        "competitorId": "Tenga",
+        "analysis": {
+          "pros": [
+            "包裹感强，刺激度高，使用体验舒适",
+            "材质安全，手感柔软，无明显异味",
+            "设计隐蔽，外观低调，便于收纳和携带",
+            "清洗方便，配备沥水底座，利于干燥保养",
+            "旋转吸力设计新颖，带来独特的吮吸快感",
+            "客服服务专业耐心，物流快速且包装保密",
+            "性价比高，与同类产品相比物超所值",
+            "通道结构丰富，颗粒感和褶皱感真实"
+          ],
+          "cons": [
+            "内部不易晾干，长期潮湿易滋生细菌或发霉",
+            "部分用户反映有明显刺鼻胶味，影响使用体验",
+            "外壳偏硬或材质劣质，使用时感觉不适甚至疼痛",
+            "弹簧结构易导致磨损、脱皮、开裂，耐用性差",
+            "尺寸偏小，对较大体型用户存在进入困难问题",
+            "旋转机制实际感受不明显，被指为“噱头”",
+            "清洁不便，无法外翻彻底清洗内部",
+            "赠品缺失或润滑液质量差，可能引发过敏感染"
+          ],
+          "summary": "综合1454条用户评价，该产品凭借其创新的旋吸设计、良好的包裹感和隐私保护获得了广泛认可，尤其在高点赞量评论中‘刺激感强’‘材质安全’等优点被频繁提及。尽管存在如‘难晾干’‘有异味’‘易损坏’等集中吐槽点，但整体正面反馈占主导，显示出较强的市场竞争力和用户满意度。",
+          "prosKeywords": [
+            {
+              "value": "包裹感强",
+              "count": 38
+            },
+            {
+              "value": "刺激感强",
+              "count": 32
+            },
+            {
+              "value": "材质安全",
+              "count": 29
+            },
+            {
+              "value": "性价比高",
+              "count": 27
+            },
+            {
+              "value": "旋转设计",
+              "count": 26
+            },
+            {
+              "value": "清洗方便",
+              "count": 24
+            },
+            {
+              "value": "客服专业",
+              "count": 22
+            },
+            {
+              "value": "物流快速",
+              "count": 20
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "难晾干",
+              "count": 35
+            },
+            {
+              "value": "有异味",
+              "count": 33
+            },
+            {
+              "value": "易损坏",
+              "count": 30
+            },
+            {
+              "value": "太紧",
+              "count": 28
+            },
+            {
+              "value": "尺寸小",
+              "count": 26
+            },
+            {
+              "value": "噪音大",
+              "count": 24
+            },
+            {
+              "value": "清洁不便",
+              "count": 23
+            },
+            {
+              "value": "材质劣质",
+              "count": 21
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260107/695e2fcb27c53.png",
+        "sales": 80000,
+        "priceHistory": [
+          {
+            "date": "2025-05-15",
+            "finalPrice": 159,
+            "originalPrice": 189
+          },
+          {
+            "date": "2025-05-16",
+            "finalPrice": 108,
+            "originalPrice": 151
+          },
+          {
+            "date": "2025-05-18",
+            "finalPrice": 128,
+            "originalPrice": 151
+          },
+          {
+            "date": "2025-05-30",
+            "finalPrice": 128,
+            "originalPrice": 151
+          },
+          {
+            "date": "2025-06-06",
+            "finalPrice": 128,
+            "originalPrice": 151
+          },
+          {
+            "date": "2025-06-07",
+            "finalPrice": 128,
+            "originalPrice": 151
+          },
+          {
+            "date": "2025-06-09",
+            "finalPrice": 128,
+            "originalPrice": 151
+          },
+          {
+            "date": "2025-06-14",
+            "finalPrice": 128,
+            "originalPrice": 151
+          },
+          {
+            "date": "2025-06-28",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-07-08",
+            "finalPrice": 125,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-07-21",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-07-24",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-08-04",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-08-07",
+            "finalPrice": 125,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-08-24",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-09-15",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-09-16",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-09-17",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-09-23",
+            "finalPrice": 125,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-09-25",
+            "finalPrice": 125,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-09-26",
+            "finalPrice": 125,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-09-30",
+            "finalPrice": 128,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-10-27",
+            "finalPrice": 121,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-10-29",
+            "finalPrice": 108.9,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-11-02",
+            "finalPrice": 108.55,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-11-11",
+            "finalPrice": 97.69,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-11-17",
+            "finalPrice": 124.85,
+            "originalPrice": 143
+          },
+          {
+            "date": "2025-12-07",
+            "finalPrice": 128,
+            "originalPrice": 143
+          }
+        ],
+        "launchDate": "2018-10",
+        "gender": "Male",
+        "specs": {
+          "dimensions": "长56mm宽56mm高140mm",
+          "weight": "130g",
+          "noiseLevel": "无",
+          "material": "日本进口TPE",
+          "usageTime": "无",
+          "controlMethod": "手动",
+          "chargingTime": "无",
+          "ipRating": "无"
+        }
+      },
+      {
+        "id": "prod-1767783634933",
+        "name": "TOC一次性小巧飞机杯",
+        "price": 38.4,
+        "tags": [
+          "2021年红点设计奖",
+          "内置足量的润滑液",
+          "即开即用",
+          "干净卫生（避免清晰不干净残留的细菌）",
+          "5种类型体验感",
+          "气孔调节吮吸力度",
+          "易于便携"
+        ],
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=37789118548&pisk=gJvKRimJWcELezkskJcirzDvzumM2fxe6e-bEab3NFL90ECk-X-5VLLk5TfS89vJWUT8EBvhK_M5SMaQA_wSChsfD_TlrHqe_ExbKpcFE8BFUTgmoxDmTHWPFZmnBUzECijrE7_5N9W1AzD23xDDYhEhAmxsnBAGfgsTN8T5ONt12Nw7RWT51RsP5Js7dT_sXg71FM1CRP11cMs7O8T55PsfAksCO8w1fM71PT6WPhiOqN_5FTTWffxTQal5o8d3tc-HsXg5ispOv6QXXjy7eRS3oZ-B583AJP1ClxbTF89Ov3tKQ2yIHNOHNpX6dVaVCnRMRGBxeuI9Mh6CvUk4L9tXfQ1pebqVzCK6i1daxDS9pnpRD6UsvaJHJLCehq2NRCpwe9AiJ-bPNCvFgp0_ptO2x9AW50w5yCs54epDHHt_oZIuOcnTa75CbFXIXlfalp9lXZmMR7PP6SSOochUa75CbGQmjOVza1FV.&rn=3df6684a0d9a5083d76721b26f0cc3fd&spm=a1z10.5-b-s.w4011-25428877037.66.4fc71207H7kT6F",
+        "competitorId": "Tenga",
+        "analysis": {
+          "pros": [
+            "方便携带，小巧隐蔽，适合学生党和出差使用",
+            "一次性设计干净卫生，无需清洗，避免细菌滋生",
+            "自带润滑液，开盖即用，使用便捷",
+            "性价比高，价格亲民，适合初次体验者",
+            "包裹感强，材质柔软，仿真度高，带来真实体验",
+            "使用安静，适合宿舍或共享空间环境",
+            "发货速度快，物流迅速，包装注重隐私保密",
+            "客服服务态度好，响应及时，售后有保障"
+          ],
+          "cons": [
+            "包装极其简陋，纸盒易压扁破损，缺乏缓冲保护",
+            "产品收到时已有破损、漏液或内部棉絮外露",
+            "部分用户反馈材质偏硬或过软，体验感差",
+            "一次性产品但价格偏高，与实际质量不符",
+            "商家售后处理消极，仅退款三元，需平台介入",
+            "商品表面有灰尘，生产日期不明，卫生存疑",
+            "不支持上传图片，维权困难，用户体验受阻",
+            "部分型号旋转设计失效，刺激感不足"
+          ],
+          "summary": "TOC一次性小巧飞机杯在用户中呈现出两极分化评价。尽管有高点赞量评论（如[点赞量: 13]）强调其‘宿舍友好、无声便携、性价比高’，获得相当一部分用户的认可，尤其适合学生和新手群体；但同时大量负面反馈集中于‘包装破损率高、品控不稳定、售后敷衍’等问题，且多条高赞追评反复提及‘还没用就漏’‘棉都出来了’‘垃圾包装’等严重质量问题。整体来看，产品在便利性和基础体验上有亮点，但品控与服务短板显著削弱了其市场竞争力，用户认可度受限于可靠性缺陷。",
+          "prosKeywords": [
+            {
+              "value": "方便携带",
+              "count": 18
+            },
+            {
+              "value": "性价比高",
+              "count": 16
+            },
+            {
+              "value": "包裹感强",
+              "count": 14
+            },
+            {
+              "value": "一次性",
+              "count": 13
+            },
+            {
+              "value": "柔软",
+              "count": 12
+            },
+            {
+              "value": "仿真",
+              "count": 11
+            },
+            {
+              "value": "发货快",
+              "count": 10
+            },
+            {
+              "value": "保密发货",
+              "count": 9
+            },
+            {
+              "value": "自带润滑液",
+              "count": 8
+            },
+            {
+              "value": "无声",
+              "count": 7
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "包装简陋",
+              "count": 22
+            },
+            {
+              "value": "破损",
+              "count": 20
+            },
+            {
+              "value": "漏液",
+              "count": 15
+            },
+            {
+              "value": "棉絮外露",
+              "count": 13
+            },
+            {
+              "value": "售后差",
+              "count": 12
+            },
+            {
+              "value": "灰尘",
+              "count": 10
+            },
+            {
+              "value": "价格高",
+              "count": 9
+            },
+            {
+              "value": "品控差",
+              "count": 8
+            },
+            {
+              "value": "不支持传图",
+              "count": 7
+            },
+            {
+              "value": "退款三元",
+              "count": 6
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260107/695e345e929b4.png",
+        "sales": 80000,
+        "priceHistory": [
+          {
+            "date": "2025-05-18",
+            "finalPrice": 39.1,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-06-01",
+            "finalPrice": 35.19,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-06-07",
+            "finalPrice": 39.1,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-07-01",
+            "finalPrice": 41.4,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-08-10",
+            "finalPrice": 40.4,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-09-11",
+            "finalPrice": 40.4,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-09-19",
+            "finalPrice": 41.4,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-09-23",
+            "finalPrice": 40.05,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-12-09",
+            "finalPrice": 38.4,
+            "originalPrice": 46
+          },
+          {
+            "date": "2025-12-22",
+            "finalPrice": 38.4,
+            "originalPrice": 46
+          }
+        ],
+        "launchDate": "2014-06",
+        "gender": "Male",
+        "specs": {
+          "material": "硅胶",
+          "weight": "213g",
+          "chargingTime": "无",
+          "controlMethod": "手动",
+          "usageTime": "无",
+          "noiseLevel": "无",
+          "ipRating": "无"
+        }
+      },
+      {
+        "id": "prod-1767784803496",
+        "name": "Flip异次元Zero飞机杯",
+        "price": 402,
+        "tags": [
+          "开合设计（易于晾干/高科技感）",
+          "几何图形结构通道",
+          "按压气垫排气",
+          "电动手动两模式选择",
+          "高科技感外壳",
+          "电动款含5种震动模式",
+          "可搭配加热棒加热恒温（为防止过度烫伤,从最后的操作开始30分钟后自动关闭加热）"
+        ],
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=539375467089&pisk=gCFq-nmFMfqS1WS38ycNa371DOcxBfSII5isSP4ilmmmfZewbliW1x6YfNyzjuHjmiBxSCr32VTboCxlZVuDocAmo88aJurZBZnsjcr_S-_5O6aYkfhg7M1COjcOE7q2mmAGSL0x8agDm9QIJfhGAGJWsxCE6oWOIP1DE4m-7ImiIl0kqqioSKcgj0Do-VAmsfqGzb0sWn0MiCDkZqnknIvmm3AoJ2tmjCvczzm-WdcislclzVnojfci_qDIQMusnaKRDGpVHQKojrmysCVc6xoF4mu-l7-jnDMugqu0aBHqxrmysikMNTno87j9ccFzrS0Tq_Oq_z0aYj2PqIraoJEt-ofymqy08yMz6MAZy8qxFqyPSLm0-0lm45Q96m2bS5MaiMYsmSEbavF90gi_dzNmUkjWalHanJc0_M5l4b-tri_z6--MQx0-zD_PzMfZnzfZ83WMBdHv04oCoRv9BxDqzD_PzdptH_3rAZ2G.&rn=3df6684a0d9a5083d76721b26f0cc3fd&spm=a1z10.5-b-s.w4011-25428877037.78.4fc71207H7kT6F",
+        "competitorId": "Tenga",
+        "analysis": {
+          "pros": [
+            "清洗非常方便，可拆卸设计让清洁无死角",
+            "材质柔软亲肤，使用体验接近真实",
+            "包装保密性好，物流快速且隐私保护到位",
+            "大品牌值得信赖，做工精细质量可靠",
+            "开合式设计创新，晾晒和维护更轻松",
+            "通道内壁纹理丰富，刺激感强且包裹感好",
+            "适合有洁癖用户，彻底冲洗后无残留顾虑",
+            "外观科技感强，造型隐蔽不易被识破",
+            "润滑配合使用顺滑，入口紧致带来强烈快感",
+            "吸附力强，排气后真空效果显著提升体验"
+          ],
+          "cons": [
+            "部分产品存在严重质量问题，如开裂、破损、污渍甚至发现阴毛",
+            "卡扣或塑料结构脆弱，使用几次后易断裂或变形",
+            "入口过小且延展性差，插入困难并可能导致不适",
+            "内部塑料壳贴近胶体，使用时能明显感到硬物摩擦",
+            "密封性不佳，使用过程中润滑液易从缝隙漏出",
+            "拆封即不退换的政策不合理，消费者无法验货试用",
+            "价格偏高但实际体验未达预期，性价比受质疑",
+            "白色款耐磨性差，使用一次即出现磨损痕迹",
+            "磁铁设计无实际作用，用途不明且令人不安",
+            "部分用户反馈射精受阻，甚至出现空气倒流至尿道的健康风险"
+          ],
+          "summary": "Flip异次元Zero飞机杯在用户体验上呈现两极分化：高点赞量评论（如17条获赞16+）高度认可其清洗便捷、材质柔软与品牌品质，尤其吸引注重卫生与真实感的用户；然而，同样高点赞量的差评（如13条获赞10以上）集中反映质量不稳定、设计缺陷及安全隐患等问题。整体来看，尽管产品具备创新亮点和忠实用户群，但品控问题与高价低配的感知正削弱其市场竞争力，影响长期口碑。",
+          "prosKeywords": [
+            {
+              "value": "清洗方便",
+              "count": 28
+            },
+            {
+              "value": "材质柔软",
+              "count": 25
+            },
+            {
+              "value": "包裹感强",
+              "count": 22
+            },
+            {
+              "value": "大品牌",
+              "count": 19
+            },
+            {
+              "value": "保密发货",
+              "count": 18
+            },
+            {
+              "value": "开合设计",
+              "count": 17
+            },
+            {
+              "value": "刺激感强",
+              "count": 16
+            },
+            {
+              "value": "亲肤材质",
+              "count": 15
+            },
+            {
+              "value": "真空吸附",
+              "count": 14
+            },
+            {
+              "value": "外观科技感",
+              "count": 12
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "开裂破损",
+              "count": 21
+            },
+            {
+              "value": "卡扣断裂",
+              "count": 19
+            },
+            {
+              "value": "入口太小",
+              "count": 18
+            },
+            {
+              "value": "塑料壳硌人",
+              "count": 17
+            },
+            {
+              "value": "漏润滑液",
+              "count": 16
+            },
+            {
+              "value": "拆封不退",
+              "count": 15
+            },
+            {
+              "value": "价格虚高",
+              "count": 14
+            },
+            {
+              "value": "白色易磨损",
+              "count": 13
+            },
+            {
+              "value": "磁铁无用",
+              "count": 12
+            },
+            {
+              "value": "射精受阻",
+              "count": 11
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260107/695e405a5dd26.png",
+        "sales": 20000,
+        "priceHistory": [
+          {
+            "date": "2025-04-25",
+            "finalPrice": 455.09,
+            "originalPrice": 510
+          },
+          {
+            "date": "2025-05-09",
+            "finalPrice": 459,
+            "originalPrice": 510
+          },
+          {
+            "date": "2025-05-20",
+            "finalPrice": 388,
+            "originalPrice": 504
+          },
+          {
+            "date": "2025-05-25",
+            "finalPrice": 387.58,
+            "originalPrice": 504
+          },
+          {
+            "date": "2025-05-30",
+            "finalPrice": 408,
+            "originalPrice": 504
+          },
+          {
+            "date": "2025-06-02",
+            "finalPrice": 381.94,
+            "originalPrice": 504
+          },
+          {
+            "date": "2025-06-07",
+            "finalPrice": 428,
+            "originalPrice": 504
+          },
+          {
+            "date": "2025-07-23",
+            "finalPrice": 458,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-07-31",
+            "finalPrice": 458,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-08-19",
+            "finalPrice": 447,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-08-20",
+            "finalPrice": 458,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-09-02",
+            "finalPrice": 458,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-09-15",
+            "finalPrice": 423,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-11-05",
+            "finalPrice": 385.2,
+            "originalPrice": 504
+          },
+          {
+            "date": "2025-11-17",
+            "finalPrice": 417,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-11-23",
+            "finalPrice": 410,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-11-25",
+            "finalPrice": 400,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-12-08",
+            "finalPrice": 407,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-12-10",
+            "finalPrice": 417,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-12-12",
+            "finalPrice": 417,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-12-29",
+            "finalPrice": 458,
+            "originalPrice": 509
+          },
+          {
+            "date": "2025-12-31",
+            "finalPrice": 458,
+            "originalPrice": 509
+          },
+          {
+            "date": "2026-01-06",
+            "finalPrice": 402,
+            "originalPrice": 509
+          },
+          {
+            "date": "2026-01-07",
+            "finalPrice": 402,
+            "originalPrice": 509
+          }
+        ],
+        "launchDate": "2016-06",
+        "gender": "Male",
+        "specs": {
+          "dimensions": "长107mm宽122mm高205mm",
+          "material": "TPE",
+          "weight": "540g",
+          "controlMethod": "按键 / 手动",
+          "ipRating": "IPX7",
+          "noiseLevel": "60db",
+          "chargingTime": "4小时",
+          "usageTime": "1小时"
+        }
+      },
+      {
+        "id": "prod-1767849053343",
+        "name": "TNH 3D手动飞机杯",
+        "price": 88.2,
+        "tags": [
+          "5种内胆类型（螺旋/波纹/三角/方块/菱形）",
+          "2012年红点设计奖",
+          "艺术品造型",
+          "便携使用",
+          "隐秘保护性强（翻转使用）"
+        ],
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=15&id=37781787724&pisk=gM_tJIVApWhOcx4QeVq3nx4R3jVHDkfNvO5SoKvic9BdaTKcIl5XGZBcdExbQFbApt6xoGbMSnaXKCMs1ngbR6OWwn6Dn1cNYTfSSNqwoqLwuEwuEz4ub182lLVgJtkaRQA_octjfF8B1x4Pzz4l_6hM17fQrGX3AOOncq6Xfp1BMpgjCc6XA2O2dVOj5E9Q9IJBlCt6CvtBNCOjfq6XdvOW1CMslVMBAQJBhE9XlWCBLILXhtTb96GG52J4cL0AjcVFsM27i3R5JCK9F6ErlqHWOYvc113YmdE6bLakpqgfJCCf6yyZ5zpCji_MRNwIUe1PxOOpyrhv9gCB5CB4zV81N6sXXZEmaKSdOgxdYfVw9NCRkQKtd5pVSOQvbawo8dsd8ZLGxR3k3nsh737gdVL541YGc9NjlKIBGgkRraC1OYvJicNL9mo2fBWH5WhHYY_1oBputOiq0Hny9LVLbmo2fBRpEWYn0m-K4&rn=3df6684a0d9a5083d76721b26f0cc3fd&spm=a1z10.5-b-s.w4011-25428877037.82.4fc71207H7kT6F",
+        "competitorId": "Tenga",
+        "image": "https://s1.img-e.com/20260108/695f3bc64cdf5.png",
+        "sales": 10000,
+        "priceHistory": [
+          {
+            "date": "2025-05-18",
+            "finalPrice": 83.3,
+            "originalPrice": 98
+          },
+          {
+            "date": "2025-06-16",
+            "finalPrice": 83.3,
+            "originalPrice": 98
+          },
+          {
+            "date": "2025-07-31",
+            "finalPrice": 88.2,
+            "originalPrice": 98
+          },
+          {
+            "date": "2025-09-26",
+            "finalPrice": 86.2,
+            "originalPrice": 98
+          },
+          {
+            "date": "2025-11-22",
+            "finalPrice": 88.2,
+            "originalPrice": 98
+          }
+        ],
+        "launchDate": "2019-06",
+        "gender": "Male",
+        "specs": {
+          "dimensions": "长72.6mm宽72.6mm高156.5mm",
+          "material": "新抗菌Ag胶体+TPE",
+          "noiseLevel": "无",
+          "usageTime": "无",
+          "chargingTime": "无",
+          "controlMethod": "手动",
+          "weight": "266g",
+          "ipRating": "无"
+        },
+        "analysis": {
+          "pros": [
+            "清洗方便，翻转设计利于彻底清洁和晾干",
+            "附带润滑液，使用便捷",
+            "材质结实，适合长期使用",
+            "设计合理，有创新亮点",
+            "出货速度快，包装外观令人满意",
+            "性价比相对较高，尤其在同类Tenga产品中"
+          ],
+          "cons": [
+            "材质偏硬，使用时可能造成不适甚至红肿",
+            "入口过小且缺乏弹性，影响体验",
+            "包裹感差，壁太薄，负压刺激不足",
+            "部分产品存在品控问题，如起皮、未密封包装",
+            "客服服务一般，售后处理缺乏同理心",
+            "翻转结构不易操作，实际使用不便"
+          ],
+          "summary": "整体来看，TNH 3D手动飞机杯在设计创新性和清洁便利性方面获得一定认可，尤其翻转清洗结构被视为亮点。然而，用户普遍反馈材质过硬、入口过小导致使用不适，且存在品控不稳定和服务响应不佳的问题。尽管部分用户认为其性价比尚可，但负面评价集中在核心体验层面，而高点赞量评论较少（最高仅3赞），表明正向反馈的共鸣度有限，整体用户认可度中等偏低，市场竞争力受限于体验一致性与舒适度短板。",
+          "prosKeywords": [
+            {
+              "value": "清洗方便",
+              "count": 6
+            },
+            {
+              "value": "使用方便",
+              "count": 4
+            },
+            {
+              "value": "设计",
+              "count": 3
+            },
+            {
+              "value": "性价比",
+              "count": 2
+            },
+            {
+              "value": "出货快",
+              "count": 2
+            },
+            {
+              "value": "附带润滑液",
+              "count": 2
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "太硬",
+              "count": 5
+            },
+            {
+              "value": "包裹感",
+              "count": 4
+            },
+            {
+              "value": "壁太薄",
+              "count": 3
+            },
+            {
+              "value": "客服",
+              "count": 3
+            },
+            {
+              "value": "入口小",
+              "count": 2
+            },
+            {
+              "value": "起皮",
+              "count": 2
+            }
+          ]
+        }
+      },
+      {
+        "id": "prod-1767867991694",
+        "name": "GEO球形包裹手动飞机杯",
+        "price": 171,
+        "tags": [
+          "球体创新造型（翻开使用）",
+          "2021年红点奖",
+          "3种类型结构",
+          "粘稠包裹吮吸感"
+        ],
+        "category": "飞机杯",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=619681317502&pisk=gv7S8xjpl9Qq2MN8pYPqhAgNn2TCRSzN9XOds63r9ULJ926fI7xpL_8QOtvVzL5yypTCsO6yUHoPljd9NBHK2eHxkK6-837Ct2Od99VkL7qVZ_YHJRyNAP5lZB0h8BbS2mhAiCd-eo-8HLimWRya7yZ-Mew7Q_zuUw1D1CLpwLKJHSOMTbLpvQCYGBdEeppRpsFXnBMKJ4p-DqdpwvLp93UxDQAIyQ3JwsKvnBLpwe38GspDOepdpeFfMf0uqIlBn_NNDzTEZuaIeK0KJZOWDo5JHKpbTQKSy_9YB2pwNOvOwKgKJdBNyICdpJgeWGXfRhBaRqYP1iLvNiNKDLK12TRcdPgJeZ1RyL7834JRrsIN8tFKJpsAXHIOw-oXGiCPln7TC2tlDTjMAwy4SUSN_wxOyzMM3hACCUIbH46O483wCLPIAjtiRI9aGSinxaxBGOgwVVyB2IAq9SNjb4xJiITLGSinx3dDglPbGcul.&rn=b00124d3274ce6a20f712c0e0547a6d5&spm=a1z10.5-b-s.w4011-25428877037.143.4fc71207u2nTfo",
+        "competitorId": "Tenga",
+        "image": "https://s1.img-e.com/20260108/695f8483520b5.png",
+        "sales": 2000,
+        "priceHistory": [
+          {
+            "date": "2025-11-10",
+            "finalPrice": 139.5,
+            "originalPrice": 195
+          },
+          {
+            "date": "2025-12-01",
+            "finalPrice": 175.5,
+            "originalPrice": 195
+          },
+          {
+            "date": "2025-12-18",
+            "finalPrice": 171,
+            "originalPrice": 195
+          },
+          {
+            "date": "2026-01-08",
+            "finalPrice": 171,
+            "originalPrice": 195
+          }
+        ],
+        "launchDate": "2021-06",
+        "gender": "Male",
+        "specs": {
+          "material": "人造橡胶+ABS+PC",
+          "dimensions": "长108mm宽108mm高106mm",
+          "noiseLevel": "无",
+          "usageTime": "无",
+          "chargingTime": "无",
+          "controlMethod": "手动",
+          "weight": "360g",
           "ipRating": "无"
         }
       }
@@ -12139,9 +13495,10 @@
     "name": "iroha",
     "domain": "iroha-tenga.com",
     "philosophy": [
-      "iroha 品牌以日本美学和简约设计为核心，专注于创造高品质、安全且易于使用的成人用品，强调感官体验和情感连接，旨在提升用户的生活品质和亲密关系。",
-      "品牌注重材质创新和人体工学设计，采用亲肤硅胶和环保材料，确保产品安全舒适，同时融入静音技术，保护用户隐私，适合日常使用和探索。",
-      "iroha 倡导开放、包容的性文化，通过教育内容和社区互动，减少社会污名，鼓励用户自信表达自我，在全球市场推广积极健康的性观念。"
+      "将自我愉悦融入日常生活",
+      "以女性视角进行巧思、贴心的设计（以女性本位为设计原点）",
+      "融合日式美学与现代科技，简约细节",
+      "推动“去色情化”与社会对话"
     ],
     "focus": "Female",
     "sentiment": {
@@ -12151,8 +13508,3924 @@
       "easeOfUse": 75,
       "value": 70
     },
-    "foundedDate": "2015",
+    "foundedDate": "2013",
     "country": "日本",
-    "isDomestic": false
+    "isDomestic": false,
+    "products": [
+      {
+        "id": "prod-1767871401214",
+        "name": "小雪人跳蛋",
+        "price": 278.3,
+        "tags": [
+          "2015年红点奖",
+          "三种造型",
+          "外层使用soft touch材质且内层使用液态硅胶材质",
+          "4种震动模式",
+          "USB磁吸充电"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=37784931075&pisk=gEXZRqTzBKbCuS4l4gv4LW7vp599gKzWitTXmijDfFYMllCquZTIhCNOlo5Fowd6SPF9mx7lJni1jx03Kn-ijEDMm6oV2w72MlLXoE7fm1ZQF8sOXKpc0zw7F_vzXrbZsxAgmHx2qktiSLMipKp0PrlInCeyHNz9zboitHYp0AxMmZYHxnTHmEYGoeAHqnDMnKb0YpxkcE0ishvHK38nIVDinH2Hmn8mShbcxk-v-EvDsZj3YnLHoU0pNIzycCqKzZJpaoYB_UjM8YSdLhYK6G8EUYYNTC8oFekmn9-NmGLw4A2y-11cCpXg-4ph26_MYLyq0H5PxdxNk8H9IgjhiCW4G0LATMfWT6n_XHWN4t-y_2qwkO_N3CBuPvLGT9B2C6aZFEdcOOdRCyDwE_I6Csb3mxYVtnjPWqK35kWA_qc2sHKePkrUr-RGxTiNILGxMC3wYUZGijhvsC-ePkrEMjdTpH87jsf..&rn=daf1f95e7299c780e9f88b6c7b6b10ff&spm=a1z10.5-b-s.w4011-25428877037.50.5df54d466HIdDb",
+        "competitorId": "iroha",
+        "analysis": {
+          "pros": [
+            "外观可爱，设计讨喜，适合作为摆件",
+            "手感软糯，材质触感良好",
+            "体积小巧，便于携带",
+            "充电设计有所改进，充电更方便",
+            "震动功能强劲，满足基本使用需求",
+            "长期用户复购意愿强，品牌有一定忠诚度"
+          ],
+          "cons": [
+            "充电故障频发，充不进电或充电发烫问题严重",
+            "新品耐用性下降，使用周期明显缩短，品控不稳定",
+            "材质变硬，与老款相比缺乏柔软细腻感",
+            "包装降级，取消塑料收纳盒，纸盒信息过多不便展示",
+            "电机噪音大，震动档位调节粗暴，最小档声音仍明显",
+            "售后体验差，客服推诿、换货无效、返修机制不健全",
+            "疑似存在刷好评现象，用户质疑评价真实性",
+            "部分产品到手即损，存在瑕疵品流出问题",
+            "配送时间选项形同虚设，无法按需送达"
+          ],
+          "summary": "尽管‘小雪人跳蛋’凭借可爱的外观和良好的基础震感获得大量5星好评（共90条以上），且高点赞评论中不乏对颜值和手感的认可，但高点赞量的负面反馈同样突出：11条高赞差评集中反映充电失效、品控下滑、售后推诿等问题，暴露出产品质量稳定性与用户体验保障的重大隐患。整体来看，用户认可其设计初心，但新品在材质、耐用性和服务链条上的退步已引发广泛不满，严重影响产品口碑与复购信心。",
+          "prosKeywords": [
+            {
+              "value": "可爱",
+              "count": 12
+            },
+            {
+              "value": "手感好",
+              "count": 8
+            },
+            {
+              "value": "小巧",
+              "count": 6
+            },
+            {
+              "value": "充电方便",
+              "count": 5
+            },
+            {
+              "value": "震感强",
+              "count": 4
+            },
+            {
+              "value": "喜欢",
+              "count": 4
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "充不进电",
+              "count": 9
+            },
+            {
+              "value": "质量差",
+              "count": 8
+            },
+            {
+              "value": "品控问题",
+              "count": 7
+            },
+            {
+              "value": "售后差",
+              "count": 6
+            },
+            {
+              "value": "噪音大",
+              "count": 5
+            },
+            {
+              "value": "材质变硬",
+              "count": 5
+            },
+            {
+              "value": "刷好评",
+              "count": 4
+            },
+            {
+              "value": "用不久",
+              "count": 4
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260108/695f90b47c5aa.png",
+        "sales": 50000,
+        "priceHistory": [
+          {
+            "date": "2025-01-09",
+            "finalPrice": 288,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-01-10",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-11",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-12",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-13",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-14",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-15",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-16",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-17",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-18",
+            "finalPrice": 268,
+            "originalPrice": 313
+          },
+          {
+            "date": "2025-01-19",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-01-20",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-01-21",
+            "finalPrice": 288,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-01-22",
+            "finalPrice": 278,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-01-23",
+            "finalPrice": 278,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-01-24",
+            "finalPrice": 277.99,
+            "originalPrice": 322.99
+          },
+          {
+            "date": "2025-01-25",
+            "finalPrice": 288,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-01-26",
+            "finalPrice": 288,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-01-27",
+            "finalPrice": 288,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-01-28",
+            "finalPrice": 272.99,
+            "originalPrice": 307.99
+          },
+          {
+            "date": "2025-01-29",
+            "finalPrice": 308,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-01-30",
+            "finalPrice": 308,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-01-31",
+            "finalPrice": 277.99,
+            "originalPrice": 312.99
+          },
+          {
+            "date": "2025-02-01",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-02",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-03",
+            "finalPrice": 277.99,
+            "originalPrice": 322.99
+          },
+          {
+            "date": "2025-02-04",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-05",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-06",
+            "finalPrice": 277.99,
+            "originalPrice": 322.99
+          },
+          {
+            "date": "2025-02-07",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-08",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-09",
+            "finalPrice": 287.99,
+            "originalPrice": 322.99
+          },
+          {
+            "date": "2025-02-10",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-11",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-12",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-13",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-14",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-15",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-16",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-17",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-18",
+            "finalPrice": 288,
+            "originalPrice": 333
+          },
+          {
+            "date": "2025-02-19",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-20",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-21",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-22",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-23",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-24",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-25",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-26",
+            "finalPrice": 298,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-02-27",
+            "finalPrice": 283,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-02-28",
+            "finalPrice": 283,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-01",
+            "finalPrice": 283,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-02",
+            "finalPrice": 283,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-03",
+            "finalPrice": 288,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-04",
+            "finalPrice": 288,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-05",
+            "finalPrice": 288,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-06",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-07",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-08",
+            "finalPrice": 277.9,
+            "originalPrice": 327.9
+          },
+          {
+            "date": "2025-03-09",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-10",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-11",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-12",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-13",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-14",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-15",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-16",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-17",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-18",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-19",
+            "finalPrice": 288,
+            "originalPrice": 368
+          },
+          {
+            "date": "2025-03-20",
+            "finalPrice": 283,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-21",
+            "finalPrice": 283,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-22",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-23",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-24",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-25",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-26",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-27",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-28",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-29",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-03-30",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-03-31",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-01",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-02",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-03",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-04",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-05",
+            "finalPrice": 279,
+            "originalPrice": 329
+          },
+          {
+            "date": "2025-04-06",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-07",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-08",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-09",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-10",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-11",
+            "finalPrice": 272.8,
+            "originalPrice": 322.8
+          },
+          {
+            "date": "2025-04-12",
+            "finalPrice": 288,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-13",
+            "finalPrice": 275.1,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-14",
+            "finalPrice": 235.8,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-04-16",
+            "finalPrice": 288,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-04-17",
+            "finalPrice": 248.8,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-04-18",
+            "finalPrice": 250.3,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-04-19",
+            "finalPrice": 298,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-04-20",
+            "finalPrice": 298,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-04-21",
+            "finalPrice": 303,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-04-22",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-23",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-24",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-25",
+            "finalPrice": 288,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-04-26",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-27",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-04-28",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-04-29",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-04-30",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-01",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-05-02",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-05-03",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-05-04",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-05-05",
+            "finalPrice": 278,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-05-06",
+            "finalPrice": 298,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-05-07",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-05-08",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-05-09",
+            "finalPrice": 289,
+            "originalPrice": 329
+          },
+          {
+            "date": "2025-05-12",
+            "finalPrice": 298,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-05-13",
+            "finalPrice": 298,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-05-14",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-05-15",
+            "finalPrice": 298,
+            "originalPrice": 338
+          },
+          {
+            "date": "2025-05-16",
+            "finalPrice": 258,
+            "originalPrice": 298
+          },
+          {
+            "date": "2025-05-17",
+            "finalPrice": 258,
+            "originalPrice": 298
+          },
+          {
+            "date": "2025-05-18",
+            "finalPrice": 258,
+            "originalPrice": 298
+          },
+          {
+            "date": "2025-05-19",
+            "finalPrice": 268,
+            "originalPrice": 298
+          },
+          {
+            "date": "2025-05-20",
+            "finalPrice": 275,
+            "originalPrice": 298
+          },
+          {
+            "date": "2025-05-21",
+            "finalPrice": 275,
+            "originalPrice": 298
+          },
+          {
+            "date": "2025-05-22",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-23",
+            "finalPrice": 262.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-24",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-25",
+            "finalPrice": 263,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-26",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-27",
+            "finalPrice": 288,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-05-28",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-29",
+            "finalPrice": 271,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-30",
+            "finalPrice": 271,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-05-31",
+            "finalPrice": 271,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-01",
+            "finalPrice": 271,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-02",
+            "finalPrice": 271,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-03",
+            "finalPrice": 271,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-04",
+            "finalPrice": 281,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-05",
+            "finalPrice": 281,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-06",
+            "finalPrice": 279,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-07",
+            "finalPrice": 279,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-08",
+            "finalPrice": 264,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-09",
+            "finalPrice": 231,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-10",
+            "finalPrice": 268,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-11",
+            "finalPrice": 270,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-12",
+            "finalPrice": 270,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-06-13",
+            "finalPrice": 268,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-14",
+            "finalPrice": 268,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-15",
+            "finalPrice": 268,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-16",
+            "finalPrice": 268,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-17",
+            "finalPrice": 268,
+            "originalPrice": 316
+          },
+          {
+            "date": "2025-06-18",
+            "finalPrice": 248,
+            "originalPrice": 292
+          },
+          {
+            "date": "2025-06-19",
+            "finalPrice": 248,
+            "originalPrice": 292
+          },
+          {
+            "date": "2025-06-20",
+            "finalPrice": 248,
+            "originalPrice": 292
+          },
+          {
+            "date": "2025-06-21",
+            "finalPrice": 298,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-06-22",
+            "finalPrice": 298,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-06-23",
+            "finalPrice": 298,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-06-24",
+            "finalPrice": 281.6,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-06-25",
+            "finalPrice": 298,
+            "originalPrice": 328
+          },
+          {
+            "date": "2025-06-27",
+            "finalPrice": 278,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-06-28",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-06-29",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-06-30",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-01",
+            "finalPrice": 292.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-02",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-03",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-04",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-05",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-06",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-07",
+            "finalPrice": 262.6,
+            "originalPrice": 308
+          },
+          {
+            "date": "2025-07-08",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-09",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-10",
+            "finalPrice": 262.5,
+            "originalPrice": 307.9
+          },
+          {
+            "date": "2025-07-11",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-12",
+            "finalPrice": 256.2,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-13",
+            "finalPrice": 256.2,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-14",
+            "finalPrice": 256.2,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-15",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-16",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-17",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-18",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-19",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-20",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-21",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-22",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-23",
+            "finalPrice": 260.7,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-07-24",
+            "finalPrice": 256.2,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-25",
+            "finalPrice": 288,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-07-26",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-07-27",
+            "finalPrice": 260.7,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-07-28",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-07-29",
+            "finalPrice": 260.7,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-07-30",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-07-31",
+            "finalPrice": 260.7,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-01",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-02",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-03",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-04",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-05",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-06",
+            "finalPrice": 263,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-07",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-08",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-09",
+            "finalPrice": 276,
+            "originalPrice": 291
+          },
+          {
+            "date": "2025-08-10",
+            "finalPrice": 276.45,
+            "originalPrice": 291
+          },
+          {
+            "date": "2025-08-11",
+            "finalPrice": 276.45,
+            "originalPrice": 291
+          },
+          {
+            "date": "2025-08-12",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-13",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-14",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-15",
+            "finalPrice": 238,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-16",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-17",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-18",
+            "finalPrice": 238,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-19",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-20",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-21",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-22",
+            "finalPrice": 238,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-23",
+            "finalPrice": 288,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-24",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-25",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-26",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-27",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-28",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-29",
+            "finalPrice": 258,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-08-30",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-08-31",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-02",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-03",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-04",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-05",
+            "finalPrice": 273,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-06",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-07",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-08",
+            "finalPrice": 288,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-09",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-10",
+            "finalPrice": 288,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-11",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-12",
+            "finalPrice": 288,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-13",
+            "finalPrice": 272.1,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-14",
+            "finalPrice": 278,
+            "originalPrice": 318
+          },
+          {
+            "date": "2025-09-15",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-16",
+            "finalPrice": 266.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-17",
+            "finalPrice": 276.85,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-09-19",
+            "finalPrice": 333,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-09-20",
+            "finalPrice": 333,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-09-21",
+            "finalPrice": 330.6,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-09-22",
+            "finalPrice": 333,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-09-23",
+            "finalPrice": 330.6,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-09-24",
+            "finalPrice": 278.35,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-09-25",
+            "finalPrice": 278.35,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-09-26",
+            "finalPrice": 278.35,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-09-27",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-09-28",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-09-29",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-09-30",
+            "finalPrice": 278,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-02",
+            "finalPrice": 338,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-03",
+            "finalPrice": 333,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-04",
+            "finalPrice": 338,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-05",
+            "finalPrice": 338,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-06",
+            "finalPrice": 338,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-07",
+            "finalPrice": 338,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-08",
+            "finalPrice": 338,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-09",
+            "finalPrice": 338,
+            "originalPrice": 348
+          },
+          {
+            "date": "2025-10-10",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-11",
+            "finalPrice": 284,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-12",
+            "finalPrice": 274,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-13",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-14",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-15",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-16",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-18",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-19",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-20",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-21",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-22",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-24",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-25",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-27",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-10-28",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-02",
+            "finalPrice": 273,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-03",
+            "finalPrice": 273,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-04",
+            "finalPrice": 268,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-05",
+            "finalPrice": 258,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-06",
+            "finalPrice": 258,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-07",
+            "finalPrice": 254.1,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-08",
+            "finalPrice": 248,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-09",
+            "finalPrice": 248,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-10",
+            "finalPrice": 254.1,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-11",
+            "finalPrice": 248,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-12",
+            "finalPrice": 258,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-13",
+            "finalPrice": 248,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-14",
+            "finalPrice": 254.1,
+            "originalPrice": 278
+          },
+          {
+            "date": "2025-11-15",
+            "finalPrice": 263,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-17",
+            "finalPrice": 273,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-18",
+            "finalPrice": 268.35,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-19",
+            "finalPrice": 263,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-20",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-21",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-22",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-23",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-24",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-25",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-26",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-27",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-28",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-29",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-11-30",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-01",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-02",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-03",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-04",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-05",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-06",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-07",
+            "finalPrice": 283,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-08",
+            "finalPrice": 253,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-09",
+            "finalPrice": 271,
+            "originalPrice": 311
+          },
+          {
+            "date": "2025-12-10",
+            "finalPrice": 271,
+            "originalPrice": 311
+          },
+          {
+            "date": "2025-12-11",
+            "finalPrice": 271,
+            "originalPrice": 311
+          },
+          {
+            "date": "2025-12-12",
+            "finalPrice": 271,
+            "originalPrice": 311
+          },
+          {
+            "date": "2025-12-13",
+            "finalPrice": 301,
+            "originalPrice": 311
+          },
+          {
+            "date": "2025-12-14",
+            "finalPrice": 301,
+            "originalPrice": 311
+          },
+          {
+            "date": "2025-12-15",
+            "finalPrice": 301,
+            "originalPrice": 311
+          },
+          {
+            "date": "2025-12-16",
+            "finalPrice": 263,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-17",
+            "finalPrice": 253,
+            "originalPrice": 293
+          },
+          {
+            "date": "2025-12-18",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-19",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-20",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-22",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-23",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-24",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-25",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-26",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-27",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-28",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2025-12-29",
+            "finalPrice": 293,
+            "originalPrice": 323
+          },
+          {
+            "date": "2026-01-01",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2026-01-02",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2026-01-03",
+            "finalPrice": 283,
+            "originalPrice": 323
+          },
+          {
+            "date": "2026-01-04",
+            "finalPrice": 293,
+            "originalPrice": 337
+          },
+          {
+            "date": "2026-01-05",
+            "finalPrice": 278.3,
+            "originalPrice": 321.3
+          },
+          {
+            "date": "2026-01-06",
+            "finalPrice": 278.3,
+            "originalPrice": 321.3
+          },
+          {
+            "date": "2026-01-07",
+            "finalPrice": 278.3,
+            "originalPrice": 321.3
+          },
+          {
+            "date": "2026-01-08",
+            "finalPrice": 278.3,
+            "originalPrice": 321.3
+          }
+        ],
+        "launchDate": "2024-06",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "小雪人：长85mm宽57mm高38mm\n花见鸟：长77mm宽59mm高39mm\n雏樱：长83mm宽54mm高39mm",
+          "material": "硅胶",
+          "usageTime": "90min",
+          "weight": "小雪人：84g\n花见鸟：87g\n雏樱：91g",
+          "ipRating": "IPX6",
+          "controlMethod": "按键",
+          "noiseLevel": "60db",
+          "chargingTime": "120min"
+        }
+      },
+      {
+        "id": "prod-1767872429763",
+        "name": "stick口红式震动棒",
+        "price": 78,
+        "tags": [
+          "口红造型",
+          "底部旋转调节震动",
+          "需要安装电池"
+        ],
+        "category": "震动棒",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=925735098578&pisk=gyGo-kXDAos_gnS2sMPWUKVQc9vAe7NQDDCLvWEe3orf9Y3KwWDm5mY79D3UxDmYcbL7vUsnx20uUM5PU-74yySPL2lL8XVSMYCL23Nn8cFHXhd964g7ZW-9XNJc7VVa56rFvku40WUHalE9z4g7Ok7AYdHqPBD2Iztz8k80gyzhYWrzzq80-PqUTuyF0qzU0kPEY8S43ya1zTyzUt80yyBP4uzruIz7SgSEYW80gyE4YWyrYq80RorE6QtY2urIgHdZ4Fa_o9Var8qZzuu-yj74UTg8mjGxgx00c4WCT6l0r8c0fqWPLWkrym2tEhfu64ksAPoP434mZVcnQmRAZW0qQXVqgn7Y4Agmt7hyJQPqZ0cznD7NU8ks2AymM3fbbxumJ-DXRTEKCyoQCXK1NuuE5fMTsBb3oA04ig-f3ORXb6a2JjWCd8zbolIAT99ZAM5r4EYcQz2zlz5voEXBZ8zbolLDoOPQUraPM&rn=daf1f95e7299c780e9f88b6c7b6b10ff&spm=a1z10.5-b-s.w4011-25428877037.54.5df54d466HIdDb",
+        "competitorId": "iroha",
+        "analysis": {
+          "pros": [
+            "设计时尚可爱，外观像口红，便于隐藏和携带",
+            "振动强度可调节，从轻柔到强烈，满足不同偏好",
+            "操作简单，只需插入一节AAA电池并转动底部开关",
+            "声音相对安静，适合在家庭或宿舍环境中使用",
+            "价格实惠，性价比高，适合初学者或作为礼物",
+            "防水设计，便于清洗和浴缸中使用",
+            "紧凑小巧，易于握持和局部刺激",
+            "品牌信誉好（TENGA制造），提供安全感"
+          ],
+          "cons": [
+            "尖端材质较硬，使用时会感到疼痛或不适",
+            "电池盖和开关设计不佳，容易意外打开或脱落",
+            "耐用性差，部分用户报告使用一段时间后损坏或振动减弱",
+            "振动噪音在某些情况下较大，影响隐蔽性",
+            "形状设计（如凹口或尖锐边缘）不人性化，影响使用体验",
+            "振动强度对经验用户可能不足，感觉平淡",
+            "部分用户对产品为中国制造而非日本制造感到失望",
+            "包装透明，可能暴露产品用途，缺乏隐私保护"
+          ],
+          "summary": "情趣用品 'stick口红式震动棒' 在用户评价中表现出较高的认可度，总点赞量2127，平均点赞量15.4，高点赞量评论（≥5）占82%。优点集中在时尚设计、易用性、安静性和性价比，适合初学者和隐蔽使用。但主要问题包括尖端硬度、耐用性差和设计缺陷，这些负面反馈在高点赞量评论中频繁出现，影响了整体体验。产品在入门级市场有竞争力，但需改进材质和结构以提升用户满意度。",
+          "prosKeywords": [
+            {
+              "value": "可爱",
+              "count": 25
+            },
+            {
+              "value": "安静",
+              "count": 18
+            },
+            {
+              "value": "易用",
+              "count": 15
+            },
+            {
+              "value": "便携",
+              "count": 12
+            },
+            {
+              "value": "防水",
+              "count": 10
+            },
+            {
+              "value": "初学者",
+              "count": 9
+            },
+            {
+              "value": "振动可调",
+              "count": 8
+            },
+            {
+              "value": "性价比",
+              "count": 7
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "硬",
+              "count": 22
+            },
+            {
+              "value": "痛",
+              "count": 18
+            },
+            {
+              "value": "耐用性差",
+              "count": 15
+            },
+            {
+              "value": "噪音大",
+              "count": 12
+            },
+            {
+              "value": "设计缺陷",
+              "count": 10
+            },
+            {
+              "value": "电池盖问题",
+              "count": 8
+            },
+            {
+              "value": "振动弱",
+              "count": 7
+            },
+            {
+              "value": "中国制造",
+              "count": 5
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260108/695f9569c6dfd.png",
+        "sales": 8000,
+        "launchDate": "2016-06",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长33mm宽73mm高146mm",
+          "material": "硅胶+PC",
+          "usageTime": "5小时",
+          "chargingTime": "电池",
+          "controlMethod": "按键+旋钮",
+          "noiseLevel": "30db",
+          "ipRating": "IPX7",
+          "weight": "44g"
+        }
+      },
+      {
+        "id": "prod-1767926580852",
+        "name": "FIT 电动震动棒（升级款）",
+        "price": 278.3,
+        "tags": [
+          "仿月弧度",
+          "8种震感",
+          "一键操作（盲按换频/新手友好）",
+          "可弯折",
+          "2015年红点奖",
+          "款式分为新手和有经验者"
+        ],
+        "category": "震动棒",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=41742396256&pisk=gsSnJj0gNCGXiFcamb-Q8PxW144TpHtW6_nJw3dz7CRs2wBRv3bGh12B2_ByZ_f91MeBwJGlZTXH8boE8FkwpLlEzTSJUgxCXwnJ9WtlUsKuMSEYD96Bx3PYMxzi3tx2K4oEwpWw73puYIdYL96BVQktarQNduf5tz4yUQyMbLJoa3ReLOyMEKAy4B8r_OJy_Q-Paelw7L9jL28e8VyMhLcE4URUbVJkn4-y4_8wbC9y4p5y4RXw1LlTR5dpTQsawo5UhK_revdW-IWesmX1jpzkaoOE4ySNtOxVL4ir4GvH-GAfQ2uy4wWdsEQ3iDxALZ1W36lUtdjhngbV_lnHqO7VqhSa_AdFlOjkvMy8YhShtM8Gaxue8Z1duFjTtcOV7OXJSNwSJQQXU_Tf2SiBTTWfcZK0qYvGoO-G4SgZulNqVdyRb4gW8d9MMfnrPr5SaD5UIR02KeJ6LcegI4ZH8d9MMR2iu3TeCpoO.&rn=daf1f95e7299c780e9f88b6c7b6b10ff&spm=a1z10.5-b-s.w4011-25428877037.61.5df54d466HIdDb",
+        "competitorId": "iroha",
+        "analysis": {
+          "pros": [
+            "材质柔软舒适，触感类似皮肤，适合初学者使用",
+            "设计时尚可爱，外观不显眼，易于存放",
+            "振动模式多样，刺激效果良好，有助于达到高潮",
+            "防水设计，便于清洗和维护",
+            "适合敏感人群，插入时无痛感，体验愉悦"
+          ],
+          "cons": [
+            "耐用性差，容易出现充电故障、硅胶变形或开关失灵",
+            "价格偏高，性价比不足，部分用户认为不值",
+            "客服响应不佳，退款或保修处理困难",
+            "振动强度或模式变化有限，部分用户觉得刺激不够",
+            "包装设计不人性化，取出产品困难"
+          ],
+          "summary": "FIT 电动震动棒（升级款）在用户体验上呈现两极分化：高点赞量评论（如点赞量135、110、108）显示，用户普遍赞赏其柔软材质、时尚设计和良好刺激效果，适合初学者和敏感人群；但负面反馈集中在耐用性问题（如充电故障、硅胶老化）和客服体验差，导致部分用户失望。整体来看，产品在舒适性和设计上竞争力强，但需改进质量和售后服务以提升用户认可度。",
+          "prosKeywords": [
+            {
+              "value": "柔软",
+              "count": 25
+            },
+            {
+              "value": "舒适",
+              "count": 18
+            },
+            {
+              "value": "设计",
+              "count": 15
+            },
+            {
+              "value": "初学者",
+              "count": 12
+            },
+            {
+              "value": "防水",
+              "count": 10
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "故障",
+              "count": 20
+            },
+            {
+              "value": "价格",
+              "count": 15
+            },
+            {
+              "value": "客服",
+              "count": 12
+            },
+            {
+              "value": "耐用",
+              "count": 10
+            },
+            {
+              "value": "包装",
+              "count": 8
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260109/696069f70abc6.png",
+        "sales": 8000,
+        "priceHistory": [
+          {
+            "date": "2025-08-16",
+            "finalPrice": 418,
+            "originalPrice": 465
+          },
+          {
+            "date": "2025-09-02",
+            "finalPrice": 418,
+            "originalPrice": 465
+          },
+          {
+            "date": "2026-01-09",
+            "finalPrice": 278.3,
+            "originalPrice": 465
+          }
+        ],
+        "launchDate": "2025-06",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长38mm宽27mm高177mm",
+          "material": "本体：双层硅胶+ABS+PC\n充电盒：PC\n充电线：PVC",
+          "weight": "110g",
+          "ipRating": "IPX7",
+          "controlMethod": "按键",
+          "usageTime": "90min",
+          "chargingTime": "120min",
+          "noiseLevel": "50db"
+        }
+      },
+      {
+        "id": "prod-1767930169133",
+        "name": "二代（闻啼鸟/不羁夜灯）电动跳蛋",
+        "price": 384,
+        "tags": [
+          "2017年红点奖",
+          "单键控制",
+          "8种震感",
+          "3种形态"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=1034091874114&pisk=ge7SlGjpl9QVtLV8pYPqhjNcI3TQASzN9XOds63r9ULJ926fI7xpL_8QOtvVzL5yypTCsO6yUHoPljd9NBHK2eHxDK6-837Ct2Od99VkL7qVZ_YHJRyNAP5lZSwIBR_B2EHvTs3-2pE2k-hn6g2a7P5b2QYFMRSz-DQ1-CupJ3pJkjpDt0pdpH3AMKAH9YLpeS1vnKd-eHLKHrdwOQndp3CvHCAKwQ3KyILvTCLpp9pKMSOHHQLpJ9CYGBcgbuAqOKf7_itQ8p27eXAIJ2QXNnEVwKKw0WRDVY5vHkcMcQMMB_pjJ2pOQadA99eI8FIGhwtOQygDz1svkQsb9mpJfgByi9asyLQfwapPy-uyeafAbwWY92pCDGKdX_eqcIsAaZtVWRgBqiBljH_U3PYPb17HXaUSIK-MOOTRc-35Bgy-7d9zODGXj2OXQSNjxDbkAI6s73gad3dDgXFbGcuk2IAXJSNjxDxJiIraGSiZr&rn=daf1f95e7299c780e9f88b6c7b6b10ff&spm=a1z10.5-b-s.w4011-25428877037.65.5df54d466HIdDb",
+        "competitorId": "iroha",
+        "analysis": {
+          "pros": [
+            "商品质量好，获得5星好评",
+            "用户认为产品非常好"
+          ],
+          "cons": [
+            "新款充电时不亮灯，难以理解状态",
+            "产品使用约一个月后停止工作，可能充电线或主机损坏",
+            "无法退换货，售后支持不足",
+            "相比旧型号，新款性价比低",
+            "充电底座变小，但直接连接电线可能不便",
+            "用户建议购买旧型号，暗示新款问题多"
+          ],
+          "summary": "该情趣用品在用户评价中呈现两极分化：少数正面评价称赞其质量，但负面反馈集中于充电设计缺陷、耐用性差和售后问题，且点赞量低（平均0.6），表明用户认可度不高，整体竞争力较弱，需改进可靠性和客户服务以提升市场表现。",
+          "prosKeywords": [
+            {
+              "value": "好",
+              "count": 2
+            },
+            {
+              "value": "非常好",
+              "count": 1
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "充电",
+              "count": 3
+            },
+            {
+              "value": "损坏",
+              "count": 2
+            },
+            {
+              "value": "新款",
+              "count": 2
+            },
+            {
+              "value": "旧型号",
+              "count": 2
+            },
+            {
+              "value": "退换",
+              "count": 1
+            },
+            {
+              "value": "性价比",
+              "count": 1
+            },
+            {
+              "value": "亮灯",
+              "count": 1
+            },
+            {
+              "value": "电线",
+              "count": 1
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260109/696076c24ec56.png",
+        "sales": 3000,
+        "launchDate": "2024-04",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长50mm宽102mm高40mm",
+          "material": "硅胶",
+          "usageTime": "2小时",
+          "controlMethod": "按键",
+          "ipRating": "IPX7",
+          "chargingTime": "2小时",
+          "noiseLevel": "60db",
+          "weight": "75g"
+        }
+      },
+      {
+        "id": "prod-1767931394227",
+        "name": "ZEN日本禅震动棒",
+        "price": 130,
+        "tags": [
+          "千层褶裙设计（多重刺激）",
+          "用于外部刺激（不入体）",
+          "4种震动模式"
+        ],
+        "category": "跳蛋",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=924078531091&pisk=gueiJoOhl2TSjH8FEEk1_6DjRIfLxAMjJrpxkx3VT2uBH5EYBxV3VyjsHrEqor4KRRIskGT0ooqi_EJw_X-EXm8wgoyx0-D_p5pxWNM00zHcyaBRelZsIx7Ry35H4uDrqK8wkdkeLxncQ43RblZshq-pu_FUft4bYufq0qSnLmoDuxuZbkSnm00q3Vl28koq8qk4uf8ETmiWbClZ_BSnXmpqudJ2L2ox0hoauxS3Y2iq3czq3MqERmlOjw3t7qwFkTzNV0MD6Ngos4rZ-LqQKc7K-Tg93Z2U8kqzbI923JmisJ07YCRq35rT-bFGrdD8b7aj4P8NSD2gq-Vz89pinkPznvyF8H3aNk2mBRSAQvygSRl3u3RZ_7aTaX2dSpgzTkqxtWsX6qFS0rG7Ha9s7or7F7Hlnnm3Zkkh4COea9_yhDSYLIOj_Dinyep2G_zXudzNxMArjfoIbpIhxI6i_DinyMjHaxGZAcJd.&rn=daf1f95e7299c780e9f88b6c7b6b10ff&spm=a1z10.5-b-s.w4011-25428877037.69.5df54d466HIdDb",
+        "competitorId": "iroha",
+        "analysis": {
+          "pros": [
+            "设计可爱时尚，外观不显眼，适合家庭使用",
+            "材质柔软舒适，触感接近真实皮肤",
+            "振动模式多样，强度可调节，满足不同需求",
+            "防水且易于清洗，保持卫生",
+            "操作简单，按钮控制方便",
+            "噪音较小，适合隐私环境",
+            "尺寸适中，易于握持和插入",
+            "价格合理，性价比高",
+            "包装精致，运输保护良好",
+            "适合初学者，使用体验良好"
+          ],
+          "cons": [
+            "振动强度较弱，部分用户感觉不足",
+            "电池接触不良或产品缺陷导致无法正常工作",
+            "材质内部较硬，外部柔软度不足",
+            "尺寸偏大或偏粗，插入时可能疼痛",
+            "电池盖易脱落，使用中可能掉出电池",
+            "产品耐用性差，易损坏或停止工作",
+            "退货政策不明确或售后服务不佳",
+            "部分用户遇到随机开关或故障问题",
+            "化学物质警告引发安全担忧",
+            "配送问题，如错误投递或包装破损"
+          ],
+          "summary": "ZEN日本禅震动棒在用户评价中呈现两极分化，高点赞量评论显示其设计、材质和易用性受到认可，但振动强度、耐用性和产品缺陷是主要痛点。总点赞量784，平均11.0，44条高点赞量评论表明用户关注度较高，整体竞争力中等，需改进质量和售后服务以提升用户体验。",
+          "prosKeywords": [
+            {
+              "value": "柔软",
+              "count": 15
+            },
+            {
+              "value": "设计",
+              "count": 12
+            },
+            {
+              "value": "防水",
+              "count": 10
+            },
+            {
+              "value": "安静",
+              "count": 8
+            },
+            {
+              "value": "易清洗",
+              "count": 7
+            },
+            {
+              "value": "舒适",
+              "count": 6
+            },
+            {
+              "value": "尺寸适中",
+              "count": 5
+            },
+            {
+              "value": "操作简单",
+              "count": 4
+            },
+            {
+              "value": "价格合理",
+              "count": 3
+            },
+            {
+              "value": "包装好",
+              "count": 2
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "振动弱",
+              "count": 18
+            },
+            {
+              "value": "缺陷",
+              "count": 12
+            },
+            {
+              "value": "疼痛",
+              "count": 10
+            },
+            {
+              "value": "电池问题",
+              "count": 9
+            },
+            {
+              "value": "耐用性差",
+              "count": 8
+            },
+            {
+              "value": "尺寸大",
+              "count": 7
+            },
+            {
+              "value": "售后服务差",
+              "count": 5
+            },
+            {
+              "value": "材质硬",
+              "count": 4
+            },
+            {
+              "value": "化学警告",
+              "count": 3
+            },
+            {
+              "value": "配送问题",
+              "count": 2
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260109/69607d764a89c.png",
+        "sales": 3000,
+        "launchDate": "2017-11",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长34mm宽34mm高127mm",
+          "material": "硅胶+ABS",
+          "weight": "73g",
+          "controlMethod": "按键",
+          "chargingTime": "2节7号电池",
+          "usageTime": "4小时",
+          "ipRating": "IPX7",
+          "noiseLevel": "30db"
+        }
+      },
+      {
+        "id": "prod-1767934012554",
+        "name": "petit果冻柔滑一次性按摩自慰器",
+        "price": 37.8,
+        "tags": [
+          "即用即抛",
+          "4种造型",
+          "98%的水分组成",
+          "干净卫生",
+          "可冰箱冷藏或温水加热（体验不同程度的刺激）",
+          "有香味"
+        ],
+        "category": "按摩器",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=648223010380&pisk=gFXs8Y1vdZBEQfETkVrERDZhrC9fHkyPDmtAqiHZDdp9Dx_CrlAvuGJbcwYFQFSwBE9fqa_w7IlNdDKJfn3x6K3K9e_t3CWfmxtADZqMulVFjGvDHzzPG8SGjkajyz6X6pHpVMht6AFepynm214zU8SQ6hvVvz5anZLkv3kvHCL9pDLHmfLAkIHdvexDDVpvWksp-eKtWIpxJJKychhAknKKvntqBEd9HenpmeLvHChTAMLHcKLAkKECvfdzsHoX-GZPOIw2oq4mlnHxH9t69WS9JBA70nd66Gs7yb6IECTRXeMY5I79heK5pr0wo9sdBnbLLA9fvn_WB6aKCZsOZZxRWJg9f1I54B60yxth9NAef6Zx9FIJRdLCnoDDW1SA3I6Tym8OINWBZt0_8E5PYOdCyykCoI1OwdBbPJIPeY8W7oGjAQDXAUrQAjccIItCPYRsUrO9xHoYAkGrICKHAKEQAjcD6HxUakZIaAf..&rn=daf1f95e7299c780e9f88b6c7b6b10ff&spm=a1z10.5-b-s.w4011-25428877037.81.5df54d466HIdDb",
+        "competitorId": "iroha",
+        "analysis": {
+          "pros": [
+            "香味宜人，无难闻气味，有放松效果",
+            "使用后不粘稠，易于清理",
+            "小巧便携，易于丢弃和隐藏",
+            "纹理和突起设计提供良好触感，类似舔舐体验",
+            "适合初学者，推荐给首次尝试成人用品者",
+            "包装时尚，闻起来干净优雅",
+            "一次性设计，无需处理电池或充电问题",
+            "性价比尚可，用户表示愿意回购"
+          ],
+          "cons": [
+            "可能不适合剧烈活动，易碎裂或损坏",
+            "性价比被部分用户认为较差",
+            "不适合偏好振动或吸吮类型的用户",
+            "需要加热使用，增加使用步骤",
+            "套装销售价格偏高，用户希望更便宜"
+          ],
+          "summary": "该情趣用品在用户中认可度较高，总点赞量68，平均8.5，高点赞量评论（59赞）强调其香味、易用性和适合初学者的优点。整体竞争力强，以一次性、便携和良好触感为卖点，但需注意耐用性和价格反馈。",
+          "prosKeywords": [
+            {
+              "value": "香味",
+              "count": 4
+            },
+            {
+              "value": "易用",
+              "count": 3
+            },
+            {
+              "value": "便携",
+              "count": 2
+            },
+            {
+              "value": "纹理",
+              "count": 2
+            },
+            {
+              "value": "初学者",
+              "count": 2
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "易碎",
+              "count": 2
+            },
+            {
+              "value": "价格",
+              "count": 2
+            },
+            {
+              "value": "振动",
+              "count": 1
+            },
+            {
+              "value": "加热",
+              "count": 1
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260109/69607fda1cb95.png",
+        "sales": 1000,
+        "priceHistory": [
+          {
+            "date": "2025-08-23",
+            "finalPrice": 38.7,
+            "originalPrice": 43
+          },
+          {
+            "date": "2025-09-19",
+            "finalPrice": 38.7,
+            "originalPrice": 43
+          },
+          {
+            "date": "2026-01-09",
+            "finalPrice": 37.8,
+            "originalPrice": 43
+          }
+        ],
+        "launchDate": "2021-06",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长55mm宽55mm高35mm",
+          "material": "软胶",
+          "noiseLevel": "无",
+          "usageTime": "一次性",
+          "chargingTime": "无",
+          "controlMethod": "手动",
+          "ipRating": "无",
+          "weight": "34.5g"
+        }
+      },
+      {
+        "id": "prod-1767934706285",
+        "name": "小花蕾震动棒",
+        "price": 105,
+        "tags": [
+          "头部可弯曲",
+          "纤细小巧（直径约2.2cm/略粗于食指）",
+          "底部无极调速",
+          "花蕾纹路"
+        ],
+        "category": "震动棒",
+        "link": "https://detail.tmall.com/item.htm?abbucket=0&id=811143418968&pisk=gekr-J4weJ0XsO8ibc2e3IuLHQw87J8_tvaQxDm3Vz4uR3hF82afd7O-RHlq-qF7rUd8x9uikksSq9bDnkrlqyXuxjSEXquU93UQ-yuIxbtXCdi-2JenYF96Cf2w2e0PruqkxsqLbnZlrR6lHJeH5e5fK7pap48K0nvlio4YYTqlK24cnkU0x_2n-rV0jkXuKJ0H0-qgAyblZu20nlzc-uVuZo40Xk7hqkXH0m4YAT23K22D0kU0-J2n_PP_TFrQZnQZ8-FNKpY0V04VK9Dkp7zNvyrYbxRaZPzIUYDr3OFzS04VKUPIrJz0bxYdPyHqmYqKoK6zLmqE78c2oTuEqf3Lj4vVrulobcNqpFXUDj08Gul2xs4ojryuuvKdpzcSxvNEEFjQrY3S35HdzEaI1mMugVYf32FEZf2oLFJc4EQLmUtqpb7hT7qY0Pt20FvUZmD14Y2196FRzoz6qXfd97Vz0Pt206CLwKE453ch.&rn=daf1f95e7299c780e9f88b6c7b6b10ff&spm=a1z10.5-b-s.w4011-25428877037.86.5df54d466HIdDb",
+        "competitorId": "iroha",
+        "analysis": {
+          "pros": [
+            "外观精致，颜值高，设计漂亮",
+            "材质柔软亲肤，质感好，无廉价感",
+            "尺寸适中，适合新手和老手使用",
+            "震动模式丰富，支持渐强模式，满足不同需求",
+            "噪音小，私密性强，使用时不易被察觉",
+            "防水设计，便于清洗，卫生方便",
+            "包装隐私性强，配送保密，购物体验安心",
+            "附赠润滑液，提升使用舒适度",
+            "京东物流速度快，收货及时"
+          ],
+          "cons": [
+            "部分用户反映产品太小，使用不便",
+            "有用户表示使用后没感觉，效果不明显",
+            "商家售后服务差，退货退款困难",
+            "存在未拆封仍被拒退的情况，流程不合理",
+            "个别用户认为产品作用有限，仅为锦上添花"
+          ],
+          "summary": "整体来看，‘小花蕾震动棒’在外观设计、材质质感和功能体验方面获得了大量用户的积极反馈，尤其是高点赞评论中普遍认可其颜值高、使用舒适、静音防水等优点。尽管负面评价数量较少且点赞量低，但集中暴露出售后服务不完善、退换货政策执行僵化的问题，可能影响消费者信任。综合31条评价中绝大多数为5星好评，用户认可度较高，具备较强的市场竞争力，但在服务流程优化上仍有改进空间。",
+          "prosKeywords": [
+            {
+              "value": "颜值高",
+              "count": 6
+            },
+            {
+              "value": "材质好",
+              "count": 5
+            },
+            {
+              "value": "噪音小",
+              "count": 4
+            },
+            {
+              "value": "震动模式多",
+              "count": 4
+            },
+            {
+              "value": "防水",
+              "count": 3
+            },
+            {
+              "value": "包装隐私",
+              "count": 3
+            },
+            {
+              "value": "使用舒适",
+              "count": 5
+            },
+            {
+              "value": "送润滑液",
+              "count": 2
+            },
+            {
+              "value": "物流快",
+              "count": 3
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "不好用",
+              "count": 3
+            },
+            {
+              "value": "太小了",
+              "count": 3
+            },
+            {
+              "value": "没感觉",
+              "count": 2
+            },
+            {
+              "value": "退货难",
+              "count": 4
+            },
+            {
+              "value": "服务差",
+              "count": 3
+            },
+            {
+              "value": "包装被拆",
+              "count": 2
+            },
+            {
+              "value": "作用有限",
+              "count": 2
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260109/69608a47368d9.png",
+        "sales": 300,
+        "priceHistory": [
+          {
+            "date": "2025-01-09",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-10",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-11",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-12",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-13",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-14",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-15",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-16",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-17",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-18",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-19",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-20",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-21",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-22",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-23",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-24",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-25",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-26",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-27",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-28",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-29",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-30",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-01-31",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-01",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-02",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-03",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-04",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-05",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-06",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-07",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-08",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-09",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-10",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-11",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-12",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-13",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-14",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-15",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-16",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-17",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-18",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-19",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-20",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-21",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-22",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-23",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-24",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-25",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-26",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-27",
+            "finalPrice": 116.33,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-02-28",
+            "finalPrice": 96.33,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-01",
+            "finalPrice": 96.33,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-02",
+            "finalPrice": 96.33,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-03",
+            "finalPrice": 96.33,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-04",
+            "finalPrice": 96.33,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-05",
+            "finalPrice": 96.33,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-06",
+            "finalPrice": 90.43,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-07",
+            "finalPrice": 90.43,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-08",
+            "finalPrice": 90.43,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-09",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-10",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-11",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-12",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-13",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-14",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-15",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-16",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-17",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-18",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-19",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-20",
+            "finalPrice": 109.43,
+            "originalPrice": 138
+          },
+          {
+            "date": "2025-03-21",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-22",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-23",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-24",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-25",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-26",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-27",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-28",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-29",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-30",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-03-31",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-02",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-03",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-04",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-05",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-06",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-07",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-08",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-09",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-10",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-11",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-12",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-13",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-14",
+            "finalPrice": 110.5,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-04-17",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-18",
+            "finalPrice": 85.3,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-19",
+            "finalPrice": 91,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-20",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-21",
+            "finalPrice": 106.6,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-04-22",
+            "finalPrice": 110.5,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-04-23",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-24",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-25",
+            "finalPrice": 98,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-26",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-27",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-28",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-29",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-04-30",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-01",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-02",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-03",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-04",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-06",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-07",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-08",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-09",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-10",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-11",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-12",
+            "finalPrice": 121.6,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-05-13",
+            "finalPrice": 106.6,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-05-14",
+            "finalPrice": 100.3,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-15",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-16",
+            "finalPrice": 112.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-18",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-05-19",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-05-20",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-05-21",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-22",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-23",
+            "finalPrice": 103,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-24",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-25",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-26",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-27",
+            "finalPrice": 97.1,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-28",
+            "finalPrice": 103,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-05-29",
+            "finalPrice": 106.4,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-05-30",
+            "finalPrice": 106.4,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-05-31",
+            "finalPrice": 106.4,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-06-02",
+            "finalPrice": 107,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-06-03",
+            "finalPrice": 105.33,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-06-04",
+            "finalPrice": 105.33,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-06-05",
+            "finalPrice": 105.33,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-06-06",
+            "finalPrice": 105.33,
+            "originalPrice": 112
+          },
+          {
+            "date": "2025-06-07",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-08",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-09",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-10",
+            "finalPrice": 98.8,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-06-11",
+            "finalPrice": 108.8,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-06-12",
+            "finalPrice": 108.8,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-06-13",
+            "finalPrice": 108.8,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-06-14",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-15",
+            "finalPrice": 108.8,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-06-16",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-17",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-18",
+            "finalPrice": 104.55,
+            "originalPrice": 123
+          },
+          {
+            "date": "2025-06-19",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-20",
+            "finalPrice": 107.1,
+            "originalPrice": 126
+          },
+          {
+            "date": "2025-06-21",
+            "finalPrice": 106.2,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-06-22",
+            "finalPrice": 106.2,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-06-23",
+            "finalPrice": 106.2,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-06-24",
+            "finalPrice": 110.92,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-06-27",
+            "finalPrice": 102.5,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-06-29",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-02",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-04",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-05",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-06",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-08",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-09",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-10",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-11",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-12",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-14",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-16",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-17",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-18",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-19",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-21",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-23",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-24",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-25",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-26",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-27",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-29",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-07-30",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-01",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-02",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-03",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-09",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-10",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-11",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-13",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-14",
+            "finalPrice": 98,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-15",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-16",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-17",
+            "finalPrice": 98,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-18",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-19",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-21",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-22",
+            "finalPrice": 98,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-23",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-24",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-26",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-28",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-29",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-30",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-08-31",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-06",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-07",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-09",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-10",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-11",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-12",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-13",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-15",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-16",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-17",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-23",
+            "finalPrice": 121.6,
+            "originalPrice": 128
+          },
+          {
+            "date": "2025-09-27",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-28",
+            "finalPrice": 102.6,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-09-30",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-10-14",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-07",
+            "finalPrice": 98,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-08",
+            "finalPrice": 98,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-09",
+            "finalPrice": 98,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-10",
+            "finalPrice": 98,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-11",
+            "finalPrice": 98,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-12",
+            "finalPrice": 88,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-13",
+            "finalPrice": 88,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-14",
+            "finalPrice": 88,
+            "originalPrice": 103
+          },
+          {
+            "date": "2025-11-15",
+            "finalPrice": 93,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-17",
+            "finalPrice": 93,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-18",
+            "finalPrice": 93,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-19",
+            "finalPrice": 98,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-20",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-21",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-22",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-23",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-24",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-25",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-26",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-27",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-28",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-29",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-11-30",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-01",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-02",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-03",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-04",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-05",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-12-06",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-12-07",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-12-08",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-09",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-10",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-11",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-12",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-13",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-14",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-15",
+            "finalPrice": 103,
+            "originalPrice": 108
+          },
+          {
+            "date": "2025-12-17",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-12-18",
+            "finalPrice": 113,
+            "originalPrice": 118
+          },
+          {
+            "date": "2025-12-22",
+            "finalPrice": 108,
+            "originalPrice": 113
+          },
+          {
+            "date": "2025-12-23",
+            "finalPrice": 108,
+            "originalPrice": 113
+          },
+          {
+            "date": "2025-12-25",
+            "finalPrice": 108,
+            "originalPrice": 113
+          },
+          {
+            "date": "2025-12-27",
+            "finalPrice": 108,
+            "originalPrice": 113
+          },
+          {
+            "date": "2025-12-28",
+            "finalPrice": 108,
+            "originalPrice": 113
+          },
+          {
+            "date": "2025-12-29",
+            "finalPrice": 108,
+            "originalPrice": 113
+          },
+          {
+            "date": "2025-12-30",
+            "finalPrice": 102.6,
+            "originalPrice": 107.6
+          },
+          {
+            "date": "2025-12-31",
+            "finalPrice": 102.6,
+            "originalPrice": 107.6
+          },
+          {
+            "date": "2026-01-02",
+            "finalPrice": 102.6,
+            "originalPrice": 107.6
+          },
+          {
+            "date": "2026-01-03",
+            "finalPrice": 102.6,
+            "originalPrice": 107.6
+          },
+          {
+            "date": "2026-01-04",
+            "finalPrice": 86.6,
+            "originalPrice": 107.6
+          },
+          {
+            "date": "2026-01-05",
+            "finalPrice": 86.6,
+            "originalPrice": 107.6
+          },
+          {
+            "date": "2026-01-06",
+            "finalPrice": 86.6,
+            "originalPrice": 107.6
+          },
+          {
+            "date": "2026-01-07",
+            "finalPrice": 105,
+            "originalPrice": 128
+          },
+          {
+            "date": "2026-01-08",
+            "finalPrice": 105,
+            "originalPrice": 128
+          },
+          {
+            "date": "2026-01-09",
+            "finalPrice": 105,
+            "originalPrice": 128
+          }
+        ],
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长22mm宽22mm高160mm",
+          "usageTime": "4小时",
+          "material": "硅胶+ABS",
+          "chargingTime": "1节7号电池",
+          "weight": "41g",
+          "ipRating": "IPX7",
+          "noiseLevel": "60db",
+          "controlMethod": "旋钮"
+        }
+      }
+    ]
   }
 ]

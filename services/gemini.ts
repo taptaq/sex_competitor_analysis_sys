@@ -301,3 +301,42 @@ export const analyzePriceHistory = async (
     throw error;
   }
 };
+
+export const analyzeBrandCharacteristics = async (
+  competitor: {
+    name: string;
+    philosophy?: string[];
+    products?: Array<{
+      name: string;
+      price: number;
+      category?: string;
+      tags?: string[];
+      gender?: 'Male' | 'Female' | 'Unisex';
+    }>;
+    ads?: Array<{
+      id: string;
+      text: string;
+      highlights: string[];
+    }>;
+    focus?: 'Male' | 'Female' | 'Unisex';
+    isDomestic?: boolean;
+  },
+  isDomestic: boolean = false
+) => {
+  try {
+    const res = await fetch('/api/ai/brand-characteristics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ competitor, isDomestic })
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.detail || 'Brand characteristics analysis failed');
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('Brand Characteristics Analysis Service Error:', error);
+    throw error;
+  }
+};

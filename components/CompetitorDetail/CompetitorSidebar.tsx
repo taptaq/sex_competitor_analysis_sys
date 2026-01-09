@@ -1,6 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Competitor } from "../../types";
-import { Globe, Venus, Mars, VenusAndMars, Pencil, Save, X, Plus, Sparkles } from "lucide-react";
+import {
+  Globe,
+  Venus,
+  Mars,
+  VenusAndMars,
+  Pencil,
+  Save,
+  X,
+  Plus,
+  Sparkles,
+  Loader2,
+} from "lucide-react";
+import { analyzeBrandCharacteristics } from "../../services/gemini";
+import { TagCloud } from "react-tagcloud";
 
 interface CompetitorSidebarProps {
   competitor: Competitor;
@@ -23,6 +36,229 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [tempFoundedDate, setTempFoundedDate] = useState("");
   const [isEditingCountry, setIsEditingCountry] = useState(false);
   const [tempCountry, setTempCountry] = useState("");
+  const [isAnalyzingBrand, setIsAnalyzingBrand] = useState(false);
+
+  // 生成词云数据 - 优先使用AI生成的关键词，如果没有则使用前端提取
+  const wordCloudData = useMemo(() => {
+    if (!competitor.brandCharacteristicAnalysis) return [];
+
+    // 优先使用AI生成的关键词，只取前5个
+    if (
+      competitor.brandCharacteristicAnalysis.wordCloudKeywords &&
+      competitor.brandCharacteristicAnalysis.wordCloudKeywords.length > 0
+    ) {
+      return competitor.brandCharacteristicAnalysis.wordCloudKeywords.slice(
+        0,
+        5
+      );
+    }
+
+    // 如果没有AI生成的关键词，则使用前端提取（作为后备方案）
+    // 需要过滤的停用词
+    const stopWords = new Set([
+      "的",
+      "了",
+      "在",
+      "是",
+      "我",
+      "有",
+      "和",
+      "就",
+      "不",
+      "人",
+      "都",
+      "一",
+      "一个",
+      "上",
+      "也",
+      "很",
+      "到",
+      "说",
+      "要",
+      "去",
+      "你",
+      "会",
+      "着",
+      "没有",
+      "看",
+      "好",
+      "自己",
+      "这",
+      "为",
+      "与",
+      "及",
+      "等",
+      "或",
+      "而",
+      "但",
+      "以",
+      "从",
+      "对",
+      "向",
+      "在",
+      "于",
+      "由",
+      "被",
+      "让",
+      "给",
+      "把",
+      "用",
+      "因",
+      "由于",
+      "通过",
+      "按照",
+      "根据",
+      "可以",
+      "能够",
+      "应该",
+      "需要",
+      "必须",
+      "可能",
+      "如果",
+      "那么",
+      "因为",
+      "所以",
+      "这个",
+      "那个",
+      "这些",
+      "那些",
+      "什么",
+      "怎么",
+      "如何",
+      "为什么",
+      "以及",
+      "并且",
+      "而且",
+      "同时",
+      "另外",
+      "此外",
+      "因此",
+      "所以",
+      "然而",
+      "但是",
+      "不过",
+      "虽然",
+      "尽管",
+      "即使",
+      "如果",
+      "假如",
+      "要是",
+      "只要",
+      "只有",
+      "除非",
+      "通过",
+      "根据",
+      "按照",
+      "依据",
+      "基于",
+      "针对",
+      "对于",
+      "关于",
+      "有关",
+      "涉及",
+      "包括",
+      "含有",
+      "具有",
+      "拥有",
+      "存在",
+      "出现",
+      "发生",
+      "产生",
+      "形成",
+      "建立",
+      "进行",
+      "开展",
+      "实施",
+      "执行",
+      "完成",
+      "实现",
+      "达到",
+      "获得",
+      "取得",
+      "得到",
+      "接受",
+      "采用",
+      "使用",
+      "利用",
+      "运用",
+      "应用",
+      "采取",
+      "选择",
+      "决定",
+      "方面",
+      "领域",
+      "范围",
+      "区域",
+      "地区",
+      "地方",
+      "位置",
+      "地点",
+      "场所",
+      "空间",
+      "时间",
+      "时期",
+      "阶段",
+      "过程",
+      "步骤",
+      "方法",
+      "方式",
+      "手段",
+      "途径",
+      "渠道",
+      "功能",
+      "作用",
+      "效果",
+      "影响",
+      "结果",
+      "后果",
+    ]);
+
+    // 提取所有文本内容
+    const analysis = competitor.brandCharacteristicAnalysis;
+    const allText = [
+      analysis.brandPositioning,
+      analysis.productCharacteristics,
+      analysis.priceStrategy,
+      analysis.targetAudience,
+      analysis.brandPersonality,
+      analysis.summary,
+      ...analysis.competitiveAdvantages,
+    ].join(" ");
+
+    // 使用正则表达式提取中文词汇（2-4个字）
+    const words = allText.match(/[\u4e00-\u9fa5]{2,4}/g) || [];
+
+    // 统计词频
+    const wordCount: Record<string, number> = {};
+    words.forEach((word) => {
+      // 过滤停用词和单字
+      if (!stopWords.has(word) && word.length >= 2) {
+        // 过滤掉纯数字或包含数字的词
+        if (!/[\d]/.test(word)) {
+          wordCount[word] = (wordCount[word] || 0) + 1;
+        }
+      }
+    });
+
+    // 转换为词云数据格式，按词频排序，只取前5个
+    // 计算最小和最大词频，用于调整权重
+    const counts = Object.values(wordCount);
+    if (counts.length === 0) return [];
+
+    const minCount = Math.min(...counts);
+    const maxCount = Math.max(...counts);
+    const range = maxCount - minCount || 1;
+
+    const cloudData = Object.entries(wordCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5) // 只取前5个
+      .map(([word, count], index) => ({
+        value: word,
+        count: Math.max(1, Math.round(((count - minCount) / range) * 9 + 1)), // 归一化到1-10的范围
+      }));
+
+    return cloudData;
+  }, [competitor.brandCharacteristicAnalysis]);
 
   const handleSaveName = () => {
     if (tempName.trim()) {
@@ -37,7 +273,10 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   };
 
   const handleSaveFocus = () => {
-    onUpdateCompetitor({ ...competitor, focus: tempFocus as "Male" | "Female" | "Unisex" | undefined });
+    onUpdateCompetitor({
+      ...competitor,
+      focus: tempFocus as "Male" | "Female" | "Unisex" | undefined,
+    });
     setIsEditingFocus(false);
   };
 
@@ -48,12 +287,18 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   };
 
   const handleSaveFoundedDate = () => {
-    onUpdateCompetitor({ ...competitor, foundedDate: tempFoundedDate.trim() || undefined });
+    onUpdateCompetitor({
+      ...competitor,
+      foundedDate: tempFoundedDate.trim() || undefined,
+    });
     setIsEditingFoundedDate(false);
   };
 
   const handleSaveCountry = () => {
-    onUpdateCompetitor({ ...competitor, country: tempCountry.trim() || undefined });
+    onUpdateCompetitor({
+      ...competitor,
+      country: tempCountry.trim() || undefined,
+    });
     setIsEditingCountry(false);
   };
 
@@ -70,6 +315,44 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const handlePhilosophyDelete = (index: number) => {
     const newPhilosophy = tempPhilosophy.filter((_, i) => i !== index);
     setTempPhilosophy(newPhilosophy);
+  };
+
+  const handleAnalyzeBrandCharacteristics = async () => {
+    if (!competitor.products || competitor.products.length === 0) {
+      alert("该品牌暂无产品数据，无法进行品牌特点分析");
+      return;
+    }
+
+    setIsAnalyzingBrand(true);
+    try {
+      const analysis = await analyzeBrandCharacteristics(
+        {
+          name: competitor.name,
+          philosophy: competitor.philosophy,
+          products: competitor.products.map((p) => ({
+            name: p.name,
+            price: p.price,
+            category: p.category,
+            tags: p.tags,
+            gender: p.gender,
+          })),
+          focus: competitor.focus,
+          ads: competitor.ads,
+          isDomestic: competitor.isDomestic,
+        },
+        competitor.isDomestic || false
+      );
+
+      onUpdateCompetitor({
+        ...competitor,
+        brandCharacteristicAnalysis: analysis,
+      });
+    } catch (error) {
+      console.error("Brand characteristics analysis failed:", error);
+      alert("品牌特点分析失败，请稍后重试");
+    } finally {
+      setIsAnalyzingBrand(false);
+    }
   };
 
   return (
@@ -166,7 +449,9 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                   {competitor.domain}
                 </a>
               ) : (
-                <span className="text-sm text-gray-500 transition-colors">未设置官网</span>
+                <span className="text-sm text-gray-500 transition-colors">
+                  未设置官网
+                </span>
               )}
               <Pencil
                 onClick={() => {
@@ -193,7 +478,11 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                 <select
                   className="flex-1 border rounded px-2 py-1 text-sm"
                   value={tempFocus || "Unisex"}
-                  onChange={(e) => setTempFocus(e.target.value === "Unisex" ? "" : e.target.value)}
+                  onChange={(e) =>
+                    setTempFocus(
+                      e.target.value === "Unisex" ? "" : e.target.value
+                    )
+                  }
                   autoFocus
                 >
                   <option value="Female">专攻女用</option>
@@ -288,7 +577,9 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                     <input
                       className="flex-1 text-sm p-2 border rounded"
                       value={p}
-                      onChange={(e) => handlePhilosophyChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handlePhilosophyChange(index, e.target.value)
+                      }
                       placeholder={`理念 ${index + 1}`}
                     />
                     <button
@@ -324,18 +615,19 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                   </button>
                 </div>
               </div>
+            ) : competitor.philosophy && competitor.philosophy.length > 0 ? (
+              <ul className="space-y-1.5">
+                {competitor.philosophy.map((p, index) => (
+                  <li
+                    key={index}
+                    className="text-sm text-gray-600 leading-relaxed"
+                  >
+                    {p}
+                  </li>
+                ))}
+              </ul>
             ) : (
-              competitor.philosophy && competitor.philosophy.length > 0 ? (
-                <ul className="space-y-1.5">
-                  {competitor.philosophy.map((p, index) => (
-                    <li key={index} className="text-sm text-gray-600 leading-relaxed">
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-gray-400 italic">暂无品牌理念</p>
-              )
+              <p className="text-sm text-gray-400 italic">暂无品牌理念</p>
             )}
           </div>
 
@@ -396,7 +688,9 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
               <p className="text-sm text-gray-600">
                 {competitor.foundedDate
                   ? competitor.foundedDate.includes("-")
-                    ? `${competitor.foundedDate.split("-")[0]}年${competitor.foundedDate.split("-")[1]}月`
+                    ? `${competitor.foundedDate.split("-")[0]}年${
+                        competitor.foundedDate.split("-")[1]
+                      }月`
                     : `${competitor.foundedDate}年`
                   : "未设置"}
               </p>
@@ -467,18 +761,185 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
         </div>
       </div>
 
-      <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-        <div className="flex items-center gap-2 text-blue-700 font-bold text-sm mb-2">
+      <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 space-y-3">
+        <div className="flex items-center gap-2 text-blue-700 font-bold text-sm">
           <Sparkles size={16} />
           AI 智能分析
         </div>
         <p className="text-xs text-blue-800 leading-relaxed">
-          点击产品卡片上的"分析评论"按钮，可自动提炼该产品的用户优缺点反馈。
+          点击下方按钮，AI
+          将综合分析该品牌的所有产品数据，深度提炼其品牌定位、竞争优势及市场策略。
         </p>
+        <div className="pt-2 border-t border-blue-200">
+          <button
+            onClick={handleAnalyzeBrandCharacteristics}
+            disabled={
+              isAnalyzingBrand ||
+              !competitor.products ||
+              competitor.products.length === 0
+            }
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs font-medium"
+          >
+            {isAnalyzingBrand ? (
+              <>
+                <Loader2 size={14} className="animate-spin" />
+                <span>分析中...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles size={14} />
+                <span>
+                  {competitor.brandCharacteristicAnalysis
+                    ? "重新分析品牌特点"
+                    : "分析品牌特点"}
+                </span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* 品牌特点分析结果 */}
+      {competitor.brandCharacteristicAnalysis && (
+        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200">
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles className="text-purple-600" size={18} />
+            <h3 className="text-base font-bold text-purple-900">
+              品牌特点分析
+            </h3>
+          </div>
+
+          {/* 词云展示 */}
+          {wordCloudData.length > 0 && (
+            <div className="mb-4 p-4 bg-white rounded-lg border border-purple-100">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-xs font-bold text-purple-800">
+                  品牌关键词云
+                </h4>
+                {competitor.brandCharacteristicAnalysis.wordCloudKeywords &&
+                  competitor.brandCharacteristicAnalysis.wordCloudKeywords
+                    .length > 0 && (
+                    <span className="text-[10px] text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
+                      AI生成
+                    </span>
+                  )}
+              </div>
+              <div className="flex items-center justify-center min-h-[200px] overflow-hidden rounded-lg bg-gradient-to-br from-purple-50 to-indigo-50 p-3">
+                <TagCloud
+                  minSize={14}
+                  maxSize={40}
+                  tags={wordCloudData}
+                  className="simple-tag-cloud"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                  }}
+                  colorOptions={{
+                    luminosity: "dark",
+                    hue: "purple",
+                  }}
+                />
+              </div>
+              <style>{`
+                .simple-tag-cloud {
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: center;
+                  align-items: center;
+                  gap: 8px;
+                }
+                .simple-tag-cloud span {
+                  cursor: default;
+                  transition: all 0.2s ease;
+                  display: inline-block;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                }
+                .simple-tag-cloud span:hover {
+                  transform: scale(1.15);
+                  z-index: 10;
+                  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                }
+              `}</style>
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <div>
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                品牌定位
+              </h4>
+              <p className="text-xs text-purple-700 leading-relaxed">
+                {competitor.brandCharacteristicAnalysis.brandPositioning}
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                产品特征
+              </h4>
+              <p className="text-xs text-purple-700 leading-relaxed">
+                {competitor.brandCharacteristicAnalysis.productCharacteristics}
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                价格策略
+              </h4>
+              <p className="text-xs text-purple-700 leading-relaxed">
+                {competitor.brandCharacteristicAnalysis.priceStrategy}
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                目标受众
+              </h4>
+              <p className="text-xs text-purple-700 leading-relaxed">
+                {competitor.brandCharacteristicAnalysis.targetAudience}
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                竞争优势
+              </h4>
+              <ul className="list-disc list-inside space-y-0.5">
+                {competitor.brandCharacteristicAnalysis.competitiveAdvantages.map(
+                  (advantage, index) => (
+                    <li key={index} className="text-xs text-purple-700">
+                      {advantage}
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                品牌个性
+              </h4>
+              <p className="text-xs text-purple-700 leading-relaxed">
+                {competitor.brandCharacteristicAnalysis.brandPersonality}
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                宣传语与创意分析
+              </h4>
+              <p className="text-xs text-purple-700 leading-relaxed">
+                {competitor.brandCharacteristicAnalysis.sloganCreativity}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-purple-200">
+              <h4 className="text-xs font-bold text-purple-800 mb-1.5">
+                综合分析
+              </h4>
+              <p className="text-xs text-purple-700 leading-relaxed">
+                {competitor.brandCharacteristicAnalysis.summary}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default CompetitorSidebar;
-
