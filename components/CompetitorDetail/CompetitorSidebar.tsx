@@ -11,9 +11,14 @@ import {
   Plus,
   Sparkles,
   Loader2,
+  Download,
+  FileJson,
+  FileText,
+  Network,
 } from "lucide-react";
 import { analyzeBrandCharacteristics } from "../../services/gemini";
 import { TagCloud } from "react-tagcloud";
+import QAAnalysisPanel from "./QAAnalysisPanel";
 
 interface CompetitorSidebarProps {
   competitor: Competitor;
@@ -37,6 +42,306 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [isEditingCountry, setIsEditingCountry] = useState(false);
   const [tempCountry, setTempCountry] = useState("");
   const [isAnalyzingBrand, setIsAnalyzingBrand] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+
+  // 导出辅助函数
+  const downloadFile = (
+    content: string,
+    fileName: string,
+    contentType: string
+  ) => {
+    const a = document.createElement("a");
+    const file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    setShowExportMenu(false);
+  };
+
+  const handleExportJSON = () => {
+    const jsonString = JSON.stringify(competitor, null, 2);
+    downloadFile(
+      jsonString,
+      `${competitor.name}_brand_data.json`,
+      "application/json"
+    );
+  };
+
+  const handleExportMarkdown = () => {
+    const date = new Date().toLocaleDateString();
+    let md = `# ${competitor.name} - 品牌分析报告\n\n`;
+    md += `> 生成日期: ${date}\n\n`;
+
+    md += `## 1. 品牌概览\n`;
+    md += `- **品牌名称**: ${competitor.name}\n`;
+    md += `- **品牌Slogan**: ${competitor.slogan || "未记录"}\n`;
+    md += `- **成立时间**: ${competitor.foundedDate || "未记录"}\n`;
+    md += `- **所属国家**: ${competitor.country || "未记录"}\n`;
+    md += `- **核心理念**: ${competitor.philosophy?.join(" / ") || "未记录"}\n`;
+    md += `- **主攻方向**: ${competitor.focus || "未记录"}\n\n`;
+
+    if (competitor.brandCharacteristicAnalysis) {
+      md += `## 2. 品牌特质分析\n`;
+      const analysis = competitor.brandCharacteristicAnalysis;
+      md += `### 品牌定位\n${analysis.brandPositioning}\n\n`;
+      md += `### 产品特征\n${analysis.productCharacteristics}\n\n`;
+      md += `### 价格策略\n${analysis.priceStrategy}\n\n`;
+      md += `### 目标受众\n${analysis.targetAudience}\n\n`;
+      md += `### 品牌个性\n${analysis.brandPersonality}\n\n`;
+      md += `### 总结\n${analysis.summary}\n\n`;
+    }
+
+    if (competitor.qaAnalysis) {
+      md += `## 3. 用户痛点与机会\n`;
+      md += `### 核心痛点\n`;
+      competitor.qaAnalysis.painPoints.forEach((p) => (md += `- ${p}\n`));
+      md += `\n### 用户关注点\n`;
+      competitor.qaAnalysis.concerns.forEach((p) => (md += `- ${p}\n`));
+      if (competitor.qaAnalysis.suggestions) {
+        md += `\n### 改进建议\n`;
+        competitor.qaAnalysis.suggestions.forEach((p) => (md += `- ${p}\n`));
+      }
+      md += `\n### 总结\n${competitor.qaAnalysis.summary}\n\n`;
+    }
+
+    md += `## 4. 产品矩阵\n`;
+    competitor.products?.forEach((p) => {
+      md += `### ${p.name}\n`;
+      md += `- 价格: ¥${p.price}\n`;
+      md += `- 销量: ${p.sales || 0}\n`;
+      md += `- 上市时间: ${p.launchDate || "未知"}\n`;
+      md += `- 适用性别: ${
+        p.gender === "Male" ? "男用" : p.gender === "Female" ? "女用" : "通用"
+      }\n`;
+
+      if (p.specs) {
+        md += `\n#### 规格参数\n`;
+        if (p.specs.material) md += `- 材质: ${p.specs.material}\n`;
+        if (p.specs.dimensions) md += `- 尺寸: ${p.specs.dimensions}\n`;
+        if (p.specs.weight) md += `- 重量: ${p.specs.weight}\n`;
+        if (p.specs.controlMethod)
+          md += `- 控制方式: ${p.specs.controlMethod}\n`;
+        if (p.specs.noiseLevel) md += `- 噪音: ${p.specs.noiseLevel}\n`;
+        if (p.specs.chargingTime) md += `- 充电: ${p.specs.chargingTime}\n`;
+        if (p.specs.usageTime) md += `- 续航: ${p.specs.usageTime}\n`;
+        if (p.specs.ipRating) md += `- 防水: ${p.specs.ipRating}\n`;
+      }
+
+      if (p.analysis) {
+        md += `\n#### 用户评价分析\n`;
+        md += `**优点**:\n`;
+        p.analysis.pros.forEach((item) => (md += `- ${item}\n`));
+        md += `\n**缺点**:\n`;
+        p.analysis.cons.forEach((item) => (md += `- ${item}\n`));
+        md += `\n**总结**: ${p.analysis.summary}\n`;
+      }
+
+      if (p.priceAnalysis) {
+        md += `\n#### 价格分析\n`;
+        md += `- 趋势: ${p.priceAnalysis.trend}\n`;
+        md += `- 波动: ${p.priceAnalysis.fluctuation}\n`;
+        md += `- 建议: ${p.priceAnalysis.recommendations.join("; ")}\n`;
+        md += `\n**综合分析**: ${p.priceAnalysis.summary}\n`;
+      }
+
+      if (p.reviews && p.reviews.length > 0) {
+        md += `\n- 评论数: ${p.reviews.length}\n`;
+      }
+      md += `\n---\n\n`;
+    });
+
+    downloadFile(md, `${competitor.name}_report.md`, "text/markdown");
+  };
+
+  const handleExportOPML = () => {
+    // 生成 XMind 兼容的 OPML 格式
+    let opml = `<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+<head>
+    <title>${competitor.name} 品牌分析</title>
+</head>
+<body>
+    <outline text="${competitor.name} 品牌分析">
+        <outline text="品牌概览">
+            <outline text="Slogan: ${competitor.slogan || "未记录"}" />
+            <outline text="成立时间: ${competitor.foundedDate || "未记录"}" />
+            <outline text="所属国家: ${competitor.country || "未记录"}" />
+            <outline text="主攻方向: ${competitor.focus || "未记录"}" />
+            <outline text="品牌理念">`;
+    competitor.philosophy?.forEach((p) => {
+      opml += `\n                <outline text="${p}" />`;
+    });
+    opml += `
+            </outline>
+        </outline>`;
+
+    if (competitor.brandCharacteristicAnalysis) {
+      const bca = competitor.brandCharacteristicAnalysis;
+      // 构建综合分析文本，处理可能存在的 undefined 字段
+      const analysisText = [
+        `品牌定位: ${bca.brandPositioning || "无"}`,
+        `产品特征: ${bca.productCharacteristics || "无"}`,
+        `价格策略: ${bca.priceStrategy || "无"}`,
+        `目标受众: ${bca.targetAudience || "无"}`,
+        `品牌个性: ${bca.brandPersonality || "无"}`,
+        `总结: ${bca.summary || "无"}`,
+      ].join("; ");
+
+      opml += `
+        <outline text="品牌特质分析">
+            <outline text="分析内容" _note="${analysisText.replace(
+              /"/g,
+              "&quot;"
+            )}" />
+            <outline text="关键词">`;
+      competitor.brandCharacteristicAnalysis.keywords?.forEach((k) => {
+        opml += `\n                <outline text="${k}" />`;
+      });
+      opml += `
+            </outline>
+        </outline>`;
+    }
+
+    if (competitor.qaAnalysis) {
+      opml += `
+        <outline text="用户洞察">
+            <outline text="核心痛点">`;
+      competitor.qaAnalysis.painPoints.forEach((p) => {
+        opml += `\n                <outline text="${p.replace(
+          /"/g,
+          "&quot;"
+        )}" />`;
+      });
+      opml += `
+            </outline>
+            <outline text="用户关注点">`;
+      competitor.qaAnalysis.concerns.forEach((p) => {
+        opml += `\n                <outline text="${p.replace(
+          /"/g,
+          "&quot;"
+        )}" />`;
+      });
+      opml += `
+            </outline>`;
+      if (competitor.qaAnalysis.suggestions) {
+        opml += `
+            <outline text="改进建议">`;
+        competitor.qaAnalysis.suggestions.forEach((p) => {
+          opml += `\n                <outline text="${p.replace(
+            /"/g,
+            "&quot;"
+          )}" />`;
+        });
+        opml += `
+            </outline>`;
+      }
+      opml += `
+            <outline text="总结" _note="${competitor.qaAnalysis.summary.replace(
+              /"/g,
+              "&quot;"
+            )}" />
+        </outline>`;
+    }
+
+    // 产品列表
+    if (competitor.products && competitor.products.length > 0) {
+      opml += `\n        <outline text="产品矩阵">`;
+      competitor.products.forEach((p) => {
+        opml += `\n            <outline text="${p.name.replace(
+          /"/g,
+          "&quot;"
+        )}">
+                <outline text="基本信息">
+                    <outline text="价格: ¥${p.price}" />
+                    <outline text="销量: ${p.sales || 0}" />
+                    <outline text="上市时间: ${p.launchDate || "未知"}" />
+                    <outline text="适用性别: ${
+                      p.gender === "Male"
+                        ? "男用"
+                        : p.gender === "Female"
+                        ? "女用"
+                        : "通用"
+                    }" />
+                </outline>`;
+
+        if (p.specs) {
+          let specsText = [];
+          if (p.specs.material) specsText.push(`材质: ${p.specs.material}`);
+          if (p.specs.dimensions) specsText.push(`尺寸: ${p.specs.dimensions}`);
+          if (p.specs.noiseLevel) specsText.push(`噪音: ${p.specs.noiseLevel}`);
+          if (p.specs.usageTime) specsText.push(`续航: ${p.specs.usageTime}`);
+
+          if (specsText.length > 0) {
+            opml += `\n                <outline text="规格参数">`;
+            specsText.forEach(
+              (s) =>
+                (opml += `\n                    <outline text="${s.replace(
+                  /"/g,
+                  "&quot;"
+                )}" />`)
+            );
+            opml += `\n                </outline>`;
+          }
+        }
+
+        if (p.analysis) {
+          opml += `\n                <outline text="用户评价分析">
+                    <outline text="优点">`;
+          p.analysis.pros.forEach(
+            (item) =>
+              (opml += `\n                        <outline text="${item.replace(
+                /"/g,
+                "&quot;"
+              )}" />`)
+          );
+          opml += `\n                    </outline>
+                    <outline text="缺点">`;
+          p.analysis.cons.forEach(
+            (item) =>
+              (opml += `\n                        <outline text="${item.replace(
+                /"/g,
+                "&quot;"
+              )}" />`)
+          );
+          opml += `\n                    </outline>
+                    <outline text="总结" _note="${p.analysis.summary.replace(
+                      /"/g,
+                      "&quot;"
+                    )}" />
+                </outline>`;
+        }
+
+        if (p.priceAnalysis) {
+          const pa = p.priceAnalysis;
+          opml += `\n                <outline text="价格分析">
+                    <outline text="趋势: ${pa.trend.replace(/"/g, "&quot;")}" />
+                    <outline text="波动: ${pa.fluctuation.replace(
+                      /"/g,
+                      "&quot;"
+                    )}" />
+                    <outline text="建议" _note="${pa.recommendations
+                      .join("; ")
+                      .replace(/"/g, "&quot;")}" />
+                    <outline text="综合分析" _note="${pa.summary.replace(
+                      /"/g,
+                      "&quot;"
+                    )}" />
+                </outline>`;
+        }
+
+        opml += `\n            </outline>`;
+      });
+      opml += `\n        </outline>`;
+    }
+
+    opml += `
+    </outline>
+</body>
+</opml>`;
+
+    downloadFile(opml, `${competitor.name}_mindmap.opml`, "text/xml");
+  };
 
   // 生成词云数据 - 优先使用AI生成的关键词，如果没有则使用前端提取
   const wordCloudData = useMemo(() => {
@@ -358,6 +663,48 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   return (
     <div className="lg:col-span-1 space-y-6">
       <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative group">
+        <div className="absolute top-4 right-4 z-10">
+          <button
+            onClick={() => setShowExportMenu(!showExportMenu)}
+            className="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-full transition-all"
+            title="导出品牌信息"
+          >
+            <Download size={18} />
+          </button>
+
+          {showExportMenu && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-1 z-50 animate-in fade-in slide-in-from-top-2">
+              <button
+                onClick={handleExportJSON}
+                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-2"
+              >
+                <FileJson size={14} />
+                导出 JSON 数据
+              </button>
+              <button
+                onClick={handleExportMarkdown}
+                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-2"
+              >
+                <FileText size={14} />
+                导出 Markdown 报告
+              </button>
+              <button
+                onClick={handleExportOPML}
+                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-2"
+              >
+                <Network size={14} />
+                导出 XMind (OPML)
+              </button>
+            </div>
+          )}
+
+          {showExportMenu && (
+            <div
+              className="fixed inset-0 z-40"
+              onClick={() => setShowExportMenu(false)}
+            />
+          )}
+        </div>
         {isEditingName ? (
           <div className="flex items-center gap-2 justify-center mb-6">
             <input
@@ -938,6 +1285,12 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
           </div>
         </div>
       )}
+
+      {/* 用户问答与痛点分析 */}
+      <QAAnalysisPanel
+        competitor={competitor}
+        onUpdateCompetitor={onUpdateCompetitor}
+      />
     </div>
   );
 };

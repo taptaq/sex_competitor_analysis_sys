@@ -340,3 +340,22 @@ export const analyzeBrandCharacteristics = async (
     throw error;
   }
 };
+
+export const analyzeQA = async (text: string) => {
+  try {
+    const res = await fetch('/api/ai/analyze-qa', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.detail || 'QA analysis failed');
+    }
+    return await res.json();
+  } catch (error) {
+    console.error('QA Analysis Service Error:', error);
+    throw error;
+  }
+};

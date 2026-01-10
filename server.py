@@ -1541,5 +1541,57 @@ async def ai_brand_characteristics(req: BrandCharacteristicsRequest):
 
     return await ask_ai(prompt, schema)
 
+# AI 13. QA Analysis
+class QAAnalysisRequest(BaseModel):
+    text: str
+
+@app.post("/api/ai/analyze-qa")
+async def ai_analyze_qa(req: QAAnalysisRequest):
+    schema = {
+        "type": "object",
+        "properties": {
+            "painPoints": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "用户使用过程中遇到的具体问题、困难或抱怨"
+            },
+            "concerns": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "用户在购买前或使用中关心的核心点，如安全性、材质、隐私等"
+            },
+            "suggestions": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "基于痛点和关心点提出的具体改进建议"
+            },
+            "summary": {
+                "type": "string",
+                "description": "对用户问答数据的综合分析总结，概括主要矛盾和需求"
+            }
+        },
+        "required": ["painPoints", "concerns", "suggestions", "summary"]
+    }
+
+    prompt = f"""你是一位专业的用户体验分析师。请分析以下用户问答/评论数据，提取用户的痛点和关心点，并给出针对性的改进建议：
+
+用户数据：
+{req.text[:15000]}  # 限制长度防止超长
+
+注意：如果数据包含`[购买状态]`字段，且状态为`已购`或`回头客`：
+- `已购`用户：重点关注其实际使用中的体验和痛点（Pain Points）。
+- `回头客`用户：属于高价值忠实用户，重点关注其复购原因（满意点）以及对产品的进阶需求或深度不满（Concerns/Pain Points）。
+- 其他/未知状态：更多关注其购买前的疑虑（Concerns）。
+
+请输出 JSON 格式的分析报告：
+1. painPoints: 用户痛点列表（至少10条），重点关注已购买用户和回头客反馈的实际困难、功能缺陷或使用不便。
+2. concerns: 用户关心点列表（至少10条），重点关注未购买用户（或决策中）最在意的因素（如材质安全、隐私、噪音等）以及已购用户的期望偏差。
+3. suggestions: 针对上述痛点和关心点的改进建议（至少10条）。建议应具体、可执行，例如从产品设计、功能优化、营销话术或服务流程等方面入手。
+4. summary: 综合总结（150-200字），概括整体用户反馈的倾向和主要待解决问题。
+
+**所有输出必须使用简体中文。**"""
+
+    return await ask_ai(prompt, schema)
+
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=3001, reload=True)
