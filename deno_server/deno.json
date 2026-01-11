@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read --unstable-kv main.ts",
+    "dev": "deno run --watch --allow-net --allow-env --allow-read --unstable-kv main.ts"
+  },
+  "imports": {
+    "hono": "jsr:@hono/hono@^4.0.0",
+    "std/": "https://deno.land/std@0.224.0/",
+    "openai": "https://deno.land/x/openai@v4.28.0/mod.ts"
+  }
+}

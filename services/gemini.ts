@@ -1,8 +1,10 @@
 import { Competitor, ReviewAnalysis } from '../types';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
 export const getDeepComparison = async (products: any[], isDomestic: boolean = false) => {
   try {
-    const res = await fetch('/api/ai/compare', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/compare`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ products, isDomestic })
@@ -18,7 +20,7 @@ export const getDeepComparison = async (products: any[], isDomestic: boolean = f
 
 export const getStrategyAdvice = async (concept: string , isDomestic: boolean = false) => {
   try {
-    const res = await fetch('/api/ai/strategy', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/strategy`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ concept, isDomestic })
@@ -47,7 +49,7 @@ export const analyzeReviews = async (
       ? reviews.map(text => ({ text, likeCount: undefined }))
       : reviews as Array<{ text: string; likeCount?: number }>;
 
-    const res = await fetch('/api/ai/analyze', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ productName, reviews: reviewData, isDomestic })
@@ -67,7 +69,7 @@ export const analyzeReviews = async (
 
 export const fetchCompetitorData = async (companyName: string, isDomestic: boolean = false): Promise<Competitor> => {
   try {
-    const res = await fetch('/api/ai/competitor', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/competitor`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ companyName, isDomestic })
@@ -106,7 +108,7 @@ export const generateDeepCompetitorReport = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch('/api/ai/deep-report', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/deep-report`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ product, competitor, isDomestic })
@@ -132,7 +134,7 @@ export const generateCompetitorReport = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch('/api/ai/competitor-report', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/competitor-report`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ownProduct, competitorProducts, isDomestic })
@@ -151,7 +153,7 @@ export const queryProductKnowledgeBase = async (
   products: Array<{ product: any; competitor: any }>
 ) => {
   try {
-    const res = await fetch('/api/ai/knowledge-base', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/knowledge-base`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, products })
@@ -174,7 +176,7 @@ export const generateProductAnalysis = async (
   previousAnalysis?: any
 ): Promise<any> => {
   try {
-    const res = await fetch('/api/ai/product-analysis', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/product-analysis`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ config, previousAnalysis })
@@ -195,7 +197,7 @@ export const generateProductImage = async (
   config: any
 ): Promise<string | null> => {
   try {
-    const res = await fetch('/api/ai/product-image', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/product-image`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ config })
@@ -218,7 +220,7 @@ export const generateOptimizedConfig = async (
   analysis: any
 ): Promise<any> => {
   try {
-    const res = await fetch('/api/ai/optimized-config', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/optimized-config`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ currentConfig, analysis })
@@ -240,7 +242,7 @@ export const generateRecommendedConfig = async (
   gender: 'male' | 'female'
 ): Promise<any> => {
   try {
-    const res = await fetch('/api/ai/recommended-config', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/recommended-config`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ requirements, gender })
@@ -262,7 +264,7 @@ export const recognizeProductImage = async (file: File) => {
   formData.append("file", file);
 
   try {
-    const res = await fetch('/api/ai/ocr-product', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/ocr-product`, {
       method: 'POST',
       body: formData,
     });
@@ -285,7 +287,7 @@ export const analyzePriceHistory = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch('/api/ai/price-analysis', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/price-analysis`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ productName, priceHistory, currentPrice, isDomestic })
@@ -324,7 +326,7 @@ export const analyzeBrandCharacteristics = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch('/api/ai/brand-characteristics', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/brand-characteristics`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ competitor, isDomestic })
@@ -343,7 +345,7 @@ export const analyzeBrandCharacteristics = async (
 
 export const analyzeQA = async (text: string) => {
   try {
-    const res = await fetch('/api/ai/analyze-qa', {
+    const res = await fetch(`${API_BASE_URL}/api/ai/analyze-qa`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text })
