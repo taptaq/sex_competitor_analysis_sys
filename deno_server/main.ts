@@ -6,7 +6,15 @@ import { askAI } from "./ai_service.ts";
 
 const app = new Hono();
 
-app.use("*", cors());
+app.use("*", cors({
+  origin: "*",
+  allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowHeaders: ["Content-Type", "Authorization"],
+  exposeHeaders: ["Content-Length"],
+  maxAge: 600,
+  credentials: true,
+}));
+app.options("*", (c) => c.text("", 204));
 
 // --- Status ---
 app.get("/api/status", (c) => c.json({ status: "ok" }));
@@ -313,9 +321,22 @@ app.post("/api/ai/ocr-product", async (c) => {
 });
 
 // --- Static Assets (Frontend) ---
-app.use("/*", serveStatic({ root: "../dist" }));
+// --- Static Assets (Frontend) ---
+// Only serve static files if the request is NOT an API call
+app.use("/*", async (c, next) => {
+  if (c.req.path.startsWith("/api")) {
+    await next();
+    return;
+  }
+  return serveStatic({ root: "../dist" })(c, next);
+});
 
 // --- SPA Fallback ---
-app.get("*", serveStatic({ path: "../dist/index.html" }));
+app.get("*", async (c, next) => {
+   if (c.req.path.startsWith("/api")) {
+     return c.json({ error: "Not Found" }, 404);
+   }
+   return serveStatic({ path: "../dist/index.html" })(c, next);
+});
 
 Deno.serve(app.fetch);
