@@ -9,6 +9,7 @@ const PRODUCT_CATEGORIES = [
   "伸缩棒",
   "缩阴球",
   "AV棒",
+  "吮吸器",
   "飞机杯",
   "阴茎环",
   "倒模",
@@ -246,4 +247,3 @@ const ProductList: React.FC<ProductListProps> = ({
 };
 
 export default ProductList;
-

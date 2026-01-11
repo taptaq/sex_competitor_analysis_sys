@@ -17999,6 +17999,322 @@
         "采用完全中性化外包装，支持自提柜配送并默认不标注商品名"
       ],
       "summary": "用户普遍关注情趣产品的使用安全性、隐私保护与静音性能。已购用户集中反映操作指引缺失、噪音大、充电异常及材质异味等问题，回头客则表现出对产品迭代的更高期待。决策用户最担忧快递暴露、安检风险及与竞品的选择困惑。核心矛盾在于产品实际体验与心理安全感之间的落差。建议从使用引导、静音优化、隐私配送和质量透明化四方面系统升级，提升整体用户体验与信任度。"
-    }
+    },
+    "description": "属于是Tenga的女性品牌"
+  },
+  {
+    "id": "LOVEHONEY",
+    "name": "LOVEHONEY",
+    "domain": "https://www.lovehoney.co.uk/",
+    "philosophy": [
+      "性福倡导者：强调性健康与愉悦的普适性，致力于消除社会污名化，倡导\"性愉悦是基本人权\"",
+      "教育赋能：官网提供性健康知识库、产品使用指南及社群论坛，强化用户信任与忠诚度",
+      "包容性：产品覆盖全性别、性取向及关系类型"
+    ],
+    "focus": "Unisex",
+    "sentiment": {
+      "material": 90,
+      "noise": 85,
+      "privacy": 95,
+      "easeOfUse": 88,
+      "value": 82
+    },
+    "foundedDate": "2002",
+    "country": "英国",
+    "isDomestic": false,
+    "description": "Lovehoney 与 Womanizer 属于是同一母公司旗下的兄弟品牌",
+    "products": [
+      {
+        "id": "prod-1768040698864",
+        "name": "Womanizer Pro40阴蒂震动器",
+        "price": 623,
+        "tags": [
+          "采用 Pleasure Air 技术与非接触式脉冲波按摩敏感的阴蒂",
+          "6种强度"
+        ],
+        "category": "吮吸器",
+        "link": "https://www.amazon.com/-/zh/dp/B09M72PF3M/ref=ast_sto_dp_puis?th=1",
+        "competitorId": "LOVEHONEY",
+        "analysis": {
+          "pros": [
+            "强度非常好，能有效帮助用户达到高潮",
+            "电池续航时间长，充电速度快",
+            "吸力模式独特，与传统振动器不同，不易造成阴蒂麻木",
+            "易于清洁，支持全身防水，可在淋浴或泡澡时使用",
+            "配备多个可更换硅胶头，适配不同身体结构",
+            "外观设计时尚，像美容仪，便于 discreet 携带和存放",
+            "适合敏感人群，部分用户反馈刺激温和且舒适",
+            "对性快感缺失或难以高潮的用户有显著帮助"
+          ],
+          "cons": [
+            "耐用性差，多个用户反馈数月内就出现无法充电或按钮失灵",
+            "噪音较大，尤其在高功率档位，影响使用时的私密性",
+            "手柄设计不符合人体工学，握持感不佳，按键位置不合理",
+            "吸力效果因人而异，部分用户感觉“无吸力”或仅为振动",
+            "价格偏高，但产品质量和寿命未匹配其售价",
+            "充电器接口老旧（USB-A），且充电盖易损坏，影响防水性能",
+            "售后困难，退货政策不友好，保修流程复杂",
+            "部分批次产品缺少配件（如充电器、备用头、收纳袋）"
+          ],
+          "summary": "尽管存在明显的质量与耐用性问题，该产品凭借其独特的空气脉动技术和高效体验，在高点赞量评论中获得了较强认可。大量用户（尤其是高潮困难者）给予极高评价，点赞量超过5的正面评论占比显著，说明其核心功能具备强大吸引力。然而，频繁出现的“无法充电”“噪音大”“做工廉价”等负面反馈，暴露出品控和设计缺陷，削弱了长期用户满意度。整体来看，它是一款体验惊艳但风险较高的高价入门产品。",
+          "prosKeywords": [
+            {
+              "value": "强度好",
+              "count": 48
+            },
+            {
+              "value": "电池续航长",
+              "count": 42
+            },
+            {
+              "value": "吸力强",
+              "count": 39
+            },
+            {
+              "value": "容易清洁",
+              "count": 36
+            },
+            {
+              "value": "防水",
+              "count": 34
+            },
+            {
+              "value": "充电快",
+              "count": 31
+            },
+            {
+              "value": "多档位",
+              "count": 29
+            },
+            {
+              "value": "高潮快",
+              "count": 27
+            },
+            {
+              "value": "适合敏感人群",
+              "count": 25
+            },
+            {
+              "value": "外观像美容仪",
+              "count": 23
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "无法充电",
+              "count": 52
+            },
+            {
+              "value": "噪音大",
+              "count": 47
+            },
+            {
+              "value": "耐用性差",
+              "count": 45
+            },
+            {
+              "value": "价格高",
+              "count": 41
+            },
+            {
+              "value": "做工廉价",
+              "count": 38
+            },
+            {
+              "value": "吸力不足",
+              "count": 36
+            },
+            {
+              "value": "充电器问题",
+              "count": 33
+            },
+            {
+              "value": "按键失灵",
+              "count": 30
+            },
+            {
+              "value": "售后困难",
+              "count": 28
+            },
+            {
+              "value": "缺少配件",
+              "count": 25
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260110/6962204c8e241.png",
+        "launchDate": "2021-10",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长19cm宽8.8cm高8.5cm",
+          "weight": "110g",
+          "ipRating": "IPX7",
+          "material": "硅胶+塑料",
+          "controlMethod": "按键",
+          "usageTime": "",
+          "chargingTime": "1锂离子电池"
+        }
+      },
+      {
+        "id": "prod-1768054178193",
+        "name": "Lovehoney Passion Pod 阴蒂吮吸器",
+        "price": 238,
+        "tags": [
+          "小尺寸紧凑型",
+          "6种速度4种模式",
+          "搭配充电仓"
+        ],
+        "category": "吮吸器",
+        "link": "https://www.amazon.com/-/zh/dp/B0FYPK1TT6/ref=ast_sto_dp_puis",
+        "competitorId": "LOVEHONEY",
+        "image": "https://s1.img-e.com/20260110/69625c08982f6.png",
+        "launchDate": "2021-11",
+        "gender": "Female",
+        "specs": {
+          "dimensions": "长8.7cm宽7.5cm高4.5 cm;",
+          "material": "硅胶",
+          "controlMethod": "按键",
+          "ipRating": "IPX7",
+          "weight": "110g"
+        }
+      },
+      {
+        "id": "prod-1768057549089",
+        "name": "Dual Embrace Pulsing Clitoral Suction Dual Stimulator（脉动双效阴蒂吮吸震动棒）",
+        "price": 560,
+        "tags": [
+          "体内外刺激",
+          "3种速度6种模式",
+          "3款可拆卸吮吸头（抽吸、脉冲和舔舐 ）",
+          "10cm的G点深入刺激",
+          "Pleasure Air 吮吸技术"
+        ],
+        "category": "震动棒",
+        "link": "https://www.lovehoney.co.uk/sex-toys/vibrators/clitoral-suction-vibrators/p/lovehoney-pulsing-clitoral-suction-dual-stimulator/a49401g87411.html",
+        "competitorId": "LOVEHONEY",
+        "analysis": {
+          "pros": [
+            "吸力与振动结合的三重刺激效果出色，能带来混合高潮体验",
+            "三种可更换附件设计灵活，满足不同偏好和探索需求",
+            "G点脉冲功能与轴体振动协同作用，增强快感层次",
+            "硅胶材质顺滑，整体做工精致，触感高级",
+            "握持手柄符合人体工学，抓握圈设计稳固，便于操控",
+            "电池续航持久，充电一次可长时间使用",
+            "配备旅行锁功能，防止误触，便于携带",
+            "多种模式组合丰富，探索空间大，适合情侣共同体验",
+            "开箱即用，操作逻辑清晰，学习后易于掌握",
+            "按钮带有指示灯，模式状态一目了然"
+          ],
+          "cons": [
+            "运行时噪音较大，影响私密氛围，部分用户觉得嗡嗡声明显",
+            "磁吸充电接口不够牢固，充电易中断，可靠性差",
+            "初次使用时开机方式不明确，缺乏清晰说明导致挫败感",
+            "高功率模式过于强烈，对敏感用户不够友好，难以调节强度梯度",
+            "吸力密封性不足，部分用户反馈吸力实际感受微弱或无效",
+            "附件在使用中切换困难，尤其沾有润滑剂时更难操作",
+            "无记忆功能，无法保存上次使用的偏好设置",
+            "缺少APP连接和远程控制功能，智能化程度有限",
+            "尺寸偏小，可能不适合所有体型，贴合度因人而异",
+            "难以找到最佳刺激角度，解剖适配性较低"
+          ],
+          "summary": "尽管该产品总点赞量偏低（仅2），且无高点赞量评论，但多条正面评价一致认可其三重刺激设计、材质质感和使用多样性，尤其强调吸力+G点脉冲+振动的组合创新。然而，充电可靠性差、噪音大、操作说明缺失等痛点反复出现，影响用户体验一致性。整体来看，产品概念领先，具备市场竞争力，但在工程细节和用户引导上需优化以提升大众接受度。",
+          "prosKeywords": [
+            {
+              "value": "三重刺激",
+              "count": 6
+            },
+            {
+              "value": "吸力功能",
+              "count": 5
+            },
+            {
+              "value": "材质高级",
+              "count": 4
+            },
+            {
+              "value": "握持舒适",
+              "count": 4
+            },
+            {
+              "value": "模式多样",
+              "count": 4
+            },
+            {
+              "value": "续航持久",
+              "count": 3
+            },
+            {
+              "value": "可更换附件",
+              "count": 3
+            },
+            {
+              "value": "情侣适用",
+              "count": 3
+            },
+            {
+              "value": "脉冲功能",
+              "count": 3
+            },
+            {
+              "value": "旅行锁",
+              "count": 2
+            }
+          ],
+          "consKeywords": [
+            {
+              "value": "噪音大",
+              "count": 5
+            },
+            {
+              "value": "充电问题",
+              "count": 4
+            },
+            {
+              "value": "吸力弱",
+              "count": 4
+            },
+            {
+              "value": "操作复杂",
+              "count": 3
+            },
+            {
+              "value": "无记忆功能",
+              "count": 3
+            },
+            {
+              "value": "附件难换",
+              "count": 3
+            },
+            {
+              "value": "过于强烈",
+              "count": 3
+            },
+            {
+              "value": "缺少APP",
+              "count": 2
+            },
+            {
+              "value": "贴合困难",
+              "count": 2
+            },
+            {
+              "value": "开机困惑",
+              "count": 2
+            }
+          ]
+        },
+        "image": "https://s1.img-e.com/20260110/696260935970c.png",
+        "launchDate": "2023-10",
+        "gender": "Female",
+        "specs": {
+          "usageTime": "120min",
+          "material": "硅胶+塑料",
+          "dimensions": "长15cm\n周长10cm\n可插入长度10cm",
+          "chargingTime": "100min",
+          "controlMethod": "按键",
+          "ipRating": "IPX7"
+        }
+      }
+    ]
   }
 ]

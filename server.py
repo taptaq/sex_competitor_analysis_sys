@@ -323,7 +323,8 @@ async def ai_competitor(req: CompetitorRequest):
                 }
             },
             "foundedDate": { "type": "string" },
-            "country": { "type": "string" }
+            "country": { "type": "string" },
+            "description": { "type": "string" }
         }
     }
 
@@ -346,7 +347,7 @@ async def ai_competitor(req: CompetitorRequest):
     if not is_domestic:
         country_instruction = "\n    6. country: 品牌所在国家（仅用于国际品牌，如：美国、日本、德国、英国等）。如果是中国品牌，返回空字符串。"
     
-    prompt += country_instruction + "\n    \n    输出必须是合法的 JSON 格式。"""
+    prompt += country_instruction + "\n    7. description: 品牌简单说明（100字以内），概括品牌的核心业务、市场地位或特色。" + "\n    \n    输出必须是合法的 JSON 格式。"""
 
     data = await ask_ai(prompt, schema)
     if 'id' not in data or data['id'] == '1':
@@ -1587,7 +1588,7 @@ async def ai_analyze_qa(req: QAAnalysisRequest):
 1. painPoints: 用户痛点列表（至少10条），重点关注已购买用户和回头客反馈的实际困难、功能缺陷或使用不便。
 2. concerns: 用户关心点列表（至少10条），重点关注未购买用户（或决策中）最在意的因素（如材质安全、隐私、噪音等）以及已购用户的期望偏差。
 3. suggestions: 针对上述痛点和关心点的改进建议（至少10条）。建议应具体、可执行，例如从产品设计、功能优化、营销话术或服务流程等方面入手。
-4. summary: 综合总结（150-200字），概括整体用户反馈的倾向和主要待解决问题。
+4. summary: 综合总结（150-200字），概括整体用户对品牌的反馈倾向和主要待解决问题。
 
 **所有输出必须使用简体中文。**"""
 

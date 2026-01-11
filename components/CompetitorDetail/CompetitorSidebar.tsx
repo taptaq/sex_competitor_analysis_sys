@@ -41,6 +41,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [tempFoundedDate, setTempFoundedDate] = useState("");
   const [isEditingCountry, setIsEditingCountry] = useState(false);
   const [tempCountry, setTempCountry] = useState("");
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [tempDescription, setTempDescription] = useState("");
   const [isAnalyzingBrand, setIsAnalyzingBrand] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
 
@@ -79,7 +81,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     md += `- **成立时间**: ${competitor.foundedDate || "未记录"}\n`;
     md += `- **所属国家**: ${competitor.country || "未记录"}\n`;
     md += `- **核心理念**: ${competitor.philosophy?.join(" / ") || "未记录"}\n`;
-    md += `- **主攻方向**: ${competitor.focus || "未记录"}\n\n`;
+    md += `- **主攻方向**: ${competitor.focus || "未记录"}\n`;
+    md += `- **品牌说明**: ${competitor.description || "未记录"}\n\n`;
 
     if (competitor.brandCharacteristicAnalysis) {
       md += `## 2. 品牌特质分析\n`;
@@ -168,6 +171,9 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
             <outline text="成立时间: ${competitor.foundedDate || "未记录"}" />
             <outline text="所属国家: ${competitor.country || "未记录"}" />
             <outline text="主攻方向: ${competitor.focus || "未记录"}" />
+            <outline text="品牌说明: ${(
+              competitor.description || "未记录"
+            ).replace(/"/g, "&quot;")}" />
             <outline text="品牌理念">`;
     competitor.philosophy?.forEach((p) => {
       opml += `\n                <outline text="${p}" />`;
@@ -1105,6 +1111,62 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
               )}
             </div>
           )}
+          {/* 品牌说明 */}
+          <div className="pt-4 border-t border-gray-100 group/desc relative">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                品牌说明
+              </h4>
+              {!isEditingDescription && (
+                <Pencil
+                  onClick={() => {
+                    setTempDescription(competitor.description || "");
+                    setIsEditingDescription(true);
+                  }}
+                  size={12}
+                  className="text-gray-400 opacity-0 group-hover/desc:opacity-100 transition-opacity cursor-pointer"
+                />
+              )}
+            </div>
+            {isEditingDescription ? (
+              <div className="space-y-2">
+                <textarea
+                  className="w-full text-sm p-2 border rounded focus:ring-2 focus:ring-purple-200 outline-none"
+                  rows={4}
+                  value={tempDescription}
+                  onChange={(e) => setTempDescription(e.target.value)}
+                  placeholder="请输入品牌说明..."
+                  autoFocus
+                />
+                <div className="flex items-center justify-end gap-2">
+                  <button
+                    onClick={() => {
+                      onUpdateCompetitor({
+                        ...competitor,
+                        description: tempDescription,
+                      });
+                      setIsEditingDescription(false);
+                    }}
+                    className="text-green-600 hover:text-green-700"
+                    title="保存"
+                  >
+                    <Save size={14} />
+                  </button>
+                  <button
+                    onClick={() => setIsEditingDescription(false)}
+                    className="text-red-500 hover:text-red-600"
+                    title="取消"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+                {competitor.description || "未设置"}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 

@@ -44,9 +44,9 @@ const Dashboard: React.FC = () => {
   const [marketTab, setMarketTab] = useState<"all" | "domestic" | "foreign">(
     "all"
   );
-  const [dateFilter, setDateFilter] = useState<"all" | "before2010" | "2010-2015" | "2015-2020" | "after2020">(
-    "all"
-  );
+  const [dateFilter, setDateFilter] = useState<
+    "all" | "before2010" | "2010-2015" | "2015-2020" | "after2020"
+  >("all");
 
   // Set default radar selection when competitors load
   React.useEffect(() => {
@@ -149,7 +149,9 @@ const Dashboard: React.FC = () => {
     competitors.forEach((comp) => {
       markdown += `## ${comp.name}\n`;
       markdown += `- **官网**: ${comp.domain}\n`;
-      markdown += `- **品牌类型**: ${comp.isDomestic ? "国内品牌" : "国际知名品牌"}\n`;
+      markdown += `- **品牌类型**: ${
+        comp.isDomestic ? "国内品牌" : "国际知名品牌"
+      }\n`;
       if (comp.focus) {
         const focusText =
           comp.focus === "Female"
@@ -190,13 +192,19 @@ const Dashboard: React.FC = () => {
             if (prod.analysis.summary) {
               markdown += `    - **分析概括**: ${prod.analysis.summary}\n`;
             }
-            if (prod.analysis.prosKeywords && prod.analysis.prosKeywords.length > 0) {
+            if (
+              prod.analysis.prosKeywords &&
+              prod.analysis.prosKeywords.length > 0
+            ) {
               const prosKeywordsText = prod.analysis.prosKeywords
                 .map((kw) => `${kw.value}(${kw.count})`)
                 .join(", ");
               markdown += `    - **好评关键词**: ${prosKeywordsText}\n`;
             }
-            if (prod.analysis.consKeywords && prod.analysis.consKeywords.length > 0) {
+            if (
+              prod.analysis.consKeywords &&
+              prod.analysis.consKeywords.length > 0
+            ) {
               const consKeywordsText = prod.analysis.consKeywords
                 .map((kw) => `${kw.value}(${kw.count})`)
                 .join(", ");
@@ -411,7 +419,9 @@ const Dashboard: React.FC = () => {
               <Filter size={12} className="text-gray-400" />
               <select
                 value={dateFilter}
-                onChange={(e) => setDateFilter(e.target.value as typeof dateFilter)}
+                onChange={(e) =>
+                  setDateFilter(e.target.value as typeof dateFilter)
+                }
                 className="flex-1 text-xs border border-gray-200 rounded-md px-2 py-1.5 bg-white focus:ring-2 focus:ring-purple-500 outline-none"
               >
                 <option value="all">全部年份</option>
@@ -468,9 +478,10 @@ const Dashboard: React.FC = () => {
                 .filter((comp) => {
                   // 市场类型筛选
                   if (marketTab !== "all") {
-                    const matchesMarket = marketTab === "domestic"
-                      ? comp.isDomestic
-                      : !comp.isDomestic;
+                    const matchesMarket =
+                      marketTab === "domestic"
+                        ? comp.isDomestic
+                        : !comp.isDomestic;
                     if (!matchesMarket) return false;
                   }
 
@@ -478,8 +489,10 @@ const Dashboard: React.FC = () => {
                   if (dateFilter !== "all") {
                     // 如果没有创立日期，在非"全部"筛选时隐藏
                     if (!comp.foundedDate) return false;
-                    
-                    const foundedYear = parseInt(comp.foundedDate.split("-")[0] || comp.foundedDate);
+
+                    const foundedYear = parseInt(
+                      comp.foundedDate.split("-")[0] || comp.foundedDate
+                    );
                     if (isNaN(foundedYear)) return false; // 如果日期格式不正确，隐藏该条目
 
                     switch (dateFilter) {
@@ -487,10 +500,12 @@ const Dashboard: React.FC = () => {
                         if (foundedYear >= 2010) return false;
                         break;
                       case "2010-2015":
-                        if (foundedYear < 2010 || foundedYear >= 2015) return false;
+                        if (foundedYear < 2010 || foundedYear >= 2015)
+                          return false;
                         break;
                       case "2015-2020":
-                        if (foundedYear < 2015 || foundedYear >= 2020) return false;
+                        if (foundedYear < 2015 || foundedYear >= 2020)
+                          return false;
                         break;
                       case "after2020":
                         if (foundedYear < 2020) return false;
@@ -500,13 +515,29 @@ const Dashboard: React.FC = () => {
 
                   return true;
                 })
+                .sort((a, b) => {
+                  const getDateValue = (date?: string) => {
+                    if (!date) return 0;
+                    const parts = date.split("-");
+                    const year = parseInt(parts[0]) || 0;
+                    const month = parseInt(parts[1]) || 0;
+                    return year * 100 + month;
+                  };
+                  return (
+                    getDateValue(b.foundedDate) - getDateValue(a.foundedDate)
+                  );
+                })
                 .map((comp) => {
                   // 格式化创立日期
                   const formatFoundedDate = (date?: string) => {
                     if (!date) return null;
                     const year = date.split("-")[0] || date;
-                    const month = date.includes("-") ? date.split("-")[1] : null;
-                    return month ? `${year}年${parseInt(month)}月` : `${year}年`;
+                    const month = date.includes("-")
+                      ? date.split("-")[1]
+                      : null;
+                    return month
+                      ? `${year}年${parseInt(month)}月`
+                      : `${year}年`;
                   };
 
                   return (
@@ -523,14 +554,16 @@ const Dashboard: React.FC = () => {
                         </h4>
                         <div className="flex items-center gap-2 mt-0.5">
                           <p className="text-xs text-gray-400 truncate">
-                            {comp.domain || '无官网地址'}
+                            {comp.domain || "无官网地址"}
                           </p>
                           {comp.foundedDate && (
                             <>
                               <span className="text-xs text-gray-300">•</span>
                               <div className="flex items-center gap-1 text-xs text-gray-500">
                                 <Calendar size={10} />
-                                <span>{formatFoundedDate(comp.foundedDate)}</span>
+                                <span>
+                                  {formatFoundedDate(comp.foundedDate)}
+                                </span>
                               </div>
                             </>
                           )}

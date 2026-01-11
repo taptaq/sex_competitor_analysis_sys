@@ -19,6 +19,7 @@ const PRODUCT_CATEGORIES = [
   "伸缩棒",
   "缩阴球",
   "AV棒",
+  "吮吸器",
   "飞机杯",
   "阴茎环",
   "倒模",
@@ -28,11 +29,7 @@ const PRODUCT_CATEGORIES = [
 ];
 
 const CompetitorReportAnalysis: React.FC = () => {
-  const {
-    competitors,
-    favoriteProducts,
-    fetchFavorites,
-  } = useStore();
+  const { competitors, favoriteProducts, fetchFavorites } = useStore();
 
   // Own Product State
   const [ownProduct, setOwnProduct] = useState<{
@@ -50,9 +47,12 @@ const CompetitorReportAnalysis: React.FC = () => {
   });
 
   // Competitor Selection State
-  const [selectedCompetitorProductIds, setSelectedCompetitorProductIds] = useState<string[]>([]);
-  const [competitorReport, setCompetitorReport] = useState<CompetitorReport | null>(null);
-  const [isGeneratingCompetitorReport, setIsGeneratingCompetitorReport] = useState(false);
+  const [selectedCompetitorProductIds, setSelectedCompetitorProductIds] =
+    useState<string[]>([]);
+  const [competitorReport, setCompetitorReport] =
+    useState<CompetitorReport | null>(null);
+  const [isGeneratingCompetitorReport, setIsGeneratingCompetitorReport] =
+    useState(false);
 
   // Load favorites on component mount
   useEffect(() => {
@@ -65,7 +65,9 @@ const CompetitorReportAnalysis: React.FC = () => {
     return favoriteProducts.map((fav) => {
       // Try to find current product and competitor (for latest updates)
       const comp = competitors.find((c) => c.id === fav.competitorId);
-      const currentProduct = comp?.products?.find((p) => p.id === fav.productId);
+      const currentProduct = comp?.products?.find(
+        (p) => p.id === fav.productId
+      );
 
       // Use current product if exists (for latest data), otherwise use saved complete product
       const product = currentProduct || fav.product;
@@ -73,7 +75,13 @@ const CompetitorReportAnalysis: React.FC = () => {
         id: fav.competitorId,
         name: fav.competitorName,
         domain: "",
-        sentiment: { material: 50, noise: 50, privacy: 50, easeOfUse: 50, value: 50 },
+        sentiment: {
+          material: 50,
+          noise: 50,
+          privacy: 50,
+          easeOfUse: 50,
+          value: 50,
+        },
         isDomestic: fav.isDomestic ?? true,
       };
 
@@ -92,7 +100,11 @@ const CompetitorReportAnalysis: React.FC = () => {
   };
 
   const handleGenerateCompetitorReport = async () => {
-    if (!ownProduct.name || !ownProduct.price || selectedCompetitorProductIds.length === 0) {
+    if (
+      !ownProduct.name ||
+      !ownProduct.price ||
+      selectedCompetitorProductIds.length === 0
+    ) {
       alert("请填写自身产品信息并选择至少一个竞品");
       return;
     }
@@ -100,7 +112,9 @@ const CompetitorReportAnalysis: React.FC = () => {
     setIsGeneratingCompetitorReport(true);
     try {
       const selectedCompetitorProducts = getFavoriteProducts()
-        .filter(({ product }) => selectedCompetitorProductIds.includes(product.id))
+        .filter(({ product }) =>
+          selectedCompetitorProductIds.includes(product.id)
+        )
         .map(({ product, competitor }) => ({ product, competitor }));
 
       const report = await generateCompetitorReport(
@@ -108,7 +122,9 @@ const CompetitorReportAnalysis: React.FC = () => {
           name: ownProduct.name,
           price: ownProduct.price,
           category: ownProduct.category || "",
-          tags: ownProduct.tags ? ownProduct.tags.split("，").map((t) => t.trim()) : [],
+          tags: ownProduct.tags
+            ? ownProduct.tags.split("，").map((t) => t.trim())
+            : [],
           description: ownProduct.description || "",
         },
         selectedCompetitorProducts,
@@ -153,7 +169,9 @@ const CompetitorReportAnalysis: React.FC = () => {
                   type="text"
                   placeholder="请输入产品名称"
                   value={ownProduct.name || ""}
-                  onChange={(e) => setOwnProduct({ ...ownProduct, name: e.target.value })}
+                  onChange={(e) =>
+                    setOwnProduct({ ...ownProduct, name: e.target.value })
+                  }
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
@@ -167,7 +185,12 @@ const CompetitorReportAnalysis: React.FC = () => {
                     type="number"
                     placeholder="0"
                     value={ownProduct.price || ""}
-                    onChange={(e) => setOwnProduct({ ...ownProduct, price: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setOwnProduct({
+                        ...ownProduct,
+                        price: Number(e.target.value),
+                      })
+                    }
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                 </div>
@@ -177,7 +200,9 @@ const CompetitorReportAnalysis: React.FC = () => {
                   </label>
                   <select
                     value={ownProduct.category || ""}
-                    onChange={(e) => setOwnProduct({ ...ownProduct, category: e.target.value })}
+                    onChange={(e) =>
+                      setOwnProduct({ ...ownProduct, category: e.target.value })
+                    }
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     <option value="">选择类型</option>
@@ -198,7 +223,9 @@ const CompetitorReportAnalysis: React.FC = () => {
                   type="text"
                   placeholder="用逗号分隔，如：静音、防水、APP控制"
                   value={ownProduct.tags || ""}
-                  onChange={(e) => setOwnProduct({ ...ownProduct, tags: e.target.value })}
+                  onChange={(e) =>
+                    setOwnProduct({ ...ownProduct, tags: e.target.value })
+                  }
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
@@ -210,7 +237,12 @@ const CompetitorReportAnalysis: React.FC = () => {
                 <textarea
                   placeholder="详细描述产品特点、功能等..."
                   value={ownProduct.description || ""}
-                  onChange={(e) => setOwnProduct({ ...ownProduct, description: e.target.value })}
+                  onChange={(e) =>
+                    setOwnProduct({
+                      ...ownProduct,
+                      description: e.target.value,
+                    })
+                  }
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   rows={4}
                 />
@@ -239,11 +271,15 @@ const CompetitorReportAnalysis: React.FC = () => {
             ) : (
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {getFavoriteProducts().map(({ product, competitor: comp }) => {
-                  const isSelected = selectedCompetitorProductIds.includes(product.id);
+                  const isSelected = selectedCompetitorProductIds.includes(
+                    product.id
+                  );
                   return (
                     <div
                       key={product.id}
-                      onClick={() => toggleCompetitorProductSelection(product.id)}
+                      onClick={() =>
+                        toggleCompetitorProductSelection(product.id)
+                      }
                       className={`p-4 rounded-lg border cursor-pointer transition-all ${
                         isSelected
                           ? "border-purple-500 bg-purple-50 shadow-sm"
@@ -262,14 +298,20 @@ const CompetitorReportAnalysis: React.FC = () => {
                               </span>
                             )}
                             {product.gender && (
-                              <span className={`text-xs px-2 py-0.5 rounded font-bold border shrink-0 ${
-                                product.gender === 'Male' 
-                                  ? 'bg-blue-100 text-blue-700 border-blue-200'
-                                  : product.gender === 'Female'
-                                  ? 'bg-pink-100 text-pink-700 border-pink-200'
-                                  : 'bg-gray-100 text-gray-700 border-gray-200'
-                              }`}>
-                                {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded font-bold border shrink-0 ${
+                                  product.gender === "Male"
+                                    ? "bg-blue-100 text-blue-700 border-blue-200"
+                                    : product.gender === "Female"
+                                    ? "bg-pink-100 text-pink-700 border-pink-200"
+                                    : "bg-gray-100 text-gray-700 border-gray-200"
+                                }`}
+                              >
+                                {product.gender === "Male"
+                                  ? "男用"
+                                  : product.gender === "Female"
+                                  ? "女用"
+                                  : "通用"}
                               </span>
                             )}
                           </div>
@@ -290,9 +332,15 @@ const CompetitorReportAnalysis: React.FC = () => {
                           )}
                         </div>
                         {isSelected ? (
-                          <CheckCircle2 size={20} className="text-purple-600 shrink-0" />
+                          <CheckCircle2
+                            size={20}
+                            className="text-purple-600 shrink-0"
+                          />
                         ) : (
-                          <Circle size={20} className="text-gray-300 shrink-0" />
+                          <Circle
+                            size={20}
+                            className="text-gray-300 shrink-0"
+                          />
                         )}
                       </div>
                     </div>
@@ -353,17 +401,27 @@ const CompetitorReportAnalysis: React.FC = () => {
                   </h3>
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
-                      <span className="text-gray-600 font-medium">产品名称：</span>
-                      <span className="text-gray-800 font-bold ml-2">{ownProduct.name}</span>
+                      <span className="text-gray-600 font-medium">
+                        产品名称：
+                      </span>
+                      <span className="text-gray-800 font-bold ml-2">
+                        {ownProduct.name}
+                      </span>
                     </div>
                     <div>
                       <span className="text-gray-600 font-medium">价格：</span>
-                      <span className="text-gray-800 font-bold ml-2">¥{ownProduct.price}</span>
+                      <span className="text-gray-800 font-bold ml-2">
+                        ¥{ownProduct.price}
+                      </span>
                     </div>
                     {ownProduct.category && (
                       <div>
-                        <span className="text-gray-600 font-medium">类型：</span>
-                        <span className="text-gray-800 font-bold ml-2">{ownProduct.category}</span>
+                        <span className="text-gray-600 font-medium">
+                          类型：
+                        </span>
+                        <span className="text-gray-800 font-bold ml-2">
+                          {ownProduct.category}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -371,7 +429,9 @@ const CompetitorReportAnalysis: React.FC = () => {
 
                 {/* Comparison Analysis */}
                 <div className="bg-blue-50 p-5 rounded-xl border border-blue-200">
-                  <h3 className="text-sm font-bold text-blue-700 mb-3">对比分析</h3>
+                  <h3 className="text-sm font-bold text-blue-700 mb-3">
+                    对比分析
+                  </h3>
                   <p className="text-sm text-gray-700 leading-relaxed">
                     {competitorReport.comparison}
                   </p>
@@ -379,11 +439,18 @@ const CompetitorReportAnalysis: React.FC = () => {
 
                 {/* Own Advantages */}
                 <div className="bg-green-50 p-5 rounded-xl border border-green-200">
-                  <h3 className="text-sm font-bold text-green-700 mb-3">自身优势</h3>
+                  <h3 className="text-sm font-bold text-green-700 mb-3">
+                    自身优势
+                  </h3>
                   <ul className="space-y-2">
                     {competitorReport.ownAdvantages?.map((adv, i) => (
-                      <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                        <span className="text-green-600 font-bold mt-0.5">✓</span>
+                      <li
+                        key={i}
+                        className="text-sm text-gray-700 flex items-start gap-2"
+                      >
+                        <span className="text-green-600 font-bold mt-0.5">
+                          ✓
+                        </span>
                         <span>{adv}</span>
                       </li>
                     ))}
@@ -392,10 +459,15 @@ const CompetitorReportAnalysis: React.FC = () => {
 
                 {/* Own Weaknesses */}
                 <div className="bg-red-50 p-5 rounded-xl border border-red-200">
-                  <h3 className="text-sm font-bold text-red-700 mb-3">自身劣势</h3>
+                  <h3 className="text-sm font-bold text-red-700 mb-3">
+                    自身劣势
+                  </h3>
                   <ul className="space-y-2">
                     {competitorReport.ownWeaknesses?.map((weak, i) => (
-                      <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                      <li
+                        key={i}
+                        className="text-sm text-gray-700 flex items-start gap-2"
+                      >
                         <span className="text-red-600 font-bold mt-0.5">⚠</span>
                         <span>{weak}</span>
                       </li>
@@ -405,14 +477,24 @@ const CompetitorReportAnalysis: React.FC = () => {
 
                 {/* Competitor Advantages */}
                 <div className="bg-purple-50 p-5 rounded-xl border border-purple-200">
-                  <h3 className="text-sm font-bold text-purple-700 mb-3">竞品优势分析</h3>
+                  <h3 className="text-sm font-bold text-purple-700 mb-3">
+                    竞品优势分析
+                  </h3>
                   <div className="space-y-4">
                     {competitorReport.competitorAdvantages?.map((item, i) => (
-                      <div key={i} className="bg-white p-4 rounded-lg border border-purple-100">
-                        <h4 className="text-sm font-bold text-purple-700 mb-2">{item.productName}</h4>
+                      <div
+                        key={i}
+                        className="bg-white p-4 rounded-lg border border-purple-100"
+                      >
+                        <h4 className="text-sm font-bold text-purple-700 mb-2">
+                          {item.productName}
+                        </h4>
                         <ul className="space-y-1.5">
                           {item.advantages.map((adv, j) => (
-                            <li key={j} className="text-sm text-gray-700 flex items-start gap-2">
+                            <li
+                              key={j}
+                              className="text-sm text-gray-700 flex items-start gap-2"
+                            >
                               <span className="text-purple-500 mt-0.5">•</span>
                               <span>{adv}</span>
                             </li>
@@ -425,11 +507,18 @@ const CompetitorReportAnalysis: React.FC = () => {
 
                 {/* Improvement Suggestions */}
                 <div className="bg-orange-50 p-5 rounded-xl border border-orange-200">
-                  <h3 className="text-sm font-bold text-orange-700 mb-3">改进建议</h3>
+                  <h3 className="text-sm font-bold text-orange-700 mb-3">
+                    改进建议
+                  </h3>
                   <ul className="space-y-2">
                     {competitorReport.improvementSuggestions?.map((sug, i) => (
-                      <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                        <span className="text-orange-600 font-bold mt-0.5">→</span>
+                      <li
+                        key={i}
+                        className="text-sm text-gray-700 flex items-start gap-2"
+                      >
+                        <span className="text-orange-600 font-bold mt-0.5">
+                          →
+                        </span>
                         <span>{sug}</span>
                       </li>
                     ))}
@@ -438,9 +527,12 @@ const CompetitorReportAnalysis: React.FC = () => {
 
                 {/* Market Strategy */}
                 <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-700 mb-3">市场策略建议</h3>
+                  <h3 className="text-sm font-bold text-gray-700 mb-3">
+                    市场策略建议
+                  </h3>
                   <p className="text-sm text-gray-700 leading-relaxed">
-                    {competitorReport.marketStrategy || competitorReport.summary}
+                    {competitorReport.marketStrategy ||
+                      competitorReport.summary}
                   </p>
                 </div>
               </div>
@@ -448,7 +540,9 @@ const CompetitorReportAnalysis: React.FC = () => {
           ) : (
             <div className="bg-white p-12 rounded-xl border-2 border-dashed border-gray-200 text-center">
               <FileText size={48} className="text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-gray-600 mb-2">等待生成报告</h3>
+              <h3 className="text-lg font-bold text-gray-600 mb-2">
+                等待生成报告
+              </h3>
               <p className="text-sm text-gray-400">
                 填写左侧表单并选择竞品后，点击"生成竞品报告"按钮
               </p>
@@ -461,4 +555,3 @@ const CompetitorReportAnalysis: React.FC = () => {
 };
 
 export default CompetitorReportAnalysis;
-

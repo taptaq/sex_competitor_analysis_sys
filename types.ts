@@ -158,6 +158,7 @@ export interface Competitor {
   isDomestic?: boolean;
   foundedDate?: string; // 创立日期，格式：YYYY-MM 或 YYYY
   country?: string; // 国家名（仅用于国外品牌）
+  description?: string; // 品牌简单说明
   brandCharacteristicAnalysis?: BrandCharacteristicAnalysis; // 品牌特点分析结果
   qaAnalysis?: QAAnalysis; // 用户问答分析结果
 }

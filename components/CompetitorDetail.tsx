@@ -9,7 +9,10 @@ import ProductForm from "./CompetitorDetail/ProductForm";
 import ProductList from "./CompetitorDetail/ProductList";
 import AdList from "./CompetitorDetail/AdList";
 import PriceChartModal from "./CompetitorDetail/PriceChartModal";
-import { parsePriceHistoryFromFiles, getLatestPrice } from "../utils/priceHistoryUtils";
+import {
+  parsePriceHistoryFromFiles,
+  getLatestPrice,
+} from "../utils/priceHistoryUtils";
 
 const CompetitorDetail: React.FC = () => {
   const {
@@ -33,22 +36,33 @@ const CompetitorDetail: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"products" | "ads">("products");
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [editingAdId, setEditingAdId] = useState<string | null>(null);
-  const [editingImageProductId, setEditingImageProductId] = useState<string | null>(null);
+  const [editingImageProductId, setEditingImageProductId] = useState<
+    string | null
+  >(null);
   const [tempImageLink, setTempImageLink] = useState<string>("");
-  const [editingAnalysisProductId, setEditingAnalysisProductId] = useState<string | null>(null);
+  const [editingAnalysisProductId, setEditingAnalysisProductId] = useState<
+    string | null
+  >(null);
   const [tempAnalysis, setTempAnalysis] = useState<any>(null);
   const [tempProduct, setTempProduct] = useState<Partial<Product>>({});
   const [tempAd, setTempAd] = useState<Partial<AdCreative>>({});
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [isAddingAd, setIsAddingAd] = useState(false);
-  const [analyzingProductId, setAnalyzingProductId] = useState<string | null>(null);
-  const [priceSortOrder, setPriceSortOrder] = useState<"none" | "asc" | "desc">("none");
-  const [salesSortOrder, setSalesSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [analyzingProductId, setAnalyzingProductId] = useState<string | null>(
+    null
+  );
+  const [priceSortOrder, setPriceSortOrder] = useState<"none" | "asc" | "desc">(
+    "none"
+  );
+  const [salesSortOrder, setSalesSortOrder] = useState<"none" | "asc" | "desc">(
+    "none"
+  );
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedGender, setSelectedGender] = useState<string>("all");
   const [showPriceChartModal, setShowPriceChartModal] = useState(false);
-  const [selectedProductForChart, setSelectedProductForChart] = useState<Product | null>(null);
-  
+  const [selectedProductForChart, setSelectedProductForChart] =
+    useState<Product | null>(null);
+
   useEffect(() => {
     fetchFavorites();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,11 +105,11 @@ const CompetitorDetail: React.FC = () => {
         }
       }
       if (priceSortOrder !== "none") {
-      if (priceSortOrder === "asc") {
-        return a.price - b.price;
-      } else {
-        return b.price - a.price;
-      }
+        if (priceSortOrder === "asc") {
+          return a.price - b.price;
+        } else {
+          return b.price - a.price;
+        }
       }
       return 0;
     });
@@ -133,7 +147,7 @@ const CompetitorDetail: React.FC = () => {
       const reviewDataList = product.reviews.map((r) => {
         let reviewData: any;
         let likeCount: number | undefined = undefined;
-        
+
         // 尝试解析 JSON 字符串
         try {
           reviewData = JSON.parse(r.text);
@@ -141,55 +155,82 @@ const CompetitorDetail: React.FC = () => {
           // 如果不是 JSON，直接使用文本
           return {
             text: r.text,
-            likeCount: undefined
+            likeCount: undefined,
           };
         }
-        
+
         // 如果是对象，提取所有文本字段和点赞量
-        if (typeof reviewData === 'object' && reviewData !== null) {
+        if (typeof reviewData === "object" && reviewData !== null) {
           const texts: string[] = [];
-          
+
           // 提取点赞量（可能的字段名：评论点赞量、点赞量、likeCount等）
-          const likeFields = ['评论点赞量', '点赞量', 'likeCount', 'likes', '点赞数'];
+          const likeFields = [
+            "评论点赞量",
+            "点赞量",
+            "likeCount",
+            "likes",
+            "点赞数",
+          ];
           for (const field of likeFields) {
             if (reviewData[field] !== undefined && reviewData[field] !== null) {
               const likeValue = reviewData[field];
-              if (typeof likeValue === 'number') {
+              if (typeof likeValue === "number") {
                 likeCount = likeValue;
-              } else if (typeof likeValue === 'string' && likeValue !== '有用' && !isNaN(Number(likeValue))) {
+              } else if (
+                typeof likeValue === "string" &&
+                likeValue !== "有用" &&
+                !isNaN(Number(likeValue))
+              ) {
                 likeCount = Number(likeValue);
               }
               break; // 只取第一个匹配的字段
             }
           }
-          
+
           // 提取主评论（可能的字段名：评论、评价、内容等）
-          const mainReviewFields = ['评论', '评价', '内容', 'review', 'comment', 'content', '评论内容'];
+          const mainReviewFields = [
+            "评论",
+            "评价",
+            "内容",
+            "review",
+            "comment",
+            "content",
+            "评论内容",
+          ];
           for (const field of mainReviewFields) {
-            if (reviewData[field] && typeof reviewData[field] === 'string' && reviewData[field].trim()) {
+            if (
+              reviewData[field] &&
+              typeof reviewData[field] === "string" &&
+              reviewData[field].trim()
+            ) {
               texts.push(reviewData[field].trim());
               break; // 只取第一个匹配的字段
             }
           }
-          
+
           // 提取所有追评字段（追评1、追评2、追评3 等）
           const followupPattern = /^(追评|追评1|追评2|追评3|追加评论)[\d]*$/i;
           Object.keys(reviewData).forEach((key) => {
-            if (followupPattern.test(key) && reviewData[key] && typeof reviewData[key] === 'string' && reviewData[key].trim()) {
+            if (
+              followupPattern.test(key) &&
+              reviewData[key] &&
+              typeof reviewData[key] === "string" &&
+              reviewData[key].trim()
+            ) {
               texts.push(reviewData[key].trim());
             }
           });
-          
+
           // 如果没有找到任何文本，返回原始 JSON 字符串
           return {
-            text: texts.length > 0 ? texts.join('\n') : r.text,
-            likeCount: likeCount
+            text: texts.length > 0 ? texts.join("\n") : r.text,
+            likeCount: likeCount,
           };
         }
-        
+
         return {
           text: r.text,
-          likeCount: undefined
+          likeCount: undefined,
         };
       });
 
@@ -217,7 +258,9 @@ const CompetitorDetail: React.FC = () => {
       price: Number(tempProduct.price),
       tags:
         typeof tempProduct.tags === "string"
-          ? (tempProduct.tags as string).split("，").map((t: string) => t.trim())
+          ? (tempProduct.tags as string)
+              .split("，")
+              .map((t: string) => t.trim())
           : tempProduct.tags || [],
       category: tempProduct.category,
       link: tempProduct.link,
@@ -297,15 +340,34 @@ const CompetitorDetail: React.FC = () => {
         const workbook = XLSX.read(data);
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(sheet)?.map((item) => ({
-          ...(item as any),
-          时间:
-            item?.["时间"]?.split("-")?.length < 3
-              ? `2025-${item?.["时间"]}`
-              : item?.["时间"],
-          评论点赞量:
-            item?.["评论点赞量"] === "有用" ? 0 : +item?.["评论点赞量"],
-        }));
+        const jsonData = XLSX.utils.sheet_to_json(sheet)?.map((item: any) => {
+          let time = item?.["时间"];
+          // 处理 Excel 日期格式 (数字类型)
+          if (typeof time === "number") {
+            // Excel 序列号转 JS Date: (n - 25569) * 86400 * 1000
+            const date = new Date((time - 25569) * 86400 * 1000);
+            // 格式化为 YYYY-MM-DD
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            time = `${year}-${month}-${day}`;
+          } else if (typeof time === "string") {
+            // 处理字符串格式
+            time = time.trim();
+            // 归一化分隔符
+            time = time.replace(/\//g, "-");
+            if (time.split("-").length < 3) {
+              time = `2025-${time}`;
+            }
+          }
+
+          return {
+            ...item,
+            时间: time,
+            评论点赞量:
+              item?.["评论点赞量"] === "有用" ? 0 : +item?.["评论点赞量"] || 0,
+          };
+        });
 
         if (jsonData) {
           allParsedReviews = [...allParsedReviews, ...jsonData];
@@ -372,7 +434,11 @@ const CompetitorDetail: React.FC = () => {
             priceHistory: priceHistory,
           };
           updateProduct(competitor.id, updatedProduct);
-          alert(`成功导入 ${priceHistory.length} 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`);
+          alert(
+            `成功导入 ${
+              priceHistory.length
+            } 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`
+          );
         }
       } else {
         alert("未找到有效的价格数据，请检查 Excel 文件格式");
@@ -391,10 +457,14 @@ const CompetitorDetail: React.FC = () => {
   };
 
   const handleClearPriceHistory = (product: Product) => {
-    if (!confirm(`确定要清空 "${product.name}" 的价格走势数据吗？此操作不可恢复。`)) {
+    if (
+      !confirm(
+        `确定要清空 "${product.name}" 的价格走势数据吗？此操作不可恢复。`
+      )
+    ) {
       return;
     }
-    
+
     const updatedProduct = {
       ...product,
       priceHistory: [],
@@ -424,7 +494,11 @@ const CompetitorDetail: React.FC = () => {
           price: latestPrice,
           priceHistory: priceHistory,
         });
-        alert(`成功导入 ${priceHistory.length} 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`);
+        alert(
+          `成功导入 ${
+            priceHistory.length
+          } 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`
+        );
       } else {
         alert("未找到有效的价格数据，请检查 Excel 文件格式");
       }
@@ -484,7 +558,9 @@ const CompetitorDetail: React.FC = () => {
                       product={tempProduct}
                       onProductChange={setTempProduct}
                       onImageLinkChange={handleProductImageLinkChange}
-                      onPriceHistoryUpload={handlePriceHistoryUploadForNewProduct}
+                      onPriceHistoryUpload={
+                        handlePriceHistoryUploadForNewProduct
+                      }
                       onSave={saveProduct}
                       onCancel={() => {
                         setIsAddingProduct(false);
@@ -505,11 +581,15 @@ const CompetitorDetail: React.FC = () => {
                     onPriceSort={handlePriceSort}
                     onSalesSort={handleSalesSort}
                     onAddProduct={() => {
-                        setIsAddingProduct(true);
-                        setTempProduct({});
-                      }}
-                    onUpdateProduct={(product) => updateProduct(competitor.id, product)}
-                    onRemoveProduct={(productId) => removeProduct(competitor.id, productId)}
+                      setIsAddingProduct(true);
+                      setTempProduct({});
+                    }}
+                    onUpdateProduct={(product) =>
+                      updateProduct(competitor.id, product)
+                    }
+                    onRemoveProduct={(productId) =>
+                      removeProduct(competitor.id, productId)
+                    }
                     onAnalyzeProduct={handleAnalyze}
                     onUpdateProductAnalysis={(productId, analysis) =>
                       setProductAnalysis(competitor.id, productId, analysis)
@@ -560,9 +640,9 @@ const CompetitorDetail: React.FC = () => {
                     onTempImageLinkChange={setTempImageLink}
                     onSaveImageLink={handleSaveImageLink}
                     onCancelImageEdit={() => {
-                                      setEditingImageProductId(null);
-                                      setTempImageLink("");
-                                    }}
+                      setEditingImageProductId(null);
+                      setTempImageLink("");
+                    }}
                     onStartEditImage={(productId) => {
                       setEditingImageProductId(productId);
                     }}
@@ -577,9 +657,9 @@ const CompetitorDetail: React.FC = () => {
                   tempAd={tempAd}
                   editingAdId={editingAdId}
                   onAddAd={() => {
-                        setIsAddingAd(true);
-                        setTempAd({});
-                      }}
+                    setIsAddingAd(true);
+                    setTempAd({});
+                  }}
                   onCancelAddAd={() => {
                     setIsAddingAd(false);
                     setTempAd({});
@@ -587,9 +667,9 @@ const CompetitorDetail: React.FC = () => {
                   onTempAdChange={setTempAd}
                   onSaveAd={saveAd}
                   onEditAd={(ad) => {
-                                  setEditingAdId(ad.id);
-                                  setTempAd({ ...ad });
-                                }}
+                    setEditingAdId(ad.id);
+                    setTempAd({ ...ad });
+                  }}
                   onCancelEditAd={() => {
                     setEditingAdId(null);
                     setTempAd({});
