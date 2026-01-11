@@ -6,11 +6,9 @@ import { askAI } from "./ai_service.ts";
 
 const app = new Hono();
 
-// Logger
-// Logger
+// --- Middleware ---
 app.use("*", async (c, next) => {
-  console.log(`[REQ] ${c.req.method} ${c.req.url}`);
-  console.log(`[REQ] Path: ${c.req.path}`);
+  console.log(`[REQ] ${c.req.method} ${c.req.path}`);
   await next();
 });
 
@@ -22,28 +20,32 @@ app.use("*", cors({
   maxAge: 600,
   credentials: true,
 }));
+
 app.options("*", (c) => c.text("", 204));
 
-// --- Status ---
-app.get("/api/status", (c) => c.json({ status: "ok" }));
+// --- API Sub-App ---
+const api = new Hono();
 
-// --- Competitors ---
-app.get("/api/competitors", async (c) => {
+// Status
+api.get("/status", (c) => c.json({ status: "ok" }));
+
+// Competitors
+api.get("/competitors", async (c) => {
   const data = await DB.getCompetitors();
   return c.json(data);
 });
-app.post("/api/competitors", async (c) => {
+api.post("/competitors", async (c) => {
   const data = await c.req.json();
   await DB.saveCompetitors(data);
   return c.json({ success: true });
 });
 
-// --- History ---
-app.get("/api/comparison-history", async (c) => {
+// History
+api.get("/comparison-history", async (c) => {
   const data = await DB.getHistory();
   return c.json(data);
 });
-app.post("/api/comparison-history", async (c) => {
+api.post("/comparison-history", async (c) => {
   const record = await c.req.json();
   if (!record.id || !record.analysis) {
       return c.json({ error: "Invalid record" }, 400);
@@ -51,51 +53,49 @@ app.post("/api/comparison-history", async (c) => {
   await DB.saveHistory(record);
   return c.json({ success: true });
 });
-app.delete("/api/comparison-history/:id", async (c) => {
+api.delete("/comparison-history/:id", async (c) => {
   const id = c.req.param("id");
   await DB.deleteHistory(id);
   return c.json({ success: true });
 });
-app.delete("/api/comparison-history", async (c) => {
+api.delete("/comparison-history", async (c) => {
     await DB.clearHistory();
     return c.json({ success: true });
 });
 
-// --- Deep Reports ---
-app.get("/api/deep-reports", async (c) => {
+// Deep Reports
+api.get("/deep-reports", async (c) => {
   const data = await DB.getDeepReports();
   return c.json(data);
 });
-app.post("/api/deep-reports", async (c) => {
+api.post("/deep-reports", async (c) => {
   const report = await c.req.json();
   await DB.saveDeepReport(report);
   return c.json({ success: true });
 });
-app.delete("/api/deep-reports/:id", async (c) => {
+api.delete("/deep-reports/:id", async (c) => {
   const id = c.req.param("id");
   await DB.deleteDeepReport(id);
   return c.json({ success: true });
 });
-app.delete("/api/deep-reports", async (c) => {
+api.delete("/deep-reports", async (c) => {
     await DB.clearDeepReports();
     return c.json({ success: true });
 });
 
-// --- Favorites ---
-app.get("/api/favorites", async (c) => {
+// Favorites
+api.get("/favorites", async (c) => {
   const data = await DB.getFavorites();
   return c.json(data);
 });
-app.post("/api/favorites", async (c) => {
+api.post("/favorites", async (c) => {
   const data = await c.req.json();
   await DB.saveFavorites(data);
   return c.json({ success: true });
 });
 
-// --- AI Endpoints ---
-
-// 1. Generate Competitor
-app.post("/api/ai/competitor", async (c) => {
+// AI Endpoints
+api.post("/ai/competitor", async (c) => {
   const { companyName, isDomestic } = await c.req.json();
   
   const schema = {
@@ -150,10 +150,8 @@ app.post("/api/ai/competitor", async (c) => {
   return c.json(data);
 });
 
-// 2. Analyze Reviews
-app.post("/api/ai/analyze", async (c) => {
+api.post("/ai/analyze", async (c) => {
     const { productName, reviews, isDomestic } = await c.req.json();
-    
     const schema = {
         "type": "object",
         "properties": {
@@ -165,7 +163,6 @@ app.post("/api/ai/analyze", async (c) => {
         },
         "required": ["pros", "cons", "summary", "prosKeywords", "consKeywords"]
     };
-
     const reviewTexts = reviews.map((r: any) => {
         if (r.likeCount > 0) return `[点赞量: ${r.likeCount}] ${r.text}`;
         return r.text;
@@ -184,13 +181,12 @@ app.post("/api/ai/analyze", async (c) => {
     5. consKeywords: (Array of Objects) 差评关键词
     
     重要：所有字符串值必须使用简体中文。`;
-
+    
     const data = await askAI(prompt, schema);
     return c.json(data);
 });
 
-// 3. Compare Products
-app.post("/api/ai/compare", async (c) => {
+api.post("/ai/compare", async (c) => {
     const { products } = await c.req.json();
     const productIds = products.map((p: any) => p.id);
 
@@ -220,8 +216,7 @@ app.post("/api/ai/compare", async (c) => {
     return c.json(data);
 });
 
-// 4. Competitor Report
-app.post("/api/ai/competitor-report", async (c) => {
+api.post("/ai/competitor-report", async (c) => {
     const req = await c.req.json();
     
     const schema = {
@@ -248,8 +243,7 @@ app.post("/api/ai/competitor-report", async (c) => {
     return c.json(data);
 });
 
-// 5. Deep Report
-app.post("/api/ai/deep-report", async (c) => {
+api.post("/ai/deep-report", async (c) => {
     const req = await c.req.json();
     const schema = {
         "type": "object",
@@ -276,8 +270,7 @@ app.post("/api/ai/deep-report", async (c) => {
     return c.json(data);
 });
 
-// 6. Strategy
-app.post("/api/ai/strategy", async (c) => {
+api.post("/ai/strategy", async (c) => {
     const { concept } = await c.req.json();
     const schema = {
         "type": "object",
@@ -295,8 +288,7 @@ app.post("/api/ai/strategy", async (c) => {
     return c.json(data);
 });
 
-// 7. Knowledge Base
-app.post("/api/ai/knowledge-base", async (c) => {
+api.post("/ai/knowledge-base", async (c) => {
     const req = await c.req.json();
     const schema = {
         "type": "object",
@@ -317,36 +309,21 @@ app.post("/api/ai/knowledge-base", async (c) => {
     return c.json(data);
 });
 
-// 8. OCR Product (Stub for now as it requires file upload handling)
-app.post("/api/ai/ocr-product", async (c) => {
-    // Handling multipart form data in Hono
-    // const body = await c.req.parseBody();
-    // const file = body['file']; 
-    // This requires Qwen-VL integration which uses DashScope SDK in Python. 
-    // Direct REST API for Qwen-VL binary upload is complicated.
-    // For now, return error or mock stub. 
+api.post("/ai/ocr-product", async (c) => {
     return c.json({ error: "OCR feature pending implementation in Deno" }, 501);
 });
 
-// --- Static Assets (Frontend) ---
-// --- Static Assets (Frontend) ---
-// Only serve static files if the request is NOT an API call
-app.use("/*", async (c, next) => {
-  // console.log(`[Static Check] ${c.req.path}`);
-  if (c.req.path.startsWith("/api")) {
-    // console.log(`[Static Check] Skipping API: ${c.req.path}`);
-    await next();
-    return;
-  }
-  return serveStatic({ root: "../dist" })(c, next);
-});
+// --- Mount API ---
+app.route("/api", api);
 
-// --- SPA Fallback ---
-app.get("*", async (c, next) => {
-   if (c.req.path.startsWith("/api")) {
-     return c.json({ error: "Not Found" }, 404);
-   }
-   return serveStatic({ path: "../dist/index.html" })(c, next);
-});
+// --- Static Assets (Frontend) ---
+// Since API is mounted on /api, any request starting with /api that matches a route will be handled.
+// If it doesn't match an API route (e.g. 404), Hono typically returns 404 json or text.
+// We explicitly handle API 404 to avoid falling through to static.
+app.all("/api/*", (c) => c.json({ error: "API Endpoint Not Found" }, 404));
+
+// Serve Static for everything else
+app.use("/*", serveStatic({ root: "../dist" }));
+app.get("*", serveStatic({ path: "../dist/index.html" }));
 
 Deno.serve(app.fetch);
