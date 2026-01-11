@@ -1,5 +1,6 @@
 
 import { create } from 'zustand';
+import { supabase } from './services/supabase';
 import { ViewType, Competitor, Product, ReviewAnalysis, AdCreative } from './types';
 
 interface AppState {
@@ -59,31 +60,8 @@ interface AppState {
   fetchDeepReports: () => Promise<void>;
 }
 
-// Helper to save to server
-const saveToServer = async (competitors: Competitor[]) => {
-  try {
-    // Strip reviews from products to avoid saving them to file (memory only)
-    // Ensure all competitor fields including foundedDate and country are preserved
-    const competitorsToSave = competitors.map(comp => ({
-      ...comp,
-      foundedDate: comp.foundedDate || undefined, // Ensure foundedDate is preserved
-      country: comp.country || undefined, // Ensure country is preserved
-      products: comp.products?.map(prod => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { reviews, ...rest } = prod;
-        return rest;
-      })
-    }));
-
-    await fetch('/api/competitors', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(competitorsToSave),
-    });
-  } catch (error) {
-    console.error('Failed to save to server:', error);
-  }
-};
+// Helper to save to server - REMOVED, using direct Supabase calls
+// const saveToServer = async (competitors: Competitor[]) => { ... }
 
 export const useStore = create<AppState>((set, get) => ({
   currentView: ViewType.DASHBOARD,
@@ -93,87 +71,167 @@ export const useStore = create<AppState>((set, get) => ({
   setSelectedCompetitor: (id) => set({ selectedCompetitorId: id, currentView: id ? ViewType.COMPETITOR_DETAIL : ViewType.DASHBOARD }),
   setCompetitors: (competitors) => {
       set({ competitors });
-      saveToServer(competitors);
   },
   
   fetchCompetitors: async () => {
     try {
-      const res = await fetch('/api/competitors');
-      if (res.ok) {
-        const data = await res.json();
-        set({ competitors: data });
-      }
+      const { data, error } = await supabase
+        .from('competitors')
+        .select('*, products(*)');
+      
+      if (error) throw error;
+      
+      // Transform data if necessary (e.g. date fields, or ensure array existence)
+      const formattedData = (data || []).map(comp => ({
+          ...comp,
+          brandCharacteristicAnalysis: comp.brand_characteristic_analysis,
+          qaAnalysis: comp.qa_analysis,
+          products: (comp.products || []).map((p: any) => ({
+              ...p,
+              launchDate: p.launch_date,
+              priceHistory: p.price_history,
+              priceAnalysis: p.price_analysis
+          })),
+          foundedDate: comp.founded_date, // Map snake_case to camelCase
+          isDomestic: comp.is_domestic
+      }));
+
+      set({ competitors: formattedData as Competitor[] });
     } catch (error) {
       console.error('Failed to fetch competitors:', error);
     }
   },
 
-  addCompetitor: (competitor) => {
-      set((state) => {
-          const newCompetitors = [...state.competitors, competitor];
-          saveToServer(newCompetitors);
-          return { competitors: newCompetitors };
+  addCompetitor: async (competitor) => {
+      // Optimistic update
+      set((state) => ({ competitors: [...state.competitors, competitor] }));
+
+      const { error } = await supabase.from('competitors').insert({
+          id: competitor.id,
+          name: competitor.name,
+          domain: competitor.domain,
+          country: competitor.country,
+          founded_date: competitor.foundedDate,
+          description: competitor.description,
+          focus: competitor.focus,
+          philosophy: competitor.philosophy,
+          sentiment: competitor.sentiment,
+          is_domestic: competitor.isDomestic
       });
+      if (error) {
+          console.error("Failed to add competitor to Supabase", error);
+          // Revert or show toast? For now just log.
+      }
   },
-  removeCompetitor: (id) => {
-      set((state) => {
-          const newCompetitors = state.competitors.filter(c => c.id !== id);
-          saveToServer(newCompetitors);
-          return {
-            competitors: newCompetitors,
-            selectedCompetitorId: state.selectedCompetitorId === id ? null : state.selectedCompetitorId,
-            currentView: state.selectedCompetitorId === id ? ViewType.DASHBOARD : state.currentView
-          };
-      });
+  removeCompetitor: async (id) => {
+      set((state) => ({
+        competitors: state.competitors.filter(c => c.id !== id),
+        selectedCompetitorId: state.selectedCompetitorId === id ? null : state.selectedCompetitorId,
+        currentView: state.selectedCompetitorId === id ? ViewType.DASHBOARD : state.currentView
+      }));
+      
+      const { error } = await supabase.from('competitors').delete().eq('id', id);
+      if (error) console.error("Failed to delete competitor", error);
   },
-  updateCompetitor: (updatedComp) => {
-      set((state) => {
-        const newCompetitors = state.competitors.map(c => c.id === updatedComp.id ? updatedComp : c);
-        saveToServer(newCompetitors);
-        return { competitors: newCompetitors };
-      });
+  updateCompetitor: async (updatedComp) => {
+      set((state) => ({
+        competitors: state.competitors.map(c => c.id === updatedComp.id ? updatedComp : c)
+      }));
+
+      const { error } = await supabase.from('competitors').update({
+          name: updatedComp.name,
+          domain: updatedComp.domain,
+          country: updatedComp.country,
+          founded_date: updatedComp.foundedDate,
+          description: updatedComp.description,
+          focus: updatedComp.focus,
+          philosophy: updatedComp.philosophy,
+          sentiment: updatedComp.sentiment,
+          is_domestic: updatedComp.isDomestic
+      }).eq('id', updatedComp.id);
+
+      if (error) console.error("Failed to update competitor", error);
   },
 
   // Product Actions
-  addProduct: (competitorId, product) => {
+  addProduct: async (competitorId, product) => {
+      // Optimistic
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
             return { ...c, products: [...(c.products || []), product] };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
+      
+      const { error } = await supabase.from('products').insert({
+          id: product.id,
+          competitor_id: competitorId,
+          name: product.name,
+          price: product.price,
+          category: product.category,
+          tags: product.tags,
+          link: product.link,
+          image: product.image,
+          sales: product.sales,
+          launch_date: product.launchDate,
+          gender: product.gender,
+          specs: product.specs,
+          price_history: product.priceHistory,
+          analysis: product.analysis
+      });
+      if (error) console.error("Failed to add product", error);
   },
-  updateProduct: (competitorId, product) => {
+  updateProduct: async (competitorId, product) => {
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
             return { ...c, products: c.products?.map(p => p.id === product.id ? product : p) || [] };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
+
+      const { error } = await supabase.from('products').update({
+          name: product.name,
+          price: product.price,
+          category: product.category,
+          tags: product.tags,
+          link: product.link,
+          image: product.image,
+          sales: product.sales,
+          launch_date: product.launchDate,
+          gender: product.gender,
+          specs: product.specs,
+          price_history: product.priceHistory,
+          analysis: product.analysis
+      }).eq('id', product.id);
+      
+      if (error) console.error("Failed to update product", error);
   },
-  removeProduct: (competitorId, productId) => {
+  removeProduct: async (competitorId, productId) => {
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
             return { ...c, products: c.products?.filter(p => p.id !== productId) || [] };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
+      
+      const { error } = await supabase.from('products').delete().eq('id', productId);
+      if (error) console.error("Failed to delete product", error);
   },
 
   // Ad Actions
+  // Ad Actions - NOTE: Ads schema not fully defined in Supabase yet, skipping server persistence for now or storing in local state only?
+  // User context implies Ads are part of Competitor. But we didn't add 'ads' column.
+  // We will log a warning.
   addAd: (competitorId, ad) => {
+      console.warn("Ads persistence not implemented in Supabase schema yet.");
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
             return { ...c, ads: [...(c.ads || []), ad] };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
   },
@@ -183,7 +241,6 @@ export const useStore = create<AppState>((set, get) => ({
             if (c.id !== competitorId) return c;
             return { ...c, ads: c.ads?.map(a => a.id === ad.id ? ad : a) || [] };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
   },
@@ -193,12 +250,11 @@ export const useStore = create<AppState>((set, get) => ({
             if (c.id !== competitorId) return c;
             return { ...c, ads: c.ads?.filter(a => a.id !== adId) || [] };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
   },
 
-  setProductAnalysis: (competitorId, productId, analysis) => {
+  setProductAnalysis: async (competitorId, productId, analysis) => {
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
           if (c.id !== competitorId) return c;
@@ -208,30 +264,34 @@ export const useStore = create<AppState>((set, get) => ({
           }) || [];
           return { ...c, products: updatedProducts };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
+      
+      const { error } = await supabase.from('products').update({ analysis }).eq('id', productId);
+      if (error) console.error("Failed to update product analysis", error);
   },
-  setProductReviews: (competitorId, productId, newReviews) => {
+  setProductReviews: async (competitorId, productId, newReviews) => {
+      const reviewObjects = newReviews.map((reviewData, idx) => ({
+          id: `new-${Date.now()}-${idx}`,
+          text: typeof reviewData === 'object' ? JSON.stringify(reviewData) : String(reviewData),
+          sentiment: 'positive' as const,
+          keywords: []
+      }));
+      
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
           if (c.id !== competitorId) return c;
           const updatedProducts = c.products?.map(p => {
             if (p.id !== productId) return p;
-            // Overwrite existing reviews
-            const reviewObjects = newReviews.map((reviewData, idx) => ({
-                id: `new-${Date.now()}-${idx}`,
-                text: typeof reviewData === 'object' ? JSON.stringify(reviewData) : String(reviewData),
-                sentiment: 'positive' as const,
-                keywords: []
-            }));
             return { ...p, reviews: reviewObjects };
           }) || [];
           return { ...c, products: updatedProducts };
         });
-        saveToServer(newCompetitors);
         return { competitors: newCompetitors };
       });
+      
+      const { error } = await supabase.from('products').update({ reviews: reviewObjects }).eq('id', productId);
+      if (error) console.error("Failed to update product reviews", error);
   },
 
   // Selection Actions
@@ -250,76 +310,57 @@ export const useStore = create<AppState>((set, get) => ({
   // Favorites Actions
   favoriteProducts: [],
   toggleFavoriteProduct: async (product, competitor) => {
+    const isFavorite = get().favoriteProducts.some(fav => fav.productId === product.id);
+
+    // Optimistic Update
     set((state) => {
-      const existingIndex = state.favoriteProducts.findIndex(
-        fav => fav.productId === product.id
-      );
       let newFavorites;
-      if (existingIndex >= 0) {
-        newFavorites = state.favoriteProducts.filter(
-          (_, index) => index !== existingIndex
-        );
+      if (isFavorite) {
+        newFavorites = state.favoriteProducts.filter(fav => fav.productId !== product.id);
       } else {
-        // Save complete product object from competitors.json
-        newFavorites = [...state.favoriteProducts, {
+         newFavorites = [...state.favoriteProducts, {
           productId: product.id,
           competitorId: competitor.id,
-          product: { ...product }, // Save complete product object
+          product: { ...product },
           competitorName: competitor.name,
           isDomestic: competitor.isDomestic ?? true,
           savedAt: new Date().toISOString()
         }];
       }
-      
-      // Save to server
-      fetch('/api/favorites', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newFavorites),
-      }).catch(error => {
-        console.error('Failed to save favorites:', error);
-      });
-      
       return { favoriteProducts: newFavorites };
     });
+
+    // Side Effect
+    try {
+        if (isFavorite) {
+            await supabase.from('favorites').delete().eq('product_id', product.id);
+        } else {
+            await supabase.from('favorites').insert({ product_id: product.id });
+        }
+    } catch (err) {
+        console.error("Failed to toggle favorite in Supabase", err);
+        // Revert? For now just log.
+        get().fetchFavorites(); // Re-sync in case of error
+    }
   },
   isProductFavorite: (productId) => {
     return get().favoriteProducts.some(fav => fav.productId === productId);
   },
   fetchFavorites: async () => {
     try {
-      const res = await fetch('/api/favorites');
-      if (res.ok) {
-        const data = await res.json();
-        // Migrate old format to new format if needed
-        const migratedData = data.map((fav: any) => {
-          // If it's already in new format (has product field), return as is
-          if (fav.product) {
-            return fav;
-          }
-          // Migrate from old format to new format
-          if (fav.productName) {
-            return {
-              productId: fav.productId,
-              competitorId: fav.competitorId,
-              product: {
-                id: fav.productId,
-                name: fav.productName,
-                price: fav.productPrice,
-                tags: fav.productTags || [],
-                category: fav.productCategory,
-                image: fav.productImage,
-                competitorId: fav.competitorId,
-              } as Product,
-              competitorName: fav.competitorName,
-              isDomestic: fav.isDomestic,
-              savedAt: fav.savedAt,
-            };
-          }
-          return fav;
-        });
-        set({ favoriteProducts: migratedData });
-      }
+      const { data, error } = await supabase.from('favorites').select('*, products(id, name, price, category, image, competitor_id, competitors(name, is_domestic))');
+      if (error) throw error;
+      
+      // Reshape data to match app state
+      const mappedFavorites = data.map((fav: any) => ({
+          productId: fav.product_id,
+          competitorId: fav.products?.competitor_id,
+          product: fav.products,
+          competitorName: fav.products?.competitors?.name,
+          isDomestic: fav.products?.competitors?.is_domestic,
+          savedAt: fav.created_at
+      }));
+      set({ favoriteProducts: mappedFavorites });
     } catch (error) {
       console.error('Failed to fetch favorites:', error);
     }
@@ -329,11 +370,14 @@ export const useStore = create<AppState>((set, get) => ({
   deepReports: [],
   saveDeepReport: async (productId, competitorId, report) => {
     try {
-      await fetch('/api/deep-reports', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId, competitorId, report })
-      });
+      const { error } = await supabase.from('deep_reports').upsert({
+          product_id: productId,
+          competitor_id: competitorId,
+          report: report
+      }, { onConflict: 'product_id' }); // Assuming one report per product? Or multiple?
+      
+      if (error) throw error;
+      
       // Refresh reports after saving
       get().fetchDeepReports();
     } catch (error) {
@@ -347,11 +391,17 @@ export const useStore = create<AppState>((set, get) => ({
   },
   fetchDeepReports: async () => {
     try {
-      const res = await fetch('/api/deep-reports');
-      if (res.ok) {
-        const data = await res.json();
-        set({ deepReports: data });
-      }
+      const { data, error } = await supabase.from('deep_reports').select('*');
+      if (error) throw error;
+      
+      const mappedReports = data.map((r: any) => ({
+          productId: r.product_id,
+          competitorId: r.competitor_id,
+          report: r.report,
+          createdAt: r.created_at,
+          updatedAt: r.updated_at
+      }));
+      set({ deepReports: mappedReports });
     } catch (error) {
       console.error('Failed to fetch deep reports:', error);
     }

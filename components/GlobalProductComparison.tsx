@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { getDeepComparison } from "../services/gemini";
 import { ComparisonAnalysis } from "../types";
+import { supabase } from "../services/supabase";
 
 const GlobalProductComparison: React.FC = () => {
   const {
@@ -43,12 +44,14 @@ const GlobalProductComparison: React.FC = () => {
   const selectedBrand = competitors.find((c) => c.id === selectedBrandId);
 
   // Find all selected products across all competitors for the comparison table
-  // 如果是从历史记录加载的，使用历史记录中的产品信息
-  const selectedProductsForPK = historyProducts.length > 0 
-    ? historyProducts 
-    : competitors.flatMap((comp) =>
-        (comp.products || []).filter((prod) => selectedProductIds.includes(prod.id))
-      );
+  const selectedProductsForPK =
+    historyProducts.length > 0
+      ? historyProducts
+      : competitors.flatMap((comp) =>
+          (comp.products || []).filter((prod) =>
+            selectedProductIds.includes(prod.id)
+          )
+        );
 
   const handleDeepAnalysis = async () => {
     if (selectedProductsForPK.length < 2) {
@@ -56,10 +59,8 @@ const GlobalProductComparison: React.FC = () => {
       return;
     }
     setLoading(true);
-    // 清除历史记录中的产品信息，使用当前选中的产品
     setHistoryProducts([]);
     try {
-      // Check if any product is domestic to decide AI routing
       const hasDomestic = competitors.some(
         (c) =>
           c.isDomestic &&
@@ -70,8 +71,6 @@ const GlobalProductComparison: React.FC = () => {
         hasDomestic
       );
       setAnalysisResult(result);
-      
-      // Save to history
       await saveAnalysisToHistory(result, selectedProductsForPK);
     } catch (error) {
       console.error("Deep analysis failed", error);
@@ -81,45 +80,8 @@ const GlobalProductComparison: React.FC = () => {
     }
   };
 
-  const saveAnalysisToHistory = async (
-    analysis: ComparisonAnalysis,
-    products: any[]
-  ) => {
-    try {
-      const historyRecord = {
-        id: `history-${Date.now()}`,
-        timestamp: new Date().toISOString(),
-        productIds: products.map((p) => p.id),
-        productNames: products.map((p) => p.name),
-        products: products, // 保存完整的产品信息，以便后续使用
-        analysis: analysis,
-      };
-
-      await fetch('/api/comparison-history', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(historyRecord),
-      });
-    } catch (error) {
-      console.error('Failed to save analysis history:', error);
-      // Don't show error to user, just log it
-    }
-  };
-
   const toggleDeduction = (productId: string) => {
     setShowDeductions((prev) => ({ ...prev, [productId]: !prev[productId] }));
-  };
-
-  const loadHistory = async () => {
-    try {
-      const res = await fetch('/api/comparison-history');
-      if (res.ok) {
-        const data = await res.json();
-        setHistoryRecords(data);
-      }
-    } catch (error) {
-      console.error('Failed to load history:', error);
-    }
   };
 
   const handleShowHistory = () => {
@@ -129,95 +91,150 @@ const GlobalProductComparison: React.FC = () => {
     }
   };
 
+  const saveAnalysisToHistory = async (
+    analysis: ComparisonAnalysis,
+    products: any[]
+  ) => {
+    try {
+      // Stripping heavy fields before saving to DB is also good practice, usually DB stores JSONB.
+      // But let's just save for now.
+      const { error } = await supabase.from("comparison_history").insert({
+        analysis: analysis,
+        products: products,
+        product_ids: products.map((p) => p.id),
+        product_names: products.map((p) => p.name),
+      });
+
+      if (error) console.error("Failed to save analysis history:", error);
+    } catch (error) {
+      console.error("Failed to save analysis history:", error);
+    }
+  };
+
+  const loadHistory = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("comparison_history")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setHistoryRecords(data || []);
+    } catch (error) {
+      console.error("Failed to load history:", error);
+    }
+  };
+
+  // ...
+
   const deleteHistoryRecord = async (recordId: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // 阻止触发父元素的点击事件
-    if (!confirm('确定要删除这条历史记录吗？')) {
+    e.stopPropagation();
+    if (!confirm("确定要删除这条历史记录吗？")) {
       return;
     }
-    
+
     try {
-      const res = await fetch(`/api/comparison-history/${recordId}`, {
-        method: 'DELETE',
-      });
-      if (res.ok) {
-        // 重新加载历史记录
+      const { error } = await supabase
+        .from("comparison_history")
+        .delete()
+        .eq("id", recordId);
+
+      if (!error) {
         loadHistory();
-        // 如果删除的是当前显示的分析结果，清空分析结果
-        if (analysisResult && historyRecords.find(r => r.id === recordId)?.analysis === analysisResult) {
+        if (
+          analysisResult &&
+          historyRecords.find((r) => r.id === recordId)?.analysis ===
+            analysisResult
+        ) {
           setAnalysisResult(null);
           setHistoryProducts([]);
         }
       } else {
-        alert('删除失败，请稍后重试');
+        alert("删除失败，请稍后重试");
       }
     } catch (error) {
-      console.error('Failed to delete history record:', error);
-      alert('删除失败，请稍后重试');
+      console.error("Failed to delete history record:", error);
+      alert("删除失败，请稍后重试");
     }
   };
 
   const clearAllHistory = async () => {
-    if (!confirm('确定要清空所有历史记录吗？此操作不可恢复！')) {
+    if (!confirm("确定要清空所有历史记录吗？此操作不可恢复！")) {
       return;
     }
-    
+
     try {
-      const res = await fetch('/api/comparison-history', {
-        method: 'DELETE',
-      });
-      if (res.ok) {
+      // Delete all (using neq id '0' is a trick if using RLS/safe mode, but typically direct delete without where is cleaner if allowed)
+      // Supabase JS often requires at least one filter for delete to prevent accidental wipe, or it's fine.
+      // Standard way: .neq('id', '00000000-0000-0000-0000-000000000000')
+      const { error } = await supabase
+        .from("comparison_history")
+        .delete()
+        .neq("id", "00000000-0000-0000-0000-000000000000");
+
+      if (!error) {
         setHistoryRecords([]);
         setAnalysisResult(null);
         setHistoryProducts([]);
-        alert('已清空所有历史记录');
+        alert("已清空所有历史记录");
       } else {
-        alert('清空失败，请稍后重试');
+        alert("清空失败，请稍后重试");
       }
     } catch (error) {
-      console.error('Failed to clear history:', error);
-      alert('清空失败，请稍后重试');
+      console.error("Failed to clear history:", error);
+      alert("清空失败，请稍后重试");
     }
   };
 
   const loadHistoryRecord = (record: any) => {
     setAnalysisResult(record.analysis);
     setShowHistory(false);
-    
+
     // 如果历史记录中有完整的产品信息，直接使用
     if (record.products && record.products.length > 0) {
       setHistoryProducts(record.products);
     } else {
       // 否则尝试从当前系统中匹配产品
       const matchedProducts: any[] = [];
-      
-      if (record.productIds && record.productIds.length > 0) {
+
+      if (record.product_ids && record.product_ids.length > 0) {
         // 先尝试通过 productIds 匹配
-        record.productIds.forEach((productId: string) => {
+        record.product_ids.forEach((productId: string) => {
           competitors.forEach((comp) => {
             comp.products?.forEach((p) => {
-              if (p.id === productId && !matchedProducts.find(mp => mp.id === p.id)) {
+              if (
+                p.id === productId &&
+                !matchedProducts.find((mp) => mp.id === p.id)
+              ) {
                 matchedProducts.push(p);
               }
             });
           });
         });
       }
-      
+
       // 如果通过 ID 匹配不到，尝试通过名称匹配
-      if (matchedProducts.length === 0 && record.productNames && record.productNames.length > 0) {
-        record.productNames.forEach((productName: string) => {
+      if (
+        matchedProducts.length === 0 &&
+        record.product_names &&
+        record.product_names.length > 0
+      ) {
+        record.product_names.forEach((productName: string) => {
           competitors.forEach((comp) => {
             comp.products?.forEach((p) => {
-              if (p.name === productName && !matchedProducts.find(mp => mp.id === p.id)) {
+              if (
+                p.name === productName &&
+                !matchedProducts.find((mp) => mp.id === p.id)
+              ) {
                 matchedProducts.push(p);
               }
             });
           });
         });
       }
-      
+
       setHistoryProducts(matchedProducts);
-      
+
       // 同时设置选中的产品ID，以便在对比表格中显示
       if (matchedProducts.length > 0) {
         clearSelection();
@@ -228,11 +245,11 @@ const GlobalProductComparison: React.FC = () => {
         });
       }
     }
-    
+
     // Scroll to analysis result
     setTimeout(() => {
-      const element = document.querySelector('[data-analysis-result]');
-      element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const element = document.querySelector("[data-analysis-result]");
+      element?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   };
 
@@ -241,7 +258,8 @@ const GlobalProductComparison: React.FC = () => {
 
     let report = `# AI 产品深度对比 PK 报告\n\n`;
     report += `**胜出产品**: ${
-      selectedProductsForPK.find((p) => p.name === analysisResult.winnerName)?.name
+      selectedProductsForPK.find((p) => p.name === analysisResult.winnerName)
+        ?.name
     }\n`;
     report += `**推荐理由**: ${analysisResult.bestValueReason}\n\n`;
 
@@ -367,14 +385,20 @@ const GlobalProductComparison: React.FC = () => {
                     <div className="flex items-center gap-2 mt-1">
                       <p className="text-xs text-gray-500">¥ {product.price}</p>
                       {product.gender && (
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold border ${
-                          product.gender === 'Male' 
-                            ? 'bg-blue-100 text-blue-700 border-blue-200'
-                            : product.gender === 'Female'
-                            ? 'bg-pink-100 text-pink-700 border-pink-200'
-                            : 'bg-gray-100 text-gray-700 border-gray-200'
-                        }`}>
-                          {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded font-bold border ${
+                            product.gender === "Male"
+                              ? "bg-blue-100 text-blue-700 border-blue-200"
+                              : product.gender === "Female"
+                              ? "bg-pink-100 text-pink-700 border-pink-200"
+                              : "bg-gray-100 text-gray-700 border-gray-200"
+                          }`}
+                        >
+                          {product.gender === "Male"
+                            ? "男用"
+                            : product.gender === "Female"
+                            ? "女用"
+                            : "通用"}
                         </span>
                       )}
                     </div>
@@ -448,11 +472,11 @@ const GlobalProductComparison: React.FC = () => {
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex-1">
                         <h5 className="font-bold text-gray-800 text-sm mb-1">
-                          {record.productNames.join(' vs ')}
+                          {record.product_names?.join(" vs ")}
                         </h5>
                         <p className="text-xs text-gray-500 flex items-center gap-1">
                           <Clock size={12} />
-                          {new Date(record.timestamp).toLocaleString('zh-CN')}
+                          {new Date(record.created_at).toLocaleString("zh-CN")}
                         </p>
                       </div>
                       <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded font-bold">
@@ -479,34 +503,37 @@ const GlobalProductComparison: React.FC = () => {
 
       {/* AI Deep Analysis Results */}
       {analysisResult && (
-        <div data-analysis-result className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+        <div
+          data-analysis-result
+          className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6"
+        >
           <div className="bg-gradient-to-br from-purple-900 to-indigo-900 p-8 rounded-3xl text-white shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 p-10 opacity-10 rotate-12">
               <Sparkles size={120} />
             </div>
 
             <div className="relative z-10 space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-yellow-400 text-yellow-900 rounded-lg">
-                  <Trophy size={24} />
+              <div className="flex justify-between items-start">
+                <div className="flex items-center gap-3 flex-1 min-w-0 pr-4">
+                  <div className="p-2 bg-yellow-400 text-yellow-900 rounded-lg shrink-0">
+                    <Trophy size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-2xl font-black italic">
+                      PK 结论:{" "}
+                      {selectedProductsForPK.find(
+                        (p) => p.name === analysisResult.winnerName
+                      )?.name || "胜出者"}
+                    </h4>
+                    <p className="text-purple-200 text-sm mt-1 line-clamp-4">
+                      {analysisResult.bestValueReason}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-2xl font-black italic">
-                    PK 结论:{" "}
-                    {selectedProductsForPK.find(
-                      (p) => p.name === analysisResult.winnerName
-                    )?.name || "胜出者"}
-                  </h4>
-                  <p className="text-purple-200 text-sm mt-1">
-                    {analysisResult.bestValueReason}
-                  </p>
-                </div>
-              </div>
 
-              <div className="absolute top-8 right-8">
                 <button
                   onClick={exportAnalysisReport}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all text-sm font-bold active:scale-95"
+                  className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all text-sm font-bold active:scale-95 shrink-0"
                 >
                   <Download size={16} />
                   导出分析报告 (.md)
@@ -530,14 +557,20 @@ const GlobalProductComparison: React.FC = () => {
                               {product?.name}
                             </span>
                             {product?.gender && (
-                              <span className={`text-[10px] px-1 py-0.5 rounded font-bold border shrink-0 ${
-                                product.gender === 'Male' 
-                                  ? 'bg-blue-500/30 text-blue-200 border-blue-400/30'
-                                  : product.gender === 'Female'
-                                  ? 'bg-pink-500/30 text-pink-200 border-pink-400/30'
-                                  : 'bg-gray-500/30 text-gray-200 border-gray-400/30'
-                              }`}>
-                                {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
+                              <span
+                                className={`text-[10px] px-1 py-0.5 rounded font-bold border shrink-0 ${
+                                  product.gender === "Male"
+                                    ? "bg-blue-500/30 text-blue-200 border-blue-400/30"
+                                    : product.gender === "Female"
+                                    ? "bg-pink-500/30 text-pink-200 border-pink-400/30"
+                                    : "bg-gray-500/30 text-gray-200 border-gray-400/30"
+                                }`}
+                              >
+                                {product.gender === "Male"
+                                  ? "男用"
+                                  : product.gender === "Female"
+                                  ? "女用"
+                                  : "通用"}
                               </span>
                             )}
                           </div>

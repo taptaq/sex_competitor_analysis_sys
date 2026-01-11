@@ -114,10 +114,14 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
                 className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：长x宽x高 或 直径x长度"
                 value={specs.dimensions || ""}
-                onChange={(e) => setSpecs({ ...specs, dimensions: e.target.value })}
+                onChange={(e) =>
+                  setSpecs({ ...specs, dimensions: e.target.value })
+                }
                 rows={3}
               />
-              <p className="text-xs text-gray-500 mt-1">例如：120x45x35mm 或 Φ35x120mm</p>
+              <p className="text-xs text-gray-500 mt-1">
+                例如：120x45x35mm 或 Φ35x120mm
+              </p>
             </div>
 
             <div>
@@ -128,7 +132,9 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
                 className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：医用硅胶、TPE、ABS等"
                 value={specs.material || ""}
-                onChange={(e) => setSpecs({ ...specs, material: e.target.value })}
+                onChange={(e) =>
+                  setSpecs({ ...specs, material: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -141,7 +147,9 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
                 className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：≤45dB"
                 value={specs.noiseLevel || ""}
-                onChange={(e) => setSpecs({ ...specs, noiseLevel: e.target.value })}
+                onChange={(e) =>
+                  setSpecs({ ...specs, noiseLevel: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -154,7 +162,9 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
                 className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：60分钟"
                 value={specs.usageTime || ""}
-                onChange={(e) => setSpecs({ ...specs, usageTime: e.target.value })}
+                onChange={(e) =>
+                  setSpecs({ ...specs, usageTime: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -167,7 +177,9 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
                 className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：2小时"
                 value={specs.chargingTime || ""}
-                onChange={(e) => setSpecs({ ...specs, chargingTime: e.target.value })}
+                onChange={(e) =>
+                  setSpecs({ ...specs, chargingTime: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -180,7 +192,9 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
                 className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：APP控制、按键控制、遥控器"
                 value={specs.controlMethod || ""}
-                onChange={(e) => setSpecs({ ...specs, controlMethod: e.target.value })}
+                onChange={(e) =>
+                  setSpecs({ ...specs, controlMethod: e.target.value })
+                }
                 rows={3}
               />
             </div>
@@ -206,10 +220,14 @@ const ProductSpecsModal: React.FC<ProductSpecsModalProps> = ({
                 className="w-full p-3 h-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 placeholder="如：IPX7、IPX4、IP67"
                 value={specs.ipRating || ""}
-                onChange={(e) => setSpecs({ ...specs, ipRating: e.target.value })}
+                onChange={(e) =>
+                  setSpecs({ ...specs, ipRating: e.target.value })
+                }
                 rows={3}
               />
-              <p className="text-xs text-gray-500 mt-1">例如：IPX7（防水7级）、IP67（防尘6级+防水7级）</p>
+              <p className="text-xs text-gray-500 mt-1">
+                例如：IPX7（防水7级）、IP67（防尘6级+防水7级）
+              </p>
             </div>
           </div>
         </div>
@@ -447,7 +465,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   alt={product.name}
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
-                    e.currentTarget.nextElementSibling?.classList.remove("hidden");
+                    e.currentTarget.nextElementSibling?.classList.remove(
+                      "hidden"
+                    );
                   }}
                 />
                 <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors cursor-pointer flex items-center justify-center opacity-0 group-hover/image:opacity-100">
@@ -491,14 +511,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     </span>
                   )}
                   {product.gender && (
-                    <span className={`text-xs px-2 py-0.5 rounded font-bold border ${
-                      product.gender === 'Male' 
-                        ? 'bg-blue-100 text-blue-700 border-blue-200'
-                        : product.gender === 'Female'
-                        ? 'bg-pink-100 text-pink-700 border-pink-200'
-                        : 'bg-gray-100 text-gray-700 border-gray-200'
-                    }`}>
-                      {product.gender === 'Male' ? '男用' : product.gender === 'Female' ? '女用' : '通用'}
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded font-bold border ${
+                        product.gender === "Male"
+                          ? "bg-blue-100 text-blue-700 border-blue-200"
+                          : product.gender === "Female"
+                          ? "bg-pink-100 text-pink-700 border-pink-200"
+                          : "bg-gray-100 text-gray-700 border-gray-200"
+                      }`}
+                    >
+                      {product.gender === "Male"
+                        ? "男用"
+                        : product.gender === "Female"
+                        ? "女用"
+                        : "通用"}
                     </span>
                   )}
                   {product.sales !== undefined && (
@@ -506,12 +532,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
                       销量:{" "}
                       {product.sales >= 10000
                         ? `${(product.sales / 10000).toFixed(1)}w+`
-                        : `${product.sales.toLocaleString()}+`}
+                        : `${(product.sales || 0).toLocaleString()}+`}
                     </span>
                   )}
-                  {product.launchDate && product.launchDate.includes('-') && (
+                  {product.launchDate && product.launchDate.includes("-") && (
                     <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold border border-blue-200">
-                      上市: {product.launchDate.split('-')[0]}年{product.launchDate.split('-')[1]}月
+                      上市: {product.launchDate.split("-")[0]}年
+                      {product.launchDate.split("-")[1]}月
                     </span>
                   )}
                   {product.specs && (
@@ -770,7 +797,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             ) : product.analysis ? (
               <div className="mt-4 bg-gray-50 p-4 rounded-lg flex-1 relative group/analysis">
                 <button
-                  onClick={() => onStartEditAnalysis(product.id, product.analysis)}
+                  onClick={() =>
+                    onStartEditAnalysis(product.id, product.analysis)
+                  }
                   className="absolute top-2 right-2 p-1 text-gray-400 hover:text-purple-600 opacity-0 group-hover/analysis:opacity-100 transition-opacity"
                   title="编辑分析"
                 >
@@ -889,30 +918,36 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         accept=".xlsx, .xls, .csv"
                         className="hidden"
                         multiple
-                        onChange={(e) => handlePriceHistoryUpload(e, product.id)}
+                        onChange={(e) =>
+                          handlePriceHistoryUpload(e, product.id)
+                        }
                       />
                     </label>
                     <span className="text-[10px] text-gray-400">
                       已录入 {product.priceHistory?.length || 0} 条价格记录
                     </span>
-                    {product.priceHistory && product.priceHistory.length > 0 && (
-                      <button
-                        onClick={() => onClearPriceHistory(product)}
-                        className="flex items-center gap-1 px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded border border-red-200 transition-colors"
-                        title="清空价格走势数据"
-                      >
-                        <Trash2 size={12} />
-                        清空
-                      </button>
-                    )}
+                    {product.priceHistory &&
+                      product.priceHistory.length > 0 && (
+                        <button
+                          onClick={() => onClearPriceHistory(product)}
+                          className="flex items-center gap-1 px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded border border-red-200 transition-colors"
+                          title="清空价格走势数据"
+                        >
+                          <Trash2 size={12} />
+                          清空
+                        </button>
+                      )}
                   </div>
                   <p className="text-[10px] text-gray-400 mt-1">
-                    支持 .xlsx, .xls, .csv 格式，需包含日期、到手价列（页面价可选）。重新上传将覆盖现有数据。
+                    支持 .xlsx, .xls, .csv
+                    格式，需包含日期、到手价列（页面价可选）。重新上传将覆盖现有数据。
                   </p>
                 </div>
                 <button
                   onClick={() => onShowPriceChart(product)}
-                  disabled={!product.priceHistory || product.priceHistory.length === 0}
+                  disabled={
+                    !product.priceHistory || product.priceHistory.length === 0
+                  }
                   className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 h-10"
                 >
                   <TrendingUp size={16} />
@@ -953,4 +988,3 @@ const ProductCard: React.FC<ProductCardProps> = ({
 };
 
 export default ProductCard;
-

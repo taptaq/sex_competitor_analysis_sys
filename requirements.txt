@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-python-dotenv
-openai
-dashscope
-requests
-pydantic
-google-genai
-pillow

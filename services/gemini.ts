@@ -1,17 +1,41 @@
-import { Competitor, ReviewAnalysis } from '../types';
+import { supabase } from './supabase';
+import { Competitor } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Helper to sanitize product data
+const sanitizeProduct = (p: any) => ({
+  id: p.id,
+  name: p.name,
+  price: p.price,
+  category: p.category,
+  tags: p.tags,
+  description: p.description,
+  gender: p.gender,
+  sales: p.sales,
+  launchDate: p.launchDate,
+  analysis: p.analysis ? { summary: p.analysis.summary } : undefined // Only need summary usually
+});
+
+const invokeAI = async (action: string, payload: any) => {
+  // ... (existing invokeAI code)
+  const { data, error } = await supabase.functions.invoke('ai-api', {
+    body: { action, payload }
+  });
+
+  if (error) {
+    if (error instanceof Error) throw error;
+    throw new Error(error.message || 'Unknown Supabase Function Error');
+  }
+  
+  if (data && data.error) {
+     throw new Error(data.error);
+  }
+  return data;
+};
 
 export const getDeepComparison = async (products: any[], isDomestic: boolean = false) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/compare`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ products, isDomestic })
-    });
-    
-    if (!res.ok) throw new Error('Comparison analysis failed');
-    return await res.json();
+    const sanitizedProducts = products.map(sanitizeProduct);
+    return await invokeAI('compare', { products: sanitizedProducts });
   } catch (error) {
     console.error('AI Service Error:', error);
     throw error;
@@ -20,18 +44,11 @@ export const getDeepComparison = async (products: any[], isDomestic: boolean = f
 
 export const getStrategyAdvice = async (concept: string , isDomestic: boolean = false) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/strategy`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ concept, isDomestic })
-    });
-    
-    if (!res.ok) throw new Error('Strategy analysis failed');
-    return await res.json();
+    return await invokeAI('strategy', { concept, isDomestic });
   } catch (error) {
     console.error('AI Service Error:', error);
     return {
-      differentiation: "AI 服务暂时不可用，请检查后端服务。",
+      differentiation: "AI 服务暂时不可用，请检查网络连接。",
       compliance: "无数据",
       pricing: "无数据"
     };
@@ -44,43 +61,24 @@ export const analyzeReviews = async (
   isDomestic: boolean = false
 ) => {
   try {
-    // 兼容旧格式（字符串数组）和新格式（对象数组）
     const reviewData = Array.isArray(reviews) && reviews.length > 0 && typeof reviews[0] === 'string'
       ? reviews.map(text => ({ text, likeCount: undefined }))
       : reviews as Array<{ text: string; likeCount?: number }>;
 
-    const res = await fetch(`${API_BASE_URL}/api/ai/analyze`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productName, reviews: reviewData, isDomestic })
-    });
-
-    if (!res.ok) throw new Error('Review analysis failed');
-    return await res.json();
+    return await invokeAI('analyze', { productName, reviews: reviewData, isDomestic });
   } catch (error) {
     console.error('AI Service Error:', error);
     return {
       pros: ["AI 服务异常"],
       cons: ["无法连接到分析服务"],
-      summary: "请检查本地服务器是否正常运行且已配置 API Key。"
+      summary: "请检查网络连接。"
     };
   }
 };
 
 export const fetchCompetitorData = async (companyName: string, isDomestic: boolean = false): Promise<Competitor> => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/competitor`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ companyName, isDomestic })
-    });
-
-    if (!res.ok) {
-       const err = await res.json();
-       throw new Error(err.error || 'Competitor generation failed');
-    }
-    const data = await res.json();
-    // 确保 foundedDate 和 country 字段被正确传递
+    const data = await invokeAI('competitor', { companyName, isDomestic });
     return { 
       ...data, 
       isDomestic, 
@@ -89,7 +87,6 @@ export const fetchCompetitorData = async (companyName: string, isDomestic: boole
     };
   } catch (error) {
      console.error('AI Service Error:', error);
-     // Fallback mock
      return {
         id: `comp-${Date.now()}`,
         name: companyName,
@@ -108,14 +105,19 @@ export const generateDeepCompetitorReport = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/deep-report`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ product, competitor, isDomestic })
-    });
+    const sanitizedProduct = sanitizeProduct(product);
+    // Competitor usually doesn't have huge fields directly, but sanitize its products if present? 
+    // Usually competitor object here is metadata (name, focus, philosophy).
+    // If competitor has 'products' array, we should probably strip it as it's not used in 'deep-report' prompt (only product + competitor info used).
+    // Looking at ai-api/index.ts for deep-report: uses competitor.name, domain, focus, philosophy.
+    const sanitizedCompetitor = {
+        name: competitor.name,
+        domain: competitor.domain,
+        focus: competitor.focus,
+        philosophy: competitor.philosophy
+    };
 
-    if (!res.ok) throw new Error('Deep report generation failed');
-    return await res.json();
+    return await invokeAI('deep-report', { product: sanitizedProduct, competitor: sanitizedCompetitor, isDomestic });
   } catch (error) {
     console.error('AI Service Error:', error);
     throw error;
@@ -134,14 +136,15 @@ export const generateCompetitorReport = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/competitor-report`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ownProduct, competitorProducts, isDomestic })
-    });
-
-    if (!res.ok) throw new Error('Competitor report generation failed');
-    return await res.json();
+    const sanitizedCompetitorProducts = competitorProducts.map(item => ({
+        product: sanitizeProduct(item.product),
+        competitor: {
+            name: item.competitor.name,
+            focus: item.competitor.focus,
+            isDomestic: item.competitor.isDomestic
+        }
+    }));
+    return await invokeAI('competitor-report', { ownProduct, competitorProducts: sanitizedCompetitorProducts, isDomestic });
   } catch (error) {
     console.error('AI Service Error:', error);
     throw error;
@@ -153,131 +156,55 @@ export const queryProductKnowledgeBase = async (
   products: Array<{ product: any; competitor: any }>
 ) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/knowledge-base`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, products })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.error || 'Knowledge base query failed');
-    }
-    return await res.json();
+    const sanitizedProducts = products.map(item => ({
+        product: sanitizeProduct(item.product),
+        competitor: {
+            name: item.competitor.name,
+            focus: item.competitor.focus,
+            isDomestic: item.competitor.isDomestic
+        }
+    }));
+    return await invokeAI('knowledge-base', { query, products: sanitizedProducts });
   } catch (error) {
     console.error('AI Service Error:', error);
     throw error;
   }
 };
 
-// ProductForge related functions
+// ... (ProductForge functions unchanged)
 export const generateProductAnalysis = async (
   config: any,
   previousAnalysis?: any
-): Promise<any> => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/product-analysis`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ config, previousAnalysis })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.error || 'Product analysis failed');
-    }
-    return await res.json();
-  } catch (error) {
-    console.error('AI Service Error:', error);
-    throw error;
-  }
+) => {
+    return await invokeAI('product-analysis', { config, previousAnalysis });
 };
-
-export const generateProductImage = async (
-  config: any
-): Promise<string | null> => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/product-image`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ config })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.error || 'Product image generation failed');
-    }
-    const data = await res.json();
+export const generateProductImage = async (config: any) => {
+    const data = await invokeAI('product-image', { config });
     return data.imageUrl || null;
-  } catch (error) {
-    console.error('AI Service Error:', error);
-    return null;
-  }
 };
-
-export const generateOptimizedConfig = async (
-  currentConfig: any,
-  analysis: any
-): Promise<any> => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/optimized-config`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ currentConfig, analysis })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.error || 'Optimized config generation failed');
-    }
-    return await res.json();
-  } catch (error) {
-    console.error('AI Service Error:', error);
-    throw error;
-  }
+export const generateOptimizedConfig = async (currentConfig: any, analysis: any) => {
+    return await invokeAI('optimized-config', { currentConfig, analysis });
 };
-
-export const generateRecommendedConfig = async (
-  requirements: any,
-  gender: 'male' | 'female'
-): Promise<any> => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/recommended-config`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ requirements, gender })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.error || 'Recommended config generation failed');
-    }
-    return await res.json();
-  } catch (error) {
-    console.error('AI Service Error:', error);
-    throw error;
-  }
+export const generateRecommendedConfig = async (requirements: any, gender: 'male' | 'female') => {
+    return await invokeAI('recommended-config', { requirements, gender });
 };
 
 export const recognizeProductImage = async (file: File) => {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/ocr-product`, {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.detail || 'OCR failed');
-    }
-    return await res.json();
-  } catch (error) {
-    console.error('OCR Service Error:', error);
-    throw error;
-  }
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      try {
+        const base64 = reader.result as string; 
+        const data = await invokeAI('ocr-product', { image: base64 });
+        resolve(data);
+      } catch (e) {
+        console.error('OCR Service Error:', e);
+        reject(e);
+      }
+    };
+    reader.onerror = (error) => reject(error);
+  });
 };
 
 export const analyzePriceHistory = async (
@@ -287,17 +214,7 @@ export const analyzePriceHistory = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/price-analysis`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productName, priceHistory, currentPrice, isDomestic })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.detail || 'Price analysis failed');
-    }
-    return await res.json();
+    return await invokeAI('price-analysis', { productName, priceHistory, currentPrice, isDomestic });
   } catch (error) {
     console.error('Price Analysis Service Error:', error);
     throw error;
@@ -326,17 +243,19 @@ export const analyzeBrandCharacteristics = async (
   isDomestic: boolean = false
 ) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/brand-characteristics`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ competitor, isDomestic })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.detail || 'Brand characteristics analysis failed');
-    }
-    return await res.json();
+    // Sanitize products inside competitor object
+    const sanitizedCompetitor = {
+        ...competitor,
+        products: competitor.products?.map(p => ({
+            name: p.name,
+            price: p.price,
+            category: p.category,
+            tags: p.tags,
+            gender: p.gender
+            // EXCLUDE: image, etc.
+        }))
+    };
+    return await invokeAI('brand-characteristics', { competitor: sanitizedCompetitor, isDomestic });
   } catch (error) {
     console.error('Brand Characteristics Analysis Service Error:', error);
     throw error;
@@ -345,17 +264,7 @@ export const analyzeBrandCharacteristics = async (
 
 export const analyzeQA = async (text: string) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/ai/analyze-qa`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.detail || 'QA analysis failed');
-    }
-    return await res.json();
+    return await invokeAI('analyze-qa', { text });
   } catch (error) {
     console.error('QA Analysis Service Error:', error);
     throw error;
