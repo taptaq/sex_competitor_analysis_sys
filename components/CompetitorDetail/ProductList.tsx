@@ -106,10 +106,10 @@ const ProductList: React.FC<ProductListProps> = ({
 }) => {
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center gap-3">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
           <select
-            className="text-sm text-gray-600 font-medium border border-gray-200 rounded-lg px-3 py-2 bg-white hover:bg-gray-50 transition"
+            className="text-sm text-gray-600 font-medium border border-gray-200 rounded-lg px-3 py-2 bg-white hover:bg-gray-50 transition flex-1 md:flex-none min-w-[100px]"
             value={selectedCategory}
             onChange={(e) => onCategoryChange(e.target.value)}
           >
@@ -122,7 +122,7 @@ const ProductList: React.FC<ProductListProps> = ({
             <option value="uncategorized">未分类</option>
           </select>
           <select
-            className="text-sm text-gray-600 font-medium border border-gray-200 rounded-lg px-3 py-2 bg-white hover:bg-gray-50 transition"
+            className="text-sm text-gray-600 font-medium border border-gray-200 rounded-lg px-3 py-2 bg-white hover:bg-gray-50 transition flex-1 md:flex-none min-w-[100px]"
             value={selectedGender}
             onChange={(e) => onGenderChange(e.target.value)}
           >
@@ -132,52 +132,54 @@ const ProductList: React.FC<ProductListProps> = ({
             <option value="Unisex">通用</option>
             <option value="none">未标注</option>
           </select>
-          <button
-            onClick={onPriceSort}
-            className="flex items-center gap-2 text-sm text-gray-600 font-medium hover:bg-gray-50 px-3 py-2 rounded-lg transition border border-gray-200"
-          >
-            {priceSortOrder === "none" ? (
-              <>
-                <ArrowUpDown size={16} />
-                按价格排序
-              </>
-            ) : priceSortOrder === "asc" ? (
-              <>
-                <ArrowUp size={16} />
-                价格：低到高
-              </>
-            ) : (
-              <>
-                <ArrowDown size={16} />
-                价格：高到低
-              </>
-            )}
-          </button>
-          <button
-            onClick={onSalesSort}
-            className="flex items-center gap-2 text-sm text-gray-600 font-medium hover:bg-gray-50 px-3 py-2 rounded-lg transition border border-gray-200"
-          >
-            {salesSortOrder === "none" ? (
-              <>
-                <ArrowUpDown size={16} />
-                按销量排序
-              </>
-            ) : salesSortOrder === "asc" ? (
-              <>
-                <ArrowUp size={16} />
-                销量：低到高
-              </>
-            ) : (
-              <>
-                <ArrowDown size={16} />
-                销量：高到低
-              </>
-            )}
-          </button>
+          <div className="flex gap-2 flex-1 md:flex-none w-full md:w-auto">
+            <button
+              onClick={onPriceSort}
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 text-sm text-gray-600 font-medium hover:bg-gray-50 px-3 py-2 rounded-lg transition border border-gray-200"
+            >
+              {priceSortOrder === "none" ? (
+                <>
+                  <ArrowUpDown size={16} />
+                  <span className="hidden sm:inline">按价格</span>
+                </>
+              ) : priceSortOrder === "asc" ? (
+                <>
+                  <ArrowUp size={16} />
+                  <span className="hidden sm:inline">价格升</span>
+                </>
+              ) : (
+                <>
+                  <ArrowDown size={16} />
+                  <span className="hidden sm:inline">价格降</span>
+                </>
+              )}
+            </button>
+            <button
+              onClick={onSalesSort}
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 text-sm text-gray-600 font-medium hover:bg-gray-50 px-3 py-2 rounded-lg transition border border-gray-200"
+            >
+              {salesSortOrder === "none" ? (
+                <>
+                  <ArrowUpDown size={16} />
+                  <span className="hidden sm:inline">按销量</span>
+                </>
+              ) : salesSortOrder === "asc" ? (
+                <>
+                  <ArrowUp size={16} />
+                  <span className="hidden sm:inline">销量升</span>
+                </>
+              ) : (
+                <>
+                  <ArrowDown size={16} />
+                  <span className="hidden sm:inline">销量降</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
         <button
           onClick={onAddProduct}
-          className="flex items-center gap-2 text-sm text-purple-600 font-bold hover:bg-purple-50 px-3 py-2 rounded-lg transition"
+          className="w-full md:w-auto flex items-center justify-center gap-2 text-sm text-purple-600 font-bold hover:bg-purple-50 px-3 py-2 rounded-lg transition border border-purple-200 shadow-sm"
         >
           <Plus size={16} /> 新增产品
         </button>

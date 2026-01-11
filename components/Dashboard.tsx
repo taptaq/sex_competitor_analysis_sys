@@ -232,10 +232,10 @@ const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8 pb-20">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-purple-800 to-indigo-900 p-8 rounded-3xl text-white shadow-xl relative">
+      <div className="bg-gradient-to-r from-purple-800 to-indigo-900 p-6 md:p-8 rounded-2xl md:rounded-3xl text-white shadow-xl relative">
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-2">
-            <h2 className="text-3xl font-black italic tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-black italic tracking-tight">
               MARKET OVERVIEW
             </h2>
             <p className="text-purple-200 font-medium text-sm">
@@ -243,11 +243,11 @@ const Dashboard: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex gap-3 relative">
-            <div className="relative">
+          <div className="flex gap-3 relative w-full md:w-auto">
+            <div className="relative w-full md:w-auto">
               <button
                 onClick={() => setShowExportMenu(!showExportMenu)}
-                className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-xl transition-all text-sm font-bold border border-white/20 active:scale-95 shadow-lg shadow-black/5"
+                className="w-full md:w-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-xl transition-all text-sm font-bold border border-white/20 active:scale-95 shadow-lg shadow-black/5"
               >
                 <Download size={18} />
                 <span>报告导出</span>

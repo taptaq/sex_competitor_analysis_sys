@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStore } from "../store";
 import { ViewType } from "../types";
 import {
@@ -10,11 +10,28 @@ import {
   BookOpen,
   ChevronLeft,
   ChevronRight,
+  X,
 } from "lucide-react";
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   const { currentView, setCurrentView } = useStore();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const navItems = [
     {
@@ -44,66 +61,103 @@ const Sidebar: React.FC = () => {
     },
   ];
 
-  return (
-    <aside
-      className={`${
-        isCollapsed ? "w-20" : "w-64"
-      } bg-slate-900 text-white flex flex-col h-screen sticky top-0 transition-all duration-300 relative`}
-    >
-      <div
-        className={`p-6 flex items-center ${
-          isCollapsed ? "justify-center" : "gap-3"
-        } border-b border-slate-800 transition-all`}
-      >
-        <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center shrink-0">
-          <BarChart2 size={20} />
-        </div>
-        {!isCollapsed && (
-          <span className="text-lg font-bold tracking-tight whitespace-nowrap overflow-hidden transition-all duration-300">
-            竞品情报
-          </span>
-        )}
-      </div>
+  const sidebarClasses = `
+    bg-slate-900 text-white flex flex-col h-screen 
+    transition-all duration-300 
+    ${isMobile ? "fixed inset-y-0 left-0 z-50 w-64 shadow-2xl" : "sticky top-0"}
+    ${!isMobile && isCollapsed ? "w-20" : "w-64"}
+    ${isMobile && !isOpen ? "-translate-x-full" : "translate-x-0"}
+  `;
 
-      <nav className="flex-1 p-3 space-y-2 overflow-x-hidden">
-        {navItems.map((item) => (
-          <button
-            key={item.type}
-            onClick={() => setCurrentView(item.type)}
-            className={`w-full flex items-center ${
-              isCollapsed ? "justify-center" : "gap-3 px-4"
-            } py-3 rounded-lg transition-colors ${
-              currentView === item.type
-                ? "bg-purple-600 text-white"
-                : "text-slate-400 hover:bg-slate-800 hover:text-white"
-            }`}
-            title={isCollapsed ? item.label : ""}
-          >
-            {item.icon}
-            {!isCollapsed && (
-              <span className="font-medium whitespace-nowrap transition-opacity duration-300">
-                {item.label}
+  return (
+    <>
+      {/* Mobile Overlay */}
+      {isMobile && isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity"
+          onClick={onClose}
+        />
+      )}
+
+      <aside className={sidebarClasses}>
+        <div
+          className={`p-6 flex items-center ${
+            !isMobile && isCollapsed
+              ? "justify-center"
+              : "justify-between gap-3"
+          } border-b border-slate-800 transition-all`}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center shrink-0">
+              <BarChart2 size={20} />
+            </div>
+            {(!isCollapsed || isMobile) && (
+              <span className="text-lg font-bold tracking-tight whitespace-nowrap overflow-hidden transition-all duration-300">
+                竞品情报
               </span>
             )}
-          </button>
-        ))}
-      </nav>
-
-      <div className="p-3 border-t border-slate-800">
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`w-full flex items-center ${
-            isCollapsed ? "justify-center" : "gap-3 px-4"
-          } py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors`}
-          title={isCollapsed ? "展开侧边栏" : "收起侧边栏"}
-        >
-          {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-          {!isCollapsed && (
-            <span className="font-medium whitespace-nowrap">收起侧边栏</span>
+          </div>
+          {isMobile && onClose && (
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white"
+            >
+              <X size={20} />
+            </button>
           )}
-        </button>
-      </div>
-    </aside>
+        </div>
+
+        <nav className="flex-1 p-3 space-y-2 overflow-x-hidden overflow-y-auto">
+          {navItems.map((item) => (
+            <button
+              key={item.type}
+              onClick={() => {
+                setCurrentView(item.type);
+                if (isMobile && onClose) onClose();
+              }}
+              className={`w-full flex items-center ${
+                !isMobile && isCollapsed ? "justify-center" : "gap-3 px-4"
+              } py-3 rounded-lg transition-colors ${
+                currentView === item.type
+                  ? "bg-purple-600 text-white"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
+              }`}
+              title={!isMobile && isCollapsed ? item.label : ""}
+            >
+              {item.icon}
+              {(!isCollapsed || isMobile) && (
+                <span className="font-medium whitespace-nowrap transition-opacity duration-300">
+                  {item.label}
+                </span>
+              )}
+            </button>
+          ))}
+        </nav>
+
+        {!isMobile && (
+          <div className="p-3 border-t border-slate-800">
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className={`w-full flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3 px-4"
+              } py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors`}
+              title={isCollapsed ? "展开侧边栏" : "收起侧边栏"}
+            >
+              {isCollapsed ? (
+                <ChevronRight size={20} />
+              ) : (
+                <ChevronLeft size={20} />
+              )}
+              {!isCollapsed && (
+                <span className="font-medium whitespace-nowrap">
+                  收起侧边栏
+                </span>
+              )}
+            </button>
+          </div>
+        )}
+      </aside>
+    </>
   );
 };
 

@@ -141,7 +141,7 @@ const CompetitorReportAnalysis: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20">
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-8 rounded-2xl text-white shadow-lg">
+      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 md:p-8 rounded-2xl text-white shadow-lg">
         <div className="flex items-center gap-3 mb-2">
           <FileText size={28} />
           <h1 className="text-2xl font-bold">竞品报告分析</h1>
