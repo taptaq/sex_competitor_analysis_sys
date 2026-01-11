@@ -6,6 +6,12 @@ import { askAI } from "./ai_service.ts";
 
 const app = new Hono();
 
+// Logger
+app.use("*", async (c, next) => {
+  console.log(`[${c.req.method}] ${c.req.path}`);
+  await next();
+});
+
 app.use("*", cors({
   origin: "*",
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
