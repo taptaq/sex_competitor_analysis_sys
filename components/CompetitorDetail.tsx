@@ -253,7 +253,7 @@ const CompetitorDetail: React.FC = () => {
     if (!tempProduct.name || !tempProduct.price) return;
 
     const productToSave: Product = {
-      id: tempProduct.id || `prod-${Date.now()}`,
+      id: tempProduct.id || crypto.randomUUID(),
       name: tempProduct.name,
       price: Number(tempProduct.price),
       tags:
