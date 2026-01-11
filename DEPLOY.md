@@ -1,51 +1,57 @@
-# 部署指南
+# 部署指南 (Unified Deno Deploy)
 
-本指南将帮助你将应用免费部署到 Deno Deploy (后端) 和 Netlify (前端)。
+本指南介绍如何将**前后端**整合并一次性部署到 **Deno Deploy**。最简单的方式是本地打包前端，然后将构建产物连同代码一起推送到 GitHub。
 
-## 1. 后端部署 (Deno Deploy)
+## 1. 准备工作
 
-后端代码位于 `deno_server/` 文件夹。
+在本地终端执行以下命令，构建前端代码：
 
-### 步骤
+```bash
+# 1. 安装依赖 (如果还没安装)
+npm install
 
-1.  **准备 GitHub 仓库**：确保你的项目已推送到 GitHub。
-2.  **访问 Deno Deploy**：打开 [dash.deno.com](https://dash.deno.com/) 并登录。
-3.  **新建项目**：
+# 2. 构建前端
+# 注意：构建前请确保 .env 中的 VITE_API_URL 为空 (VITE_API_URL=)
+# 或者在构建时临时指定: VITE_API_URL= npm run build
+npm run build
+```
+
+执行完成后，项目根目录下会生成一个 `dist` 文件夹，里面包含了所有的前端静态文件。
+
+**关键步骤**：你需要将这个 `dist` 文件夹提交到 GitHub。
+通常 `dist` 会被 `.gitignore` 忽略，你需要强制添加它，或者修改 `.gitignore`。
+
+```bash
+# 修改 .gitignore，删掉 /dist 或注释掉它
+# 或者直接强制添加
+git add dist -f
+git commit -m "chore: add build artifacts for deployment"
+git push
+```
+
+## 2. 部署到 Deno Deploy
+
+1.  **访问 Deno Deploy**：打开 [dash.deno.com](https://dash.deno.com/) 并登录。
+2.  **新建项目**：
     - 点击 "New Project"。
     - 选择你的 GitHub 仓库。
     - **Entrypoint File** 选择 `deno_server/main.ts`。
-4.  **配置环境变量**：
-    - 在项目设置页面找到 "Environment Variables"。
-    - 添加以下 Key (与你的 `.env` 一致)：
+3.  **配置环境变量**：
+    - 在项目设置页面 "Environment Variables" 中添加：
       - `QWEN_API_KEY`: 你的千问 API Key
-      - `DEEPSEEK_API_KEY`: 你的 DeepSeek API Key (可选)
-      - `GOOGLE_API_KEY`: 你的 Google API Key (可选)
-5.  **获取后端 URL**：部署成功后，复制项目分配的域名（例如 `https://your-project.deno.dev`）。
-
-## 2. 前端部署 (Netlify)
-
-前端使用 Vite 构建，静态托管。
-
-### 步骤
-
-1.  **访问 Netlify**：打开 [netlify.com](https://www.netlify.com/) 并登录。
-2.  **新建站点**：
-    - 点击 "Add new site" -> "Import from existing project"。
-    - 连接 GitHub 并选择你的仓库。
-3.  **构建配置**：
-    - **Build command**: `npm run build`
-    - **Publish directory**: `dist`
-4.  **环境变量**：
-    - 点击 "Add environment variables"。
-    - Key: `VITE_API_URL`
-    - Value: 刚才获取的 Deno 后端 URL (如 `https://your-project.deno.dev`，**注意不要带结尾斜杠**)。
-5.  **部署**：点击 "Deploy site"。
+      - `DEEPSEEK_API_KEY`: (可选) DeepSeek API Key
+      - `GOOGLE_API_KEY`: (可选) Google API Key
+4.  **保存并部署**。
 
 ## 3. 验证
 
-访问 Netlify 分配的域名，测试“新增竞品”或“分析报告”功能。如果一切正常，你的应用已成功上线！
+Deno Deploy 会提供一个形如 `https://your-project.deno.dev` 的域名。
+直接访问该域名：
 
-### 常见问题
+- 如果看到前端页面，说明静态文件服务正常。
+- 尝试使用“分析”功能，如果能正常返回结果，说明后端 API 正常。
 
-- **跨域错误 (CORS)**: 后端 `main.ts` 已开启全局 CORS，通常不会有问题。如果出现，请检查浏览器控制台 Network 面板的 Request URL 是否正确指向了 Deno 后端。
-- **页面 404**: `netlify.toml` 已配置 SPA 重定向，刷新页面应正常工作。
+## 常见问题
+
+- **页面白屏或 404**：检查 GitHub 仓库中是否真的存在 `dist` 文件夹。Deno Deploy 必须能读取到 `../dist` 目录。
+- **前端无法连接后端**：确保前端构建时没有设置错误的 `VITE_API_URL`。默认为空字符串时，前端会向当前域名发送 API 请求（即向 Deno 后端发送），这是正确的。

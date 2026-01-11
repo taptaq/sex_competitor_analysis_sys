@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { serveStatic } from "hono/deno";
 import { DB } from "./db.ts";
 import { askAI } from "./ai_service.ts";
 
@@ -310,5 +311,11 @@ app.post("/api/ai/ocr-product", async (c) => {
     // For now, return error or mock stub. 
     return c.json({ error: "OCR feature pending implementation in Deno" }, 501);
 });
+
+// --- Static Assets (Frontend) ---
+app.use("/*", serveStatic({ root: "../dist" }));
+
+// --- SPA Fallback ---
+app.get("*", serveStatic({ path: "../dist/index.html" }));
 
 Deno.serve(app.fetch);
