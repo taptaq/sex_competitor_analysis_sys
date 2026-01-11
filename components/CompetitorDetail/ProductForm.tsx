@@ -49,7 +49,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
     setScanning(true);
     try {
-      const data = await recognizeProductImage(files[0]);
+      const data: any = await recognizeProductImage(files[0]);
       onProductChange({
         ...product,
         name: data.name || product.name,
