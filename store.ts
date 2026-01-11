@@ -180,7 +180,10 @@ export const useStore = create<AppState>((set, get) => ({
           price_history: product.priceHistory,
           analysis: product.analysis
       });
-      if (error) console.error("Failed to add product", error);
+      if (error) {
+        console.error("Failed to add product", error);
+        throw new Error(error.message);
+      }
   },
   updateProduct: async (competitorId, product) => {
       set((state) => {
@@ -206,7 +209,10 @@ export const useStore = create<AppState>((set, get) => ({
           analysis: product.analysis
       }).eq('id', product.id);
       
-      if (error) console.error("Failed to update product", error);
+      if (error) {
+        console.error("Failed to update product", error);
+        throw new Error(error.message);
+      }
   },
   removeProduct: async (competitorId, productId) => {
       set((state) => {

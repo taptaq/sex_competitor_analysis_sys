@@ -106,29 +106,39 @@ const ProductForm: React.FC<ProductFormProps> = ({
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* ... existing inputs ... */}
 
-        <input
-          className="p-2 border rounded"
-          placeholder="产品名称"
-          value={product.name || ""}
-          onChange={(e) =>
-            onProductChange({
-              ...product,
-              name: e.target.value,
-            })
-          }
-        />
-        <input
-          className="p-2 border rounded"
-          placeholder="价格"
-          type="number"
-          value={product.price || ""}
-          onChange={(e) =>
-            onProductChange({
-              ...product,
-              price: Number(e.target.value),
-            })
-          }
-        />
+        <div>
+          <label className="text-xs text-gray-500 mb-1 block">
+            产品名称 <span className="text-red-500">* (必填)</span>
+          </label>
+          <input
+            className="w-full p-2 border rounded"
+            placeholder="请输入产品名称"
+            value={product.name || ""}
+            onChange={(e) =>
+              onProductChange({
+                ...product,
+                name: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div>
+          <label className="text-xs text-gray-500 mb-1 block">
+            价格 <span className="text-red-500">* (必填)</span>
+          </label>
+          <input
+            className="w-full p-2 border rounded"
+            placeholder="请输入价格"
+            type="number"
+            value={product.price || ""}
+            onChange={(e) =>
+              onProductChange({
+                ...product,
+                price: Number(e.target.value),
+              })
+            }
+          />
+        </div>
         <input
           className="p-2 border rounded"
           placeholder="销量"
