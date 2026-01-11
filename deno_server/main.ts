@@ -7,8 +7,10 @@ import { askAI } from "./ai_service.ts";
 const app = new Hono();
 
 // Logger
+// Logger
 app.use("*", async (c, next) => {
-  console.log(`[${c.req.method}] ${c.req.path}`);
+  console.log(`[REQ] ${c.req.method} ${c.req.url}`);
+  console.log(`[REQ] Path: ${c.req.path}`);
   await next();
 });
 
@@ -330,7 +332,9 @@ app.post("/api/ai/ocr-product", async (c) => {
 // --- Static Assets (Frontend) ---
 // Only serve static files if the request is NOT an API call
 app.use("/*", async (c, next) => {
+  // console.log(`[Static Check] ${c.req.path}`);
   if (c.req.path.startsWith("/api")) {
+    // console.log(`[Static Check] Skipping API: ${c.req.path}`);
     await next();
     return;
   }
