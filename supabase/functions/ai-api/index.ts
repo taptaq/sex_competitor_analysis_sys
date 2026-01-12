@@ -27,42 +27,123 @@ Deno.serve(async (req) => {
 
     // Helper: Ask AI
     async function askAI(prompt: string, schema: any) {
-      // Priority: DeepSeek -> Google -> Qwen (fallback)
-      // For this migration, reproducing logic: default to Qwen-Plus via Dashscope (using fetch manually because SDKs vary)
-      
-      if (qwenKey) {
-        // Using Dashscope direct API for Qwen-Plus (most reliable for complex JSON)
-        const response = await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${qwenKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: 'qwen-plus',
-            input: {
-              messages: [
-                { role: 'system', content: `你是一位专业分析师。输出必须且只能是符合此 JSON Schema 的 JSON 对象：${JSON.stringify(schema)}。请确保所有 Key 名采用英文。` },
-                { role: 'user', content: prompt }
-              ]
-            },
-            parameters: {
-              result_format: 'message',
-              enable_search: true
-            }
-          })
-        });
-        
-        const data = await response.json();
-        if (data.output?.choices?.[0]?.message?.content) {
-            let content = data.output.choices[0].message.content;
-            content = content.replace(/```json/g, '').replace(/```/g, '').trim();
-            return JSON.parse(content);
-        }
-        throw new Error(`Qwen Error: ${JSON.stringify(data)}`);
+      // Helper: Call DeepSeek (OpenAI Compatible)
+      async function callDeepSeek(prompt: string, schema: any) {
+         if (!deepseekKey) throw new Error("DeepSeek Key missing");
+         try {
+             const openai = new OpenAI({
+                 apiKey: deepseekKey,
+                 baseURL: 'https://api.deepseek.com',
+             });
+             const completion = await openai.chat.completions.create({
+                 messages: [
+                     { role: "system", content: `You are a helpful assistant. Output JSON only matching this schema: ${JSON.stringify(schema)}` },
+                     { role: "user", content: prompt }
+                 ],
+                 model: "deepseek-chat",
+                 response_format: { type: "json_object" },
+             });
+             const content = completion.choices[0].message.content;
+             return JSON.parse(content);
+         } catch (e) {
+             throw new Error(`DeepSeek Error: ${e.message}`);
+         }
       }
-      
-      throw new Error("No AI Provider Configured");
+
+      // Helper: Call Google (Gemini)
+      async function callGoogle(prompt: string, schema: any) {
+          if (!googleKey) throw new Error("Google Key missing");
+          try {
+              const genAI = new GoogleGenerativeAI(googleKey);
+              const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+              const result = await model.generateContent(`
+                  ${prompt}
+                  
+                  Strictly Output JSON only matching this schema: ${JSON.stringify(schema)}
+              `);
+              const response = result.response;
+              let text = response.text();
+              // Clean up if markdown code blocks exist
+              text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+              return JSON.parse(text);
+          } catch (e) {
+               throw new Error(`Google Gemini Error: ${e.message}`);
+          }
+      }
+
+      // Helper: Call Qwen (Dashscope)
+      async function callQwen(prompt: string, schema: any) {
+           if (!qwenKey) throw new Error("Qwen Key missing");
+           // Using Dashscope direct API for Qwen-Plus (most reliable for complex JSON)
+            const response = await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${qwenKey}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                model: 'qwen-plus',
+                input: {
+                  messages: [
+                    { role: 'system', content: `你是一位专业分析师。输出必须且只能是符合此 JSON Schema 的 JSON 对象：${JSON.stringify(schema)}。请确保所有 Key 名采用英文。` },
+                    { role: 'user', content: prompt }
+                  ]
+                },
+                parameters: {
+                  result_format: 'message',
+                  enable_search: true
+                }
+              })
+            });
+            
+            const data = await response.json();
+            if (data.output?.choices?.[0]?.message?.content) {
+                let content = data.output.choices[0].message.content;
+                content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+                return JSON.parse(content);
+            }
+            if (data.code === 'DataInspectionFailed') {
+                 throw new Error("Qwen DataInspectionFailed: Content Restricted");
+            }
+            throw new Error(`Qwen Error: ${JSON.stringify(data)}`);
+      }
+
+      let errors = [];
+
+      // 1. Try Qwen (Primary)
+      if (qwenKey) {
+          try {
+              console.log("Trying Qwen...");
+              return await callQwen(prompt, schema);
+          } catch (e) {
+              console.error("Qwen Failed:", e);
+              errors.push(e.message);
+          }
+      }
+
+      // 2. Try DeepSeek (Fallback)
+      if (deepseekKey) {
+          try {
+              console.log("Trying DeepSeek...");
+              return await callDeepSeek(prompt, schema);
+          } catch (e) {
+              console.error("DeepSeek Failed:", e);
+              errors.push(e.message);
+          }
+      }
+
+      // 3. Try Google (Fallback)
+      if (googleKey) {
+          try {
+              console.log("Trying Google Gemini...");
+              return await callGoogle(prompt, schema);
+          } catch (e) {
+              console.error("Google Failed:", e);
+              errors.push(e.message);
+          }
+      }
+
+      throw new Error(`All AI Providers Failed:\n${errors.join('\n')}`);
     }
 
     // --- Route Handlers ---
