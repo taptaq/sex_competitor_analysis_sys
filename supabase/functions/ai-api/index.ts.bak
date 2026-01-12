@@ -561,30 +561,45 @@ Deno.serve(async (req) => {
         
         const prompt = `You are a Medical Device Market Economist. Please analyze the price trend data for the following Intimate Health Product:
 
-        Product: ${productName}
-        Current Price: ¥${Number(currentPrice).toFixed(2)}
+产品名称：${productName}
+当前价格：¥${Number(currentPrice).toFixed(2)}
 
-        History (${priceHistory.length} records):
-        ${priceData}
+价格历史数据（共 ${priceHistory.length} 条记录）：
+${priceData}
 
-        Statistics:
-        - Min Price: ¥${minPrice.toFixed(2)}
-        - Max Price: ¥${maxPrice.toFixed(2)}
-        - Avg Price: ¥${avgPrice.toFixed(2)}
-        - Volatility: ${minPrice !== 0 ? (((maxPrice - minPrice) / minPrice) * 100).toFixed(1) : "0.0"}%${discountStats}
+价格统计：
+- 最低到手价：¥${minPrice.toFixed(2)}
+- 最高到手价：¥${maxPrice.toFixed(2)}
+- 平均到手价：¥${avgPrice.toFixed(2)}
+- 价格波动幅度：${minPrice !== 0 ? (((maxPrice - minPrice) / minPrice) * 100).toFixed(1) : "0.0"}%${discountStats}
 
-        Context: ${isDomestic ? "Chinese Intimate Health Market (E-commerce strategies)." : "Global Intimate Health Market."}
+${isDomestic ? "请结合中国情趣用品市场的实际情况，包括电商平台（淘宝、天猫、京东、小红书等）的定价策略。" : "请结合全球情趣用品市场的定价策略。"}
 
-        Output JSON Analysis Report (Keys in English, Values in Simplified Chinese):
-        1. trend: Price trend analysis (200-300 chars, Chinese). Analyze volatility, timing, and market comparison.
-        2. priceRange: Price positioning analysis (100-200 chars, Chinese). Low/Mid/High-end check.
-        3. fluctuation: Volatility analysis (100-200 chars, Chinese). Frequency and promotional factors.
-        4. discountAnalysis: Discount strategy analysis (150-250 chars, Chinese). Depth, frequency, and impact.
-           ${!hasDiscount ? "(Note: No discount data available, state unable to analyze)." : ""}
-        5. recommendations: Pricing strategy recommendations (Array of Strings, Chinese). Data-driven advice.
-        6. summary: Executive summary (200-300 chars, Chinese).
+请输出 JSON 格式的价格走势分析报告，包含以下英文键名（但所有字符串值必须使用简体中文）：
+1. trend: 价格趋势分析（200-300字，必须使用中文），包括：
+   - 整体价格走势（上涨/下跌/波动）
+   - 价格变化的时间节点和原因推测
+   - 与市场平均价格的对比
+2. priceRange: 价格区间分析（100-200字，必须使用中文），说明：
+   - 产品的价格定位（低端/中端/高端）
+   - 价格区间的合理性
+3. fluctuation: 价格波动分析（100-200字，必须使用中文），分析：
+   - 价格波动的频率和幅度
+   - 可能的促销策略或市场因素
+4. discountAnalysis: 优惠力度分析（150-250字，必须使用中文），分析：
+   - 优惠力度的整体水平和变化趋势
+   - 优惠策略的特点（如：是否经常打折、优惠幅度是否稳定等）
+   - 优惠力度与价格走势的关系
+   - 优惠策略对销量的可能影响
+   ${!hasDiscount ? "注意：如果数据中没有页面价信息，请说明无法分析优惠力度。" : ""}
+5. recommendations: 定价建议（Array of Strings，至少3条，每个字符串必须使用中文），包括：
+   - 基于历史数据的定价建议
+   - 促销时机建议
+   - 价格优化建议
+6. summary: 综合分析总结（200-300字，必须使用中文）
 
-        **IMPORTANT: All value strings must be in Simplified Chinese. Return valid JSON only.**`;
+**重要：所有字符串值（trend, priceRange, fluctuation, discountAnalysis, recommendations数组中的每个元素, summary）都必须使用简体中文，不要使用英文。**
+请确保分析专业、深入且具有实际参考价值。`;
 
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
@@ -691,39 +706,80 @@ Deno.serve(async (req) => {
             }).join('\n');
         }
 
-        const prompt = `You are an Intimate Health Brand Analyst. Please analyze the brand characteristics based on the following data:
+        const prompt = `你是一位专业的情趣用品行业品牌分析师。请基于以下信息，深入分析该品牌的特点：
 
-        Brand Name: ${brandName}
-        Type: ${isDomestic ? "Domestic Brand" : "International Brand"}
-        Focus: ${focusText}
+品牌名称：${brandName}
+品牌类型：${isDomestic ? "国内品牌" : "国际知名品牌"}
+品牌定位：${focusText}
 
-        Philosophy:
-        ${philosophyText}
+品牌理念：
+${philosophyText}
 
-        Product Portfolio:
-        ${productInfo}
-        ${genderInfo}
+产品信息：
+${productInfo}
+${genderInfo}
 
-        Ads/Creative:
-        ${adsText}
+现有宣传语/广告创意：
+${adsText}
 
-        Context: ${isDomestic ? "Chinese Intimate Health Market (Preferences, Trends, Competitors)." : "Global Intimate Health Market."}
+${isDomestic ? "请结合中国情趣用品市场的实际情况，包括消费者偏好、市场趋势、竞争格局等。" : "请结合全球情趣用品市场的实际情况，包括不同地区的消费者偏好、市场趋势、竞争格局等。"}
 
-        Output JSON analysis report (Keys in English, Values in Simplified Chinese):
-        1. brandPositioning: Brand positioning analysis (50-100 chars, Chinese). Market tier, philosophy alignment, differentiation.
-        2. productCharacteristics: Product features analysis (50-100 chars, Chinese). Category mix, unique selling points (USPs).
-        3. priceStrategy: Pricing strategy analysis (50-100 chars, Chinese). Positioning match, competitiveness.
-        4. targetAudience: Target audience analysis (50-100 chars, Chinese). Demographics, spending power.
-        5. competitiveAdvantages: List of competitive advantages (Array of strings, min 4, Chinese). Based on philosophy, product, price.
-        6. brandPersonality: Brand personality description (50-100 chars, Chinese).
-        7. sloganCreativity: Creative analysis (50-100 chars, Chinese). Evaluate existing creative or suggest improvements.
-        8. summary: Comprehensive summary (100-150 chars, Chinese). Core competitiveness and market value.
-        9. wordCloudKeywords: Keywords for word cloud (Array of Objects: {value: string, count: number}, 3-5 items).
-           - value: Key term (2-4 Chinese chars).
-           - count: Weight (1-10 integer).
-           - **STRICTLY EXCLUDE stopwords, connectors, generic terms.** Focus on unique brand attributes.
+请输出 JSON 格式的品牌特点分析报告，包含以下英文键名（但所有字符串值必须使用简体中文）：
+1. brandPositioning: 品牌定位分析（50-100字，必须使用中文），包括：
+   - 品牌在市场中的定位（高端/中端/低端，专业/大众等）
+   - 品牌理念如何体现在定位中
+   - 与同类品牌的差异化定位
+2. productCharacteristics: 产品特征分析（50-100字，必须使用中文），包括：
+   - 产品线的整体特征（类别分布、功能特点等）
+   - 产品标签和关键词反映的产品特色
+   - 产品设计理念和功能定位
+   - 产品创新点和独特卖点
+3. priceStrategy: 价格策略分析（50-100字，必须使用中文），包括：
+   - 价格区间定位和定价策略
+   - 价格与产品定位的匹配度
+   - 价格竞争力分析
+   - 价格策略对品牌形象的影响
+4. targetAudience: 目标受众分析（50-100字，必须使用中文），包括：
+   - 基于产品性别分布和品牌定位的目标用户群体
+   - 目标用户的消费能力和消费习惯
+   - 品牌如何通过产品和理念吸引目标受众
+5. competitiveAdvantages: 竞争优势（Array of Strings，至少4条，每个字符串必须使用中文），包括：
+   - 基于品牌理念、产品特征、价格策略等方面的竞争优势
+   - 每条优势要具体且有说服力
+6. brandPersonality: 品牌个性（50-100字，必须使用中文），描述：
+   - 品牌展现出的个性特征（如：专业、时尚、亲民、高端等）
+   - 品牌个性如何通过理念和产品体现
+   - 品牌个性对消费者的吸引力
+7. sloganCreativity: 宣传语与创意分析（50-100字，必须使用中文），要求：
+   - 深入分析上述提供的现有宣传语/广告创意（如果有），总结其核心诉求和风格
+   - 品牌在营销创意上的独特之处（如：视觉风格、情感表达、社会议题等）
+   - 宣传语如何契合品牌定位和产品特点
+   - 结合现有文案，针对品牌的调性，提出更具冲击力和吸引力的创意宣传建议
+8. summary: 综合分析总结（100-150字，必须使用中文），包括：
+   - 品牌特点的综合概括
+   - 品牌的核心竞争力
+   - 品牌在市场中的定位和价值
+   - 品牌发展的优势和潜在挑战
+9. wordCloudKeywords: 词云关键词（Array of Objects，必须包含3-5个关键词，每个对象包含value和count字段），要求：
+   - value: 关键词（2-4个中文字符，必须使用中文）
+   - count: 词频权重（1-10之间的整数，数值越大表示该关键词越重要，最重要的关键词权重应该最高）
+   - **必须严格过滤掉以下无用词：**
+     * 停用词：的、了、在、是、我、有、和、就、不、人、都、一、一个、上、也、很、到、说、要、去、你、会、着、没有、看、好、自己、这
+     * 连接词：为、与、及、等、或、而、但、以、从、对、向、在、于、由、被、让、给、把、用、因、由于、通过、按照、根据
+     * 助动词：可以、能够、应该、需要、必须、可能、如果、那么、因为、所以
+     * 代词：这个、那个、这些、那些、什么、怎么、如何、为什么
+     * 连词：以及、并且、而且、同时、另外、此外、因此、所以、然而、但是、不过、虽然、尽管、即使、如果、假如、要是、只要、只有、除非
+     * 介词：通过、根据、按照、依据、基于、针对、对于、关于、有关、涉及、包括、含有、具有、拥有、存在、出现、发生、产生、形成、建立
+     * 动词：进行、开展、实施、执行、完成、实现、达到、获得、取得、得到、接受、采用、使用、利用、运用、应用、采取、选择、决定
+     * 抽象名词：方面、领域、范围、区域、地区、地方、位置、地点、场所、空间、时间、时期、阶段、过程、步骤、方法、方式、手段、途径、渠道、功能、作用、效果、影响、结果、后果
+     * 通用词：品牌、产品、市场、用户、消费者、价格、策略、定位、特点、分析
+   - 关键词应该反映品牌的核心特点、产品特征、市场定位、竞争优势等有意义的词汇
+   - 优先选择能够代表品牌独特性和核心竞争力的词汇
+   - 只选择最重要的3-5个关键词，确保每个关键词都具有高度代表性
+   - 词频权重应该根据关键词的重要性和代表性合理分配，最重要的关键词权重为10，次重要的依次递减
 
-        **IMPORTANT: All value strings must be in Simplified Chinese. Return valid JSON only.**`;
+**重要：所有字符串值（brandPositioning, productCharacteristics, priceStrategy, targetAudience, competitiveAdvantages数组中的每个元素, brandPersonality, sloganCreativity, summary, wordCloudKeywords数组中的每个对象的value字段）都必须使用简体中文，不要使用英文。**
+请确保分析专业、深入且具有实际参考价值，要结合品牌理念、产品特征和价格等因素进行综合分析。`;
 
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
@@ -759,23 +815,23 @@ Deno.serve(async (req) => {
         };
 
         const truncatedText = text.substring(0, 15000);
-        const prompt = `You are a Clinical User Experience Researcher. Please analyze the following user inquiries/comments to identify pain points and concerns from a medical/health perspective:
+        const prompt = `你是一位专业的用户体验分析师。请分析以下用户问答/评论数据，提取用户的痛点和关心点，并给出针对性的改进建议：
 
-        User Data:
-        ${truncatedText}
+用户数据：
+${truncatedText}
 
-        Context:
-        - "Purchased" users: Focus on usage experience, comfort, and efficacy (Pain Points).
-        - "Returning" users: Focus on deeper needs or specific dissatisfactions (Concerns/Pain Points).
-        - "Potential" users: Focus on pre-purchase anxieties, safety concerns, and material inquiries (Concerns).
+注意：如果数据包含\`[购买状态]\`字段，且状态为\`已购\`或\`回头客\`：
+- \`已购\`用户：重点关注其实际使用中的体验和痛点（Pain Points）。
+- \`回头客\`用户：属于高价值忠实用户，重点关注其复购原因（满意点）以及对产品的进阶需求或深度不满（Concerns/Pain Points）。
+- 其他/未知状态：更多关注其购买前的疑虑（Concerns）。
 
-        Output JSON Analysis Report (Keys in English, Values in Simplified Chinese):
-        1. painPoints: List of user pain points (min 10, Chinese). Focus on physical discomfort, usability issues, or failed expectations.
-        2. concerns: List of user concerns (min 10, Chinese). Focus on safety, hygiene, privacy, and material quality.
-        3. suggestions: Professional improvement suggestions (min 10, Chinese). Focus on product design, educational content, or hygiene guidance.
-        4. summary: Executive summary (150-200 chars, Chinese). Overview of user sentiment and critical issues.
+请输出 JSON 格式的分析报告：
+1. painPoints: 用户痛点列表（至少10条），重点关注已购买用户和回头客反馈的实际困难、功能缺陷或使用不便。
+2. concerns: 用户关心点列表（至少10条），重点关注未购买用户（或决策中）最在意的因素（如材质安全、隐私、噪音等）以及已购用户的期望偏差。
+3. suggestions: 针对上述痛点和关心点的改进建议（至少10条）。建议应具体、可执行，例如从产品设计、功能优化、营销话术或服务流程等方面入手。
+4. summary: 综合总结（150-200字），概括整体用户对品牌的反馈倾向和主要待解决问题。
 
-        **IMPORTANT: All value strings must be in Simplified Chinese. Return valid JSON only. Maintain a professional, clinical tone.**`;
+**所有输出必须使用简体中文。**`;
 
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });

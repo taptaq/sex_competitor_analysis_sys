@@ -25,3 +25,6 @@ dist-ssr
 *.sln
 *.sw?
 *.xlsx
+
+.project_resume_star.md
+
