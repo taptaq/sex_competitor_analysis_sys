@@ -25,6 +25,21 @@ Deno.serve(async (req) => {
     // Qwen/Dashscope (Mapped to OpenAI compatible client or direct fetch)
     const qwenKey = Deno.env.get('QWEN_API_KEY') || Deno.env.get('DASHSCOPE_API_KEY');
 
+    // Helper: Sanitize Content
+    function sanitizeContent(text: string): string {
+      return text
+        .replace(/高潮/g, '愉悦巅峰')
+        .replace(/自慰/g, '自我愉悦')
+        .replace(/做爱/g, '亲密互动')
+        .replace(/插入/g, '进入')
+        .replace(/阴道/g, '私处')
+        .replace(/阴茎/g, '男性器官')
+        .replace(/射精/g, '释放')
+        .replace(/G点/g, '敏感点')
+        .replace(/乳头/g, '胸部敏感点')
+        .replace(/阴蒂/g, '重点敏感部位');
+    }
+
     // Helper: Ask AI
     async function askAI(prompt: string, schema: any) {
       // Helper: Call DeepSeek (OpenAI Compatible)
@@ -241,36 +256,41 @@ Deno.serve(async (req) => {
 
         for (const review of reviews) {
             const likeCount = review.likeCount || 0;
+            // Sanitize review text
+            const sanitizedText = sanitizeContent(review.text);
+            
             if (likeCount > 0) {
                 totalLikes += likeCount;
                 if (likeCount >= 5) highLikeCount++;
-                reviewTexts.push(`[点赞量: ${likeCount}] ${review.text}`);
+                reviewTexts.push(`[点赞量: ${likeCount}] ${sanitizedText}`);
             } else {
-                reviewTexts.push(review.text);
+                reviewTexts.push(sanitizedText);
             }
         }
         
         const avgLikes = reviews.length > 0 ? (totalLikes / reviews.length).toFixed(1) : "0";
 
-        const prompt = `你是一位专业的情趣用品行业用户体验分析师。请分析情趣用品 "${productName}" 的以下用户评价数据：
+        const prompt = `You are a professional Medical Device & Consumer Health Product Analyst. Please analyze the following user feedback data for the product "${productName}" from a strictly professional, clinical, and objective perspective.
+
+        Review Data:
         ${reviewTexts.join('\n')}
         
-        注意：
-        1. 每条评论可能包含主评论和追评内容（如追评1、追评2、追评3等），请综合分析主评论和所有追评内容，全面了解用户的真实体验和反馈。
-        2. 评论数据中标注了每条评论的点赞量（如 [点赞量: 15]），点赞量高的评论通常代表更多用户的认同，请重点关注高点赞量评论中的观点和反馈。
-        3. 统计信息：共 ${reviews.length} 条评论，总点赞量 ${totalLikes}，平均点赞量 ${avgLikes}，高点赞量评论（≥5）共 ${highLikeCount} 条。
-        4. 在分析时，请优先考虑高点赞量评论中的观点，这些观点往往更能代表大多数用户的真实感受。
+        Analysis Context:
+        1. Each review may contain main comments and follow-ups. Analyze comprehensively.
+        2. Focus on high-engagement feedback (high like counts) as they represent consensus.
+        3. Statistics: ${reviews.length} reviews, ${totalLikes} total likes, ${avgLikes} avg likes, ${highLikeCount} high-value reviews.
+        4. Maintain a strictly professional tone. Avoid prohibited explicit content. Use clinical terms where necessary.
         
-        ${isDomestic ? "请结合中国市场的消费习惯和语境。" : "请结合全球市场的消费语境。"}
+        ${isDomestic ? "Context: Chinese market consumer preferences." : "Context: Global market consumer preferences."}
         
-        请输出 JSON 格式的深度分析报告，包含以下英文键名（但所有字符串值必须使用简体中文）：
-        1. pros: 该款情趣用品的主要优点列表 (Array of Strings，每个字符串必须使用中文)，优先参考高点赞量评论中的正面反馈。
-        2. cons: 该款情趣用品的主要改进点或吐槽点列表 (Array of Strings，每个字符串必须使用中文)，优先参考高点赞量评论中的负面反馈。
-        3. summary: 对该情趣用品整体竞争力的简短总结 (String，必须使用中文)，需结合点赞量数据说明用户认可度。
-        4. prosKeywords: 好评点中的高频词列表 (Array of Objects with {value: string, count: number}，value 字段必须使用中文)，优先提取高点赞量评论中的关键词。
-        5. consKeywords: 差评点中的高频词列表 (Array of Objects with {value: string, count: number}，value 字段必须使用中文)，优先提取高点赞量评论中的关键词。
+        Output Requirements (JSON Format, Keys in English, Values in Simplified Chinese):
+        1. pros: List of main product strengths (Array of Strings).
+        2. cons: List of main product weaknesses or complaints (Array of Strings).
+        3. summary: A brief competitiveness summary (String), citing user engagement levels.
+        4. prosKeywords: High-frequency positive keywords (Array of Objects: {value: string, count: number}).
+        5. consKeywords: High-frequency negative keywords (Array of Objects: {value: string, count: number}).
         
-        **重要：所有字符串值（pros 数组中的每个元素、cons 数组中的每个元素、summary、prosKeywords 和 consKeywords 数组中每个对象的 value 字段）都必须使用简体中文，不要使用英文。**`;
+        **IMPORTANT: All value strings must be in Simplified Chinese. Return valid JSON only.**`;
 
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
