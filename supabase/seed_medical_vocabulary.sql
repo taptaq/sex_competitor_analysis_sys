@@ -1,0 +1,49 @@
+-- Seed data for medical_terminology table
+
+INSERT INTO medical_terminology (term, replacement, category) VALUES
+-- Sensation (体感/动作)
+('震动', '触觉共振 (Tactile Resonance)', 'Sensation'),
+('颤动', '微幅振荡 (Micro-amplitude Oscillation)', 'Sensation'),
+('吮吸', '负压脉冲 (Negative Pressure Pulse)', 'Sensation'),
+('吸吮', '空气动力学负压 (Aerodynamic Negative Pressure)', 'Sensation'),
+('抽插', '往复位移 (Reciprocating Displacement)', 'Sensation'),
+('伸缩', '轴向运动 (Axial Motion)', 'Sensation'),
+('拍打', '瞬态冲击 (Transient Impact)', 'Sensation'),
+('夹紧', '径向收缩 (Radial Contraction)', 'Sensation'),
+('包裹', '全周向贴合 (Circumferential Fit)', 'Sensation'),
+('刺激', '神经激活 (Neural Activation)', 'Sensation'),
+('高潮', '神经兴奋峰值 (Neural Excitation Peak)', 'Sensation'),
+('快感', '感官愉悦度 (Sensory Pleasure)', 'Sensation'),
+('酥麻', '末梢神经共振 (Peripheral Nerve Resonance)', 'Sensation'),
+('喷水', '腺体分泌激增 (Glandular Secretion Surge)', 'Sensation'),
+('GC', '性反应高潮期 (Orgasmic Phase)', 'Sensation'),
+
+-- Material (材质/工艺)
+('硅胶', '生物相容性弹性体 (Biocompatible Elastomer)', 'Material'),
+('软', '低邵氏硬度 (Low Shore Hardness)', 'Material'),
+('硬', '高刚性 (High Rigidity)', 'Material'),
+('Q弹', '高回弹性 (High Resilience)', 'Material'),
+('亲肤', '组织相容性 (Tissue Compatibility)', 'Material'),
+('无味', '低挥发性有机化合物 (Low VOC)', 'Material'),
+('防水', '流体防护等级 (Fluid Ingress Protection)', 'Material'),
+('全身水洗', 'IPX7级以上防护 (IPX7+ Rating)', 'Material'),
+
+-- General (通用/参数)
+('噪音', '声压级 (Sound Pressure Level)', 'General'),
+('静音', '低分贝运行 (Low Decibel Operation)', 'General'),
+('加热', '恒温热传导 (Thermostatic Heat Conduction)', 'General'),
+('升温', '热力学梯度 (Thermodynamic Gradient)', 'General'),
+('遥控', '远程射频控制 (Remote RF Control)', 'General'),
+('APP控制', '蓝牙低功耗连接 (BLE Connection)', 'General'),
+('强力', '高扭矩输出 (High Torque Output)', 'General'),
+('电量', '电池容量 (Battery Capacity)', 'General'),
+('续航', '连续工作周期 (Continuous Duty Cycle)', 'General'),
+('尺寸', '几何规格 (Geometric Specifications)', 'General'),
+
+-- Safety (安全/合规)
+('安全', '生物安全性 (Biosafety)', 'Safety'),
+('无毒', '无细胞毒性 (Non-cytotoxic)', 'Safety'),
+('过敏', '变态反应 (Allergic Reaction)', 'Safety'),
+('红肿', '组织水肿 (Tissue Edema)', 'Safety'),
+('疼痛', '痛觉感受 (Nociception)', 'Safety'),
+('甚至出血', '黏膜损伤 (Mucosal Injury)', 'Safety');

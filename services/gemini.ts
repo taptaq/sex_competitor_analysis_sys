@@ -270,3 +270,28 @@ export const analyzeQA = async (text: string) => {
     throw error;
   }
 };
+
+export const analyzeStandardization = async (
+  productName: string,
+  description: string,
+  parameters: any,
+  reviews: Array<{ text: string }> | string[],
+  isDomestic: boolean = false
+) => {
+  try {
+    const reviewData = Array.isArray(reviews) && reviews.length > 0 && typeof reviews[0] === 'string'
+      ? reviews.map(text => ({ text }))
+      : reviews as Array<{ text: string }>;
+
+    return await invokeAI('standardize-analysis', { 
+        productName, 
+        description, 
+        parameters, 
+        reviews: reviewData, 
+        isDomestic 
+    });
+  } catch (error) {
+    console.error('Standardization Analysis Service Error:', error);
+    throw error;
+  }
+};

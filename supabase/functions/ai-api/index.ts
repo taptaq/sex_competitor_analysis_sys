@@ -1336,6 +1336,79 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
+
+
+    if (action === 'standardize-analysis') {
+        const { productName, description, parameters, reviews, isDomestic } = payload;
+        
+        const schema = {
+            "type": "object",
+            "properties": {
+                "sensoryIndices": {
+                    "type": "object",
+                    "properties": {
+                        "penetrationIndex": { "type": "number", "description": "1-10 scale" },
+                        "acousticPrivacy": { "type": "number", "description": "1-10 scale" },
+                        "skinAffinity": { "type": "number", "description": "1-10 scale" }
+                    },
+                    "required": ["penetrationIndex", "acousticPrivacy", "skinAffinity"]
+                },
+                "complianceCheck": {
+                    "type": "object",
+                    "properties": {
+                        "biocompatibilityLevel": { "type": "string", "enum": ["医用级", "食品级", "工业/玩具级"] },
+                        "ergonomicsScore": { "type": "number", "description": "1-10 scale" },
+                        "safetyFlags": { "type": "array", "items": { "type": "string" } }
+                    },
+                    "required": ["biocompatibilityLevel", "ergonomicsScore", "safetyFlags"]
+                },
+                "specVerification": {
+                    "type": "object",
+                    "properties": {
+                        "realityScore": { "type": "number", "description": "1-10 scale" },
+                        "marketingNoise": { "type": "array", "items": { "type": "string" } }
+                    },
+                    "required": ["realityScore", "marketingNoise"]
+                }
+            },
+            "required": ["sensoryIndices", "complianceCheck", "specVerification"]
+        };
+
+        const truncatedReviews = reviews ? reviews.slice(0, 20).map((r: any) => r.text).join('\n') : "No reviews available.";
+        // Sanitize review content for standardization analysis as well
+        const sanitizedReviews = sanitizeContent(truncatedReviews);
+        
+        const prompt = `You are a Medical Device Standards Engineer & Sensory Science Analyst. Please standardize and quantify the following product data:
+
+        Product: ${productName}
+        Description: ${description || "N/A"}
+        Parameters: ${JSON.stringify(parameters || {})}
+        User Feedback Sample:
+        ${sanitizedReviews}
+
+        Context: ${isDomestic ? "Chinese Market Standards" : "International Standards"}
+
+        Task: Convert vague marketing terms and user feelings into standardized metrics.
+
+        Output Requirements (JSON):
+        1. sensoryIndices:
+           - penetrationIndex (1-10): 1=Surface vibration, 10=Deep tissue resonance. Based on motor type and user feedback.
+           - acousticPrivacy (1-10): 1=Loud/High-pitch, 10=Silent/Deep-tone.
+           - skinAffinity (1-10): 1=Sticky/Rough, 10=Silky/Skin-like.
+        2. complianceCheck:
+           - biocompatibilityLevel: Assess material safety using one of: "医用级", "食品级", "工业/玩具级".
+           - ergonomicsScore (1-10): Anatomical fit evaluation.
+           - safetyFlags: List potential risks in Chinese (e.g., "非孔隙材质", "边缘锐利").
+        3. specVerification:
+           - realityScore (1-10): Match between marketing claims and user reality.
+           - marketingNoise: Identify pseudoscientific buzzwords in Chinese (e.g., "量子", "费洛蒙").
+
+        **IMPORTANT: Return valid JSON only. All string fields (except keys) MUST be in Chinese.**`;
+
+        const data = await askAI(prompt, schema);
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
     return new Response(JSON.stringify({ error: 'Unknown Action' }), { status: 400, headers: corsHeaders });
 
   } catch (error: any) {

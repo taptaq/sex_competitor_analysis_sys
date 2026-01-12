@@ -58,6 +58,24 @@ interface AppState {
   saveDeepReport: (productId: string, competitorId: string, report: any) => Promise<void>;
   getDeepReport: (productId: string) => any | null;
   fetchDeepReports: () => Promise<void>;
+
+  saveStandardizationTest: (data: {
+    productName: string;
+    productId?: string;
+    competitorId?: string;
+    description?: string;
+    parameters?: any;
+    reviewsSample?: string;
+    resultData: any;
+  }) => Promise<void>;
+
+  standardizationTests: any[];
+  fetchStandardizationTests: () => Promise<void>;
+
+  medicalTerms: any[];
+  fetchMedicalTerms: () => Promise<void>;
+  addMedicalTerm: (term: string, replacement: string, category?: string) => Promise<void>;
+  removeMedicalTerm: (id: string) => Promise<void>;
 }
 
 // Helper to save to server - REMOVED, using direct Supabase calls
@@ -412,4 +430,82 @@ export const useStore = create<AppState>((set, get) => ({
       console.error('Failed to fetch deep reports:', error);
     }
   },
+
+  // Standardization/Lie Detector History
+  saveStandardizationTest: async (data: {
+    productName: string;
+    productId?: string;
+    competitorId?: string;
+    description?: string;
+    parameters?: any;
+    reviewsSample?: string;
+    resultData: any;
+  }) => {
+    try {
+      const { error } = await supabase.from('standardization_tests').insert({
+        product_name: data.productName,
+        product_id: data.productId || null,
+        competitor_id: data.competitorId || null,
+        description: data.description,
+        parameters: data.parameters,
+        reviews_sample: data.reviewsSample,
+        result_data: data.resultData
+      });
+      
+      if (error) throw error;
+    } catch (error) {
+      console.error("Failed to save standardization test:", error);
+      throw error;
+    }
+  },
+
+  standardizationTests: [],
+  fetchStandardizationTests: async () => {
+    try {
+      const { data, error } = await supabase
+        .from('standardization_tests')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      set({ standardizationTests: data });
+    } catch (error) {
+      console.error('Failed to fetch standardization tests:', error);
+    }
+  },
+
+  // Medical Vocabulary
+  medicalTerms: [],
+  fetchMedicalTerms: async () => {
+    try {
+      const { data, error } = await supabase.from('medical_terminology').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      set({ medicalTerms: data });
+    } catch (error) {
+      console.error('Failed to fetch medical terms:', error);
+    }
+  },
+  addMedicalTerm: async (term, replacement, category) => {
+    // Optimistic
+    const newTerm = { id: `temp-${Date.now()}`, term, replacement, category, created_at: new Date().toISOString() };
+    set(state => ({ medicalTerms: [newTerm, ...state.medicalTerms] }));
+
+    const { data, error } = await supabase.from('medical_terminology').insert({ term, replacement, category }).select();
+    if (error) {
+       console.error("Failed to add medical term", error);
+       // Revert fetch
+       get().fetchMedicalTerms();
+    } else if (data) {
+       // Update with real ID
+       set(state => ({ 
+         medicalTerms: state.medicalTerms.map(t => t.id === newTerm.id ? data[0] : t) 
+       }));
+    }
+  },
+  removeMedicalTerm: async (id) => {
+    set(state => ({ medicalTerms: state.medicalTerms.filter(t => t.id !== id) }));
+    const { error } = await supabase.from('medical_terminology').delete().eq('id', id);
+    if (error) console.error("Failed to delete medical term", error);
+  }
 }));

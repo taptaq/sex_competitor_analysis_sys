@@ -8,6 +8,8 @@ import ProductForge from "./components/ProductForge";
 import GlobalProductComparison from "./components/GlobalProductComparison";
 import CompetitorReportAnalysis from "./components/CompetitorReportAnalysis";
 import ProductKnowledgeBase from "./components/ProductKnowledgeBase";
+import StandardizationLab from "./components/StandardizationLab";
+import MedicalVocabLab from "./components/MedicalVocabLab";
 
 import { Menu } from "lucide-react";
 
@@ -37,6 +39,10 @@ const App: React.FC = () => {
         return <CompetitorReportAnalysis />;
       case ViewType.PRODUCT_KNOWLEDGE_BASE:
         return <ProductKnowledgeBase />;
+      case ViewType.STANDARDIZATION_LAB:
+        return <StandardizationLab />;
+      case ViewType.MEDICAL_VOCAB:
+        return <MedicalVocabLab />;
       default:
         return <Dashboard />;
     }
