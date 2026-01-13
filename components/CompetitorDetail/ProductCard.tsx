@@ -15,6 +15,7 @@ import {
   Heart,
   TrendingUp,
   Package,
+  Loader2,
 } from "lucide-react";
 import ProductForm from "./ProductForm";
 
@@ -49,7 +50,10 @@ interface ProductCardProps {
   onTempImageLinkChange: (link: string) => void;
   onSaveImageLink: (product: Product) => void;
   onCancelImageEdit: () => void;
+
   onStartEditImage: (productId: string) => void;
+  uploadingProductId: string | null;
+  isSavingProduct: boolean;
 }
 
 // 产品规格参数弹窗组件
@@ -285,6 +289,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onSaveImageLink,
   onCancelImageEdit,
   onStartEditImage,
+  uploadingProductId,
+  isSavingProduct,
 }) => {
   const [showSpecsModal, setShowSpecsModal] = useState(false);
 
@@ -383,6 +389,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           onSave={onSaveProduct}
           onCancel={onCancelEdit}
           isEditing={true}
+          isSaving={isSavingProduct}
         />
       ) : (
         <div className="flex flex-col md:flex-row relative">
@@ -879,8 +886,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         className="hidden"
                         multiple
                         onChange={(e) => handleFileUpload(e, product.id)}
+                        disabled={uploadingProductId === product.id}
                       />
                     </label>
+                    {uploadingProductId === product.id && (
+                      <span className="flex items-center gap-1 text-xs text-purple-600">
+                        <Loader2 size={12} className="animate-spin" />
+                        导入中...
+                      </span>
+                    )}
                     <span className="text-[10px] text-gray-400">
                       已录入 {product.reviews?.length || 0} 条评论
                     </span>
@@ -895,7 +909,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   className="px-4 py-2 bg-purple-600 text-white text-sm font-bold rounded-lg shadow-sm hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 h-10"
                 >
                   {analyzingProductId === product.id ? (
-                    "分析中..."
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      分析中...
+                    </>
                   ) : (
                     <>
                       <Star size={16} className="fill-white" />
@@ -921,8 +938,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         onChange={(e) =>
                           handlePriceHistoryUpload(e, product.id)
                         }
+                        disabled={uploadingProductId === product.id}
                       />
                     </label>
+                    {uploadingProductId === product.id && (
+                      <span className="flex items-center gap-1 text-xs text-purple-600">
+                        <Loader2 size={12} className="animate-spin" />
+                        导入中...
+                      </span>
+                    )}
                     <span className="text-[10px] text-gray-400">
                       已录入 {product.priceHistory?.length || 0} 条价格记录
                     </span>

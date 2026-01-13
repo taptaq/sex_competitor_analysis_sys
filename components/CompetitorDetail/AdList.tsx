@@ -1,6 +1,6 @@
 import React from "react";
 import { AdCreative } from "../../types";
-import { Plus, Pencil, Trash2, Save, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, X, Loader2 } from "lucide-react";
 
 interface AdListProps {
   ads: AdCreative[];
@@ -14,6 +14,7 @@ interface AdListProps {
   onEditAd: (ad: AdCreative) => void;
   onCancelEditAd: () => void;
   onRemoveAd: (adId: string) => void;
+  isSaving?: boolean;
 }
 
 const AdList: React.FC<AdListProps> = ({
@@ -28,6 +29,7 @@ const AdList: React.FC<AdListProps> = ({
   onEditAd,
   onCancelEditAd,
   onRemoveAd,
+  isSaving = false,
 }) => {
   return (
     <div className="space-y-6">
@@ -49,7 +51,9 @@ const AdList: React.FC<AdListProps> = ({
               placeholder="广告文案"
               rows={2}
               value={tempAd.text || ""}
-              onChange={(e) => onTempAdChange({ ...tempAd, text: e.target.value })}
+              onChange={(e) =>
+                onTempAdChange({ ...tempAd, text: e.target.value })
+              }
             />
             <input
               className="p-2 border rounded"
@@ -59,7 +63,9 @@ const AdList: React.FC<AdListProps> = ({
                   ? tempAd.highlights.join(" ")
                   : tempAd.highlights || ""
               }
-              onChange={(e) => onTempAdChange({ ...tempAd, highlights: e.target.value })}
+              onChange={(e) =>
+                onTempAdChange({ ...tempAd, highlights: e.target.value })
+              }
             />
           </div>
           <div className="flex gap-2 justify-end">
@@ -71,9 +77,17 @@ const AdList: React.FC<AdListProps> = ({
             </button>
             <button
               onClick={onSaveAd}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              disabled={isSaving}
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              保存
+              {isSaving ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  保存中...
+                </>
+              ) : (
+                "保存"
+              )}
             </button>
           </div>
         </div>
@@ -92,7 +106,9 @@ const AdList: React.FC<AdListProps> = ({
                     className="p-2 border rounded text-xs"
                     rows={2}
                     value={tempAd.text}
-                    onChange={(e) => onTempAdChange({ ...tempAd, text: e.target.value })}
+                    onChange={(e) =>
+                      onTempAdChange({ ...tempAd, text: e.target.value })
+                    }
                   />
                   <input
                     className="p-2 border rounded text-xs"
@@ -118,9 +134,14 @@ const AdList: React.FC<AdListProps> = ({
                   </button>
                   <button
                     onClick={onSaveAd}
-                    className="flex items-center gap-1 px-2 py-1 bg-purple-600 text-white rounded"
+                    disabled={isSaving}
+                    className="flex items-center gap-1 px-2 py-1 bg-purple-600 text-white rounded disabled:opacity-70"
                   >
-                    保存
+                    {isSaving ? (
+                      <Loader2 size={12} className="animate-spin" />
+                    ) : (
+                      "保存"
+                    )}
                   </button>
                 </div>
               </div>
@@ -143,7 +164,9 @@ const AdList: React.FC<AdListProps> = ({
                   </button>
                 </div>
                 <div className="p-4">
-                  <p className="text-sm text-gray-600 mb-3 font-medium">"{ad.text}"</p>
+                  <p className="text-sm text-gray-600 mb-3 font-medium">
+                    "{ad.text}"
+                  </p>
                   <div className="flex gap-2">
                     {ad.highlights.map((h) => (
                       <span
@@ -165,4 +188,3 @@ const AdList: React.FC<AdListProps> = ({
 };
 
 export default AdList;
-

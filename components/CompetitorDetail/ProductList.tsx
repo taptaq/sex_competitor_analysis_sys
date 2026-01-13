@@ -60,6 +60,8 @@ interface ProductListProps {
   onSaveImageLink: (product: Product) => void;
   onCancelImageEdit: () => void;
   onStartEditImage: (productId: string) => void;
+  uploadingProductId: string | null;
+  isSavingProduct: boolean;
 }
 
 const ProductList: React.FC<ProductListProps> = ({
@@ -103,6 +105,8 @@ const ProductList: React.FC<ProductListProps> = ({
   onSaveImageLink,
   onCancelImageEdit,
   onStartEditImage,
+  uploadingProductId,
+  isSavingProduct,
 }) => {
   return (
     <div className="space-y-8">
@@ -221,6 +225,8 @@ const ProductList: React.FC<ProductListProps> = ({
             onSaveImageLink={onSaveImageLink}
             onCancelImageEdit={onCancelImageEdit}
             onStartEditImage={onStartEditImage}
+            uploadingProductId={uploadingProductId}
+            isSavingProduct={isSavingProduct}
           />
         ))
       ) : (

@@ -44,6 +44,7 @@ const Dashboard: React.FC = () => {
   const [marketTab, setMarketTab] = useState<"all" | "domestic" | "foreign">(
     "all"
   );
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [dateFilter, setDateFilter] = useState<
     "all" | "before2010" | "2010-2015" | "2015-2020" | "after2020"
   >("all");
@@ -595,14 +596,24 @@ const Dashboard: React.FC = () => {
                         <button
                           className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
                           title="删除竞品"
-                          onClick={(e) => {
+                          disabled={!!deletingId}
+                          onClick={async (e) => {
                             e.stopPropagation();
                             if (confirm(`确定要删除 ${comp.name} 吗？`)) {
-                              removeCompetitor(comp.id);
+                              setDeletingId(comp.id);
+                              try {
+                                await removeCompetitor(comp.id);
+                              } finally {
+                                setDeletingId(null);
+                              }
                             }
                           }}
                         >
-                          <Trash2 size={14} />
+                          {deletingId === comp.id ? (
+                            <Loader2 size={14} className="animate-spin" />
+                          ) : (
+                            <Trash2 size={14} />
+                          )}
                         </button>
                       </div>
                     </div>

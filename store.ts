@@ -13,6 +13,10 @@ interface AppState {
   addCompetitor: (competitor: Competitor) => void;
   removeCompetitor: (id: string) => void;
   updateCompetitor: (competitor: Competitor) => void;
+  
+  // Loading State
+  isLoading: boolean;
+  
   // Product CRUD
   addProduct: (competitorId: string, product: Product) => void;
   updateProduct: (competitorId: string, product: Product) => void;
@@ -83,6 +87,7 @@ interface AppState {
 
 export const useStore = create<AppState>((set, get) => ({
   currentView: ViewType.DASHBOARD,
+  isLoading: false,
   selectedCompetitorId: null,
   competitors: [], // Initial empty state, will fetch on load
   setCurrentView: (view) => set({ currentView: view }),
@@ -91,7 +96,10 @@ export const useStore = create<AppState>((set, get) => ({
       set({ competitors });
   },
   
+
+  
   fetchCompetitors: async () => {
+    set({ isLoading: true });
     try {
       const { data, error } = await supabase
         .from('competitors')
@@ -117,6 +125,8 @@ export const useStore = create<AppState>((set, get) => ({
       set({ competitors: formattedData as Competitor[] });
     } catch (error) {
       console.error('Failed to fetch competitors:', error);
+    } finally {
+        set({ isLoading: false });
     }
   },
 

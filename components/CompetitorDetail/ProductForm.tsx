@@ -28,6 +28,7 @@ interface ProductFormProps {
   onSave: () => void;
   onCancel: () => void;
   isEditing?: boolean;
+  isSaving?: boolean;
 }
 
 // ... (existing constants)
@@ -40,6 +41,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onSave,
   onCancel,
   isEditing = false,
+  isSaving = false,
 }) => {
   const [scanning, setScanning] = React.useState(false);
 
@@ -295,9 +297,17 @@ const ProductForm: React.FC<ProductFormProps> = ({
         </button>
         <button
           onClick={onSave}
-          className="px-3 py-1.5 text-xs font-medium bg-purple-600 text-white rounded-lg hover:bg-purple-700 active:bg-purple-800 transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-1.5"
+          disabled={isSaving}
+          className="px-3 py-1.5 text-xs font-medium bg-purple-600 text-white rounded-lg hover:bg-purple-700 active:bg-purple-800 transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-1.5 disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          <span>保存</span>
+          {isSaving ? (
+            <>
+              <Loader2 size={14} className="animate-spin" />
+              <span>保存中...</span>
+            </>
+          ) : (
+            <span>保存</span>
+          )}
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BookOpen, ArrowRight, Trash2, Plus } from "lucide-react";
+import { BookOpen, ArrowRight, Trash2, Plus, Loader2 } from "lucide-react";
 import { useStore } from "../store";
 
 const MedicalVocabLab: React.FC = () => {
@@ -10,17 +10,60 @@ const MedicalVocabLab: React.FC = () => {
     replacement: "",
     category: "General",
   });
+  const [filterCategory, setFilterCategory] = useState("All");
+
+  // Loading states
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const categories = ["All", "General", "Sensation", "Material", "Safety"];
+  const categoryLabels: Record<string, string> = {
+    All: "全部",
+    General: "通用",
+    Sensation: "体感描述",
+    Material: "材质",
+    Safety: "安全",
+  };
 
   useEffect(() => {
-    fetchMedicalTerms();
+    const loadData = async () => {
+      setIsLoading(true);
+      await fetchMedicalTerms();
+      setIsLoading(false);
+    };
+    loadData();
   }, [fetchMedicalTerms]);
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (newTerm.term && newTerm.replacement) {
-      addMedicalTerm(newTerm.term, newTerm.replacement, newTerm.category);
-      setNewTerm({ ...newTerm, term: "", replacement: "" });
+      setIsAdding(true);
+      try {
+        await addMedicalTerm(
+          newTerm.term,
+          newTerm.replacement,
+          newTerm.category
+        );
+        setNewTerm({ ...newTerm, term: "", replacement: "" });
+      } finally {
+        setIsAdding(false);
+      }
     }
   };
+
+  const handleRemove = async (id: string) => {
+    setDeletingId(id);
+    try {
+      await removeMedicalTerm(id);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const filteredTerms =
+    filterCategory === "All"
+      ? medicalTerms
+      : medicalTerms.filter((t: any) => t.category === filterCategory);
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20">
@@ -31,7 +74,7 @@ const MedicalVocabLab: React.FC = () => {
           <div>
             <h1 className="text-2xl font-bold">医疗语境词库</h1>
             <p className="text-blue-100 text-sm mt-1">
-              Medical Vocabulary - 全局敏感词替换与专业术语管理
+              Medical Vocabulary - 针对于AI Prompt的全局敏感词替换与专业术语管理
             </p>
           </div>
         </div>
@@ -95,10 +138,17 @@ const MedicalVocabLab: React.FC = () => {
 
               <button
                 onClick={handleAdd}
-                disabled={!newTerm.term || !newTerm.replacement}
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!newTerm.term || !newTerm.replacement || isAdding}
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                添加词条
+                {isAdding ? (
+                  <>
+                    <Loader2 size={18} className="animate-spin" />
+                    添加中...
+                  </>
+                ) : (
+                  "添加词条"
+                )}
               </button>
             </div>
             <p className="text-xs text-gray-400 mt-4">
@@ -110,25 +160,45 @@ const MedicalVocabLab: React.FC = () => {
         {/* Right: Term List */}
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-4 border-b bg-gray-50 flex justify-between items-center">
-              <h3 className="font-semibold text-gray-700">
-                词库列表 ({medicalTerms.length})
+            <div className="p-4 border-b bg-gray-50 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <h3 className="font-semibold text-gray-700 whitespace-nowrap">
+                词库列表 ({filteredTerms.length})
               </h3>
+              <div className="flex gap-2 w-full sm:w-auto overflow-x-auto no-scrollbar">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setFilterCategory(cat)}
+                    className={`px-3 py-1 rounded-full text-xs whitespace-nowrap transition-colors ${
+                      filterCategory === cat
+                        ? "bg-blue-600 text-white"
+                        : "bg-white border text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    {categoryLabels[cat] || cat}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="divide-y max-h-[600px] overflow-y-auto">
-              {medicalTerms.length === 0 ? (
+            <div className="divide-y max-h-[600px] overflow-y-auto min-h-[300px]">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-64 text-gray-400 gap-2">
+                  <Loader2 size={32} className="animate-spin text-blue-500" />
+                  <span className="text-sm">加载词库中...</span>
+                </div>
+              ) : filteredTerms.length === 0 ? (
                 <div className="text-center py-12 text-gray-400">
-                  暂无词条，请在左侧添加。
+                  暂无相关词条。
                 </div>
               ) : (
-                medicalTerms.map((t: any) => (
+                filteredTerms.map((t: any) => (
                   <div
                     key={t.id}
                     className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors group"
                   >
                     <div className="flex items-center gap-4 flex-1">
                       <span className="text-xs px-2 py-1 bg-gray-100 rounded text-gray-500 w-20 text-center truncate">
-                        {t.category || "General"}
+                        {categoryLabels[t.category] || t.category || "General"}
                       </span>
                       <div className="flex items-center gap-3 flex-1">
                         <span className="font-medium text-gray-800">
@@ -141,11 +211,23 @@ const MedicalVocabLab: React.FC = () => {
                       </div>
                     </div>
                     <button
-                      onClick={() => removeMedicalTerm(t.id)}
-                      className="text-gray-300 hover:text-red-500 p-2 opacity-0 group-hover:opacity-100 transition-all"
+                      onClick={() => handleRemove(t.id)}
+                      disabled={deletingId === t.id}
+                      className={`p-2 transition-all ${
+                        deletingId === t.id
+                          ? "opacity-100 cursor-wait"
+                          : "text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100"
+                      }`}
                       title="删除"
                     >
-                      <Trash2 size={18} />
+                      {deletingId === t.id ? (
+                        <Loader2
+                          size={18}
+                          className="animate-spin text-red-500"
+                        />
+                      ) : (
+                        <Trash2 size={18} />
+                      )}
                     </button>
                   </div>
                 ))

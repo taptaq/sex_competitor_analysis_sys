@@ -12,6 +12,8 @@ import {
   Circle,
 } from "lucide-react";
 
+import { applyMedicalVocabulary } from "../utils/textProcessing";
+
 // 产品类型列表
 const PRODUCT_CATEGORIES = [
   "跳蛋",
@@ -29,7 +31,8 @@ const PRODUCT_CATEGORIES = [
 ];
 
 const CompetitorReportAnalysis: React.FC = () => {
-  const { competitors, favoriteProducts, fetchFavorites } = useStore();
+  const { competitors, favoriteProducts, fetchFavorites, medicalTerms } =
+    useStore();
 
   // Own Product State
   const [ownProduct, setOwnProduct] = useState<{
@@ -117,15 +120,25 @@ const CompetitorReportAnalysis: React.FC = () => {
         )
         .map(({ product, competitor }) => ({ product, competitor }));
 
+      // Apply medical vocabulary to own product description and tags
+      const processedOwnDescription = applyMedicalVocabulary(
+        ownProduct.description || "",
+        medicalTerms
+      );
+      const processedOwnTags = applyMedicalVocabulary(
+        ownProduct.tags || "",
+        medicalTerms
+      );
+
       const report = await generateCompetitorReport(
         {
           name: ownProduct.name,
           price: ownProduct.price,
           category: ownProduct.category || "",
-          tags: ownProduct.tags
-            ? ownProduct.tags.split("，").map((t) => t.trim())
+          tags: processedOwnTags
+            ? processedOwnTags.split("，").map((t) => t.trim())
             : [],
-          description: ownProduct.description || "",
+          description: processedOwnDescription,
         },
         selectedCompetitorProducts,
         selectedCompetitorProducts[0]?.competitor.isDomestic ?? true

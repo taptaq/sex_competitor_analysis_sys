@@ -14,11 +14,14 @@ import {
   getLatestPrice,
 } from "../utils/priceHistoryUtils";
 
+import { applyMedicalVocabulary } from "../utils/textProcessing";
+
 const CompetitorDetail: React.FC = () => {
   const {
     selectedCompetitorId,
     competitors,
     setSelectedCompetitor,
+    medicalTerms, // Added medicalTerms
 
     setProductAnalysis,
     addProduct,
@@ -62,6 +65,13 @@ const CompetitorDetail: React.FC = () => {
   const [showPriceChartModal, setShowPriceChartModal] = useState(false);
   const [selectedProductForChart, setSelectedProductForChart] =
     useState<Product | null>(null);
+
+  // Loading states
+  const [isSavingProduct, setIsSavingProduct] = useState(false);
+  const [isSavingAd, setIsSavingAd] = useState(false);
+  const [uploadingProductId, setUploadingProductId] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     fetchFavorites();
@@ -236,7 +246,10 @@ const CompetitorDetail: React.FC = () => {
 
       const analysis = await analyzeReviews(
         product.name,
-        reviewDataList,
+        reviewDataList.map((r) => ({
+          ...r,
+          text: applyMedicalVocabulary(r.text, medicalTerms),
+        })),
         competitor.isDomestic
       );
       setProductAnalysis(competitor.id, product.id, analysis);
@@ -331,6 +344,7 @@ const CompetitorDetail: React.FC = () => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
+    setUploadingProductId(productId);
     let allParsedReviews: any[] = [];
 
     try {
@@ -388,6 +402,7 @@ const CompetitorDetail: React.FC = () => {
       console.error("File upload error:", error);
       alert("文件解析失败");
     } finally {
+      setUploadingProductId(null);
       e.target.value = "";
     }
   };
@@ -416,6 +431,7 @@ const CompetitorDetail: React.FC = () => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
+    setUploadingProductId(productId);
     try {
       const priceHistory = await parsePriceHistoryFromFiles(files);
 
@@ -447,6 +463,7 @@ const CompetitorDetail: React.FC = () => {
       console.error("Price history upload error:", error);
       alert("文件解析失败，请检查文件格式");
     } finally {
+      setUploadingProductId(null);
       e.target.value = "";
     }
   };
@@ -567,6 +584,7 @@ const CompetitorDetail: React.FC = () => {
                         setTempProduct({});
                       }}
                       isEditing={false}
+                      isSaving={isSavingProduct}
                     />
                   )}
                   <ProductList
@@ -646,6 +664,8 @@ const CompetitorDetail: React.FC = () => {
                     onStartEditImage={(productId) => {
                       setEditingImageProductId(productId);
                     }}
+                    uploadingProductId={uploadingProductId}
+                    isSavingProduct={isSavingProduct}
                   />
                 </>
               )}
@@ -679,6 +699,7 @@ const CompetitorDetail: React.FC = () => {
                       removeAd(competitor.id, adId);
                     }
                   }}
+                  isSaving={isSavingAd}
                 />
               )}
             </div>
