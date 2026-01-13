@@ -16,6 +16,7 @@ interface AppState {
   
   // Loading State
   isLoading: boolean;
+
   
   // Product CRUD
   addProduct: (competitorId: string, product: Product) => void;

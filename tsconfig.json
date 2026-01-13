@@ -28,5 +28,5 @@
     "noEmit": true
   },
   "include": ["src", "components", "services", "types.ts", "*.tsx", "*.ts"],
-  "exclude": ["node_modules", "dist", "deploy.ts"]
+  "exclude": ["node_modules", "dist", "deploy.ts", "update_prompts.ts"]
 }

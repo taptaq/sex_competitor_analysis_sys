@@ -33,6 +33,7 @@ const Dashboard: React.FC = () => {
     setSelectedCompetitor,
     addCompetitor,
     removeCompetitor,
+    isLoading, // Get global loading state
   } = useStore();
   const [isAdding, setIsAdding] = useState(false);
   const [newCompanyName, setNewCompanyName] = useState("");
@@ -229,6 +230,14 @@ const Dashboard: React.FC = () => {
     document.body.removeChild(link);
     setShowExportMenu(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 pb-20">
