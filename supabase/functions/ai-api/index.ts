@@ -283,16 +283,16 @@ Deno.serve(async (req) => {
         3. Statistics: ${reviews.length} reviews, ${totalLikes} total likes, ${avgLikes} avg likes, ${highLikeCount} high-value reviews.
         4. Maintain a strictly professional tone. Avoid prohibited explicit content. Use clinical terms where necessary.
         
-        ${isDomestic ? "Context: Chinese market consumer preferences." : "Context: Global market consumer preferences."}
+        ${isDomestic ? "Context: Chinese market consumer preferences." : "Context: Global market consumer preferences. Input may be in English or other languages."}
         
         Output Requirements (JSON Format, Keys in English, Values in Simplified Chinese):
-        1. pros: List of main product strengths (Array of Strings).
-        2. cons: List of main product weaknesses or complaints (Array of Strings).
-        3. summary: A brief competitiveness summary (String), citing user engagement levels.
-        4. prosKeywords: High-frequency positive keywords (Array of Objects: {value: string, count: number}).
-        5. consKeywords: High-frequency negative keywords (Array of Objects: {value: string, count: number}).
+        1. pros: List of main product strengths (Array of Strings). Translate to Chinese if original is English.
+        2. cons: List of main product weaknesses or complaints (Array of Strings). Translate to Chinese if original is English.
+        3. summary: A brief competitiveness summary (String), citing user engagement levels. Must be in Chinese.
+        4. prosKeywords: High-frequency positive keywords (Array of Objects: {value: string, count: number}). Value must be in Chinese.
+        5. consKeywords: High-frequency negative keywords (Array of Objects: {value: string, count: number}). Value must be in Chinese.
         
-        **IMPORTANT: All value strings must be in Simplified Chinese. Return valid JSON only.**`;
+        **IMPORTANT: All value strings must be in Simplified Chinese. Even if input is English, the output analysis must be translated to Chinese. Return valid JSON only.**`;
 
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });

@@ -865,7 +865,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </div>
             ) : (
               <div className="mt-4 flex-1 flex items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-200">
-                <p className="text-sm text-gray-400">暂无 AI 分析报告</p>
+                <p className="text-sm text-gray-400">
+                  暂无 AI 分析（需上传用户评论数据进行分析）
+                </p>
               </div>
             )}
 
