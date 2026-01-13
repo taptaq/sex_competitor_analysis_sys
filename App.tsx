@@ -10,6 +10,7 @@ import CompetitorReportAnalysis from "./components/CompetitorReportAnalysis";
 import ProductKnowledgeBase from "./components/ProductKnowledgeBase";
 import StandardizationLab from "./components/StandardizationLab";
 import MedicalVocabLab from "./components/MedicalVocabLab";
+import ThinkingWall from "./components/ThinkingWall";
 
 import { Menu } from "lucide-react";
 
@@ -43,6 +44,8 @@ const App: React.FC = () => {
         return <StandardizationLab />;
       case ViewType.MEDICAL_VOCAB:
         return <MedicalVocabLab />;
+      case ViewType.THINKING_WALL:
+        return <ThinkingWall />;
       default:
         return <Dashboard />;
     }

@@ -295,3 +295,6 @@ export const analyzeStandardization = async (
     throw error;
   }
 };
+export const analyzeThought = async (content: string) => {
+  return await invokeAI('analyze-thought', { content });
+};

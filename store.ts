@@ -2,6 +2,17 @@
 import { create } from 'zustand';
 import { supabase } from './services/supabase';
 import { ViewType, Competitor, Product, ReviewAnalysis, AdCreative } from './types';
+import { analyzeThought } from './services/gemini';
+
+export interface ThinkingNote {
+  id: string;
+  content: string;
+  color: string;
+  position_index?: number;
+  created_at?: string;
+  updated_at?: string;
+  analysis?: any;
+}
 
 interface AppState {
   currentView: ViewType;
@@ -82,6 +93,14 @@ interface AppState {
   fetchMedicalTerms: () => Promise<void>;
   addMedicalTerm: (term: string, replacement: string, category?: string) => Promise<void>;
   removeMedicalTerm: (id: string) => Promise<void>;
+
+  // Thinking Wall
+  thinkingNotes: ThinkingNote[];
+  fetchThinkingNotes: () => Promise<void>;
+  addThinkingNote: (note: { content: string; color: string }) => Promise<void>;
+  updateThinkingNote: (id: string, updates: Partial<ThinkingNote>) => Promise<void>;
+  deleteThinkingNote: (id: string) => Promise<void>;
+  analyzeThinkingNote: (id: string) => Promise<void>;
 }
 
 // Helper to save to server - REMOVED, using direct Supabase calls
@@ -532,5 +551,76 @@ export const useStore = create<AppState>((set, get) => ({
     set(state => ({ medicalTerms: state.medicalTerms.filter(t => t.id !== id) }));
     const { error } = await supabase.from('medical_terminology').delete().eq('id', id);
     if (error) console.error("Failed to delete medical term", error);
+  },
+
+  // Thinking Wall
+  thinkingNotes: [],
+  fetchThinkingNotes: async () => {
+    try {
+      const { data, error } = await supabase
+        .from('thinking_notes')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      set({ thinkingNotes: data || [] });
+    } catch (error) {
+      console.error('Failed to fetch thinking notes:', error);
+    }
+  },
+  addThinkingNote: async (note) => {
+    // Optimistic
+    const tempId = `temp-${Date.now()}`;
+    const newNote = { ...note, id: tempId, created_at: new Date().toISOString() };
+    set(state => ({ thinkingNotes: [newNote, ...state.thinkingNotes] }));
+
+    try {
+      const { data, error } = await supabase.from('thinking_notes').insert({
+        content: note.content,
+        color: note.color
+      }).select();
+      
+      if (error) throw error;
+      
+      if (data && data[0]) {
+        set(state => ({
+          thinkingNotes: state.thinkingNotes.map(n => n.id === tempId ? data[0] : n)
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to add thinking note", error);
+      get().fetchThinkingNotes(); // Revert
+    }
+  },
+  updateThinkingNote: async (id, updates) => {
+    set(state => ({
+      thinkingNotes: state.thinkingNotes.map(n => n.id === id ? { ...n, ...updates } : n)
+    }));
+    const { error } = await supabase.from('thinking_notes').update(updates).eq('id', id);
+    if (error) console.error("Failed to update thinking note", error);
+  },
+  deleteThinkingNote: async (id) => {
+    set(state => ({
+      thinkingNotes: state.thinkingNotes.filter(n => n.id !== id)
+    }));
+    const { error } = await supabase.from('thinking_notes').delete().eq('id', id);
+    if (error) console.error("Failed to delete thinking note", error);
+  },
+  analyzeThinkingNote: async (id) => {
+    const note = get().thinkingNotes.find(n => n.id === id);
+    if (!note) return;
+
+    // Loading start (optional: could add a specific loading state)
+    // set({ isLoading: true }); 
+
+    try {
+      const analysis = await analyzeThought(note.content);
+      // Update local and remote
+      get().updateThinkingNote(id, { analysis });
+    } catch (error) {
+       console.error("Failed to analyze thought", error);
+       alert("AI 分析失败，请重试");
+    } finally {
+       // set({ isLoading: false });
+    }
   }
 }));

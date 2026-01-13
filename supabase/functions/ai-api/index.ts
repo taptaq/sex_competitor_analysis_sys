@@ -1420,6 +1420,32 @@ Deno.serve(async (req) => {
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
+    
+    if (action === "analyze-thought") {
+        const { content } = payload;
+        const prompt = `
+        You are a Senior Product Strategist and Innovation Consultant specializing in the adult industry.
+        You are analyzing a fragmented thought or idea from a product manager's "Thinking Wall".
+
+        Thought Content: "${content}"
+
+        Your Goal: Expand this thought into a structured insight, challenge it, and provide actionable next steps.
+
+        Output Requirements (JSON):
+        {
+          "coreConcept": "Refine the thought into a clear, professional concept title (max 10 words)",
+          "deepInsight": "Analyze the underlying implication, key trends, or user psychology behind this thought (30-50 words)",
+          "blindSpots": ["List 1 or 2 potential risks, overlooked factors, or counter-arguments"],
+          "actionableSteps": ["List 2-3 concrete steps to validate or implement this idea"],
+          "innovationAngle": "Propose one creative twist or 'What If' scenario to push this idea further"
+        }
+
+        Language: Chinese (Professional, insightful, encouraging).
+        `;
+
+        const data = await askAI(prompt, null); // No schema validation for now or use simplified schema
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     return new Response(JSON.stringify({ error: 'Unknown Action' }), { status: 400, headers: corsHeaders });
 
