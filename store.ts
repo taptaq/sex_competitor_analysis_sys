@@ -76,6 +76,7 @@ interface AppState {
 
   standardizationTests: any[];
   fetchStandardizationTests: () => Promise<void>;
+  deleteStandardizationTest: (id: string) => Promise<void>;
 
   medicalTerms: any[];
   fetchMedicalTerms: () => Promise<void>;
@@ -483,6 +484,19 @@ export const useStore = create<AppState>((set, get) => ({
       set({ standardizationTests: data });
     } catch (error) {
       console.error('Failed to fetch standardization tests:', error);
+    }
+  },
+  deleteStandardizationTest: async (id) => {
+    set((state) => ({
+      standardizationTests: state.standardizationTests.filter(t => t.id !== id)
+    }));
+    try {
+      const { error } = await supabase.from('standardization_tests').delete().eq('id', id);
+      if (error) throw error;
+    } catch (error) {
+      console.error('Failed to delete standardization test:', error);
+      // Revert if failed? For now just log, assuming UI is done.
+      get().fetchStandardizationTests();
     }
   },
 

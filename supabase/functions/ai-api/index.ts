@@ -1348,10 +1348,16 @@ Deno.serve(async (req) => {
                     "type": "object",
                     "properties": {
                         "penetrationIndex": { "type": "number", "description": "1-10 scale" },
+                        "penetrationReasoning": { "type": "string", "description": "Explanation for the score" },
+                        "penetrationDeductions": { "type": "string", "description": "List of deduction points" },
                         "acousticPrivacy": { "type": "number", "description": "1-10 scale" },
-                        "skinAffinity": { "type": "number", "description": "1-10 scale" }
+                        "acousticPrivacyReasoning": { "type": "string", "description": "Explanation for the score" },
+                        "acousticPrivacyDeductions": { "type": "string", "description": "List of deduction points" },
+                        "skinAffinity": { "type": "number", "description": "1-10 scale" },
+                        "skinAffinityReasoning": { "type": "string", "description": "Explanation for the score" },
+                        "skinAffinityDeductions": { "type": "string", "description": "List of deduction points" }
                     },
-                    "required": ["penetrationIndex", "acousticPrivacy", "skinAffinity"]
+                    "required": ["penetrationIndex", "penetrationReasoning", "penetrationDeductions", "acousticPrivacy", "acousticPrivacyReasoning", "acousticPrivacyDeductions", "skinAffinity", "skinAffinityReasoning", "skinAffinityDeductions"]
                 },
                 "complianceCheck": {
                     "type": "object",
@@ -1392,9 +1398,15 @@ Deno.serve(async (req) => {
 
         Output Requirements (JSON):
         1. sensoryIndices:
-           - penetrationIndex (1-10): 1=Surface vibration, 10=Deep tissue resonance. Based on motor type and user feedback.
+           - penetrationIndex (1-10): 1=Surface vibration, 10=Deep tissue resonance.
+           - penetrationReasoning: Explain why this score was given based on motor parameters or user feedback (30-50 words, Chinese).
+           - penetrationDeductions: List specific negative factors that reduced the score from 10. IMPORTANT: The total points deducted MUST equal (10 - penetrationIndex). e.g., if score is 6, list deductions totaling -4 (e.g., "-2: Weak motor; -2: Surface vibration only").
            - acousticPrivacy (1-10): 1=Loud/High-pitch, 10=Silent/Deep-tone.
+           - acousticPrivacyReasoning: Explain noise levels and pitch based on feedback or specs (30-50 words, Chinese).
+           - acousticPrivacyDeductions: List specific negative factors. IMPORTANT: Total deducted MUST equal (10 - acousticPrivacy). (e.g., "-2: High pitch whine; -1: >50dB").
            - skinAffinity (1-10): 1=Sticky/Rough, 10=Silky/Skin-like.
+           - skinAffinityReasoning: Explain material feel and quality based on user reviews (30-50 words, Chinese).
+           - skinAffinityDeductions: List specific negative factors. IMPORTANT: Total deducted MUST equal (10 - skinAffinity). (e.g., "-1: Dust magnet; -2: Mould lines").
         2. complianceCheck:
            - biocompatibilityLevel: Assess material safety using one of: "医用级", "食品级", "工业/玩具级".
            - ergonomicsScore (1-10): Anatomical fit evaluation.

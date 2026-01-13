@@ -27,12 +27,15 @@ const StandardizationLab: React.FC = () => {
     saveStandardizationTest,
     standardizationTests,
     fetchStandardizationTests,
+    deleteStandardizationTest,
     medicalTerms,
     fetchMedicalTerms,
     // addMedicalTerm, // No longer needed here
     // removeMedicalTerm, // No longer needed here
   } = useStore();
   const [showHistory, setShowHistory] = useState(false);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   // const [showMedicalVocab, setShowMedicalVocab] = useState(false); // Removed
   // const [newTerm, setNewTerm] = useState({ term: "", replacement: "" }); // Removed
 
@@ -62,6 +65,7 @@ const StandardizationLab: React.FC = () => {
         // Format specs as JSON if available
         parameters: product.specs ? JSON.stringify(product.specs, null, 2) : "",
         isDomestic: competitor.isDomestic ?? true,
+        reviews: "",
       }));
     }
   };
@@ -117,7 +121,8 @@ const StandardizationLab: React.FC = () => {
       setResult(data);
 
       // Auto-save record
-      saveStandardizationTest({
+      // Auto-save record
+      await saveStandardizationTest({
         productName: input.productName,
         productId: selectedProductId || undefined,
         competitorId: selectedCompetitorId || undefined,
@@ -125,7 +130,7 @@ const StandardizationLab: React.FC = () => {
         parameters: parsedParams,
         reviewsSample: input.reviews,
         resultData: data,
-      }).catch((err) => console.error("Auto-save failed:", err));
+      });
     } catch (error) {
       console.error(error);
       alert("分析失败，请重试");
@@ -173,13 +178,22 @@ const StandardizationLab: React.FC = () => {
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => {
+              onClick={async () => {
                 setShowHistory(true);
-                fetchStandardizationTests();
+                setIsHistoryLoading(true);
+                try {
+                  await fetchStandardizationTests();
+                } finally {
+                  setIsHistoryLoading(false);
+                }
               }}
               className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors"
             >
-              <Activity size={16} />
+              {isHistoryLoading ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <Activity size={16} />
+              )}
               历史记录
             </button>
           </div>
@@ -204,7 +218,11 @@ const StandardizationLab: React.FC = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto p-6">
-              {standardizationTests.length === 0 ? (
+              {isHistoryLoading ? (
+                <div className="flex h-full items-center justify-center">
+                  <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+                </div>
+              ) : standardizationTests.length === 0 ? (
                 <div className="text-center py-12 text-gray-400">
                   <FlaskConical size={48} className="mx-auto mb-4 opacity-20" />
                   <p>暂无历史记录</p>
@@ -232,7 +250,7 @@ const StandardizationLab: React.FC = () => {
                       }}
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <div>
+                        <div className="flex-1">
                           <h4 className="font-bold text-gray-800 group-hover:text-teal-600 transition-colors">
                             {test.product_name}
                           </h4>
@@ -240,18 +258,47 @@ const StandardizationLab: React.FC = () => {
                             {new Date(test.created_at).toLocaleString()}
                           </p>
                         </div>
-                        <div className="flex gap-2 text-xs">
+                        <button
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            if (confirm("确定要删除这条历史记录吗？")) {
+                              setDeletingId(test.id);
+                              await deleteStandardizationTest(test.id);
+                              setDeletingId(null);
+                            }
+                          }}
+                          className="text-gray-400 hover:text-red-500 p-1 rounded transition-colors"
+                          disabled={deletingId === test.id}
+                        >
+                          {deletingId === test.id ? (
+                            <Loader2 size={16} className="animate-spin" />
+                          ) : (
+                            <Trash2 size={16} />
+                          )}
+                        </button>
+                      </div>
+                      <div className="flex gap-2 text-xs flex-wrap">
+                        {test.result_data.sensoryIndices && (
                           <span
                             className={`px-2 py-1 rounded bg-white border ${
                               test.result_data.sensoryIndices
-                                ?.penetrationIndex >= 8
-                                ? "border-green-200 text-green-700"
+                                .penetrationIndex >= 8
+                                ? "border-red-200 text-red-600"
                                 : "border-gray-200 text-gray-600"
                             }`}
                           >
-                            穿透力:{" "}
-                            {test.result_data.sensoryIndices?.penetrationIndex}
+                            震感：
+                            {test.result_data.sensoryIndices.penetrationIndex}
                           </span>
+                        )}
+                        {test.result_data.specVerification && (
+                          <span className="px-2 py-1 rounded bg-white border border-blue-200 text-blue-600">
+                            真实度：
+                            {test.result_data.specVerification.realityScore}
+                          </span>
+                        )}
+                        {test.result_data.complianceCheck
+                          ?.biocompatibilityLevel && (
                           <span
                             className={`px-2 py-1 rounded bg-white border ${
                               translateBiocompatibility(
@@ -267,11 +314,13 @@ const StandardizationLab: React.FC = () => {
                                 ?.biocompatibilityLevel
                             )}
                           </span>
-                        </div>
+                        )}
                       </div>
-                      <p className="text-xs text-gray-400 line-clamp-1">
-                        {test.reviews_sample?.slice(0, 100)}...
-                      </p>
+                      {test.reviews_sample && (
+                        <p className="text-xs text-gray-400 line-clamp-1 mt-2">
+                          {test.reviews_sample.slice(0, 100)}...
+                        </p>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -629,9 +678,25 @@ const StandardizationLab: React.FC = () => {
                         }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">
-                      1 = 表层震动 (Surface) --- 10 = 深层共振 (Deep Tissue)
-                    </p>
+                    <div className="flex justify-between items-center mt-1">
+                      <p className="text-xs text-gray-400">
+                        1 = 表层震动 (Surface) --- 10 = 深层共振 (Deep Tissue)
+                      </p>
+                    </div>
+                    {/* Penetration Reasoning */}
+                    <div className="text-xs text-gray-500 mt-2 bg-gray-50 p-2 rounded">
+                      <strong>AI 评判：</strong>
+                      {result.sensoryIndices.penetrationReasoning ||
+                        "基于震感的深度与共振范围。低分代表震感仅停留在皮肤表层，随压力增加而衰减；高分代表震感能穿透肌肉组织，且在大功率输出下仍能保持浑厚不散。"}
+                      {result.sensoryIndices.penetrationDeductions &&
+                        result.sensoryIndices.penetrationDeductions !==
+                          "None" && (
+                          <div className="mt-1 pt-1 border-t border-gray-200 text-red-500">
+                            <strong>扣分点：</strong>
+                            {result.sensoryIndices.penetrationDeductions}
+                          </div>
+                        )}
+                    </div>
                   </div>
 
                   {/* Acoustic Privacy */}
@@ -661,9 +726,25 @@ const StandardizationLab: React.FC = () => {
                         }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">
-                      1 = 尖锐刺耳 (Loud) --- 10 = 沉闷静音 (Silent)
-                    </p>
+                    <div className="flex justify-between items-center mt-1">
+                      <p className="text-xs text-gray-400">
+                        1 = 尖锐刺耳 (Loud) --- 10 = 沉闷静音 (Silent)
+                      </p>
+                    </div>
+                    {/* Acoustic Privacy Reasoning */}
+                    <div className="text-xs text-gray-500 mt-2 bg-gray-50 p-2 rounded">
+                      <strong>AI 评判：</strong>
+                      {result.sensoryIndices.acousticPrivacyReasoning ||
+                        "综合考量噪音分贝值与声音频率。低分代表声音尖锐、机械感强且穿透性强；高分代表声音低沉闷响，在覆盖物下即便高档位也难以被旁人察觉。"}
+                      {result.sensoryIndices.acousticPrivacyDeductions &&
+                        result.sensoryIndices.acousticPrivacyDeductions !==
+                          "None" && (
+                          <div className="mt-1 pt-1 border-t border-gray-200 text-red-500">
+                            <strong>扣分点：</strong>
+                            {result.sensoryIndices.acousticPrivacyDeductions}
+                          </div>
+                        )}
+                    </div>
                   </div>
 
                   {/* Skin Affinity */}
@@ -691,9 +772,25 @@ const StandardizationLab: React.FC = () => {
                         }}
                       />
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">
-                      1 = 粘腻/粗糙 (Rough) --- 10 = 仿真/丝滑 (Silky)
-                    </p>
+                    <div className="flex justify-between items-center mt-1">
+                      <p className="text-xs text-gray-400">
+                        1 = 粘腻/粗糙 (Rough) --- 10 = 仿真/丝滑 (Silky)
+                      </p>
+                    </div>
+                    {/* Skin Affinity Reasoning */}
+                    <div className="text-xs text-gray-500 mt-2 bg-gray-50 p-2 rounded">
+                      <strong>AI 评判：</strong>
+                      {result.sensoryIndices.skinAffinityReasoning ||
+                        "评估材质的触感真实度与表面处理工艺。低分代表材质有明显的塑料感、合模线粗糙或易吸附灰尘；高分代表触感接近真实肌肤，表面经过爽滑处理，亲肤且易于清洁。"}
+                      {result.sensoryIndices.skinAffinityDeductions &&
+                        result.sensoryIndices.skinAffinityDeductions !==
+                          "None" && (
+                          <div className="mt-1 pt-1 border-t border-gray-200 text-red-500">
+                            <strong>扣分点：</strong>
+                            {result.sensoryIndices.skinAffinityDeductions}
+                          </div>
+                        )}
+                    </div>
                   </div>
                 </div>
               </div>
