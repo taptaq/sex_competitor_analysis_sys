@@ -24,6 +24,7 @@ import {
   ChevronDown,
   Calendar,
   Filter,
+  Package,
 } from "lucide-react";
 import { fetchCompetitorData } from "../services/gemini";
 
@@ -577,6 +578,11 @@ const Dashboard: React.FC = () => {
                               </div>
                             </>
                           )}
+                          <span className="text-xs text-gray-300">•</span>
+                          <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <Package size={10} />
+                            <span>{(comp.products || []).length} 款产品</span>
+                          </div>
                         </div>
                       </div>
                       <div className="text-right shrink-0 flex items-center gap-3">

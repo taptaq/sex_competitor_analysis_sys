@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
     {
       type: ViewType.DASHBOARD,
       icon: <LayoutDashboard size={20} />,
-      label: "仪表盘首页",
+      label: "竞品列表",
     },
     {
       type: ViewType.PRODUCT_COMPARISON,
@@ -80,8 +80,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   const sidebarClasses = `
     bg-slate-900 text-white flex flex-col h-screen 
     transition-all duration-300 
-    ${isMobile ? "fixed inset-y-0 left-0 z-50 w-64 shadow-2xl" : "sticky top-0"}
-    ${!isMobile && isCollapsed ? "w-20" : "w-64"}
+    ${isMobile ? "fixed inset-y-0 left-0 z-50 w-80 shadow-2xl" : "sticky top-0"}
+    ${!isMobile && isCollapsed ? "w-20" : "w-80"}
     ${isMobile && !isOpen ? "-translate-x-full" : "translate-x-0"}
   `;
 
@@ -109,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
             </div>
             {(!isCollapsed || isMobile) && (
               <span className="text-lg font-bold tracking-tight whitespace-nowrap overflow-hidden transition-all duration-300">
-                竞品情报
+                情趣用品竞品智能分析系统
               </span>
             )}
           </div>

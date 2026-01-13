@@ -730,7 +730,7 @@ const ProductKnowledgeBase: React.FC = () => {
         {knowledgeBaseStats.totalProducts === 0 && (
           <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-sm text-yellow-800">
-              ⚠️ 知识库中暂无产品数据，请先在"仪表盘首页"添加竞品和产品信息
+              ⚠️ 知识库中暂无产品数据，请先在"竞品列表"添加竞品和产品信息
             </p>
           </div>
         )}
