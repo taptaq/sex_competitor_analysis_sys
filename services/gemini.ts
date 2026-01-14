@@ -81,6 +81,7 @@ export const fetchCompetitorData = async (companyName: string, isDomestic: boole
     const data = await invokeAI('competitor', { companyName, isDomestic });
     return { 
       ...data, 
+      id: crypto.randomUUID(), // Ensure we always generate a valid UUID for the database
       isDomestic, 
       foundedDate: data.foundedDate || undefined,
       country: data.country || undefined
@@ -88,7 +89,7 @@ export const fetchCompetitorData = async (companyName: string, isDomestic: boole
   } catch (error) {
      console.error('AI Service Error:', error);
      return {
-        id: `comp-${Date.now()}`,
+        id: crypto.randomUUID(),
         name: companyName,
         domain: 'example.com',
         isDomestic,
@@ -297,4 +298,16 @@ export const analyzeStandardization = async (
 };
 export const analyzeThought = async (content: string) => {
   return await invokeAI('analyze-thought', { content });
+};
+
+export const analyzeGlobalReviewQA = async (
+  question: string,
+  reviews: Array<{ productName: string; text: string }>
+) => {
+  try {
+    return await invokeAI('review-qa', { question, reviews });
+  } catch (error) {
+    console.error('Global Review QA Service Error:', error);
+    throw error;
+  }
 };

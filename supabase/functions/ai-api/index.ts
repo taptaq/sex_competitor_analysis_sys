@@ -1423,6 +1423,27 @@ Deno.serve(async (req) => {
     
     if (action === "analyze-thought") {
         const { content } = payload;
+        
+        const schema = {
+            "type": "object",
+            "properties": {
+                "coreConcept": { "type": "string", "description": "Refine the thought into a clear, professional concept title (max 10 words)" },
+                "deepInsight": { "type": "string", "description": "Analyze the underlying implication, key trends, or user psychology behind this thought (30-50 words)" },
+                "blindSpots": { 
+                    "type": "array", 
+                    "items": { "type": "string" },
+                    "description": "List 1 or 2 potential risks, overlooked factors, or counter-arguments"
+                },
+                "actionableSteps": { 
+                    "type": "array", 
+                    "items": { "type": "string" },
+                    "description": "List 2-3 concrete steps to validate or implement this idea"
+                },
+                "innovationAngle": { "type": "string", "description": "Propose one creative twist or 'What If' scenario to push this idea further" }
+            },
+            "required": ["coreConcept", "deepInsight", "blindSpots", "actionableSteps", "innovationAngle"]
+        };
+
         const prompt = `
         You are a Senior Product Strategist and Innovation Consultant specializing in the adult industry.
         You are analyzing a fragmented thought or idea from a product manager's "Thinking Wall".
@@ -1432,18 +1453,71 @@ Deno.serve(async (req) => {
         Your Goal: Expand this thought into a structured insight, challenge it, and provide actionable next steps.
 
         Output Requirements (JSON):
-        {
-          "coreConcept": "Refine the thought into a clear, professional concept title (max 10 words)",
-          "deepInsight": "Analyze the underlying implication, key trends, or user psychology behind this thought (30-50 words)",
-          "blindSpots": ["List 1 or 2 potential risks, overlooked factors, or counter-arguments"],
-          "actionableSteps": ["List 2-3 concrete steps to validate or implement this idea"],
-          "innovationAngle": "Propose one creative twist or 'What If' scenario to push this idea further"
-        }
+        1. coreConcept: Refine the thought into a clear, professional concept title (max 10 words)
+        2. deepInsight: Analyze the underlying implication, key trends, or user psychology behind this thought (30-50 words)
+        3. blindSpots: List 1 or 2 potential risks, overlooked factors, or counter-arguments
+        4. actionableSteps: List 2-3 concrete steps to validate or implement this idea
+        5. innovationAngle: Propose one creative twist or 'What If' scenario to push this idea further
 
         Language: Chinese (Professional, insightful, encouraging).
         `;
 
-        const data = await askAI(prompt, null); // No schema validation for now or use simplified schema
+        const data = await askAI(prompt, schema); 
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    if (action === "review-qa") {
+        const { question, reviews } = payload;
+        
+        // Construct context from reviews (Truncate if too long to avoid token limits)
+        // Format: [Product Name]: Review Text
+        const reviewsContext = reviews
+            .slice(0, 100) // Limit to 100 reviews max for now to be safe
+            .map((r: any) => `[${r.productName}]: ${r.text}`)
+            .join('\n\n')
+            .substring(0, 30000); // Max char limit
+
+        const schema = {
+            "type": "object",
+            "properties": {
+                "answer": { "type": "string", "description": "Direct, comprehensive answer to the user's question based on reviews." },
+                "keyEvidence": { 
+                    "type": "array", 
+                    "items": { "type": "string" },
+                    "description": "3-5 key quotes or summary points from the reviews that support your answer."
+                },
+                "sentiment": { "type": "string", "enum": ["Positive", "Negative", "Neutral", "Mixed"], "description": "Overall sentiment regarding the specific question topic." },
+                "mentionedProducts": { 
+                    "type": "array", 
+                    "items": { "type": "string" },
+                    "description": "List of product names that are most relevant to the answer."
+                }
+            },
+            "required": ["answer", "keyEvidence", "sentiment", "mentionedProducts"]
+        };
+
+        const prompt = `
+        You are a Consumer Insights Analyst. 
+        A user is asking a specific question about a collection of product reviews in the Adult Wellness industry.
+
+        User Question: "${question}"
+
+        Review Data:
+        ${reviewsContext}
+
+        Your Goal: specificially answer the user's question using ONLY the provided review data. 
+        - If the reviews don't contain the answer, state that clearly.
+        - Be objective and data-driven.
+        - Cite specific product examples where relevant.
+
+        Output Requirements (JSON, Chinese Answer):
+        1. answer: Detailed answer in Chinese.
+        2. keyEvidence: Key points/quotes (Chinese).
+        3. sentiment: Overall sentiment about this topic.
+        4. mentionedProducts: Products cited in your answer.
+        `;
+
+        const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 

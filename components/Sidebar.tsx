@@ -66,14 +66,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       label: "产品测谎仪",
     },
     {
-      type: ViewType.THINKING_WALL,
-      icon: <FileText size={20} />, // Reusing FileText or getting StickyNote if imported
-      label: "思考墙",
-    },
-    {
       type: ViewType.MEDICAL_VOCAB,
       icon: <BookOpen size={20} />,
       label: "医疗语境词库",
+    },
+    {
+      type: ViewType.THINKING_WALL,
+      icon: <FileText size={20} />,
+      label: "思考墙",
     },
   ];
 
