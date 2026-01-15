@@ -155,6 +155,7 @@ export interface Competitor {
   ads?: AdCreative[];
   philosophy?: string[];
   focus?: 'Male' | 'Female' | 'Unisex';
+  majorUserGroupProfile?: string; // 主要用户群体画像信息
   isDomestic?: boolean;
   foundedDate?: string; // 创立日期，格式：YYYY-MM 或 YYYY
   country?: string; // 国家名（仅用于国外品牌）

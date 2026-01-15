@@ -186,7 +186,8 @@ Deno.serve(async (req) => {
                 },
                 "foundedDate": { "type": "string" },
                 "country": { "type": "string" },
-                "description": { "type": "string" }
+                "description": { "type": "string" },
+                "majorUserGroupProfile": { "type": "string" }
             }
         };
 
@@ -208,13 +209,42 @@ Deno.serve(async (req) => {
         5. foundedDate: Founding date ("YYYY-MM" or "YYYY"). Empty string if unknown.
         ${!isDomestic ? "6. country: Country of origin (e.g., USA, Japan, Germany). Empty if Chinese brand." : ""}
         7. description: Brief brand overview (<100 chars), summarizing core business/status.
+        8. majorUserGroupProfile: Analysis of the brand's major user group demographics and characteristics (<100 chars).
         
-        **IMPORTANT: All string values (philosophy, description, country) must be in Simplified Chinese. Return valid JSON only.**`;
+        **IMPORTANT: All string values (philosophy, description, country, majorUserGroupProfile) must be in Simplified Chinese. Return valid JSON only.**`;
 
         const data = await askAI(prompt, schema);
         if (!data.id || data.id === '1') {
              data.id = `comp-${Date.now()}`;
         }
+
+    if (action === 'analyze-user-group') {
+        const { brandName, isDomestic } = payload;
+        
+        const schema = {
+             "type": "object",
+             "properties": {
+                 "result": { "type": "string" }
+             },
+             "required": ["result"]
+        };
+
+        const prompt = `You are an Intimate Health Market Analyst. Please analyze the "Major User Group Profile" for the brand "${brandName}".
+        
+        Context: ${isDomestic ? "Market: China (Domestic)." : "Market: International."}
+        
+        Output Requirements:
+        - Provide a concise analysis (<100 chars) of the brand's primary target demographic, age group, and user characteristics.
+        - Tone: Professional, direct.
+        - Language: Simplified Chinese.
+        
+        Example Output: "20-35岁年轻女性，追求品质生活，关注自我愉悦与健康，对外观设计有较高要求。"
+        
+        **Output JSON only: { "result": "..." }**`;
+
+        const data = await askAI(prompt, schema);
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 

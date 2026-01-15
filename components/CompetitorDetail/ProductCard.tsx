@@ -928,8 +928,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   <label className="text-xs text-gray-500 mb-1 block">
                     导入价格数据 (Excel/CSV):
                   </label>
-                  <div className="flex items-center gap-2">
-                    <label className="flex items-center gap-2 cursor-pointer bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-50 text-xs font-medium transition-colors">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <label className="flex items-center gap-2 cursor-pointer bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-xs font-medium transition-colors whitespace-nowrap">
                       <Upload size={14} />
                       <span>选择文件导入</span>
                       <input
@@ -944,19 +944,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
                       />
                     </label>
                     {uploadingProductId === product.id && (
-                      <span className="flex items-center gap-1 text-xs text-purple-600">
+                      <span className="flex items-center gap-1 text-xs text-purple-600 whitespace-nowrap">
                         <Loader2 size={12} className="animate-spin" />
                         导入中...
                       </span>
                     )}
-                    <span className="text-[10px] text-gray-400">
+                    <span className="text-[10px] text-gray-400 whitespace-nowrap">
                       已录入 {product.priceHistory?.length || 0} 条价格记录
                     </span>
                     {product.priceHistory &&
                       product.priceHistory.length > 0 && (
                         <button
                           onClick={() => onClearPriceHistory(product)}
-                          className="flex items-center gap-1 px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded border border-red-200 transition-colors"
+                          className="flex items-center gap-1 px-2 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded border border-red-200 transition-colors whitespace-nowrap"
                           title="清空价格走势数据"
                         >
                           <Trash2 size={12} />

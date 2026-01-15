@@ -84,7 +84,8 @@ export const fetchCompetitorData = async (companyName: string, isDomestic: boole
       id: crypto.randomUUID(), // Ensure we always generate a valid UUID for the database
       isDomestic, 
       foundedDate: data.foundedDate || undefined,
-      country: data.country || undefined
+      country: data.country || undefined,
+      majorUserGroupProfile: data.majorUserGroupProfile || undefined
     };
   } catch (error) {
      console.error('AI Service Error:', error);
@@ -259,6 +260,16 @@ export const analyzeBrandCharacteristics = async (
     return await invokeAI('brand-characteristics', { competitor: sanitizedCompetitor, isDomestic });
   } catch (error) {
     console.error('Brand Characteristics Analysis Service Error:', error);
+    throw error;
+  }
+};
+
+export const analyzeUserGroupProfile = async (brandName: string, isDomestic: boolean = false) => {
+  try {
+    const data = await invokeAI('analyze-user-group', { brandName, isDomestic });
+    return data.result;
+  } catch (error) {
+    console.error('User Group Analysis Service Error:', error);
     throw error;
   }
 };

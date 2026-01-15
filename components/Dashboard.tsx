@@ -38,6 +38,7 @@ const Dashboard: React.FC = () => {
   } = useStore();
   const [isAdding, setIsAdding] = useState(false);
   const [newCompanyName, setNewCompanyName] = useState("");
+  const [newUserGroupProfile, setNewUserGroupProfile] = useState("");
   const [isDomestic, setIsDomestic] = useState(true);
   const [loading, setLoading] = useState(false);
   const [radarCompAId, setRadarCompAId] = useState<string>("");
@@ -78,8 +79,18 @@ const Dashboard: React.FC = () => {
     try {
       const data = await fetchCompetitorData(trimmedName, isDomestic);
       console.log("Fetched data:", data);
-      addCompetitor(data);
+
+      // Merge manually entered user group profile
+      const competitorToAdd = {
+        ...data,
+        majorUserGroupProfile: newUserGroupProfile.trim()
+          ? newUserGroupProfile.trim()
+          : data.majorUserGroupProfile,
+      };
+
+      addCompetitor(competitorToAdd);
       setNewCompanyName("");
+      setNewUserGroupProfile("");
       setIsAdding(false);
     } catch (error) {
       console.error("Failed to fetch competitor data", error);
@@ -456,6 +467,13 @@ const Dashboard: React.FC = () => {
                   onChange={(e) => setNewCompanyName(e.target.value)}
                   className="flex-1 text-sm p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-purple-500 outline-none"
                   placeholder="例如: 杜蕾斯、小怪兽、大人糖..."
+                />
+                <input
+                  type="text"
+                  value={newUserGroupProfile}
+                  onChange={(e) => setNewUserGroupProfile(e.target.value)}
+                  className="flex-1 text-sm p-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-purple-500 outline-none"
+                  placeholder="主要用户群体画像信息(可选)"
                 />
                 <label className="flex items-center gap-1 cursor-pointer select-none">
                   <input

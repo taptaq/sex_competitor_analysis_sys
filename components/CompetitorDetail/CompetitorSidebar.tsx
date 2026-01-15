@@ -16,7 +16,10 @@ import {
   FileText,
   Network,
 } from "lucide-react";
-import { analyzeBrandCharacteristics } from "../../services/gemini";
+import {
+  analyzeBrandCharacteristics,
+  analyzeUserGroupProfile,
+} from "../../services/gemini";
 import { TagCloud } from "react-tagcloud";
 import QAAnalysisPanel from "./QAAnalysisPanel";
 
@@ -43,6 +46,10 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [tempCountry, setTempCountry] = useState("");
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [tempDescription, setTempDescription] = useState("");
+  const [isEditingUserGroupProfile, setIsEditingUserGroupProfile] =
+    useState(false);
+  const [tempUserGroupProfile, setTempUserGroupProfile] = useState("");
+  const [isAnalyzingUserGroup, setIsAnalyzingUserGroup] = useState(false);
   const [isAnalyzingBrand, setIsAnalyzingBrand] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
 
@@ -82,7 +89,10 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     md += `- **所属国家**: ${competitor.country || "未记录"}\n`;
     md += `- **核心理念**: ${competitor.philosophy?.join(" / ") || "未记录"}\n`;
     md += `- **主攻方向**: ${competitor.focus || "未记录"}\n`;
-    md += `- **品牌说明**: ${competitor.description || "未记录"}\n\n`;
+    md += `- **主要用户群体画像**: ${
+      competitor.majorUserGroupProfile || "未记录"
+    }\n`;
+    md += `- **其他说明**: ${competitor.description || "未记录"}\n\n`;
 
     if (competitor.brandCharacteristicAnalysis) {
       md += `## 2. 品牌特质分析\n`;
@@ -171,7 +181,10 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
             <outline text="成立时间: ${competitor.foundedDate || "未记录"}" />
             <outline text="所属国家: ${competitor.country || "未记录"}" />
             <outline text="主攻方向: ${competitor.focus || "未记录"}" />
-            <outline text="品牌说明: ${(
+            <outline text="主要用户群体画像: ${(
+              competitor.majorUserGroupProfile || "未记录"
+            ).replace(/"/g, "&quot;")}" />
+            <outline text="其他说明: ${(
               competitor.description || "未记录"
             ).replace(/"/g, "&quot;")}" />
             <outline text="品牌理念">`;
@@ -613,6 +626,39 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     setIsEditingCountry(false);
   };
 
+  const handleSaveUserGroupProfile = () => {
+    onUpdateCompetitor({
+      ...competitor,
+      majorUserGroupProfile: tempUserGroupProfile.trim() || undefined,
+    });
+    setIsEditingUserGroupProfile(false);
+  };
+
+  const handleAnalyzeUserGroup = async () => {
+    setIsAnalyzingUserGroup(true);
+    try {
+      const result = await analyzeUserGroupProfile(
+        competitor.name,
+        competitor.isDomestic
+      );
+      if (result) {
+        if (isEditingUserGroupProfile) {
+          setTempUserGroupProfile(result);
+        } else {
+          onUpdateCompetitor({
+            ...competitor,
+            majorUserGroupProfile: result,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("User Group Analysis Failed:", error);
+      alert("用户画像分析失败，请稍后重试");
+    } finally {
+      setIsAnalyzingUserGroup(false);
+    }
+  };
+
   const handlePhilosophyChange = (index: number, value: string) => {
     const newPhilosophy = [...tempPhilosophy];
     newPhilosophy[index] = value;
@@ -903,6 +949,78 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
               </>
             )}
           </div>
+
+          {/* User Group Profile */}
+          <div className="pt-4 border-t border-gray-100 group/userGroup relative">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                主要用户群体画像
+              </h4>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleAnalyzeUserGroup}
+                  disabled={isAnalyzingUserGroup}
+                  className={`p-1 rounded transition-colors ${
+                    isAnalyzingUserGroup
+                      ? "text-purple-400 cursor-not-allowed"
+                      : "text-purple-500 hover:bg-purple-50 hover:text-purple-600"
+                  }`}
+                  title="AI 智能生成用户画像"
+                >
+                  {isAnalyzingUserGroup ? (
+                    <Loader2 size={12} className="animate-spin" />
+                  ) : (
+                    <Sparkles size={12} />
+                  )}
+                </button>
+                {!isEditingUserGroupProfile && (
+                  <Pencil
+                    onClick={() => {
+                      setTempUserGroupProfile(
+                        competitor.majorUserGroupProfile || ""
+                      );
+                      setIsEditingUserGroupProfile(true);
+                    }}
+                    size={12}
+                    className="text-gray-400 opacity-0 group-hover/userGroup:opacity-100 transition-opacity cursor-pointer"
+                  />
+                )}
+              </div>
+            </div>
+            {isEditingUserGroupProfile ? (
+              <div className="space-y-2">
+                <textarea
+                  className="w-full text-sm p-2 border rounded focus:ring-2 focus:ring-purple-200 outline-none"
+                  rows={3}
+                  value={tempUserGroupProfile}
+                  onChange={(e) => setTempUserGroupProfile(e.target.value)}
+                  placeholder="请输入主要用户群体画像信息..."
+                  autoFocus
+                />
+                <div className="flex items-center justify-end gap-2">
+                  <button
+                    onClick={handleSaveUserGroupProfile}
+                    className="text-green-600 hover:text-green-700"
+                    title="保存"
+                  >
+                    <Save size={14} />
+                  </button>
+                  <button
+                    onClick={() => setIsEditingUserGroupProfile(false)}
+                    className="text-red-500 hover:text-red-600"
+                    title="取消"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+                {competitor.majorUserGroupProfile || "未设置"}
+              </p>
+            )}
+          </div>
+
           <div className="pt-4 border-t border-gray-100 group/philosophy relative">
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
@@ -1111,11 +1229,11 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
               )}
             </div>
           )}
-          {/* 品牌说明 */}
+          {/* 其他说明 */}
           <div className="pt-4 border-t border-gray-100 group/desc relative">
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                品牌说明
+                其他说明
               </h4>
               {!isEditingDescription && (
                 <Pencil
@@ -1135,7 +1253,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                   rows={4}
                   value={tempDescription}
                   onChange={(e) => setTempDescription(e.target.value)}
-                  placeholder="请输入品牌说明..."
+                  placeholder="请输入其他说明..."
                   autoFocus
                 />
                 <div className="flex items-center justify-end gap-2">
