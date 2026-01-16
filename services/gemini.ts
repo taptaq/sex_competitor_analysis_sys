@@ -264,9 +264,17 @@ export const analyzeBrandCharacteristics = async (
   }
 };
 
-export const analyzeUserGroupProfile = async (brandName: string, isDomestic: boolean = false) => {
+export const analyzeUserGroupProfile = async (
+  brandName: string, 
+  isDomestic: boolean = false,
+  context?: {
+    philosophy?: string[];
+    description?: string;
+    focus?: string;
+  }
+) => {
   try {
-    const data = await invokeAI('analyze-user-group', { brandName, isDomestic });
+    const data = await invokeAI('analyze-user-group', { brandName, isDomestic, context });
     return data.result;
   } catch (error) {
     console.error('User Group Analysis Service Error:', error);

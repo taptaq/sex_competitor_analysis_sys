@@ -637,9 +637,26 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const handleAnalyzeUserGroup = async () => {
     setIsAnalyzingUserGroup(true);
     try {
+      const currentName = isEditingName ? tempName : competitor.name;
+      const currentPhilosophy = isEditingPhilosophy
+        ? tempPhilosophy
+        : competitor.philosophy;
+      const currentDescription = isEditingDescription
+        ? tempDescription
+        : competitor.description;
+      // Handle "Unisex" mapping from empty string if needed, or strict value passage
+      const currentFocus = isEditingFocus
+        ? tempFocus || "Unisex"
+        : competitor.focus || "Unisex";
+
       const result = await analyzeUserGroupProfile(
-        competitor.name,
-        competitor.isDomestic
+        currentName,
+        competitor.isDomestic,
+        {
+          philosophy: currentPhilosophy,
+          description: currentDescription,
+          focus: currentFocus as string,
+        }
       );
       if (result) {
         if (isEditingUserGroupProfile) {
@@ -1015,9 +1032,79 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
-                {competitor.majorUserGroupProfile || "未设置"}
-              </p>
+              <div className="text-sm text-gray-600 leading-relaxed">
+                {(() => {
+                  const profileText = (() => {
+                    if (!competitor.majorUserGroupProfile) return null;
+                    try {
+                      // Check if it's a JSON string with a 'result' key (legacy/buggy data)
+                      if (
+                        competitor.majorUserGroupProfile.trim().startsWith("{")
+                      ) {
+                        const parsed = JSON.parse(
+                          competitor.majorUserGroupProfile
+                        );
+                        if (parsed.result) return parsed.result;
+                      }
+                    } catch (e) {
+                      // Not valid JSON, ignore
+                    }
+                    return competitor.majorUserGroupProfile;
+                  })();
+
+                  return profileText
+                    ? profileText.split(/\r?\n/).map((line, i) => {
+                        // Match lines like: "1. Header: Content" or "【Header】Content"
+                        const matchNumbered = line.match(
+                          /^(\d+[\.\、]\s*.*?[：:])\s*(.*)/
+                        );
+                        const matchBracket = line.match(/^【(.*?)】\s*(.*)/);
+
+                        if (matchNumbered) {
+                          return (
+                            <div
+                              key={i}
+                              className="mb-2 flex flex-col md:flex-row md:items-start"
+                            >
+                              <span className="font-bold text-gray-800 min-w-fit md:mr-2 bg-gray-50 px-1.5 py-0.5 rounded text-xs leading-5 mt-0.5">
+                                {matchNumbered[1].replace(/[:：]$/, "")}
+                              </span>
+                              <span className="text-gray-600 flex-1 text-xs leading-6">
+                                {matchNumbered[2]}
+                              </span>
+                            </div>
+                          );
+                        } else if (matchBracket) {
+                          return (
+                            <div
+                              key={i}
+                              className="mb-2 flex flex-col items-start"
+                            >
+                              <span className="font-bold text-gray-800 bg-purple-50 text-purple-700 px-2 py-0.5 rounded text-xs mb-1">
+                                {matchBracket[1]}
+                              </span>
+                              {matchBracket[2] && (
+                                <span className="text-gray-600 text-xs leading-6 w-full pl-1">
+                                  {matchBracket[2]}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        }
+
+                        // Keep empty lines for spacing
+                        if (!line.trim())
+                          return <div key={i} className="h-2"></div>;
+
+                        return (
+                          <div key={i} className="mb-1 whitespace-pre-wrap">
+                            {line}
+                          </div>
+                        );
+                      })
+                    : "未设置";
+                })()}
+              </div>
             )}
           </div>
 

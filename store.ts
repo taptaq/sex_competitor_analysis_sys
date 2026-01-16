@@ -139,7 +139,9 @@ export const useStore = create<AppState>((set, get) => ({
               priceHistory: p.price_history,
               priceAnalysis: p.price_analysis
           })),
-          foundedDate: comp.founded_date, // Map snake_case to camelCase
+          savedAt: comp.created_at, // Map snake_case to camelCase
+          foundedDate: comp.founded_date,
+          majorUserGroupProfile: comp.major_user_group_profile,
           isDomestic: comp.is_domestic
       }));
 
@@ -165,6 +167,7 @@ export const useStore = create<AppState>((set, get) => ({
           focus: competitor.focus,
           philosophy: competitor.philosophy,
           sentiment: competitor.sentiment,
+          major_user_group_profile: competitor.majorUserGroupProfile,
           is_domestic: competitor.isDomestic
       });
       if (error) {
@@ -196,6 +199,7 @@ export const useStore = create<AppState>((set, get) => ({
           focus: updatedComp.focus,
           philosophy: updatedComp.philosophy,
           sentiment: updatedComp.sentiment,
+          major_user_group_profile: updatedComp.majorUserGroupProfile,
           is_domestic: updatedComp.isDomestic
       }).eq('id', updatedComp.id);
 

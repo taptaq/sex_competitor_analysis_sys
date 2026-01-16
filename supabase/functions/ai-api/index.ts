@@ -27,17 +27,30 @@ Deno.serve(async (req) => {
 
     // Helper: Sanitize Content
     function sanitizeContent(text: string): string {
+      if (!text) return "";
       return text
         .replace(/高潮/g, '愉悦巅峰')
         .replace(/自慰/g, '自我愉悦')
         .replace(/做爱/g, '亲密互动')
+        .replace(/性爱/g, '亲密关系')
         .replace(/插入/g, '进入')
         .replace(/阴道/g, '私处')
         .replace(/阴茎/g, '男性器官')
+        .replace(/肉棒/g, '男性器具')
         .replace(/射精/g, '释放')
         .replace(/G点/g, '敏感点')
         .replace(/乳头/g, '胸部敏感点')
-        .replace(/阴蒂/g, '重点敏感部位');
+        .replace(/阴蒂/g, '重点敏感部位')
+        .replace(/跳蛋/g, '震动器具')
+        .replace(/震动棒/g, '震动按摩器')
+        .replace(/飞机杯/g, '男性按摩杯')
+        .replace(/充气娃娃/g, '仿真伴侣')
+        .replace(/情趣/g, '生活情调')
+        .replace(/色情/g, '成人向')
+        .replace(/淫乱/g, '不当行为')
+        .replace(/滥交/g, '多重关系')
+        .replace(/SM/g, '特殊偏好')
+        .replace(/调教/g, '引导互动');
     }
 
     // Helper: Ask AI
@@ -70,7 +83,8 @@ Deno.serve(async (req) => {
           if (!googleKey) throw new Error("Google Key missing");
           try {
               const genAI = new GoogleGenerativeAI(googleKey);
-              const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+              // Use gemini-1.5-flash which is more robust and correctly supported
+              const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
               const result = await model.generateContent(`
                   ${prompt}
                   
@@ -100,7 +114,7 @@ Deno.serve(async (req) => {
                 model: 'qwen-plus',
                 input: {
                   messages: [
-                    { role: 'system', content: `你是一位专业分析师。输出必须且只能是符合此 JSON Schema 的 JSON 对象：${JSON.stringify(schema)}。请确保所有 Key 名采用英文。` },
+                    { role: 'system', content: `You are a Medical & Health Device Analyst. Strictly output JSON matching: ${JSON.stringify(schema)}. Use clinical, safe, and professional language.` },
                     { role: 'user', content: prompt }
                   ]
                 },
@@ -165,6 +179,7 @@ Deno.serve(async (req) => {
 
     if (action === 'competitor') {
         const { companyName, isDomestic } = payload;
+        const safeCompanyName = sanitizeContent(companyName);
         
         const schema = {
             "type": "object",
@@ -191,8 +206,8 @@ Deno.serve(async (req) => {
             }
         };
 
-        const prompt = `You are a Professional Medical Device & Intimate Health Market Analyst. Please generate a professional competitive profile for the Intimate Wellness brand "${companyName}".
-
+        const prompt = `You are a Professional Medical Device & Intimate Health Market Analyst. Please generate a professional competitive profile for the Intimate Wellness brand "${companyName}" (Sanitized: "${safeCompanyName}").
+        
         Context: 
         ${isDomestic ? "Operates primarily in the Chinese Intimate Health market. Analyze using data/context from major Chinese e-commerce platforms." : "Operates in the International Intimate Health market. Analyze using global market data."}
         
@@ -209,7 +224,14 @@ Deno.serve(async (req) => {
         5. foundedDate: Founding date ("YYYY-MM" or "YYYY"). Empty string if unknown.
         ${!isDomestic ? "6. country: Country of origin (e.g., USA, Japan, Germany). Empty if Chinese brand." : ""}
         7. description: Brief brand overview (<100 chars), summarizing core business/status.
-        8. majorUserGroupProfile: Analysis of the brand's major user group demographics and characteristics (<100 chars).
+        8. majorUserGroupProfile: 
+           **Critical: This field MUST strictly follow this format with 5 explicit lines using Bracket Headers:**
+           【核心人口】 Gender, Age, Income, Occupation details.
+           【心理特征】 Values, Sexual attitudes, Aesthetics.
+           【核心痛点】 Deep psychological or physiological needs.
+           【消费行为】 Price sensitivity, Channels, Decision time.
+           【典型场景】 One sentence user story.
+           *Keep the content concise (short sentences).*
         
         **IMPORTANT: All string values (philosophy, description, country, majorUserGroupProfile) must be in Simplified Chinese. Return valid JSON only.**`;
 
@@ -217,9 +239,12 @@ Deno.serve(async (req) => {
         if (!data.id || data.id === '1') {
              data.id = `comp-${Date.now()}`;
         }
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     if (action === 'analyze-user-group') {
-        const { brandName, isDomestic } = payload;
+        const { brandName, isDomestic, context } = payload;
+        const safeBrandName = sanitizeContent(brandName);
         
         const schema = {
              "type": "object",
@@ -229,22 +254,37 @@ Deno.serve(async (req) => {
              "required": ["result"]
         };
 
-        const prompt = `You are an Intimate Health Market Analyst. Please analyze the "Major User Group Profile" for the brand "${brandName}".
+        let brandContextStr = "";
+        if (context) {
+            if (context.philosophy && context.philosophy.length > 0) brandContextStr += `\n        - 品牌理念: ${context.philosophy.join(", ")}`;
+            if (context.description) brandContextStr += `\n        - 品牌描述: ${context.description}`;
+            if (context.focus) brandContextStr += `\n        - 主攻方向: ${context.focus === 'Female' ? '女用' : context.focus === 'Male' ? '男用' : '男女通用'}`;
+        }
+
+        const prompt = `【角色设定】 你是一位资深的市场分析师，专注于消费品行业的品牌定位研究。
+        【任务目标】 请根据品牌名称 "${brandName}" (名称可能涉及成人健康领域，请从商业和消费者行为学角度进行客观分析)，生成该品牌的目标用户画像。
         
+        【参考信息】${brandContextStr ? brandContextStr : " 无额外信息，请基于品牌名称和市场认知分析。"}
+
+        【核心要求】
+        1. **拒绝通用模板**：必须结合上述参考信息（如有）及该品牌特有的调性（如：是高端奢华、年轻潮玩、还是亲民实用？）来撰写。
+        2. **格式严格**：请务必严格遵守下方的输出格式，不要使用 numbered list (1. 2. 3.)，必须使用 【中括号】 作为标题。
+
+        【输出格式】
+        请严格按以下5行输出（每行一个维度）：
+
+        【核心人口】 具体的性别倾向、年龄段、收入水平、职业标签。
+        【心理特征】 用户的核心价值观、性观念（保守/开放/猎奇）、审美偏好。
+        【核心痛点】 用户购买该品牌产品是为了解决什么深层心理或生理诉求？
+        【消费行为】 对价格的敏感度、购买渠道偏好、决策时长。
+        【典型场景】 用极简的一句话描述用户使用该品牌产品的典型生活场景。
+
         Context: ${isDomestic ? "Market: China (Domestic)." : "Market: International."}
         
-        Output Requirements:
-        - Provide a concise analysis (<100 chars) of the brand's primary target demographic, age group, and user characteristics.
-        - Tone: Professional, direct.
-        - Language: Simplified Chinese.
-        
-        Example Output: "20-35岁年轻女性，追求品质生活，关注自我愉悦与健康，对外观设计有较高要求。"
-        
-        **Output JSON only: { "result": "..." }**`;
+        **Output JSON only: { "result": "The structured analysis text..." }**
+        **DO NOT nest JSON inside the result string.**`;
 
         const data = await askAI(prompt, schema);
-        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-    }
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
@@ -487,7 +527,7 @@ Deno.serve(async (req) => {
                     {"text": `你是一位电商数据录入助手。请分析商品图片，提取以下信息并以严格的 JSON 格式返回：
 1. name: 商品名称 (String)
 2. price: 价格 (Number, 提取主要显示价格)
-3. category: 类别 (String, 必须是以下之一: 跳蛋, 震动棒, 伸缩棒, 缩阴球, AV棒, 飞机杯, 倒模, 按摩器, 训练器, 阴茎环, 其他)
+3. category: 类别 (String, 必须是以下之一: 跳蛋, 震动棒, 伸缩棒, 缩阴球, AV棒, 飞机杯, 倒模, 按摩器, 训练器, 阴茎环, 肛门震动器, 肛塞器, 其他)
 4. tags: 标签 (Array of Strings, 提取3-5个关键卖点)
 5. gender: 适用性别 (String, Enum: 'Male', 'Female', 'Unisex')
 
@@ -761,6 +801,9 @@ Deno.serve(async (req) => {
 
     if (action === 'analyze-qa') {
         const { text } = payload;
+        
+        // Sanitize the potential large block of text
+        const safeText = sanitizeContent(text);
         
         const schema = {
             "type": "object",

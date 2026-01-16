@@ -215,6 +215,8 @@ const ProductKnowledgeBase: React.FC = () => {
       "按摩器",
       "训练器",
       "阴茎环",
+      "肛门震动器",
+      "肛塞器",
     ];
     categoryKeywords.forEach((cat) => {
       if (lowerQuery.includes(cat.toLowerCase())) {
