@@ -46,4 +46,25 @@ INSERT INTO medical_terminology (term, replacement, category) VALUES
 ('过敏', '变态反应 (Allergic Reaction)', 'Safety'),
 ('红肿', '组织水肿 (Tissue Edema)', 'Safety'),
 ('疼痛', '痛觉感受 (Nociception)', 'Safety'),
-('甚至出血', '黏膜损伤 (Mucosal Injury)', 'Safety');
+('甚至出血', '黏膜损伤 (Mucosal Injury)', 'Safety'),
+
+-- English Sensitive Terms (英语敏感词)
+('sex', 'intimate interaction', 'English'),
+('masturbat', 'self-pleasure', 'English'),
+('orgasm', 'climax', 'English'),
+('dildo', 'simulation device', 'English'),
+('vibrator', 'massager', 'English'),
+('penis', 'male member', 'English'),
+('dick', 'male member', 'English'),
+('cock', 'male member', 'English'),
+('vagina', 'private area', 'English'),
+('pussy', 'private area', 'English'),
+('clitoris', 'sensitive point', 'English'),
+('clit', 'sensitive point', 'English'),
+('sm', 'special preferences', 'English'),
+('s&m', 'special preferences', 'English'),
+('porn', 'adult content', 'English'),
+('cum', 'release', 'English'),
+('ejaculat', 'release', 'English'),
+('anal', 'rear area', 'English'),
+('oral', 'oral interaction', 'English');

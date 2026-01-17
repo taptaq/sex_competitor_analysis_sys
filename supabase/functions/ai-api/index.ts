@@ -25,36 +25,121 @@ Deno.serve(async (req) => {
     // Qwen/Dashscope (Mapped to OpenAI compatible client or direct fetch)
     const qwenKey = Deno.env.get('QWEN_API_KEY') || Deno.env.get('DASHSCOPE_API_KEY');
 
-    // Helper: Sanitize Content
-    function sanitizeContent(text: string): string {
-      if (!text) return "";
-      return text
-        .replace(/高潮/g, '愉悦巅峰')
-        .replace(/自慰/g, '自我愉悦')
-        .replace(/做爱/g, '亲密互动')
-        .replace(/性爱/g, '亲密关系')
-        .replace(/插入/g, '进入')
-        .replace(/阴道/g, '私处')
-        .replace(/阴茎/g, '男性器官')
-        .replace(/肉棒/g, '男性器具')
-        .replace(/射精/g, '释放')
-        .replace(/G点/g, '敏感点')
-        .replace(/乳头/g, '胸部敏感点')
-        .replace(/阴蒂/g, '重点敏感部位')
-        .replace(/跳蛋/g, '震动器具')
-        .replace(/震动棒/g, '震动按摩器')
-        .replace(/飞机杯/g, '男性按摩杯')
-        .replace(/充气娃娃/g, '仿真伴侣')
-        .replace(/情趣/g, '生活情调')
-        .replace(/色情/g, '成人向')
-        .replace(/淫乱/g, '不当行为')
-        .replace(/滥交/g, '多重关系')
-        .replace(/SM/g, '特殊偏好')
-        .replace(/调教/g, '引导互动');
+    // Helper: Fetch Medical Terminology
+    let cachedTerms: any[] = [];
+    async function getMedicalTerms(supabase: any) {
+        if (cachedTerms.length > 0) return cachedTerms;
+        try {
+            const { data, error } = await supabase
+                .from('medical_terminology')
+                .select('term, replacement');
+            if (error) {
+                console.error("Failed to fetch medical terminology:", error);
+                return [];
+            }
+            if (data) {
+                cachedTerms = data;
+                return data;
+            }
+        } catch (e) {
+            console.error("Error fetching medical terms:", e);
+        }
+        return [];
     }
+
+    // Helper: Sanitize Content
+    async function sanitizeContent(text: string, supabase: any): Promise<string> {
+      if (!text) return "";
+      let sanitized = text;
+
+      // 1. Fetch terms from DB
+      const terms = await getMedicalTerms(supabase);
+      
+      // 2. Apply DB terms
+      if (terms && terms.length > 0) {
+          for (const item of terms) {
+              const { term, replacement } = item;
+              if (term && replacement) {
+                  // If term is English (letters only), use word boundary
+                  const isEnglish = /^[a-zA-Z\s\-]+$/.test(term);
+                  if (isEnglish) {
+                      sanitized = sanitized.replace(new RegExp(`\\b${term}\\b`, 'gi'), replacement);
+                      // Handle partial matches for specific roots like "masturbat" if strictly needed, 
+                      // but basic word match is safer. For now adhering to exact term list logic.
+                      // If the term in DB is 'masturbat' (root), we might want non-boundary.
+                      // Let's assume DB terms are mostly full words or strict roots.
+                      // For "masturbat" in DB, \b might fail if text is "masturbating". 
+                      // Adjustable logic: check if term ends with 'e' or 'ing' etc? 
+                      // Simplest: If term length > 3 and looks like a root, maybe relax boundary?
+                      // For now, let's trust the DB term list. 
+                      // Specifically for our seed data: "masturbat" -> use loose match?
+                      if (term === 'masturbat' || term === 'ejaculat') {
+                           sanitized = sanitized.replace(new RegExp(`${term}`, 'gi'), replacement);
+                      }
+                  } else {
+                      // Chinese - global replace
+                      sanitized = sanitized.replace(new RegExp(term, 'g'), replacement);
+                  }
+              }
+          }
+      } else {
+          // Fallback if DB fetch fails (Hardcoded safety net)
+          sanitized = sanitized
+            .replace(/高潮/g, '愉悦巅峰')
+            .replace(/自慰/g, '自我愉悦')
+            .replace(/做爱/g, '亲密互动')
+            .replace(/性爱/g, '亲密关系')
+            .replace(/插入/g, '进入')
+            .replace(/阴道/g, '私处')
+            .replace(/阴茎/g, '男性器官')
+            .replace(/肉棒/g, '男性器具')
+            .replace(/射精/g, '释放')
+            .replace(/G点/g, '敏感点')
+            .replace(/乳头/g, '胸部敏感点')
+            .replace(/阴蒂/g, '重点敏感部位')
+            .replace(/跳蛋/g, '震动器具')
+            .replace(/震动棒/g, '震动按摩器')
+            .replace(/飞机杯/g, '男性按摩杯')
+            .replace(/充气娃娃/g, '仿真伴侣')
+            .replace(/情趣/g, '生活情调')
+            .replace(/色情/g, '成人向')
+            .replace(/淫乱/g, '不当行为')
+            .replace(/滥交/g, '多重关系')
+            .replace(/SM/g, '特殊偏好')
+            .replace(/调教/g, '引导互动')
+            // English Fallback
+            .replace(/\bsex\b/gi, 'intimate interaction')
+            .replace(/masturbat/gi, 'self-pleasure')
+            .replace(/orgasm/gi, 'climax')
+            .replace(/dildo/gi, 'simulation device')
+            .replace(/vibrator/gi, 'massager')
+            .replace(/penis/gi, 'male member')
+            .replace(/\bdick\b/gi, 'male member')
+            .replace(/\bcock\b/gi, 'male member')
+            .replace(/vagina/gi, 'private area')
+            .replace(/pussy/gi, 'private area')
+            .replace(/clitoris/gi, 'sensitive point')
+            .replace(/\bclit\b/gi, 'sensitive point')
+            .replace(/\bsm\b/gi, 'special preferences')
+            .replace(/s&m/gi, 'special preferences')
+            .replace(/porn/gi, 'adult content')
+            .replace(/\bcum\b/gi, 'release')
+            .replace(/ejaculat/gi, 'release')
+            .replace(/\banal\b/gi, 'rear area')
+            .replace(/\boral\b/gi, 'oral interaction');
+      }
+      return sanitized;
+    }
+
+    // Initialize Supabase Client
+    // process.env is not available in Deno, use Deno.env
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY');
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Helper: Ask AI
     async function askAI(prompt: string, schema: any) {
+      
       // Helper: Call DeepSeek (OpenAI Compatible)
       async function callDeepSeek(prompt: string, schema: any) {
          if (!deepseekKey) throw new Error("DeepSeek Key missing");
@@ -179,7 +264,7 @@ Deno.serve(async (req) => {
 
     if (action === 'competitor') {
         const { companyName, isDomestic } = payload;
-        const safeCompanyName = sanitizeContent(companyName);
+        const safeCompanyName = await sanitizeContent(companyName, supabase);
         
         const schema = {
             "type": "object",
@@ -244,7 +329,7 @@ Deno.serve(async (req) => {
 
     if (action === 'analyze-user-group') {
         const { brandName, isDomestic, context } = payload;
-        const safeBrandName = sanitizeContent(brandName);
+        const safeBrandName = await sanitizeContent(brandName, supabase);
         
         const schema = {
              "type": "object",
@@ -329,7 +414,7 @@ Deno.serve(async (req) => {
         for (const review of reviews) {
             const likeCount = review.likeCount || 0;
             // Sanitize review text
-            const sanitizedText = sanitizeContent(review.text);
+            const sanitizedText = await sanitizeContent(review.text, supabase);
             
             if (likeCount > 0) {
                 totalLikes += likeCount;
@@ -343,9 +428,6 @@ Deno.serve(async (req) => {
         const avgLikes = reviews.length > 0 ? (totalLikes / reviews.length).toFixed(1) : "0";
 
         const prompt = `You are a professional Medical Device & Consumer Health Product Analyst. Please analyze the following user feedback data for the product "${productName}" from a strictly professional, clinical, and objective perspective.
-
-        Review Data:
-        ${reviewTexts.join('\n')}
         
         Analysis Context:
         1. Each review may contain main comments and follow-ups. Analyze comprehensively.
@@ -362,7 +444,10 @@ Deno.serve(async (req) => {
         4. prosKeywords: High-frequency positive keywords (Array of Objects: {value: string, count: number}). Value must be in Chinese.
         5. consKeywords: High-frequency negative keywords (Array of Objects: {value: string, count: number}). Value must be in Chinese.
         
-        **IMPORTANT: All value strings must be in Simplified Chinese. Even if input is English, the output analysis must be translated to Chinese. Return valid JSON only.**`;
+        **IMPORTANT: All value strings must be in Simplified Chinese. Even if input is English, the output analysis must be translated to Chinese. Return valid JSON only.**
+        
+        Review Data:
+        ${reviewTexts.join('\n')}`;
 
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
