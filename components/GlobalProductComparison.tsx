@@ -356,16 +356,43 @@ const GlobalProductComparison: React.FC = () => {
         {selectedBrand ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {selectedBrand.products?.map((product) => {
+              const fsProduct = competitors
+                .flatMap((c) => c.products || [])
+                .find((p) => selectedProductIds.includes(p.id));
+              const limitCategory = fsProduct?.category;
               const isSelected = selectedProductIds.includes(product.id);
+
+              const isCategoryMismatch =
+                limitCategory &&
+                product.category &&
+                limitCategory !== product.category &&
+                !isSelected;
+
+              const isDisabled = !!isCategoryMismatch;
+
               return (
                 <div
                   key={product.id}
-                  onClick={() => toggleProductSelection(product.id)}
-                  className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                  onClick={() => {
+                    if (!isDisabled) toggleProductSelection(product.id);
+                  }}
+                  className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+                    isDisabled
+                      ? "opacity-50 cursor-not-allowed bg-gray-50 border-gray-100 grayscale"
+                      : "cursor-pointer"
+                  } ${
                     isSelected
                       ? "border-green-500 bg-green-50 shadow-sm"
-                      : "border-gray-100 bg-white hover:border-purple-200"
+                      : !isDisabled &&
+                        "border-gray-100 bg-white hover:border-purple-200"
                   }`}
+                  title={
+                    isDisabled
+                      ? `不可选: 需与首个选择的产品品类 (${
+                          limitCategory || "未知"
+                        }) 保持一致`
+                      : ""
+                  }
                 >
                   <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden shrink-0 border border-gray-100">
                     {product.image ? (
@@ -401,6 +428,11 @@ const GlobalProductComparison: React.FC = () => {
                             : "通用"}
                         </span>
                       )}
+                      {product.category && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded font-bold border bg-purple-50 text-purple-700 border-purple-100">
+                          {product.category}
+                        </span>
+                      )}
                     </div>
                   </div>
                   {isSelected ? (
@@ -409,10 +441,12 @@ const GlobalProductComparison: React.FC = () => {
                       className="text-green-500 shrink-0"
                     />
                   ) : (
-                    <Circle
-                      size={20}
-                      className="text-gray-200 shrink-0 hover:text-purple-300"
-                    />
+                    !isDisabled && (
+                      <Circle
+                        size={20}
+                        className="text-gray-200 shrink-0 hover:text-purple-300"
+                      />
+                    )
                   )}
                 </div>
               );
