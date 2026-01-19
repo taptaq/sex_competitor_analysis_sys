@@ -15,14 +15,20 @@ import ThinkingWall from "./components/ThinkingWall";
 import { Menu } from "lucide-react";
 
 const App: React.FC = () => {
-  const { currentView, fetchCompetitors, fetchFavorites, fetchDeepReports } =
-    useStore();
+  const {
+    currentView,
+    fetchCompetitors,
+    fetchFavorites,
+    fetchDeepReports,
+    fetchMedicalTerms,
+  } = useStore();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   useEffect(() => {
     fetchCompetitors();
     fetchFavorites();
     fetchDeepReports();
+    fetchMedicalTerms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

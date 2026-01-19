@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { supabase } from './services/supabase';
 import { ViewType, Competitor, Product, ReviewAnalysis, AdCreative } from './types';
 import { analyzeThought } from './services/gemini';
+import { applyMedicalVocabulary } from './utils/textProcessing';
 
 export interface ThinkingNote {
   id: string;
@@ -617,7 +618,9 @@ export const useStore = create<AppState>((set, get) => ({
     // set({ isLoading: true }); 
 
     try {
-      const analysis = await analyzeThought(note.content);
+      // PROMPT_SANITIZATION: Apply medical vocabulary to thought content
+      const sanitizedContent = applyMedicalVocabulary(note.content, get().medicalTerms);
+      const analysis = await analyzeThought(sanitizedContent);
       // Update local and remote
       get().updateThinkingNote(id, { analysis });
     } catch (error) {

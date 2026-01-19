@@ -15,11 +15,10 @@ import {
   HandMetal,
   Loader2,
   Upload,
-  BookOpen,
-  ArrowRight,
   Trash2,
 } from "lucide-react";
 import { analyzeStandardization } from "../services/gemini";
+import { applyMedicalVocabulary } from "../utils/textProcessing";
 
 const StandardizationLab: React.FC = () => {
   const {
@@ -93,17 +92,13 @@ const StandardizationLab: React.FC = () => {
       let reviewList = input.reviews.split("\n").filter((r) => r.trim());
 
       // *** Medical Vocabulary Replacement Logic ***
-      const applyMedicalContext = (text: string) => {
-        let processed = text;
-        medicalTerms.forEach((term: any) => {
-          const regex = new RegExp(term.term, "gi");
-          processed = processed.replace(regex, term.replacement);
-        });
-        return processed;
-      };
-
-      const contextualDescription = applyMedicalContext(input.description);
-      const contextualReviews = reviewList.map((r) => applyMedicalContext(r));
+      const contextualDescription = applyMedicalVocabulary(
+        input.description,
+        medicalTerms
+      );
+      const contextualReviews = reviewList.map((r) =>
+        applyMedicalVocabulary(r, medicalTerms)
+      );
 
       console.log("Applied Medical Context:", {
         original: reviewList.length,

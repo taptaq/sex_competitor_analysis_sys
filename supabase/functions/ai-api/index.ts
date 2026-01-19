@@ -168,8 +168,8 @@ Deno.serve(async (req) => {
           if (!googleKey) throw new Error("Google Key missing");
           try {
               const genAI = new GoogleGenerativeAI(googleKey);
-              // Use gemini-1.5-flash which is more robust and correctly supported
-              const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+              // Use gemini-2.5-flash which is more robust and correctly supported
+              const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
               const result = await model.generateContent(`
                   ${prompt}
                   

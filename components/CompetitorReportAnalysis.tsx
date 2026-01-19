@@ -120,7 +120,33 @@ const CompetitorReportAnalysis: React.FC = () => {
         .filter(({ product }) =>
           selectedCompetitorProductIds.includes(product.id)
         )
-        .map(({ product, competitor }) => ({ product, competitor }));
+        .map(({ product, competitor }) => ({
+          product: {
+            ...product,
+            // Product interface doesn't have description directly
+            analysis: product.analysis
+              ? {
+                  ...product.analysis,
+                  summary: applyMedicalVocabulary(
+                    product.analysis.summary || "",
+                    medicalTerms
+                  ),
+                  pros: product.analysis.pros.map((p) =>
+                    applyMedicalVocabulary(p, medicalTerms)
+                  ),
+                  cons: product.analysis.cons.map((c) =>
+                    applyMedicalVocabulary(c, medicalTerms)
+                  ),
+                }
+              : undefined,
+            tags: Array.isArray(product.tags)
+              ? product.tags.map((t) => applyMedicalVocabulary(t, medicalTerms))
+              : typeof product.tags === "string"
+              ? applyMedicalVocabulary(product.tags, medicalTerms)
+              : product.tags,
+          },
+          competitor,
+        }));
 
       // Apply medical vocabulary to own product description and tags
       const processedOwnDescription = applyMedicalVocabulary(

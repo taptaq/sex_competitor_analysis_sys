@@ -3,16 +3,28 @@ import ConfigPanel from "./ProductForge/components/ConfigPanel";
 import AnalysisResultView from "./ProductForge/components/AnalysisResult";
 import OptimizationModal from "./ProductForge/components/OptimizationModal";
 import RequirementsPanel from "./ProductForge/components/RequirementsPanel";
-import { ProductConfig, AnalysisResult, UserRequirements } from "./ProductForge/types";
+import {
+  ProductConfig,
+  AnalysisResult,
+  UserRequirements,
+} from "./ProductForge/types";
 import {
   generateProductAnalysis,
   generateProductImage,
   generateOptimizedConfig,
   generateRecommendedConfig,
 } from "../services/gemini";
+import { applyMedicalVocabulary } from "../utils/textProcessing";
+import { useStore } from "../store";
 import { ArrowLeft } from "lucide-react";
 
 const ProductForge: React.FC = () => {
+  const { medicalTerms, fetchMedicalTerms } = useStore();
+
+  React.useEffect(() => {
+    fetchMedicalTerms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [config, setConfig] = useState<ProductConfig>({
     gender: "female",
     category: "",
@@ -151,8 +163,34 @@ const ProductForge: React.FC = () => {
     setIsGenerating(true);
 
     try {
+      // PROMPT_SANITIZATION: Apply medical vocabulary to user requirements
+      const sanitizedRequirements: UserRequirements = {
+        ...requirements,
+        usageScenario: applyMedicalVocabulary(
+          requirements.usageScenario,
+          medicalTerms
+        ),
+        painPoints: applyMedicalVocabulary(
+          requirements.painPoints,
+          medicalTerms
+        ),
+        expectedExperience: applyMedicalVocabulary(
+          requirements.expectedExperience,
+          medicalTerms
+        ),
+        additionalNotes: requirements.additionalNotes
+          ? applyMedicalVocabulary(requirements.additionalNotes, medicalTerms)
+          : undefined,
+        mustHaveFeatures: requirements.mustHaveFeatures.map((f) =>
+          applyMedicalVocabulary(f, medicalTerms)
+        ),
+        specialPreferences: requirements.specialPreferences.map((p) =>
+          applyMedicalVocabulary(p, medicalTerms)
+        ),
+      };
+
       const recommendedConfig = await generateRecommendedConfig(
-        requirements,
+        sanitizedRequirements,
         gender
       );
       setConfig(recommendedConfig);
@@ -302,4 +340,3 @@ const ProductForge: React.FC = () => {
 };
 
 export default ProductForge;
-

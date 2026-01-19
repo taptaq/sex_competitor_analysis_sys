@@ -17,13 +17,21 @@ const MedicalVocabLab: React.FC = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const categories = ["All", "General", "Sensation", "Material", "Safety"];
+  const categories = [
+    "All",
+    "General",
+    "Sensation",
+    "Material",
+    "Safety",
+    "English",
+  ];
   const categoryLabels: Record<string, string> = {
     All: "全部",
     General: "通用",
     Sensation: "体感描述",
     Material: "材质",
     Safety: "安全",
+    English: "英文",
   };
 
   useEffect(() => {
@@ -133,6 +141,7 @@ const MedicalVocabLab: React.FC = () => {
                   <option value="Sensation">体感描述 (Sensation)</option>
                   <option value="Material">材质 (Material)</option>
                   <option value="Safety">安全 (Safety)</option>
+                  <option value="English">英文 (English)</option>
                 </select>
               </div>
 
