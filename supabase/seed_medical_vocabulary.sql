@@ -67,4 +67,14 @@ INSERT INTO medical_terminology (term, replacement, category) VALUES
 ('cum', 'release', 'English'),
 ('ejaculat', 'release', 'English'),
 ('anal', 'rear area', 'English'),
-('oral', 'oral interaction', 'English');
+('oral', 'oral interaction', 'English'),
+('g-spot', 'sensitive zone', 'English'),
+('g spot', 'sensitive zone', 'English'),
+('toy', 'device', 'English'),
+('lube', 'moisturizer', 'English'),
+('lubricant', 'moisturizer', 'English'),
+('penetration', 'internal use', 'English'),
+('insert', 'place internally', 'English'),
+('nipple', 'chest sensitive point', 'English'),
+('boobs', 'chest area', 'English'),
+('breast', 'chest area', 'English');

@@ -244,8 +244,12 @@ const CompetitorDetail: React.FC = () => {
         };
       });
 
-      const analysis = await analyzeReviews(
+      const safeProductName = applyMedicalVocabulary(
         product.name,
+        medicalTerms
+      );
+      const analysis = await analyzeReviews(
+        safeProductName,
         reviewDataList.map((r) => ({
           ...r,
           text: applyMedicalVocabulary(r.text, medicalTerms),

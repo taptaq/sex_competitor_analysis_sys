@@ -375,6 +375,7 @@ Deno.serve(async (req) => {
 
     if (action === 'analyze') {
         const { productName, reviews, isDomestic } = payload;
+        const safeProductName = await sanitizeContent(productName, supabase);
         const schema = {
              "type": "object",
              "properties": {
@@ -427,7 +428,7 @@ Deno.serve(async (req) => {
         
         const avgLikes = reviews.length > 0 ? (totalLikes / reviews.length).toFixed(1) : "0";
 
-        const prompt = `You are a professional Medical Device & Consumer Health Product Analyst. Please analyze the following user feedback data for the product "${productName}" from a strictly professional, clinical, and objective perspective.
+        const prompt = `You are a professional Medical Device & Consumer Health Product Analyst. Please analyze the following user feedback data for the product "${safeProductName}" from a strictly professional, clinical, and objective perspective.
         
         Analysis Context:
         1. Each review may contain main comments and follow-ups. Analyze comprehensively.

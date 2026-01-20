@@ -166,18 +166,6 @@ const ProductForge: React.FC = () => {
       // PROMPT_SANITIZATION: Apply medical vocabulary to user requirements
       const sanitizedRequirements: UserRequirements = {
         ...requirements,
-        usageScenario: applyMedicalVocabulary(
-          requirements.usageScenario,
-          medicalTerms
-        ),
-        painPoints: applyMedicalVocabulary(
-          requirements.painPoints,
-          medicalTerms
-        ),
-        expectedExperience: applyMedicalVocabulary(
-          requirements.expectedExperience,
-          medicalTerms
-        ),
         additionalNotes: requirements.additionalNotes
           ? applyMedicalVocabulary(requirements.additionalNotes, medicalTerms)
           : undefined,
