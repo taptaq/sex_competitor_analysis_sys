@@ -456,6 +456,7 @@ Deno.serve(async (req) => {
     
     if (action === 'strategy') {
         const { concept } = payload;
+        const safeConcept = await sanitizeContent(concept, supabase);
         const schema = {
             "type": "object",
             "properties": {
@@ -468,7 +469,7 @@ Deno.serve(async (req) => {
         const prompt = `You are a Health Tech Venture Capitalist & Strategy Advisor. Please conduct a "Stress Test" on the following Intimate Health Startup Concept.
 
         Startup Concept:
-        ${concept}
+        ${safeConcept}
         
         Provide critical, direct advice from three dimensions (JSON format, values in Simplified Chinese):
         1. differentiation (Clinical/Market Viability): Is there true clinical or market differentiation, or is it a "Red Ocean" generic product?
@@ -662,6 +663,7 @@ Deno.serve(async (req) => {
     }
     if (action === 'price-analysis') {
         const { productName, priceHistory, currentPrice, isDomestic } = payload;
+        const safeProductName = await sanitizeContent(productName, supabase);
         
         const schema = {
             "type": "object",
@@ -717,7 +719,7 @@ Deno.serve(async (req) => {
         
         const prompt = `You are a Medical Device Market Economist. Please analyze the price trend data for the following Intimate Health Product:
 
-        Product: ${productName}
+        Product: ${safeProductName}
         Current Price: ¥${Number(currentPrice).toFixed(2)}
 
         History (${priceHistory.length} records):
@@ -775,7 +777,7 @@ Deno.serve(async (req) => {
             "required": ["brandPositioning", "productCharacteristics", "priceStrategy", "targetAudience", "competitiveAdvantages", "brandPersonality", "sloganCreativity", "summary", "wordCloudKeywords"]
         };
 
-        const brandName = competitor.name || '';
+        const brandName = await sanitizeContent(competitor.name || '', supabase);
         const philosophy = competitor.philosophy || [];
         const products = competitor.products || [];
         const ads = competitor.ads || [];
@@ -889,7 +891,7 @@ Deno.serve(async (req) => {
         const { text } = payload;
         
         // Sanitize the potential large block of text
-        const safeText = sanitizeContent(text);
+        const safeText = await sanitizeContent(text, supabase);
         
         const schema = {
             "type": "object",
@@ -941,6 +943,7 @@ Deno.serve(async (req) => {
     }
     if (action === 'knowledge-base') {
         const { query, products } = payload;
+        const safeQuery = await sanitizeContent(query, supabase);
         
         const schema = {
             "type": "object",
@@ -989,7 +992,7 @@ Deno.serve(async (req) => {
 
         const prompt = `你是一位专业的情趣用品行业产品知识库分析师。用户提出了以下查询：
 
-        "${query}"
+        "${safeQuery}"
 
         以下是知识库中的所有产品信息：
 
@@ -1359,6 +1362,10 @@ Deno.serve(async (req) => {
     if (action === 'competitor-report') {
         const { ownProduct, competitorProducts, isDomestic } = payload;
         
+        // Sanitize own product fields
+        ownProduct.name = await sanitizeContent(ownProduct.name, supabase);
+        ownProduct.description = await sanitizeContent(ownProduct.description, supabase);
+        
         const schema = {
             "type": "object",
             "properties": {
@@ -1541,7 +1548,7 @@ Deno.serve(async (req) => {
 
         const truncatedReviews = reviews ? reviews.slice(0, 20).map((r: any) => r.text).join('\n') : "No reviews available.";
         // Sanitize review content for standardization analysis as well
-        const sanitizedReviews = sanitizeContent(truncatedReviews);
+        const sanitizedReviews = await sanitizeContent(truncatedReviews, supabase);
         
         const prompt = `You are a Medical Device Standards Engineer & Sensory Science Analyst. Please standardize and quantify the following product data:
 
@@ -1582,6 +1589,7 @@ Deno.serve(async (req) => {
     
     if (action === "analyze-thought") {
         const { content } = payload;
+        const safeContent = await sanitizeContent(content, supabase);
         
         const schema = {
             "type": "object",
@@ -1607,7 +1615,7 @@ Deno.serve(async (req) => {
         You are a Senior Product Strategist and Innovation Consultant specializing in the adult industry.
         You are analyzing a fragmented thought or idea from a product manager's "Thinking Wall".
 
-        Thought Content: "${content}"
+        Thought Content: "${safeContent}"
 
         Your Goal: Expand this thought into a structured insight, challenge it, and provide actionable next steps.
 
@@ -1627,9 +1635,14 @@ Deno.serve(async (req) => {
 
     if (action === "review-qa") {
         const { question, reviews } = payload;
+        const safeQuestion = await sanitizeContent(question, supabase);
         
         // Construct context from reviews (Truncate if too long to avoid token limits)
         // Format: [Product Name]: Review Text
+        // Sanitize reviews not needed here strictly as they are many, but good practice if feasible. 
+        // Given performance, let's skip deep review sanitization loop here unless critical, 
+        // as they are already sanitized when stored or analyzed individually.
+        // But the question MUST be sanitized.
         const reviewsContext = reviews
             .slice(0, 100) // Limit to 100 reviews max for now to be safe
             .map((r: any) => `[${r.productName}]: ${r.text}`)
@@ -1659,7 +1672,7 @@ Deno.serve(async (req) => {
         You are a Consumer Insights Analyst. 
         A user is asking a specific question about a collection of product reviews in the Adult Wellness industry.
 
-        User Question: "${question}"
+        User Question: "${safeQuestion}"
 
         Review Data:
         ${reviewsContext}
