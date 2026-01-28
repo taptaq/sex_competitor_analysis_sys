@@ -52,13 +52,13 @@ const CompetitorDetail: React.FC = () => {
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [isAddingAd, setIsAddingAd] = useState(false);
   const [analyzingProductId, setAnalyzingProductId] = useState<string | null>(
-    null
+    null,
   );
   const [priceSortOrder, setPriceSortOrder] = useState<"none" | "asc" | "desc">(
-    "none"
+    "none",
   );
   const [salesSortOrder, setSalesSortOrder] = useState<"none" | "asc" | "desc">(
-    "none"
+    "none",
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedGender, setSelectedGender] = useState<string>("all");
@@ -70,7 +70,7 @@ const CompetitorDetail: React.FC = () => {
   const [isSavingProduct, setIsSavingProduct] = useState(false);
   const [isSavingAd, setIsSavingAd] = useState(false);
   const [uploadingProductId, setUploadingProductId] = useState<string | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -246,7 +246,7 @@ const CompetitorDetail: React.FC = () => {
 
       const safeProductName = applyMedicalVocabulary(
         product.name,
-        medicalTerms
+        medicalTerms,
       );
       const analysis = await analyzeReviews(
         safeProductName,
@@ -254,7 +254,7 @@ const CompetitorDetail: React.FC = () => {
           ...r,
           text: applyMedicalVocabulary(r.text, medicalTerms),
         })),
-        competitor.isDomestic
+        competitor.isDomestic,
       );
       setProductAnalysis(competitor.id, product.id, analysis);
       setProductReviews(competitor.id, product.id, []);
@@ -335,15 +335,30 @@ const CompetitorDetail: React.FC = () => {
       setProductAnalysis(
         selectedCompetitorId,
         editingAnalysisProductId,
-        tempAnalysis
+        tempAnalysis,
       );
       setEditingAnalysisProductId(null);
       setTempAnalysis(null);
     }
   };
+
+  const handleImportAds = (newAds: Partial<AdCreative>[]) => {
+    if (!selectedCompetitorId) return;
+    newAds.forEach((ad) => {
+      if (ad.text) {
+        addAd(selectedCompetitorId, {
+          id: `ad-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          text: ad.text,
+          highlights: ad.highlights || [],
+        });
+      }
+    });
+    setIsAddingAd(false);
+  };
+
   const handleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    productId: string
+    productId: string,
   ) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -397,7 +412,7 @@ const CompetitorDetail: React.FC = () => {
       if (allParsedReviews.length > 0) {
         setProductReviews(competitor.id, productId, allParsedReviews);
         alert(
-          `成功导入 ${allParsedReviews.length} 条评论 (来自 ${files.length} 个文件)`
+          `成功导入 ${allParsedReviews.length} 条评论 (来自 ${files.length} 个文件)`,
         );
       } else {
         alert("未找到有效评论数据");
@@ -430,7 +445,7 @@ const CompetitorDetail: React.FC = () => {
 
   const handlePriceHistoryUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    productId: string
+    productId: string,
   ) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -457,7 +472,7 @@ const CompetitorDetail: React.FC = () => {
           alert(
             `成功导入 ${
               priceHistory.length
-            } 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`
+            } 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`,
           );
         }
       } else {
@@ -480,7 +495,7 @@ const CompetitorDetail: React.FC = () => {
   const handleClearPriceHistory = (product: Product) => {
     if (
       !confirm(
-        `确定要清空 "${product.name}" 的价格走势数据吗？此操作不可恢复。`
+        `确定要清空 "${product.name}" 的价格走势数据吗？此操作不可恢复。`,
       )
     ) {
       return;
@@ -495,7 +510,7 @@ const CompetitorDetail: React.FC = () => {
   };
 
   const handlePriceHistoryUploadForNewProduct = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -518,7 +533,7 @@ const CompetitorDetail: React.FC = () => {
         alert(
           `成功导入 ${
             priceHistory.length
-          } 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`
+          } 条价格记录，产品价格已更新为 ¥${latestPrice.toFixed(2)}`,
         );
       } else {
         alert("未找到有效的价格数据，请检查 Excel 文件格式");
@@ -704,6 +719,7 @@ const CompetitorDetail: React.FC = () => {
                     }
                   }}
                   isSaving={isSavingAd}
+                  onImportAds={handleImportAds}
                 />
               )}
             </div>

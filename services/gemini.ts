@@ -319,6 +319,30 @@ export const analyzeThought = async (content: string) => {
   return await invokeAI('analyze-thought', { content });
 };
 
+export const extractAdFromUrl = async (url: string) => {
+  try {
+    const data = await invokeAI('extract-ad', { url });
+    
+    // Handle new bulk format
+    if (data.creatives && Array.isArray(data.creatives)) {
+      return data.creatives;
+    }
+    
+    // Handle legacy single format
+    if (data.text || data.highlights) {
+      return [{
+        text: data.text || "",
+        highlights: data.highlights || []
+      }];
+    }
+
+    return []; 
+  } catch (error) {
+    console.error('Ad Extraction Service Error:', error);
+    throw error;
+  }
+};
+
 export const analyzeGlobalReviewQA = async (
   question: string,
   reviews: Array<{ productName: string; text: string }>

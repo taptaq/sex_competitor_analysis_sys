@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
     
     // Qwen/Dashscope (Mapped to OpenAI compatible client or direct fetch)
     const qwenKey = Deno.env.get('QWEN_API_KEY') || Deno.env.get('DASHSCOPE_API_KEY');
-
+    
     // Helper: Fetch Medical Terminology
     let cachedTerms: any[] = [];
     async function getMedicalTerms(supabase: any) {
@@ -1687,6 +1687,44 @@ Deno.serve(async (req) => {
         2. keyEvidence: Key points/quotes (Chinese).
         3. sentiment: Overall sentiment about this topic.
         4. mentionedProducts: Products cited in your answer.
+        `;
+
+        const data = await askAI(prompt, schema);
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    if (action === 'extract-ad') {
+        const { url } = payload;
+        
+        const schema = {
+             "type": "object",
+             "properties": {
+                 "creatives": {
+                     "type": "array",
+                     "items": {
+                        "type": "object",
+                        "properties": {
+                             "text": { "type": "string", "description": "A distinct promotional slogan or headline." },
+                             "highlights": { "type": "array", "items": { "type": "string" }, "description": "3-5 key selling points." }
+                        },
+                        "required": ["text", "highlights"]
+                     },
+                     "description": "List of 3-5 distinct promotional creatives found or generated from the product page."
+                 }
+             },
+             "required": ["creatives"]
+        };
+
+        const prompt = `Please access and analyze the content from this URL: ${url}
+        
+        Task: Extract 3 to 5 distinct promotional slogans (creative copy) and their corresponding highlights for this product.
+        
+        Output JSON (in Simplified Chinese):
+        creatives: Array of objects, each containing:
+           - text: The slogan/copy.
+           - highlights: List of selling points.
+        
+        Make them diverse (e.g., one focusing on function, one on emotion, one on scenario).
         `;
 
         const data = await askAI(prompt, schema);
