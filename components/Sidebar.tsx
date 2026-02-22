@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useStore } from "../store";
+import { useAuthStore } from "../authStore";
 import { ViewType } from "../types";
 import {
   LayoutDashboard,
@@ -12,6 +13,8 @@ import {
   ChevronRight,
   X,
   FlaskConical,
+  LogOut,
+  User,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -21,6 +24,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   const { currentView, setCurrentView } = useStore();
+  const { signOut, user, profile } = useAuthStore();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -151,7 +155,39 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         </nav>
 
         {!isMobile && (
-          <div className="p-3 border-t border-slate-800">
+          <div className="p-3 border-t border-slate-800 space-y-2">
+            {/* User Profile Summary */}
+            <div
+              className={`flex items-center ${isCollapsed ? "justify-center" : "px-4 gap-3"} py-2 text-slate-400`}
+            >
+              <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center shrink-0">
+                <User size={16} />
+              </div>
+              {!isCollapsed && (
+                <div className="overflow-hidden">
+                  <p className="text-sm font-medium text-white truncate">
+                    {profile?.username || user?.email?.split("@")[0]}
+                  </p>
+                  <p className="text-xs text-slate-500 truncate capitalize">
+                    {profile?.role || "User"}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={signOut}
+              className={`w-full flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3 px-4"
+              } py-3 rounded-lg text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors`}
+              title={isCollapsed ? "退出登录" : ""}
+            >
+              <LogOut size={20} />
+              {!isCollapsed && (
+                <span className="font-medium whitespace-nowrap">退出登录</span>
+              )}
+            </button>
+
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
               className={`w-full flex items-center ${

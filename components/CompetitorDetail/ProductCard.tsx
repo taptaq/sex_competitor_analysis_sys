@@ -22,15 +22,15 @@ import ProductForm from "./ProductForm";
 interface ProductCardProps {
   product: Product;
   competitor: Competitor;
-  onUpdateProduct: (product: Product) => void;
-  onRemoveProduct: (productId: string) => void;
-  onAnalyzeProduct: (product: Product) => Promise<void>;
-  onUpdateProductAnalysis: (productId: string, analysis: any) => void;
-  onUploadReviews: (productId: string, files: FileList) => Promise<void>;
-  onUploadPriceHistory: (productId: string, files: FileList) => Promise<void>;
-  onClearPriceHistory: (product: Product) => void;
+  onUpdateProduct?: (product: Product) => void;
+  onRemoveProduct?: (productId: string) => void;
+  onAnalyzeProduct?: (product: Product) => Promise<void>;
+  onUpdateProductAnalysis?: (productId: string, analysis: any) => void;
+  onUploadReviews?: (productId: string, files: FileList) => Promise<void>;
+  onUploadPriceHistory?: (productId: string, files: FileList) => Promise<void>;
+  onClearPriceHistory?: (product: Product) => void;
   onShowPriceChart: (product: Product) => void;
-  onToggleFavorite: (product: Product, competitor: Competitor) => void;
+  onToggleFavorite?: (product: Product, competitor: Competitor) => void;
   isProductFavorite: (productId: string) => boolean;
   analyzingProductId: string | null;
   editingProductId: string | null;
@@ -50,8 +50,7 @@ interface ProductCardProps {
   onTempImageLinkChange: (link: string) => void;
   onSaveImageLink: (product: Product) => void;
   onCancelImageEdit: () => void;
-
-  onStartEditImage: (productId: string) => void;
+  onStartEditImage?: (productId: string) => void;
   uploadingProductId: string | null;
   isSavingProduct: boolean;
 }
@@ -298,7 +297,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const handleArrayChange = (
     field: "pros" | "cons",
     index: number,
-    value: string
+    value: string,
   ) => {
     if (!tempAnalysis) return;
     const newArray = [...tempAnalysis[field]];
@@ -325,7 +324,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     field: "prosKeywords" | "consKeywords",
     index: number,
     key: "value" | "count",
-    val: string | number
+    val: string | number,
   ) => {
     if (!tempAnalysis) return;
     const newKeywords = [...(tempAnalysis[field] || [])];
@@ -335,7 +334,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleKeywordDelete = (
     field: "prosKeywords" | "consKeywords",
-    index: number
+    index: number,
   ) => {
     if (!tempAnalysis) return;
     const newKeywords = [...(tempAnalysis[field] || [])];
@@ -353,21 +352,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    productId: string
+    productId: string,
   ) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    await onUploadReviews(productId, files);
+    if (onUploadReviews) {
+      await onUploadReviews(productId, files);
+    }
     e.target.value = "";
   };
 
   const handlePriceHistoryUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    productId: string
+    productId: string,
   ) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    await onUploadPriceHistory(productId, files);
+    if (onUploadPriceHistory) {
+      await onUploadPriceHistory(productId, files);
+    }
     e.target.value = "";
   };
 
@@ -383,7 +386,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           onPriceHistoryUpload={async (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-            await onUploadPriceHistory(product.id, files);
+            if (onUploadPriceHistory) {
+              await onUploadPriceHistory(product.id, files);
+            }
             e.target.value = "";
           }}
           onSave={onSaveProduct}
@@ -395,36 +400,48 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex flex-col md:flex-row relative">
           {/* Product Actions */}
           <div className="absolute top-2 right-2 flex gap-1 opacity-100 transition-opacity bg-white/80 p-1 rounded-lg backdrop-blur-sm shadow-sm z-10">
-            <button
-              onClick={() => onToggleFavorite(product, competitor)}
-              className={`p-1.5 rounded transition-colors ${
-                isProductFavorite(product.id)
-                  ? "text-red-500 hover:bg-red-50"
-                  : "text-gray-400 hover:bg-gray-50 hover:text-red-500"
-              }`}
-              title={isProductFavorite(product.id) ? "取消收藏" : "收藏产品"}
-            >
-              <Heart
-                size={14}
-                className={isProductFavorite(product.id) ? "fill-current" : ""}
-              />
-            </button>
-            <div className="w-px h-4 bg-gray-200 mx-1 self-center" />
-            <button
-              onClick={() => onStartEdit(product)}
-              className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
-              title="编辑产品"
-            >
-              <Pencil size={14} />
-            </button>
-            <button
-              onClick={() => {
-                if (confirm("确定删除该产品?")) onRemoveProduct(product.id);
-              }}
-              className="p-1.5 text-red-600 hover:bg-red-50 rounded"
-            >
-              <Trash2 size={14} />
-            </button>
+            {onToggleFavorite && (
+              <button
+                onClick={() => onToggleFavorite(product, competitor)}
+                className={`p-1.5 rounded transition-colors ${
+                  isProductFavorite(product.id)
+                    ? "text-red-500 hover:bg-red-50"
+                    : "text-gray-400 hover:bg-gray-50 hover:text-red-500"
+                }`}
+                title={isProductFavorite(product.id) ? "取消收藏" : "收藏产品"}
+              >
+                <Heart
+                  size={14}
+                  className={
+                    isProductFavorite(product.id) ? "fill-current" : ""
+                  }
+                />
+              </button>
+            )}
+
+            {onUpdateProduct && (
+              <>
+                <div className="w-px h-4 bg-gray-200 mx-1 self-center" />
+                <button
+                  onClick={() => onStartEdit(product)}
+                  className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
+                  title="编辑产品"
+                >
+                  <Pencil size={14} />
+                </button>
+              </>
+            )}
+
+            {onRemoveProduct && (
+              <button
+                onClick={() => {
+                  if (confirm("确定删除该产品?")) onRemoveProduct(product.id);
+                }}
+                className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
           </div>
 
           {/* Product Image */}
@@ -473,33 +490,40 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                     e.currentTarget.nextElementSibling?.classList.remove(
-                      "hidden"
+                      "hidden",
                     );
                   }}
                 />
                 <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors cursor-pointer flex items-center justify-center opacity-0 group-hover/image:opacity-100">
-                  <button
-                    onClick={() => {
-                      onTempImageLinkChange(product.image || "");
-                      onStartEditImage(product.id);
-                    }}
-                    className="bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold text-gray-700 hover:bg-white"
-                  >
-                    <Pencil size={14} />
-                    <span>编辑链接</span>
-                  </button>
+                  {onStartEditImage && (
+                    <button
+                      onClick={() => {
+                        onTempImageLinkChange(product.image || "");
+                        onStartEditImage(product.id);
+                      }}
+                      className="bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 text-xs font-bold text-gray-700 hover:bg-white"
+                    >
+                      <Pencil size={14} />
+                      <span>编辑链接</span>
+                    </button>
+                  )}
                 </div>
               </>
             ) : (
               <button
                 onClick={() => {
-                  onTempImageLinkChange("");
-                  onStartEditImage(product.id);
+                  if (onStartEditImage) {
+                    onTempImageLinkChange("");
+                    onStartEditImage(product.id);
+                  }
                 }}
-                className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-400 hover:bg-gray-100 transition-colors p-4"
+                disabled={!onStartEditImage}
+                className={`w-full h-full flex flex-col items-center justify-center gap-2 text-gray-400 transition-colors p-4 ${onStartEditImage ? "hover:bg-gray-100 cursor-pointer" : "cursor-default"}`}
               >
                 <ImageIcon size={32} className="text-gray-300" />
-                <span className="text-xs">点击输入图片链接</span>
+                <span className="text-xs">
+                  {onStartEditImage ? "点击输入图片链接" : "暂无图片"}
+                </span>
               </button>
             )}
           </div>
@@ -523,15 +547,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         product.gender === "Male"
                           ? "bg-blue-100 text-blue-700 border-blue-200"
                           : product.gender === "Female"
-                          ? "bg-pink-100 text-pink-700 border-pink-200"
-                          : "bg-gray-100 text-gray-700 border-gray-200"
+                            ? "bg-pink-100 text-pink-700 border-pink-200"
+                            : "bg-gray-100 text-gray-700 border-gray-200"
                       }`}
                     >
                       {product.gender === "Male"
                         ? "男用"
                         : product.gender === "Female"
-                        ? "女用"
-                        : "通用"}
+                          ? "女用"
+                          : "通用"}
                     </span>
                   )}
                   {product.sales !== undefined && (
@@ -649,7 +673,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                                     "prosKeywords",
                                     i,
                                     "value",
-                                    e.target.value
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -663,7 +687,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                                     "prosKeywords",
                                     i,
                                     "count",
-                                    Number(e.target.value)
+                                    Number(e.target.value),
                                   )
                                 }
                               />
@@ -676,7 +700,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                                 <X size={10} />
                               </button>
                             </div>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -737,7 +761,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                                     "consKeywords",
                                     i,
                                     "value",
-                                    e.target.value
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -751,7 +775,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                                     "consKeywords",
                                     i,
                                     "count",
-                                    Number(e.target.value)
+                                    Number(e.target.value),
                                   )
                                 }
                               />
@@ -764,7 +788,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                                 <X size={10} />
                               </button>
                             </div>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -879,7 +903,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     导入评论数据 (Excel/CSV):
                   </label>
                   <div className="flex items-center gap-2">
-                    <label className="flex items-center gap-2 cursor-pointer bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-50 text-xs font-medium transition-colors">
+                    <label
+                      className={`flex items-center gap-2 cursor-pointer bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-50 text-xs font-medium transition-colors ${!onUploadReviews ? "opacity-50 cursor-not-allowed hidden" : ""}`}
+                    >
                       <Upload size={14} />
                       <span>选择文件导入</span>
                       <input
@@ -888,7 +914,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         className="hidden"
                         multiple
                         onChange={(e) => handleFileUpload(e, product.id)}
-                        disabled={uploadingProductId === product.id}
+                        disabled={
+                          uploadingProductId === product.id || !onUploadReviews
+                        }
                       />
                     </label>
                     {uploadingProductId === product.id && (
@@ -929,7 +957,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     导入价格数据 (Excel/CSV):
                   </label>
                   <div className="flex flex-wrap items-center gap-2">
-                    <label className="flex items-center gap-2 cursor-pointer bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-xs font-medium transition-colors whitespace-nowrap">
+                    <label
+                      className={`flex items-center gap-2 cursor-pointer bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-xs font-medium transition-colors whitespace-nowrap ${!onUploadPriceHistory ? "opacity-50 cursor-not-allowed hidden" : ""}`}
+                    >
                       <Upload size={14} />
                       <span>选择文件导入</span>
                       <input
@@ -940,7 +970,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         onChange={(e) =>
                           handlePriceHistoryUpload(e, product.id)
                         }
-                        disabled={uploadingProductId === product.id}
+                        disabled={
+                          uploadingProductId === product.id ||
+                          !onUploadPriceHistory
+                        }
                       />
                     </label>
                     {uploadingProductId === product.id && (
@@ -953,7 +986,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
                       已录入 {product.priceHistory?.length || 0} 条价格记录
                     </span>
                     {product.priceHistory &&
-                      product.priceHistory.length > 0 && (
+                      product.priceHistory.length > 0 &&
+                      onClearPriceHistory && (
                         <button
                           onClick={() => onClearPriceHistory(product)}
                           className="flex items-center gap-1 px-2 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded border border-red-200 transition-colors whitespace-nowrap"

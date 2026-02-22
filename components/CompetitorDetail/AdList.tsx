@@ -8,13 +8,13 @@ interface AdListProps {
   isAddingAd: boolean;
   tempAd: Partial<AdCreative>;
   editingAdId: string | null;
-  onAddAd: () => void;
+  onAddAd?: () => void;
   onCancelAddAd: () => void;
   onTempAdChange: (ad: Partial<AdCreative>) => void;
   onSaveAd: () => void;
-  onEditAd: (ad: AdCreative) => void;
+  onEditAd?: (ad: AdCreative) => void;
   onCancelEditAd: () => void;
-  onRemoveAd: (adId: string) => void;
+  onRemoveAd?: (adId: string) => void;
   isSaving?: boolean;
   onImportAds?: (ads: Partial<AdCreative>[]) => void;
 }
@@ -72,12 +72,14 @@ const AdList: React.FC<AdListProps> = ({
           <Sparkles size={16} className="text-purple-600" />
           营销创意库
         </h3>
-        <button
-          onClick={onAddAd}
-          className="flex items-center gap-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-lg transition-colors shadow-sm"
-        >
-          <Plus size={14} /> 新增创意
-        </button>
+        {onAddAd && (
+          <button
+            onClick={onAddAd}
+            className="flex items-center gap-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-lg transition-colors shadow-sm"
+          >
+            <Plus size={14} /> 新增创意
+          </button>
+        )}
       </div>
 
       {isAddingAd && (
@@ -201,9 +203,14 @@ const AdList: React.FC<AdListProps> = ({
           <p className="text-xs text-gray-400 mb-6 text-center max-w-xs">
             粘贴链接即可通过 AI 自动提取竞品卖点与文案，快速建立创意库
           </p>
-          <button className="flex items-center gap-2 text-sm text-purple-600 font-bold bg-white px-5 py-2.5 rounded-full shadow-sm border border-purple-100 hover:border-purple-300 transition-all">
-            <Plus size={16} /> 添加第一条创意
-          </button>
+          {onAddAd && (
+            <button
+              onClick={onAddAd}
+              className="flex items-center gap-2 text-sm text-purple-600 font-bold bg-white px-5 py-2.5 rounded-full shadow-sm border border-purple-100 hover:border-purple-300 transition-all"
+            >
+              <Plus size={16} /> 添加第一条创意
+            </button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
@@ -267,22 +274,26 @@ const AdList: React.FC<AdListProps> = ({
               ) : (
                 <div className="relative p-5">
                   <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
-                    <button
-                      onClick={() => onEditAd(ad)}
-                      className="w-8 h-8 flex items-center justify-center text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-full transition-colors"
-                      title="编辑"
-                    >
-                      <Pencil size={14} />
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (confirm("确定删除该创意?")) onRemoveAd(ad.id);
-                      }}
-                      className="w-8 h-8 flex items-center justify-center text-red-600 bg-red-50 hover:bg-red-100 rounded-full transition-colors"
-                      title="删除"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    {onEditAd && (
+                      <button
+                        onClick={() => onEditAd(ad)}
+                        className="w-8 h-8 flex items-center justify-center text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-full transition-colors"
+                        title="编辑"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                    )}
+                    {onRemoveAd && (
+                      <button
+                        onClick={() => {
+                          if (confirm("确定删除该创意?")) onRemoveAd(ad.id);
+                        }}
+                        className="w-8 h-8 flex items-center justify-center text-red-600 bg-red-50 hover:bg-red-100 rounded-full transition-colors"
+                        title="删除"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
                   </div>
 
                   <div className="flex items-start gap-4 pr-16">

@@ -16,10 +16,12 @@ import {
 } from "../services/gemini";
 import { applyMedicalVocabulary } from "../utils/textProcessing";
 import { useStore } from "../store";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Lock } from "lucide-react";
+import { useAuthStore } from "../authStore";
 
 const ProductForge: React.FC = () => {
   const { medicalTerms, fetchMedicalTerms } = useStore();
+  const { isGuest } = useAuthStore();
 
   React.useEffect(() => {
     fetchMedicalTerms();
@@ -58,6 +60,10 @@ const ProductForge: React.FC = () => {
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
   const handleGenerate = async () => {
+    if (isGuest) {
+      alert("访客模式仅供查看，无权生成新产品方案。");
+      return;
+    }
     setError(null);
     setIsGenerating(true);
     setImageUrl(null);
@@ -65,7 +71,7 @@ const ProductForge: React.FC = () => {
     try {
       const analysisResult = await generateProductAnalysis(
         config,
-        referenceAnalysis
+        referenceAnalysis,
       );
       setAnalysis(analysisResult);
       setViewState("results");
@@ -86,6 +92,7 @@ const ProductForge: React.FC = () => {
   };
 
   const handleRegenerateImage = async () => {
+    if (isGuest) return;
     if (!analysis) return;
     setIsGeneratingImage(true);
     setImageUrl(null);
@@ -107,6 +114,10 @@ const ProductForge: React.FC = () => {
   const [isReAnalyzing, setIsReAnalyzing] = useState(false);
 
   const handleOptimize = async () => {
+    if (isGuest) {
+      alert("访客模式仅供查看，无权优化方案。");
+      return;
+    }
     if (!analysis) return;
     setIsOptimizing(true);
     try {
@@ -138,7 +149,7 @@ const ProductForge: React.FC = () => {
   const handleSaveAndApplyOptimization = (name: string) => {
     if (optimizedConfigCandidate) {
       const savedConfigs = JSON.parse(
-        localStorage.getItem("productforge_configs") || "[]"
+        localStorage.getItem("productforge_configs") || "[]",
       );
       const newSavedConfig = {
         id: Date.now().toString(),
@@ -148,7 +159,7 @@ const ProductForge: React.FC = () => {
       };
       localStorage.setItem(
         "productforge_configs",
-        JSON.stringify([...savedConfigs, newSavedConfig])
+        JSON.stringify([...savedConfigs, newSavedConfig]),
       );
 
       handleApplyOptimization();
@@ -157,8 +168,12 @@ const ProductForge: React.FC = () => {
 
   const handleGenerateRecommendation = async (
     requirements: UserRequirements,
-    gender: "male" | "female"
+    gender: "male" | "female",
   ) => {
+    if (isGuest) {
+      alert("访客模式仅供查看，无权使用AI推荐功能。");
+      return;
+    }
     setError(null);
     setIsGenerating(true);
 
@@ -170,16 +185,16 @@ const ProductForge: React.FC = () => {
           ? applyMedicalVocabulary(requirements.additionalNotes, medicalTerms)
           : undefined,
         mustHaveFeatures: requirements.mustHaveFeatures.map((f) =>
-          applyMedicalVocabulary(f, medicalTerms)
+          applyMedicalVocabulary(f, medicalTerms),
         ),
         specialPreferences: requirements.specialPreferences.map((p) =>
-          applyMedicalVocabulary(p, medicalTerms)
+          applyMedicalVocabulary(p, medicalTerms),
         ),
       };
 
       const recommendedConfig = await generateRecommendedConfig(
         sanitizedRequirements,
-        gender
+        gender,
       );
       setConfig(recommendedConfig);
       setViewState("config");
@@ -212,6 +227,15 @@ const ProductForge: React.FC = () => {
                 关闭
               </button>
             </div>
+          </div>
+        )}
+
+        {isGuest && (
+          <div className="mb-6 bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-lg flex items-center gap-2">
+            <Lock size={16} />
+            <span className="text-sm font-medium">
+              访客模式：AI 生成功能已禁用，仅供查看界面。
+            </span>
           </div>
         )}
 
@@ -277,15 +301,15 @@ const ProductForge: React.FC = () => {
                 analysis={analysis}
                 imageUrl={imageUrl}
                 configSummary={`${config.color.join(
-                  ", "
+                  ", ",
                 )} ${config.material.join(", ")} | 驱动:${config.drive.join(
-                  ", "
+                  ", ",
                 )} | 主控:${config.mainControl.join(
-                  ", "
+                  ", ",
                 )} | 加热:${config.heating.join(
-                  ", "
+                  ", ",
                 )} | 传感器:${config.sensors.join(
-                  ", "
+                  ", ",
                 )} | 电源:${config.power.join(", ")}`}
                 onOptimize={handleOptimize}
                 isOptimizing={isOptimizing}

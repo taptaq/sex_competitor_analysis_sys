@@ -175,3 +175,13 @@ export enum ViewType {
   MEDICAL_VOCAB='MEDICAL_VOCAB',
   THINKING_WALL='THINKING_WALL'
 }
+
+export type UserRole = 'admin' | 'user' | 'guest';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  username?: string;
+  role: UserRole;
+  created_at: string;
+}

@@ -14,6 +14,15 @@ export interface ThinkingNote {
   updated_at?: string;
   analysis?: any;
 }
+import { useAuthStore } from './authStore';
+
+const checkGuest = () => {
+    if (useAuthStore.getState().isGuest) {
+        alert("访客模式仅供查看，无权进行编辑操作。");
+        return true;
+    }
+    return false;
+};
 
 interface AppState {
   currentView: ViewType;
@@ -155,6 +164,7 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   addCompetitor: async (competitor) => {
+      if (checkGuest()) return;
       // Optimistic update
       set((state) => ({ competitors: [...state.competitors, competitor] }));
 
@@ -177,6 +187,7 @@ export const useStore = create<AppState>((set, get) => ({
       }
   },
   removeCompetitor: async (id) => {
+      if (checkGuest()) return;
       set((state) => ({
         competitors: state.competitors.filter(c => c.id !== id),
         selectedCompetitorId: state.selectedCompetitorId === id ? null : state.selectedCompetitorId,
@@ -187,6 +198,7 @@ export const useStore = create<AppState>((set, get) => ({
       if (error) console.error("Failed to delete competitor", error);
   },
   updateCompetitor: async (updatedComp) => {
+      if (checkGuest()) return;
       set((state) => ({
         competitors: state.competitors.map(c => c.id === updatedComp.id ? updatedComp : c)
       }));
@@ -209,6 +221,7 @@ export const useStore = create<AppState>((set, get) => ({
 
   // Product Actions
   addProduct: async (competitorId, product) => {
+      if (checkGuest()) return;
       // Optimistic
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
@@ -240,6 +253,7 @@ export const useStore = create<AppState>((set, get) => ({
       }
   },
   updateProduct: async (competitorId, product) => {
+      if (checkGuest()) return;
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
@@ -269,6 +283,7 @@ export const useStore = create<AppState>((set, get) => ({
       }
   },
   removeProduct: async (competitorId, productId) => {
+      if (checkGuest()) return;
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
@@ -286,6 +301,7 @@ export const useStore = create<AppState>((set, get) => ({
   // User context implies Ads are part of Competitor. But we didn't add 'ads' column.
   // We will log a warning.
   addAd: (competitorId, ad) => {
+      if (checkGuest()) return;
       console.warn("Ads persistence not implemented in Supabase schema yet.");
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
@@ -296,6 +312,7 @@ export const useStore = create<AppState>((set, get) => ({
       });
   },
   updateAd: (competitorId, ad) => {
+      if (checkGuest()) return;
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
@@ -305,6 +322,7 @@ export const useStore = create<AppState>((set, get) => ({
       });
   },
   removeAd: (competitorId, adId) => {
+      if (checkGuest()) return;
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
             if (c.id !== competitorId) return c;
@@ -315,6 +333,7 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   setProductAnalysis: async (competitorId, productId, analysis) => {
+      if (checkGuest()) return;
       set((state) => {
         const newCompetitors = state.competitors.map(c => {
           if (c.id !== competitorId) return c;
@@ -331,6 +350,7 @@ export const useStore = create<AppState>((set, get) => ({
       if (error) console.error("Failed to update product analysis", error);
   },
   setProductReviews: async (competitorId, productId, newReviews) => {
+      if (checkGuest()) return;
       const reviewObjects = newReviews.map((reviewData, idx) => ({
           id: `new-${Date.now()}-${idx}`,
           text: typeof reviewData === 'object' ? JSON.stringify(reviewData) : String(reviewData),
@@ -370,6 +390,7 @@ export const useStore = create<AppState>((set, get) => ({
   // Favorites Actions
   favoriteProducts: [],
   toggleFavoriteProduct: async (product, competitor) => {
+    if (checkGuest()) return;
     const isFavorite = get().favoriteProducts.some(fav => fav.productId === product.id);
 
     // Optimistic Update
@@ -429,6 +450,7 @@ export const useStore = create<AppState>((set, get) => ({
   // Deep Reports Actions
   deepReports: [],
   saveDeepReport: async (productId, competitorId, report) => {
+    if (checkGuest()) return;
     try {
       const { error } = await supabase.from('deep_reports').upsert({
           product_id: productId,
@@ -511,6 +533,7 @@ export const useStore = create<AppState>((set, get) => ({
     }
   },
   deleteStandardizationTest: async (id) => {
+    if (checkGuest()) return;
     set((state) => ({
       standardizationTests: state.standardizationTests.filter(t => t.id !== id)
     }));
@@ -536,6 +559,7 @@ export const useStore = create<AppState>((set, get) => ({
     }
   },
   addMedicalTerm: async (term, replacement, category) => {
+    if (checkGuest()) return;
     // Optimistic
     const newTerm = { id: `temp-${Date.now()}`, term, replacement, category, created_at: new Date().toISOString() };
     set(state => ({ medicalTerms: [newTerm, ...state.medicalTerms] }));
@@ -553,6 +577,7 @@ export const useStore = create<AppState>((set, get) => ({
     }
   },
   removeMedicalTerm: async (id) => {
+    if (checkGuest()) return;
     set(state => ({ medicalTerms: state.medicalTerms.filter(t => t.id !== id) }));
     const { error } = await supabase.from('medical_terminology').delete().eq('id', id);
     if (error) console.error("Failed to delete medical term", error);
@@ -573,6 +598,7 @@ export const useStore = create<AppState>((set, get) => ({
     }
   },
   addThinkingNote: async (note) => {
+    if (checkGuest()) return;
     // Optimistic
     const tempId = `temp-${Date.now()}`;
     const newNote = { ...note, id: tempId, created_at: new Date().toISOString() };
@@ -597,6 +623,7 @@ export const useStore = create<AppState>((set, get) => ({
     }
   },
   updateThinkingNote: async (id, updates) => {
+    if (checkGuest()) return;
     set(state => ({
       thinkingNotes: state.thinkingNotes.map(n => n.id === id ? { ...n, ...updates } : n)
     }));
@@ -604,6 +631,7 @@ export const useStore = create<AppState>((set, get) => ({
     if (error) console.error("Failed to update thinking note", error);
   },
   deleteThinkingNote: async (id) => {
+    if (checkGuest()) return;
     set(state => ({
       thinkingNotes: state.thinkingNotes.filter(n => n.id !== id)
     }));
@@ -611,6 +639,7 @@ export const useStore = create<AppState>((set, get) => ({
     if (error) console.error("Failed to delete thinking note", error);
   },
   analyzeThinkingNote: async (id) => {
+    if (checkGuest()) return;
     const note = get().thinkingNotes.find(n => n.id === id);
     if (!note) return;
 

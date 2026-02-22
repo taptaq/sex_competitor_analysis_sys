@@ -25,7 +25,7 @@ import QAAnalysisPanel from "./QAAnalysisPanel";
 
 interface CompetitorSidebarProps {
   competitor: Competitor;
-  onUpdateCompetitor: (competitor: Competitor) => void;
+  onUpdateCompetitor?: (competitor: Competitor) => void;
 }
 
 const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
@@ -57,7 +57,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const downloadFile = (
     content: string,
     fileName: string,
-    contentType: string
+    contentType: string,
   ) => {
     const a = document.createElement("a");
     const file = new Blob([content], { type: contentType });
@@ -73,7 +73,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     downloadFile(
       jsonString,
       `${competitor.name}_brand_data.json`,
-      "application/json"
+      "application/json",
     );
   };
 
@@ -211,7 +211,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
         <outline text="品牌特质分析">
             <outline text="分析内容" _note="${analysisText.replace(
               /"/g,
-              "&quot;"
+              "&quot;",
             )}" />
             <outline text="关键词">`;
       competitor.brandCharacteristicAnalysis.keywords?.forEach((k) => {
@@ -229,7 +229,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
       competitor.qaAnalysis.painPoints.forEach((p) => {
         opml += `\n                <outline text="${p.replace(
           /"/g,
-          "&quot;"
+          "&quot;",
         )}" />`;
       });
       opml += `
@@ -238,7 +238,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
       competitor.qaAnalysis.concerns.forEach((p) => {
         opml += `\n                <outline text="${p.replace(
           /"/g,
-          "&quot;"
+          "&quot;",
         )}" />`;
       });
       opml += `
@@ -249,7 +249,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
         competitor.qaAnalysis.suggestions.forEach((p) => {
           opml += `\n                <outline text="${p.replace(
             /"/g,
-            "&quot;"
+            "&quot;",
           )}" />`;
         });
         opml += `
@@ -258,7 +258,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
       opml += `
             <outline text="总结" _note="${competitor.qaAnalysis.summary.replace(
               /"/g,
-              "&quot;"
+              "&quot;",
             )}" />
         </outline>`;
     }
@@ -269,7 +269,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
       competitor.products.forEach((p) => {
         opml += `\n            <outline text="${p.name.replace(
           /"/g,
-          "&quot;"
+          "&quot;",
         )}">
                 <outline text="基本信息">
                     <outline text="价格: ¥${p.price}" />
@@ -279,8 +279,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                       p.gender === "Male"
                         ? "男用"
                         : p.gender === "Female"
-                        ? "女用"
-                        : "通用"
+                          ? "女用"
+                          : "通用"
                     }" />
                 </outline>`;
 
@@ -297,8 +297,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
               (s) =>
                 (opml += `\n                    <outline text="${s.replace(
                   /"/g,
-                  "&quot;"
-                )}" />`)
+                  "&quot;",
+                )}" />`),
             );
             opml += `\n                </outline>`;
           }
@@ -311,8 +311,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
             (item) =>
               (opml += `\n                        <outline text="${item.replace(
                 /"/g,
-                "&quot;"
-              )}" />`)
+                "&quot;",
+              )}" />`),
           );
           opml += `\n                    </outline>
                     <outline text="缺点">`;
@@ -320,13 +320,13 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
             (item) =>
               (opml += `\n                        <outline text="${item.replace(
                 /"/g,
-                "&quot;"
-              )}" />`)
+                "&quot;",
+              )}" />`),
           );
           opml += `\n                    </outline>
                     <outline text="总结" _note="${p.analysis.summary.replace(
                       /"/g,
-                      "&quot;"
+                      "&quot;",
                     )}" />
                 </outline>`;
         }
@@ -337,14 +337,14 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                     <outline text="趋势: ${pa.trend.replace(/"/g, "&quot;")}" />
                     <outline text="波动: ${pa.fluctuation.replace(
                       /"/g,
-                      "&quot;"
+                      "&quot;",
                     )}" />
                     <outline text="建议" _note="${pa.recommendations
                       .join("; ")
                       .replace(/"/g, "&quot;")}" />
                     <outline text="综合分析" _note="${pa.summary.replace(
                       /"/g,
-                      "&quot;"
+                      "&quot;",
                     )}" />
                 </outline>`;
         }
@@ -373,7 +373,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     ) {
       return competitor.brandCharacteristicAnalysis.wordCloudKeywords.slice(
         0,
-        5
+        5,
       );
     }
 
@@ -585,53 +585,65 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   }, [competitor.brandCharacteristicAnalysis]);
 
   const handleSaveName = () => {
-    if (tempName.trim()) {
+    if (tempName.trim() && onUpdateCompetitor) {
       onUpdateCompetitor({ ...competitor, name: tempName.trim() });
       setIsEditingName(false);
     }
   };
 
   const handleSaveDomain = () => {
-    onUpdateCompetitor({ ...competitor, domain: tempDomain });
-    setIsEditingDomain(false);
+    if (onUpdateCompetitor) {
+      onUpdateCompetitor({ ...competitor, domain: tempDomain });
+      setIsEditingDomain(false);
+    }
   };
 
   const handleSaveFocus = () => {
-    onUpdateCompetitor({
-      ...competitor,
-      focus: tempFocus as "Male" | "Female" | "Unisex" | undefined,
-    });
-    setIsEditingFocus(false);
+    if (onUpdateCompetitor) {
+      onUpdateCompetitor({
+        ...competitor,
+        focus: tempFocus as "Male" | "Female" | "Unisex" | undefined,
+      });
+      setIsEditingFocus(false);
+    }
   };
 
   const handleSavePhilosophy = () => {
     const filteredPhilosophy = tempPhilosophy.filter((p) => p.trim() !== "");
-    onUpdateCompetitor({ ...competitor, philosophy: filteredPhilosophy });
-    setIsEditingPhilosophy(false);
+    if (onUpdateCompetitor) {
+      onUpdateCompetitor({ ...competitor, philosophy: filteredPhilosophy });
+      setIsEditingPhilosophy(false);
+    }
   };
 
   const handleSaveFoundedDate = () => {
-    onUpdateCompetitor({
-      ...competitor,
-      foundedDate: tempFoundedDate.trim() || undefined,
-    });
-    setIsEditingFoundedDate(false);
+    if (onUpdateCompetitor) {
+      onUpdateCompetitor({
+        ...competitor,
+        foundedDate: tempFoundedDate.trim() || undefined,
+      });
+      setIsEditingFoundedDate(false);
+    }
   };
 
   const handleSaveCountry = () => {
-    onUpdateCompetitor({
-      ...competitor,
-      country: tempCountry.trim() || undefined,
-    });
-    setIsEditingCountry(false);
+    if (onUpdateCompetitor) {
+      onUpdateCompetitor({
+        ...competitor,
+        country: tempCountry.trim() || undefined,
+      });
+      setIsEditingCountry(false);
+    }
   };
 
   const handleSaveUserGroupProfile = () => {
-    onUpdateCompetitor({
-      ...competitor,
-      majorUserGroupProfile: tempUserGroupProfile.trim() || undefined,
-    });
-    setIsEditingUserGroupProfile(false);
+    if (onUpdateCompetitor) {
+      onUpdateCompetitor({
+        ...competitor,
+        majorUserGroupProfile: tempUserGroupProfile.trim() || undefined,
+      });
+      setIsEditingUserGroupProfile(false);
+    }
   };
 
   const handleAnalyzeUserGroup = async () => {
@@ -656,12 +668,12 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
           philosophy: currentPhilosophy,
           description: currentDescription,
           focus: currentFocus as string,
-        }
+        },
       );
       if (result) {
         if (isEditingUserGroupProfile) {
           setTempUserGroupProfile(result);
-        } else {
+        } else if (onUpdateCompetitor) {
           onUpdateCompetitor({
             ...competitor,
             majorUserGroupProfile: result,
@@ -714,13 +726,15 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
           ads: competitor.ads,
           isDomestic: competitor.isDomestic,
         },
-        competitor.isDomestic || false
+        competitor.isDomestic || false,
       );
 
-      onUpdateCompetitor({
-        ...competitor,
-        brandCharacteristicAnalysis: analysis,
-      });
+      if (onUpdateCompetitor) {
+        onUpdateCompetitor({
+          ...competitor,
+          brandCharacteristicAnalysis: analysis,
+        });
+      }
     } catch (error) {
       console.error("Brand characteristics analysis failed:", error);
       alert("品牌特点分析失败，请稍后重试");
@@ -896,7 +910,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                   value={tempFocus || "Unisex"}
                   onChange={(e) =>
                     setTempFocus(
-                      e.target.value === "Unisex" ? "" : e.target.value
+                      e.target.value === "Unisex" ? "" : e.target.value,
                     )
                   }
                   autoFocus
@@ -928,8 +942,8 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                     competitor.focus === "Female"
                       ? "text-pink-500"
                       : competitor.focus === "Male"
-                      ? "text-blue-500"
-                      : "text-purple-500"
+                        ? "text-blue-500"
+                        : "text-purple-500"
                   }`}
                 >
                   {competitor.focus === "Female" ? (
@@ -945,15 +959,15 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                     competitor.focus === "Female"
                       ? "bg-pink-50 text-pink-600 border-pink-100"
                       : competitor.focus === "Male"
-                      ? "bg-blue-50 text-blue-600 border-blue-100"
-                      : "bg-purple-50 text-purple-600 border-purple-100"
+                        ? "bg-blue-50 text-blue-600 border-blue-100"
+                        : "bg-purple-50 text-purple-600 border-purple-100"
                   }`}
                 >
                   {competitor.focus === "Female"
                     ? "专攻女用"
                     : competitor.focus === "Male"
-                    ? "专攻男用"
-                    : "男女兼用"}
+                      ? "专攻男用"
+                      : "男女兼用"}
                 </span>
                 <Pencil
                   onClick={() => {
@@ -994,7 +1008,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                   <Pencil
                     onClick={() => {
                       setTempUserGroupProfile(
-                        competitor.majorUserGroupProfile || ""
+                        competitor.majorUserGroupProfile || "",
                       );
                       setIsEditingUserGroupProfile(true);
                     }}
@@ -1042,7 +1056,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                         competitor.majorUserGroupProfile.trim().startsWith("{")
                       ) {
                         const parsed = JSON.parse(
-                          competitor.majorUserGroupProfile
+                          competitor.majorUserGroupProfile,
                         );
                         if (parsed.result) return parsed.result;
                       }
@@ -1056,7 +1070,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                     ? profileText.split(/\r?\n/).map((line, i) => {
                         // Match lines like: "1. Header: Content" or "【Header】Content"
                         const matchNumbered = line.match(
-                          /^(\d+[\.\、]\s*.*?[：:])\s*(.*)/
+                          /^(\d+[\.\、]\s*.*?[：:])\s*(.*)/,
                         );
                         const matchBracket = line.match(/^【(.*?)】\s*(.*)/);
 
@@ -1119,7 +1133,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                     setTempPhilosophy(
                       competitor.philosophy && competitor.philosophy.length > 0
                         ? [...competitor.philosophy]
-                        : [""]
+                        : [""],
                     );
                     setIsEditingPhilosophy(true);
                   }}
@@ -1521,7 +1535,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                     <li key={index} className="text-xs text-purple-700">
                       {advantage}
                     </li>
-                  )
+                  ),
                 )}
               </ul>
             </div>

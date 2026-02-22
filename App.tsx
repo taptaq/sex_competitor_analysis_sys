@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useStore } from "./store";
+import { useAuthStore } from "./authStore";
+import Login from "./components/Auth/Login";
 import { ViewType } from "./types";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
@@ -31,6 +33,24 @@ const App: React.FC = () => {
     fetchMedicalTerms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const { session, isLoading, initialize } = useAuthStore();
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (!session && !useAuthStore.getState().isGuest) {
+    return <Login />;
+  }
 
   const renderContent = () => {
     switch (currentView) {

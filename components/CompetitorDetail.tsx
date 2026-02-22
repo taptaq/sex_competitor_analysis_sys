@@ -13,6 +13,7 @@ import {
   parsePriceHistoryFromFiles,
   getLatestPrice,
 } from "../utils/priceHistoryUtils";
+import { useAuthStore } from "../authStore";
 
 import { applyMedicalVocabulary } from "../utils/textProcessing";
 
@@ -65,6 +66,8 @@ const CompetitorDetail: React.FC = () => {
   const [showPriceChartModal, setShowPriceChartModal] = useState(false);
   const [selectedProductForChart, setSelectedProductForChart] =
     useState<Product | null>(null);
+
+  const { isGuest } = useAuthStore();
 
   // Loading states
   const [isSavingProduct, setIsSavingProduct] = useState(false);
@@ -561,7 +564,7 @@ const CompetitorDetail: React.FC = () => {
         <div className="lg:col-span-2">
           <CompetitorSidebar
             competitor={competitor}
-            onUpdateCompetitor={updateCompetitor}
+            onUpdateCompetitor={isGuest ? undefined : updateCompetitor}
           />
         </div>
 
@@ -617,33 +620,58 @@ const CompetitorDetail: React.FC = () => {
                     salesSortOrder={salesSortOrder}
                     onPriceSort={handlePriceSort}
                     onSalesSort={handleSalesSort}
-                    onAddProduct={() => {
-                      setIsAddingProduct(true);
-                      setTempProduct({});
-                    }}
-                    onUpdateProduct={(product) =>
-                      updateProduct(competitor.id, product)
+                    onAddProduct={
+                      isGuest
+                        ? undefined
+                        : () => {
+                            setIsAddingProduct(true);
+                            setTempProduct({});
+                          }
                     }
-                    onRemoveProduct={(productId) =>
-                      removeProduct(competitor.id, productId)
+                    onUpdateProduct={
+                      isGuest
+                        ? undefined
+                        : (product) => updateProduct(competitor.id, product)
                     }
-                    onAnalyzeProduct={handleAnalyze}
-                    onUpdateProductAnalysis={(productId, analysis) =>
-                      setProductAnalysis(competitor.id, productId, analysis)
+                    onRemoveProduct={
+                      isGuest
+                        ? undefined
+                        : (productId) => removeProduct(competitor.id, productId)
                     }
-                    onUploadReviews={async (productId, files) => {
-                      const event = {
-                        target: { files },
-                      } as React.ChangeEvent<HTMLInputElement>;
-                      await handleFileUpload(event, productId);
-                    }}
-                    onUploadPriceHistory={async (productId, files) => {
-                      const event = {
-                        target: { files },
-                      } as React.ChangeEvent<HTMLInputElement>;
-                      await handlePriceHistoryUpload(event, productId);
-                    }}
-                    onClearPriceHistory={handleClearPriceHistory}
+                    onAnalyzeProduct={isGuest ? undefined : handleAnalyze}
+                    onUpdateProductAnalysis={
+                      isGuest
+                        ? undefined
+                        : (productId, analysis) =>
+                            setProductAnalysis(
+                              competitor.id,
+                              productId,
+                              analysis,
+                            )
+                    }
+                    onUploadReviews={
+                      isGuest
+                        ? undefined
+                        : async (productId, files) => {
+                            const event = {
+                              target: { files },
+                            } as React.ChangeEvent<HTMLInputElement>;
+                            await handleFileUpload(event, productId);
+                          }
+                    }
+                    onUploadPriceHistory={
+                      isGuest
+                        ? undefined
+                        : async (productId, files) => {
+                            const event = {
+                              target: { files },
+                            } as React.ChangeEvent<HTMLInputElement>;
+                            await handlePriceHistoryUpload(event, productId);
+                          }
+                    }
+                    onClearPriceHistory={
+                      isGuest ? undefined : handleClearPriceHistory
+                    }
                     onShowPriceChart={handleShowPriceChart}
                     onToggleFavorite={toggleFavoriteProduct}
                     isProductFavorite={isProductFavorite}
@@ -680,9 +708,13 @@ const CompetitorDetail: React.FC = () => {
                       setEditingImageProductId(null);
                       setTempImageLink("");
                     }}
-                    onStartEditImage={(productId) => {
-                      setEditingImageProductId(productId);
-                    }}
+                    onStartEditImage={
+                      isGuest
+                        ? undefined
+                        : (productId) => {
+                            setEditingImageProductId(productId);
+                          }
+                    }
                     uploadingProductId={uploadingProductId}
                     isSavingProduct={isSavingProduct}
                   />
@@ -695,31 +727,43 @@ const CompetitorDetail: React.FC = () => {
                   isAddingAd={isAddingAd}
                   tempAd={tempAd}
                   editingAdId={editingAdId}
-                  onAddAd={() => {
-                    setIsAddingAd(true);
-                    setTempAd({});
-                  }}
+                  onAddAd={
+                    isGuest
+                      ? undefined
+                      : () => {
+                          setIsAddingAd(true);
+                          setTempAd({});
+                        }
+                  }
                   onCancelAddAd={() => {
                     setIsAddingAd(false);
                     setTempAd({});
                   }}
                   onTempAdChange={setTempAd}
                   onSaveAd={saveAd}
-                  onEditAd={(ad) => {
-                    setEditingAdId(ad.id);
-                    setTempAd({ ...ad });
-                  }}
+                  onEditAd={
+                    isGuest
+                      ? undefined
+                      : (ad) => {
+                          setEditingAdId(ad.id);
+                          setTempAd({ ...ad });
+                        }
+                  }
                   onCancelEditAd={() => {
                     setEditingAdId(null);
                     setTempAd({});
                   }}
-                  onRemoveAd={(adId) => {
-                    if (confirm("确定删除该创意?")) {
-                      removeAd(competitor.id, adId);
-                    }
-                  }}
+                  onRemoveAd={
+                    isGuest
+                      ? undefined
+                      : (adId) => {
+                          if (confirm("确定删除该创意?")) {
+                            removeAd(competitor.id, adId);
+                          }
+                        }
+                  }
                   isSaving={isSavingAd}
-                  onImportAds={handleImportAds}
+                  onImportAds={isGuest ? undefined : handleImportAds}
                 />
               )}
             </div>

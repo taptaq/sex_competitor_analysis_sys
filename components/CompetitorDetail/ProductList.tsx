@@ -31,15 +31,15 @@ interface ProductListProps {
   salesSortOrder: "none" | "asc" | "desc";
   onPriceSort: () => void;
   onSalesSort: () => void;
-  onAddProduct: () => void;
+  onAddProduct?: () => void;
   // Product actions
-  onUpdateProduct: (product: Product) => void;
-  onRemoveProduct: (productId: string) => void;
-  onAnalyzeProduct: (product: Product) => Promise<void>;
-  onUpdateProductAnalysis: (productId: string, analysis: any) => void;
-  onUploadReviews: (productId: string, files: FileList) => Promise<void>;
-  onUploadPriceHistory: (productId: string, files: FileList) => Promise<void>;
-  onClearPriceHistory: (product: Product) => void;
+  onUpdateProduct?: (product: Product) => void;
+  onRemoveProduct?: (productId: string) => void;
+  onAnalyzeProduct?: (product: Product) => Promise<void>;
+  onUpdateProductAnalysis?: (productId: string, analysis: any) => void;
+  onUploadReviews?: (productId: string, files: FileList) => Promise<void>;
+  onUploadPriceHistory?: (productId: string, files: FileList) => Promise<void>;
+  onClearPriceHistory?: (product: Product) => void;
   onShowPriceChart: (product: Product) => void;
   onToggleFavorite: (product: Product, competitor: Competitor) => void;
   isProductFavorite: (productId: string) => boolean;
@@ -61,7 +61,7 @@ interface ProductListProps {
   onTempImageLinkChange: (link: string) => void;
   onSaveImageLink: (product: Product) => void;
   onCancelImageEdit: () => void;
-  onStartEditImage: (productId: string) => void;
+  onStartEditImage?: (productId: string) => void;
   uploadingProductId: string | null;
   isSavingProduct: boolean;
 }
@@ -183,12 +183,14 @@ const ProductList: React.FC<ProductListProps> = ({
             </button>
           </div>
         </div>
-        <button
-          onClick={onAddProduct}
-          className="w-full md:w-auto flex items-center justify-center gap-2 text-sm text-purple-600 font-bold hover:bg-purple-50 px-3 py-2 rounded-lg transition border border-purple-200 shadow-sm"
-        >
-          <Plus size={16} /> 新增产品
-        </button>
+        {onAddProduct && (
+          <button
+            onClick={onAddProduct}
+            className="w-full md:w-auto flex items-center justify-center gap-2 text-sm text-purple-600 font-bold hover:bg-purple-50 px-3 py-2 rounded-lg transition border border-purple-200 shadow-sm"
+          >
+            <Plus size={16} /> 新增产品
+          </button>
+        )}
       </div>
 
       {/* Product cards will be rendered here */}

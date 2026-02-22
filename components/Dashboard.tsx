@@ -27,6 +27,7 @@ import {
   Package,
 } from "lucide-react";
 import { fetchCompetitorData } from "../services/gemini";
+import { useAuthStore } from "../authStore";
 
 const Dashboard: React.FC = () => {
   const {
@@ -41,11 +42,12 @@ const Dashboard: React.FC = () => {
   const [newUserGroupProfile, setNewUserGroupProfile] = useState("");
   const [isDomestic, setIsDomestic] = useState(true);
   const [loading, setLoading] = useState(false);
+  const { isGuest } = useAuthStore();
   const [radarCompAId, setRadarCompAId] = useState<string>("");
   const [radarCompBId, setRadarCompBId] = useState<string>("");
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [marketTab, setMarketTab] = useState<"all" | "domestic" | "foreign">(
-    "all"
+    "all",
   );
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [dateFilter, setDateFilter] = useState<
@@ -68,7 +70,7 @@ const Dashboard: React.FC = () => {
 
     // Duplicate Check
     const isDuplicate = competitors.some(
-      (c) => c.name.toLowerCase() === trimmedName.toLowerCase()
+      (c) => c.name.toLowerCase() === trimmedName.toLowerCase(),
     );
     if (isDuplicate) {
       alert(`品牌 "${trimmedName}" 已存在，请勿重复添加`);
@@ -171,8 +173,8 @@ const Dashboard: React.FC = () => {
           comp.focus === "Female"
             ? "专攻女用"
             : comp.focus === "Male"
-            ? "专攻男用"
-            : "男女兼用";
+              ? "专攻男用"
+              : "男女兼用";
         markdown += `- **专攻性别**: ${focusText}\n`;
       }
       if (comp.philosophy && comp.philosophy.length > 0) {
@@ -403,22 +405,24 @@ const Dashboard: React.FC = () => {
         <div className="lg:col-span-3 bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold">竞品快速入口</h3>
-            <button
-              onClick={toggleAdding}
-              className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${
-                isAdding
-                  ? "bg-purple-100 text-purple-700"
-                  : "text-purple-600 hover:bg-purple-50"
-              }`}
-            >
-              <Plus
-                size={14}
-                className={`transition-transform duration-300 ${
-                  isAdding ? "rotate-45" : ""
+            {!isGuest && (
+              <button
+                onClick={toggleAdding}
+                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${
+                  isAdding
+                    ? "bg-purple-100 text-purple-700"
+                    : "text-purple-600 hover:bg-purple-50"
                 }`}
-              />
-              {isAdding ? "取消" : "新增"}
-            </button>
+              >
+                <Plus
+                  size={14}
+                  className={`transition-transform duration-300 ${
+                    isAdding ? "rotate-45" : ""
+                  }`}
+                />
+                {isAdding ? "取消" : "新增"}
+              </button>
+            )}
           </div>
 
           <div className="space-y-2 mb-4">
@@ -520,7 +524,7 @@ const Dashboard: React.FC = () => {
                     if (!comp.foundedDate) return false;
 
                     const foundedYear = parseInt(
-                      comp.foundedDate.split("-")[0] || comp.foundedDate
+                      comp.foundedDate.split("-")[0] || comp.foundedDate,
                     );
                     if (isNaN(foundedYear)) return false; // 如果日期格式不正确，隐藏该条目
 
@@ -609,8 +613,8 @@ const Dashboard: React.FC = () => {
                             comp.focus === "Female"
                               ? "bg-pink-50 text-pink-600 border-pink-100"
                               : comp.focus === "Male"
-                              ? "bg-blue-50 text-blue-600 border-blue-100"
-                              : "bg-purple-50 text-purple-600 border-purple-100"
+                                ? "bg-blue-50 text-blue-600 border-blue-100"
+                                : "bg-purple-50 text-purple-600 border-purple-100"
                           }`}
                         >
                           {comp.focus === "Female" ? (
@@ -623,31 +627,33 @@ const Dashboard: React.FC = () => {
                           {comp.focus === "Female"
                             ? "女用"
                             : comp.focus === "Male"
-                            ? "男用"
-                            : "通用"}
+                              ? "男用"
+                              : "通用"}
                         </div>
-                        <button
-                          className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
-                          title="删除竞品"
-                          disabled={!!deletingId}
-                          onClick={async (e) => {
-                            e.stopPropagation();
-                            if (confirm(`确定要删除 ${comp.name} 吗？`)) {
-                              setDeletingId(comp.id);
-                              try {
-                                await removeCompetitor(comp.id);
-                              } finally {
-                                setDeletingId(null);
+                        {!isGuest && (
+                          <button
+                            className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all"
+                            title="删除竞品"
+                            disabled={!!deletingId}
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              if (confirm(`确定要删除 ${comp.name} 吗？`)) {
+                                setDeletingId(comp.id);
+                                try {
+                                  await removeCompetitor(comp.id);
+                                } finally {
+                                  setDeletingId(null);
+                                }
                               }
-                            }
-                          }}
-                        >
-                          {deletingId === comp.id ? (
-                            <Loader2 size={14} className="animate-spin" />
-                          ) : (
-                            <Trash2 size={14} />
-                          )}
-                        </button>
+                            }}
+                          >
+                            {deletingId === comp.id ? (
+                              <Loader2 size={14} className="animate-spin" />
+                            ) : (
+                              <Trash2 size={14} />
+                            )}
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
