@@ -153,6 +153,28 @@ export const generateCompetitorReport = async (
   }
 };
 
+export const generateLibraryComparisonReport = async (
+  productA: any,
+  productB: any,
+  isDomestic: boolean = false
+) => {
+  try {
+    const sanitizedProductA = sanitizeProduct(productA.product);
+    const sanitizedProductB = sanitizeProduct(productB.product);
+    
+    return await invokeAI('library-comparison-report', { 
+      productA: sanitizedProductA, 
+      productB: sanitizedProductB,
+      competitorA: { name: productA.competitor?.name, brandFocus: productA.competitor?.focus },
+      competitorB: { name: productB.competitor?.name, brandFocus: productB.competitor?.focus },
+      isDomestic 
+    });
+  } catch (error) {
+    console.error('AI Service Error:', error);
+    throw error;
+  }
+};
+
 export const queryProductKnowledgeBase = async (
   query: string,
   products: Array<{ product: any; competitor: any }>

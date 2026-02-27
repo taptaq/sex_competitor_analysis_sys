@@ -1430,6 +1430,69 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
+    if (action === 'library-comparison-report') {
+        const { productA, productB, competitorA, competitorB, isDomestic } = payload;
+        
+        // Sanitize product names and descriptions
+        productA.name = await sanitizeContent(productA.name, supabase);
+        productA.description = await sanitizeContent(productA.description, supabase);
+        productB.name = await sanitizeContent(productB.name, supabase);
+        productB.description = await sanitizeContent(productB.description, supabase);
+        
+        const schema = {
+            "type": "object",
+            "properties": {
+                "comparison": { "type": "string" },
+                "productAAdvantages": { "type": "array", "items": { "type": "string" } },
+                "productBAdvantages": { "type": "array", "items": { "type": "string" } },
+                "featureDifferences": { "type": "array", "items": { "type": "string" } },
+                "targetAudienceDifferences": { "type": "string" },
+                "marketPositioning": { "type": "string" },
+                "summary": { "type": "string" }
+            },
+            "required": ["comparison", "productAAdvantages", "productBAdvantages", "featureDifferences", "targetAudienceDifferences", "marketPositioning", "summary"]
+        };
+
+        const tagsA = (productA.tags || []).length > 0 ? productA.tags.join('、') : '无标签';
+        const tagsB = (productB.tags || []).length > 0 ? productB.tags.join('、') : '无标签';
+        const analysisA = productA.analysis ? `\n  用户评价摘要：${JSON.stringify(productA.analysis)}` : '';
+        const analysisB = productB.analysis ? `\n  用户评价摘要：${JSON.stringify(productB.analysis)}` : '';
+
+        const prompt = `你是一位专业的情趣用品行业市场分析师。请对以下市场现有的两款同类型竞品进行客观的深度一对一横向对比分析：
+
+        产品A (${productA.name})：
+        - 品牌：${competitorA.name || '未知'}
+        - 品牌定位：${competitorA.brandFocus === 'Female' ? '专攻女用' : (competitorA.brandFocus === 'Male' ? '专攻男用' : '男女兼用')}
+        - 价格：¥${productA.price}
+        - 核心卖点/标签：${tagsA}
+        - 产品描述：${productA.description || '无'}
+        - 历史销量参考：${productA.sales ? productA.sales + '+' : '未知'}${analysisA}
+
+        产品B (${productB.name})：
+        - 品牌：${competitorB.name || '未知'}
+        - 品牌定位：${competitorB.brandFocus === 'Female' ? '专攻女用' : (competitorB.brandFocus === 'Male' ? '专攻男用' : '男女兼用')}
+        - 价格：¥${productB.price}
+        - 核心卖点/标签：${tagsB}
+        - 产品描述：${productB.description || '无'}
+        - 历史销量参考：${productB.sales ? productB.sales + '+' : '未知'}${analysisB}
+
+        ${isDomestic ? "请结合中国情趣用品市场的实际情况，分析这两款产品在中国消费者环境下的竞争表现。" : "请结合全球情趣用品市场的竞争环境进行客观评价。"}
+
+        请输出 JSON 格式的竞品对比分析报告，包含以下英文键名：
+        1. comparison: 两款产品的整体综合对比分析（200-300字）
+        2. productAAdvantages: 相比B产品，A产品独有的竞争优势（Array of Strings，至少3条）
+        3. productBAdvantages: 相比A产品，B产品独有的竞争优势（Array of Strings，至少3条）
+        4. featureDifferences: 核心功能与规格参数上的显性差异点整理（Array of Strings）
+        5. targetAudienceDifferences: 受众群体细分差异（150-200字，比如新手vs老玩家、性价比敏感vs体验极致追求等）
+        6. marketPositioning: 市场定位与性价比分析（150-200字，从品牌溢价和实际价值角度分析）
+        7. summary: 最终选购建议及市场前景总结（100-200字）
+
+        请确保分析专业、客观、深入且具有针对性，明确指出两者的优劣势。`;
+
+        const data = await askAI(prompt, schema);
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
     if (action === 'deep-report') {
         const { product, competitor, isDomestic } = payload;
         

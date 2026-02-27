@@ -11,6 +11,7 @@ create table if not exists product_reviews (
 alter table product_reviews enable row level security;
 
 -- Create policy to allow full access (for this internal tool)
+drop policy if exists "Allow full access to product_reviews" on product_reviews;
 create policy "Allow full access to product_reviews"
   on product_reviews for all
   using (true)

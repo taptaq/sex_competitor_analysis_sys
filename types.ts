@@ -61,6 +61,24 @@ export interface CompetitorReport {
   summary?: string;
 }
 
+export interface LibraryComparisonReport {
+  comparison: string;
+  productAAdvantages: string[];
+  productBAdvantages: string[];
+  featureDifferences: string[];
+  targetAudienceDifferences: string;
+  marketPositioning: string;
+  summary: string;
+}
+
+export interface SavedCompetitorReport {
+  id: string;
+  mode: 'custom' | 'library';
+  params: any;
+  report: any; // Can be CompetitorReport or LibraryComparisonReport
+  created_at: string;
+}
+
 export interface PriceHistory {
   date: string; // ISO date string (YYYY-MM-DD)
   finalPrice: number; // 到手价

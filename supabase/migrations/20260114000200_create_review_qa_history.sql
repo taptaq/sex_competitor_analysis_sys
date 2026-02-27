@@ -9,5 +9,6 @@ create table if not exists review_qa_history (
 alter table review_qa_history enable row level security;
 
 -- Create policy for public access (adjust if you have auth)
+drop policy if exists "Allow public access" on review_qa_history;
 create policy "Allow public access" on review_qa_history
   for all using (true) with check (true);

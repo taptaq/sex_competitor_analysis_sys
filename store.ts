@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 import { supabase } from './services/supabase';
-import { ViewType, Competitor, Product, ReviewAnalysis, AdCreative } from './types';
+import { ViewType, Competitor, Product, ReviewAnalysis, AdCreative, SavedCompetitorReport } from './types';
 import { analyzeThought } from './services/gemini';
 import { applyMedicalVocabulary } from './utils/textProcessing';
 
@@ -98,6 +98,12 @@ interface AppState {
   standardizationTests: any[];
   fetchStandardizationTests: () => Promise<void>;
   deleteStandardizationTest: (id: string) => Promise<void>;
+
+  // Historical Competitor Reports
+  competitorReports: SavedCompetitorReport[];
+  fetchCompetitorReports: () => Promise<void>;
+  saveCompetitorReport: (mode: 'custom' | 'library', params: any, report: any) => Promise<void>;
+  deleteCompetitorReport: (id: string) => Promise<void>;
 
   medicalTerms: any[];
   fetchMedicalTerms: () => Promise<void>;
@@ -544,6 +550,54 @@ export const useStore = create<AppState>((set, get) => ({
       console.error('Failed to delete standardization test:', error);
       // Revert if failed? For now just log, assuming UI is done.
       get().fetchStandardizationTests();
+    }
+  },
+
+  // Historical Competitor Reports
+  competitorReports: [],
+  fetchCompetitorReports: async () => {
+    try {
+      const { data, error } = await supabase
+        .from('competitor_reports')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      set({ competitorReports: data });
+    } catch (error) {
+      console.error('Failed to fetch competitor reports:', error);
+    }
+  },
+  saveCompetitorReport: async (mode, params, report) => {
+    try {
+      // Optimistic upate could be done, but server generates ID and timestamp
+      const { data, error } = await supabase.from('competitor_reports').insert({
+        mode,
+        params,
+        report
+      }).select();
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        set(state => ({
+          competitorReports: [data[0], ...state.competitorReports]
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to save competitor report:", error);
+    }
+  },
+  deleteCompetitorReport: async (id) => {
+    if (checkGuest()) return;
+    set(state => ({
+      competitorReports: state.competitorReports.filter(r => r.id !== id)
+    }));
+    try {
+      const { error } = await supabase.from('competitor_reports').delete().eq('id', id);
+      if (error) throw error;
+    } catch (error) {
+       console.error("Failed to delete competitor report:", error);
+       get().fetchCompetitorReports();
     }
   },
 
