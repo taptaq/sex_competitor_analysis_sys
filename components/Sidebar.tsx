@@ -47,12 +47,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
     {
       type: ViewType.PRODUCT_COMPARISON,
       icon: <GitCompare size={20} />,
-      label: "产品多维度对比",
+      label: "核心参数PK",
     },
     {
       type: ViewType.COMPETITOR_REPORT,
       icon: <FileText size={20} />,
-      label: "竞品报告分析",
+      label: "深度竞品报告",
     },
     {
       type: ViewType.PRODUCT_KNOWLEDGE_BASE,

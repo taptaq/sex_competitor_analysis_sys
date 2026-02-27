@@ -56,6 +56,7 @@ interface AppState {
   // Selection
   selectedProductIds: string[];
   toggleProductSelection: (productId: string) => void;
+  setSelectedProductIds: (ids: string[]) => void;
   clearSelection: () => void;
   
   // Favorites
@@ -391,6 +392,7 @@ export const useStore = create<AppState>((set, get) => ({
       return { selectedProductIds: newSelection };
     });
   },
+  setSelectedProductIds: (ids) => set({ selectedProductIds: ids }),
   clearSelection: () => set({ selectedProductIds: [] }),
   
   // Favorites Actions

@@ -15,9 +15,10 @@ import {
   History,
   Clock,
   X,
+  FileText,
 } from "lucide-react";
 import { getDeepComparison } from "../services/gemini";
-import { ComparisonAnalysis } from "../types";
+import { ComparisonAnalysis, ViewType } from "../types";
 import { supabase } from "../services/supabase";
 
 const GlobalProductComparison: React.FC = () => {
@@ -26,15 +27,16 @@ const GlobalProductComparison: React.FC = () => {
     selectedProductIds,
     toggleProductSelection,
     clearSelection,
+    setCurrentView,
   } = useStore();
   const [selectedBrandId, setSelectedBrandId] = useState<string>(
-    competitors.length > 0 ? competitors[0].id : ""
+    competitors.length > 0 ? competitors[0].id : "",
   );
   const [loading, setLoading] = useState(false);
   const [analysisResult, setAnalysisResult] =
     useState<ComparisonAnalysis | null>(null);
   const [showDeductions, setShowDeductions] = useState<Record<string, boolean>>(
-    {}
+    {},
   );
   const [showHistory, setShowHistory] = useState(false);
   const [historyRecords, setHistoryRecords] = useState<any[]>([]);
@@ -49,8 +51,8 @@ const GlobalProductComparison: React.FC = () => {
       ? historyProducts
       : competitors.flatMap((comp) =>
           (comp.products || []).filter((prod) =>
-            selectedProductIds.includes(prod.id)
-          )
+            selectedProductIds.includes(prod.id),
+          ),
         );
 
   const handleDeepAnalysis = async () => {
@@ -64,11 +66,11 @@ const GlobalProductComparison: React.FC = () => {
       const hasDomestic = competitors.some(
         (c) =>
           c.isDomestic &&
-          c.products?.some((p) => selectedProductIds.includes(p.id))
+          c.products?.some((p) => selectedProductIds.includes(p.id)),
       );
       const result = await getDeepComparison(
         selectedProductsForPK,
-        hasDomestic
+        hasDomestic,
       );
       setAnalysisResult(result);
       await saveAnalysisToHistory(result, selectedProductsForPK);
@@ -93,7 +95,7 @@ const GlobalProductComparison: React.FC = () => {
 
   const saveAnalysisToHistory = async (
     analysis: ComparisonAnalysis,
-    products: any[]
+    products: any[],
   ) => {
     try {
       // Stripping heavy fields before saving to DB is also good practice, usually DB stores JSONB.
@@ -266,7 +268,7 @@ const GlobalProductComparison: React.FC = () => {
     report += `## 综合得分情况\n\n`;
     analysisResult.comparisonScores.forEach((scoreInfo) => {
       const product = selectedProductsForPK.find(
-        (p) => p.name === scoreInfo.name
+        (p) => p.name === scoreInfo.name,
       );
       report += `### ${product?.name} (总分: ${scoreInfo.totalScore})\n`;
       scoreInfo.dimensions.forEach((dim) => {
@@ -417,15 +419,15 @@ const GlobalProductComparison: React.FC = () => {
                             product.gender === "Male"
                               ? "bg-blue-100 text-blue-700 border-blue-200"
                               : product.gender === "Female"
-                              ? "bg-pink-100 text-pink-700 border-pink-200"
-                              : "bg-gray-100 text-gray-700 border-gray-200"
+                                ? "bg-pink-100 text-pink-700 border-pink-200"
+                                : "bg-gray-100 text-gray-700 border-gray-200"
                           }`}
                         >
                           {product.gender === "Male"
                             ? "男用"
                             : product.gender === "Female"
-                            ? "女用"
-                            : "通用"}
+                              ? "女用"
+                              : "通用"}
                         </span>
                       )}
                       {product.category && (
@@ -556,7 +558,7 @@ const GlobalProductComparison: React.FC = () => {
                     <h4 className="text-2xl font-black italic">
                       PK 结论:{" "}
                       {selectedProductsForPK.find(
-                        (p) => p.name === analysisResult.winnerName
+                        (p) => p.name === analysisResult.winnerName,
                       )?.name || "胜出者"}
                     </h4>
                     <p className="text-purple-200 text-sm mt-1 line-clamp-4">
@@ -577,7 +579,7 @@ const GlobalProductComparison: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {analysisResult.comparisonScores.map((scoreInfo) => {
                   const product = selectedProductsForPK.find(
-                    (p) => p.name === scoreInfo.name
+                    (p) => p.name === scoreInfo.name,
                   );
                   return (
                     <div
@@ -596,15 +598,15 @@ const GlobalProductComparison: React.FC = () => {
                                   product.gender === "Male"
                                     ? "bg-blue-500/30 text-blue-200 border-blue-400/30"
                                     : product.gender === "Female"
-                                    ? "bg-pink-500/30 text-pink-200 border-pink-400/30"
-                                    : "bg-gray-500/30 text-gray-200 border-gray-400/30"
+                                      ? "bg-pink-500/30 text-pink-200 border-pink-400/30"
+                                      : "bg-gray-500/30 text-gray-200 border-gray-400/30"
                                 }`}
                               >
                                 {product.gender === "Male"
                                   ? "男用"
                                   : product.gender === "Female"
-                                  ? "女用"
-                                  : "通用"}
+                                    ? "女用"
+                                    : "通用"}
                               </span>
                             )}
                           </div>
@@ -627,17 +629,25 @@ const GlobalProductComparison: React.FC = () => {
                 })}
               </div>
 
-              <p className="text-sm leading-relaxed text-indigo-100 bg-black/20 p-4 rounded-xl border border-white/5">
+              <p className="text-sm leading-relaxed text-indigo-100 bg-black/20 p-4 rounded-xl border border-white/5 mb-4">
                 <span className="font-bold">分析师点评: </span>
                 {analysisResult.summary}
               </p>
+
+              <button
+                onClick={() => setCurrentView(ViewType.COMPETITOR_REPORT)}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-white text-indigo-600 rounded-xl font-bold hover:bg-gray-50 transition-colors shadow-sm"
+              >
+                <FileText size={18} />
+                前往生成深度竞品报告
+              </button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {analysisResult.comparisonScores.map((scoreInfo) => {
               const product = selectedProductsForPK.find(
-                (p) => p.name === scoreInfo.name
+                (p) => p.name === scoreInfo.name,
               );
               const isWinner = scoreInfo.name === analysisResult.winnerName;
 
@@ -687,8 +697,8 @@ const GlobalProductComparison: React.FC = () => {
                               dim.score > 80
                                 ? "bg-green-500"
                                 : dim.score > 60
-                                ? "bg-yellow-500"
-                                : "bg-red-500"
+                                  ? "bg-yellow-500"
+                                  : "bg-red-500"
                             }`}
                             style={{ width: `${dim.score}%` }}
                           ></div>
