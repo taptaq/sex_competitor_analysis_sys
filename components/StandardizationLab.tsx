@@ -40,6 +40,7 @@ const StandardizationLab: React.FC = () => {
 
   const [input, setInput] = useState({
     productName: "",
+    tags: "",
     description: "",
     parameters: "",
     reviews: "",
@@ -59,6 +60,7 @@ const StandardizationLab: React.FC = () => {
       setInput((prev) => ({
         ...prev,
         productName: product.name,
+        tags: product.tags?.join("，") || "",
         // Prefer description, fallback to analysis summary
         description: product.analysis?.summary || "",
         // Format specs as JSON if available
@@ -94,10 +96,10 @@ const StandardizationLab: React.FC = () => {
       // *** Medical Vocabulary Replacement Logic ***
       const contextualDescription = applyMedicalVocabulary(
         input.description,
-        medicalTerms
+        medicalTerms,
       );
       const contextualReviews = reviewList.map((r) =>
-        applyMedicalVocabulary(r, medicalTerms)
+        applyMedicalVocabulary(r, medicalTerms),
       );
 
       console.log("Applied Medical Context:", {
@@ -107,10 +109,11 @@ const StandardizationLab: React.FC = () => {
 
       const data = await analyzeStandardization(
         input.productName,
+        input.tags,
         contextualDescription,
         parsedParams,
         contextualReviews.length > 0 ? contextualReviews : ["暂无用户评价"],
-        input.isDomestic
+        input.isDomestic,
       );
 
       setResult(data);
@@ -122,7 +125,7 @@ const StandardizationLab: React.FC = () => {
         productId: selectedProductId || undefined,
         competitorId: selectedCompetitorId || undefined,
         description: input.description,
-        parameters: parsedParams,
+        parameters: { ...parsedParams, _tags: input.tags },
         reviewsSample: input.reviews,
         resultData: data,
       });
@@ -230,14 +233,27 @@ const StandardizationLab: React.FC = () => {
                       className="border border-gray-200 rounded-lg p-4 hover:border-teal-300 hover:shadow-md transition-all cursor-pointer group bg-gray-50 hover:bg-white"
                       onClick={() => {
                         setResult(test.result_data);
+                        let loadedParams = test.parameters;
+                        let loadedTags = "";
+                        if (
+                          loadedParams &&
+                          typeof loadedParams === "object" &&
+                          loadedParams._tags !== undefined
+                        ) {
+                          loadedTags = loadedParams._tags;
+                          const temp = { ...loadedParams };
+                          delete temp._tags;
+                          loadedParams = temp;
+                        }
                         setInput((prev) => ({
                           ...prev,
                           productName: test.product_name,
+                          tags: loadedTags,
                           description: test.description || "",
-                          parameters: test.parameters
-                            ? typeof test.parameters === "string"
-                              ? test.parameters
-                              : JSON.stringify(test.parameters, null, 2)
+                          parameters: loadedParams
+                            ? typeof loadedParams === "string"
+                              ? loadedParams
+                              : JSON.stringify(loadedParams, null, 2)
                             : "",
                           reviews: test.reviews_sample || "",
                         }));
@@ -298,7 +314,7 @@ const StandardizationLab: React.FC = () => {
                             className={`px-2 py-1 rounded bg-white border ${
                               translateBiocompatibility(
                                 test.result_data.complianceCheck
-                                  ?.biocompatibilityLevel
+                                  ?.biocompatibilityLevel,
                               ) === "医用级"
                                 ? "border-green-200 text-green-700"
                                 : "border-yellow-200 text-yellow-700"
@@ -306,7 +322,7 @@ const StandardizationLab: React.FC = () => {
                           >
                             {translateBiocompatibility(
                               test.result_data.complianceCheck
-                                ?.biocompatibilityLevel
+                                ?.biocompatibilityLevel,
                             )}
                           </span>
                         )}
@@ -393,6 +409,19 @@ const StandardizationLab: React.FC = () => {
                   }
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
                   placeholder="例如：小怪兽 2代"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  特点标签
+                </label>
+                <input
+                  type="text"
+                  value={input.tags}
+                  onChange={(e) => setInput({ ...input, tags: e.target.value })}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
+                  placeholder="例如：静音，防水，加热"
                 />
               </div>
 
@@ -495,21 +524,21 @@ const StandardizationLab: React.FC = () => {
                                     workbook.Sheets[firstSheetName];
                                   const jsonData = XLSX.utils.sheet_to_json(
                                     worksheet,
-                                    { header: 1 }
+                                    { header: 1 },
                                   ) as any[][];
 
                                   if (jsonData.length > 0) {
                                     // Smart Column Detection
                                     const headerRow = jsonData[0].map((h) =>
-                                      String(h).toLowerCase()
+                                      String(h).toLowerCase(),
                                     );
                                     const targetKeywords = ["评论内容"];
 
                                     let contentColIndex = headerRow.findIndex(
                                       (h) =>
                                         targetKeywords.some((k) =>
-                                          h.includes(k)
-                                        )
+                                          h.includes(k),
+                                        ),
                                     );
 
                                     let extracted: string[] = [];
@@ -520,7 +549,7 @@ const StandardizationLab: React.FC = () => {
                                         .map((row) => row[contentColIndex])
                                         .filter(
                                           (cell) =>
-                                            cell && typeof cell === "string"
+                                            cell && typeof cell === "string",
                                         )
                                         .map((s) => s.trim())
                                         .filter((s) => s);
@@ -532,7 +561,7 @@ const StandardizationLab: React.FC = () => {
                                         .flat()
                                         .filter(
                                           (item) =>
-                                            item && typeof item === "string"
+                                            item && typeof item === "string",
                                         ) // only strings
                                         .map((s) => s.trim())
                                         .filter((s) => s.length > 5); // simple filter for noise
@@ -542,7 +571,7 @@ const StandardizationLab: React.FC = () => {
                                 } catch (err) {
                                   console.error(
                                     `Error parsing ${file.name}`,
-                                    err
+                                    err,
                                   );
                                   alert(`解析文件 ${file.name} 失败`);
                                 }
@@ -569,7 +598,7 @@ const StandardizationLab: React.FC = () => {
                                             : item.content ||
                                               item.text ||
                                               item.review ||
-                                              JSON.stringify(item)
+                                              JSON.stringify(item),
                                         )
                                         .filter((s) => typeof s === "string");
                                       newReviews.push(...extracted);
@@ -655,7 +684,7 @@ const StandardizationLab: React.FC = () => {
                       </span>
                       <span
                         className={`text-sm font-bold ${getScoreColor(
-                          result.sensoryIndices.penetrationIndex
+                          result.sensoryIndices.penetrationIndex,
                         )}`}
                       >
                         {result.sensoryIndices.penetrationIndex} / 10
@@ -664,7 +693,7 @@ const StandardizationLab: React.FC = () => {
                     <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className={`h-full ${getProgressColor(
-                          result.sensoryIndices.penetrationIndex
+                          result.sensoryIndices.penetrationIndex,
                         )} transition-all duration-1000`}
                         style={{
                           width: `${
@@ -703,7 +732,7 @@ const StandardizationLab: React.FC = () => {
                       </span>
                       <span
                         className={`text-sm font-bold ${getScoreColor(
-                          result.sensoryIndices.acousticPrivacy
+                          result.sensoryIndices.acousticPrivacy,
                         )}`}
                       >
                         {result.sensoryIndices.acousticPrivacy} / 10
@@ -712,7 +741,7 @@ const StandardizationLab: React.FC = () => {
                     <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className={`h-full ${getProgressColor(
-                          result.sensoryIndices.acousticPrivacy
+                          result.sensoryIndices.acousticPrivacy,
                         )} transition-all duration-1000`}
                         style={{
                           width: `${
@@ -751,7 +780,7 @@ const StandardizationLab: React.FC = () => {
                       </span>
                       <span
                         className={`text-sm font-bold ${getScoreColor(
-                          result.sensoryIndices.skinAffinity
+                          result.sensoryIndices.skinAffinity,
                         )}`}
                       >
                         {result.sensoryIndices.skinAffinity} / 10
@@ -760,7 +789,7 @@ const StandardizationLab: React.FC = () => {
                     <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className={`h-full ${getProgressColor(
-                          result.sensoryIndices.skinAffinity
+                          result.sensoryIndices.skinAffinity,
                         )} transition-all duration-1000`}
                         style={{
                           width: `${result.sensoryIndices.skinAffinity * 10}%`,
@@ -804,7 +833,7 @@ const StandardizationLab: React.FC = () => {
                     </span>
                     <div className="flex items-center gap-2">
                       {translateBiocompatibility(
-                        result.complianceCheck.biocompatibilityLevel
+                        result.complianceCheck.biocompatibilityLevel,
                       ) === "医用级" ? (
                         <CheckCircle className="text-green-500" />
                       ) : (
@@ -812,7 +841,7 @@ const StandardizationLab: React.FC = () => {
                       )}
                       <span className="font-bold text-lg text-gray-800">
                         {translateBiocompatibility(
-                          result.complianceCheck.biocompatibilityLevel
+                          result.complianceCheck.biocompatibilityLevel,
                         )}
                       </span>
                     </div>
@@ -842,7 +871,7 @@ const StandardizationLab: React.FC = () => {
                         {result.complianceCheck.safetyFlags.map(
                           (flag: string, idx: number) => (
                             <li key={idx}>{flag}</li>
-                          )
+                          ),
                         )}
                       </ul>
                     </div>
@@ -860,7 +889,7 @@ const StandardizationLab: React.FC = () => {
                   <div className="text-center">
                     <div
                       className={`text-3xl font-black ${getScoreColor(
-                        result.specVerification.realityScore
+                        result.specVerification.realityScore,
                       )}`}
                     >
                       {result.specVerification.realityScore}
@@ -889,7 +918,7 @@ const StandardizationLab: React.FC = () => {
                             >
                               {tag}
                             </span>
-                          )
+                          ),
                         )}
                       </div>
                     </div>

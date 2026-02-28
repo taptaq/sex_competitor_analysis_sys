@@ -315,6 +315,7 @@ export const analyzeQA = async (text: string) => {
 
 export const analyzeStandardization = async (
   productName: string,
+  tags: string,
   description: string,
   parameters: any,
   reviews: Array<{ text: string }> | string[],
@@ -327,6 +328,7 @@ export const analyzeStandardization = async (
 
     return await invokeAI('standardize-analysis', { 
         productName, 
+        tags,
         description, 
         parameters, 
         reviews: reviewData, 

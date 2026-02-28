@@ -1568,7 +1568,7 @@ Deno.serve(async (req) => {
 
 
     if (action === 'standardize-analysis') {
-        const { productName, description, parameters, reviews, isDomestic } = payload;
+        const { productName, tags, description, parameters, reviews, isDomestic } = payload;
         
         const schema = {
             "type": "object",
@@ -1616,6 +1616,7 @@ Deno.serve(async (req) => {
         const prompt = `You are a Medical Device Standards Engineer & Sensory Science Analyst. Please standardize and quantify the following product data:
 
         Product: ${productName}
+        Tags (Features Check): ${tags || "N/A"}
         Description: ${description || "N/A"}
         Parameters: ${JSON.stringify(parameters || {})}
         User Feedback Sample:
@@ -1623,7 +1624,7 @@ Deno.serve(async (req) => {
 
         Context: ${isDomestic ? "Chinese Market Standards" : "International Standards"}
 
-        Task: Convert vague marketing terms and user feelings into standardized metrics.
+        Task: Convert vague marketing terms and user feelings into standardized metrics. Use the provided Tags/Features as a reference point to verify if the product actually delivers on its claims.
 
         Output Requirements (JSON):
         1. sensoryIndices:
