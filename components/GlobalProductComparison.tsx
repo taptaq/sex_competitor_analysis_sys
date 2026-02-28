@@ -567,13 +567,25 @@ const GlobalProductComparison: React.FC = () => {
                   </div>
                 </div>
 
-                <button
-                  onClick={exportAnalysisReport}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all text-sm font-bold active:scale-95 shrink-0"
-                >
-                  <Download size={16} />
-                  导出分析报告 (.md)
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={exportAnalysisReport}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all text-sm font-bold active:scale-95 shrink-0"
+                  >
+                    <Download size={16} />
+                    导出分析报告 (.md)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAnalysisResult(null);
+                      setHistoryProducts([]);
+                    }}
+                    className="flex items-center justify-center p-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all text-white hover:text-red-200 active:scale-95 shrink-0"
+                    title="关闭对比分析报告"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
