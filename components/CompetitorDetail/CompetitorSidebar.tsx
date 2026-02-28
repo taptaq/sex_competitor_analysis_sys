@@ -22,6 +22,7 @@ import {
 } from "../../services/gemini";
 import { TagCloud } from "react-tagcloud";
 import QAAnalysisPanel from "./QAAnalysisPanel";
+import { useAuthStore } from "../../authStore";
 
 interface CompetitorSidebarProps {
   competitor: Competitor;
@@ -52,6 +53,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [isAnalyzingUserGroup, setIsAnalyzingUserGroup] = useState(false);
   const [isAnalyzingBrand, setIsAnalyzingBrand] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const { isGuest } = useAuthStore();
 
   // 导出辅助函数
   const downloadFile = (
@@ -647,6 +649,10 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   };
 
   const handleAnalyzeUserGroup = async () => {
+    if (isGuest) {
+      alert("访客模式仅供查看，无权进行生成操作。");
+      return;
+    }
     setIsAnalyzingUserGroup(true);
     try {
       const currentName = isEditingName ? tempName : competitor.name;
@@ -704,6 +710,10 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   };
 
   const handleAnalyzeBrandCharacteristics = async () => {
+    if (isGuest) {
+      alert("访客模式仅供查看，无权进行生成操作。");
+      return;
+    }
     if (!competitor.products || competitor.products.length === 0) {
       alert("该品牌暂无产品数据，无法进行品牌特点分析");
       return;

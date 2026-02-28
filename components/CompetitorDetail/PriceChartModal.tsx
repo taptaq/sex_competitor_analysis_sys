@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useAuthStore } from "../../authStore";
 
 interface PriceChartModalProps {
   product: Product | null;
@@ -30,6 +31,7 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
 }) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const { isGuest } = useAuthStore();
 
   // 如果有保存的分析结果，自动显示
   useEffect(() => {
@@ -46,6 +48,10 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
   const priceAnalysis = product.priceAnalysis || null;
 
   const handleAnalyzePrice = async () => {
+    if (isGuest) {
+      alert("访客模式仅供查看，无权进行生成操作。");
+      return;
+    }
     if (!product.priceHistory || product.priceHistory.length === 0) {
       alert("暂无价格历史数据，无法进行分析");
       return;
@@ -58,9 +64,9 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
         product.name,
         product.priceHistory,
         product.price,
-        isDomestic
+        isDomestic,
       );
-      
+
       // 保存分析结果到产品数据
       if (onUpdateProduct) {
         const updatedProduct = {
@@ -78,7 +84,7 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
   };
 
   const hasOriginalPrice = product.priceHistory?.some(
-    (h) => h.originalPrice !== undefined
+    (h) => h.originalPrice !== undefined,
   );
   const finalPrices = product.priceHistory?.map((h) => h.finalPrice) || [];
   const originalPrices =
@@ -256,46 +262,77 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
                 <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6 border border-purple-200">
                   <div className="flex items-center gap-2 mb-4">
                     <Sparkles className="text-purple-600" size={20} />
-                    <h3 className="text-lg font-bold text-purple-900">AI 价格走势分析</h3>
+                    <h3 className="text-lg font-bold text-purple-900">
+                      AI 价格走势分析
+                    </h3>
                   </div>
                   {isAnalyzing ? (
                     <div className="flex items-center justify-center py-8">
-                      <Loader2 className="animate-spin text-purple-600" size={32} />
-                      <span className="ml-3 text-purple-700">正在分析价格走势...</span>
+                      <Loader2
+                        className="animate-spin text-purple-600"
+                        size={32}
+                      />
+                      <span className="ml-3 text-purple-700">
+                        正在分析价格走势...
+                      </span>
                     </div>
                   ) : priceAnalysis ? (
                     <div className="space-y-4">
                       <div>
-                        <h4 className="text-sm font-bold text-purple-800 mb-2">价格趋势</h4>
-                        <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.trend}</p>
+                        <h4 className="text-sm font-bold text-purple-800 mb-2">
+                          价格趋势
+                        </h4>
+                        <p className="text-sm text-purple-700 leading-relaxed">
+                          {priceAnalysis.trend}
+                        </p>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <h4 className="text-sm font-bold text-purple-800 mb-2">价格区间</h4>
-                          <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.priceRange}</p>
+                          <h4 className="text-sm font-bold text-purple-800 mb-2">
+                            价格区间
+                          </h4>
+                          <p className="text-sm text-purple-700 leading-relaxed">
+                            {priceAnalysis.priceRange}
+                          </p>
                         </div>
                         <div>
-                          <h4 className="text-sm font-bold text-purple-800 mb-2">价格波动</h4>
-                          <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.fluctuation}</p>
+                          <h4 className="text-sm font-bold text-purple-800 mb-2">
+                            价格波动
+                          </h4>
+                          <p className="text-sm text-purple-700 leading-relaxed">
+                            {priceAnalysis.fluctuation}
+                          </p>
                         </div>
                       </div>
                       {priceAnalysis.discountAnalysis && (
                         <div>
-                          <h4 className="text-sm font-bold text-purple-800 mb-2">优惠力度分析</h4>
-                          <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.discountAnalysis}</p>
+                          <h4 className="text-sm font-bold text-purple-800 mb-2">
+                            优惠力度分析
+                          </h4>
+                          <p className="text-sm text-purple-700 leading-relaxed">
+                            {priceAnalysis.discountAnalysis}
+                          </p>
                         </div>
                       )}
                       <div>
-                        <h4 className="text-sm font-bold text-purple-800 mb-2">定价建议</h4>
+                        <h4 className="text-sm font-bold text-purple-800 mb-2">
+                          定价建议
+                        </h4>
                         <ul className="list-disc list-inside space-y-1">
                           {priceAnalysis.recommendations.map((rec, index) => (
-                            <li key={index} className="text-sm text-purple-700">{rec}</li>
+                            <li key={index} className="text-sm text-purple-700">
+                              {rec}
+                            </li>
                           ))}
                         </ul>
                       </div>
                       <div className="pt-3 border-t border-purple-200">
-                        <h4 className="text-sm font-bold text-purple-800 mb-2">综合分析</h4>
-                        <p className="text-sm text-purple-700 leading-relaxed">{priceAnalysis.summary}</p>
+                        <h4 className="text-sm font-bold text-purple-800 mb-2">
+                          综合分析
+                        </h4>
+                        <p className="text-sm text-purple-700 leading-relaxed">
+                          {priceAnalysis.summary}
+                        </p>
                       </div>
                     </div>
                   ) : (
@@ -367,4 +404,3 @@ const PriceChartModal: React.FC<PriceChartModalProps> = ({
 };
 
 export default PriceChartModal;
-

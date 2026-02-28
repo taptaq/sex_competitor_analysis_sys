@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import * as XLSX from "xlsx";
 import { analyzeQA } from "../../services/gemini";
+import { useAuthStore } from "../../authStore";
 
 interface QAAnalysisPanelProps {
   competitor: Competitor;
@@ -24,6 +25,12 @@ const QAAnalysisPanel: React.FC<QAAnalysisPanelProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (useAuthStore.getState().isGuest) {
+      alert("访客模式仅供查看，无权进行分析操作。");
+      e.target.value = "";
+      return;
+    }
+
     const files = e.target.files;
     if (!files || files.length === 0) return;
 

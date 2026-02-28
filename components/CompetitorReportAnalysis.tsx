@@ -15,6 +15,7 @@ import {
   History,
   ChevronRight,
 } from "lucide-react";
+import { useAuthStore } from "../authStore";
 
 import { applyMedicalVocabulary } from "../utils/textProcessing";
 
@@ -125,6 +126,11 @@ const CompetitorReportAnalysis: React.FC = () => {
       selectedProductIds.length === 0
     ) {
       alert("请填写自身产品信息并选择至少一个竞品");
+      return;
+    }
+
+    if (useAuthStore.getState().isGuest) {
+      alert("访客模式仅供查看，无权进行生成操作。");
       return;
     }
 

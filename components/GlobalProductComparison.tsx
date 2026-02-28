@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useStore } from "../store";
+import { useAuthStore } from "../authStore";
 import ProductComparison from "./ProductComparison";
 import {
   Trash2,
@@ -56,6 +57,10 @@ const GlobalProductComparison: React.FC = () => {
         );
 
   const handleDeepAnalysis = async () => {
+    if (useAuthStore.getState().isGuest) {
+      alert("访客模式仅供查看，无权进行生成操作。");
+      return;
+    }
     if (selectedProductsForPK.length < 2) {
       alert("请至少选择两个产品进行深度对比");
       return;
