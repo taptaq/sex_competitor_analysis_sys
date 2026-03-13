@@ -106,6 +106,13 @@ export interface BrandCharacteristicAnalysis {
   wordCloudKeywords?: Array<{ value: string; count: number }>; // AI生成的词云关键词（已过滤无用词）
 }
 
+export interface SavedBrandCharacteristicAnalysis {
+  id: string;
+  competitorId: string;
+  analysisData: BrandCharacteristicAnalysis;
+  created_at: string;
+}
+
 export interface QAAnalysis {
   painPoints: string[]; // 用户痛点
   concerns: string[];   // 用户关心点

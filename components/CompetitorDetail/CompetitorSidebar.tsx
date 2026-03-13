@@ -1,20 +1,33 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Competitor } from "../../types";
 import {
   Globe,
-  Venus,
-  Mars,
-  VenusAndMars,
+  MapPin,
+  Calendar,
+  Download,
+  Share2,
+  ChevronDown,
+  ChevronUp,
+  FileJson,
+  FileText,
+  Network,
+  History,
+  Trash2,
+  Upload,
+  Edit2,
+  Search,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
   Pencil,
   Save,
   X,
   Plus,
   Sparkles,
   Loader2,
-  Download,
-  FileJson,
-  FileText,
-  Network,
+  Venus,
+  Mars,
+  VenusAndMars,
 } from "lucide-react";
 import {
   analyzeBrandCharacteristics,
@@ -23,6 +36,7 @@ import {
 import { TagCloud } from "react-tagcloud";
 import QAAnalysisPanel from "./QAAnalysisPanel";
 import { useAuthStore } from "../../authStore";
+import { useStore } from "../../store";
 
 interface CompetitorSidebarProps {
   competitor: Competitor;
@@ -53,7 +67,33 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
   const [isAnalyzingUserGroup, setIsAnalyzingUserGroup] = useState(false);
   const [isAnalyzingBrand, setIsAnalyzingBrand] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
-  const { isGuest } = useAuthStore();
+  const [showBrandHistoryModal, setShowBrandHistoryModal] = useState(false); // Added state
+
+  const { isGuest } = useAuthStore(); // Modified to get functions from store
+  const {
+    brandCharacteristicsHistory,
+    fetchBrandCharacteristicsHistory,
+    saveBrandCharacteristicAnalysis,
+    deleteBrandCharacteristicAnalysis,
+  } = useStore(); // Added new store
+
+  // Initial setup for editable fields
+  useEffect(() => {
+    setTempName(competitor.name);
+    setTempDomain(competitor.domain || "");
+    setTempFocus(competitor.focus || "");
+    setTempPhilosophy(competitor.philosophy || []);
+    setTempFoundedDate(competitor.foundedDate || "");
+    setTempCountry(competitor.country || "");
+    setTempDescription(competitor.description || "");
+    setTempUserGroupProfile(competitor.majorUserGroupProfile || "");
+  }, [competitor]);
+
+  useEffect(() => {
+    if (competitor && competitor.id) {
+      fetchBrandCharacteristicsHistory(competitor.id);
+    }
+  }, [competitor?.id, fetchBrandCharacteristicsHistory]);
 
   // 导出辅助函数
   const downloadFile = (
@@ -610,6 +650,21 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     }
   };
 
+  const handlePhilosophyChange = (index: number, value: string) => {
+    const newPhilosophy = [...tempPhilosophy];
+    newPhilosophy[index] = value;
+    setTempPhilosophy(newPhilosophy);
+  };
+
+  const handlePhilosophyAdd = () => {
+    setTempPhilosophy([...tempPhilosophy, ""]);
+  };
+
+  const handlePhilosophyDelete = (index: number) => {
+    const newPhilosophy = tempPhilosophy.filter((_, i) => i !== index);
+    setTempPhilosophy(newPhilosophy);
+  };
+
   const handleSavePhilosophy = () => {
     const filteredPhilosophy = tempPhilosophy.filter((p) => p.trim() !== "");
     if (onUpdateCompetitor) {
@@ -694,21 +749,6 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
     }
   };
 
-  const handlePhilosophyChange = (index: number, value: string) => {
-    const newPhilosophy = [...tempPhilosophy];
-    newPhilosophy[index] = value;
-    setTempPhilosophy(newPhilosophy);
-  };
-
-  const handlePhilosophyAdd = () => {
-    setTempPhilosophy([...tempPhilosophy, ""]);
-  };
-
-  const handlePhilosophyDelete = (index: number) => {
-    const newPhilosophy = tempPhilosophy.filter((_, i) => i !== index);
-    setTempPhilosophy(newPhilosophy);
-  };
-
   const handleAnalyzeBrandCharacteristics = async () => {
     if (isGuest) {
       alert("访客模式仅供查看，无权进行生成操作。");
@@ -745,12 +785,18 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
           brandCharacteristicAnalysis: analysis,
         });
       }
+
+      await saveBrandCharacteristicAnalysis(competitor.id, analysis); // Added this line
     } catch (error) {
       console.error("Brand characteristics analysis failed:", error);
       alert("品牌特点分析失败，请稍后重试");
     } finally {
       setIsAnalyzingBrand(false);
     }
+  };
+
+  const handleFocusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTempFocus(e.target.value === "Unisex" ? "" : e.target.value);
   };
 
   return (
@@ -918,11 +964,7 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
                 <select
                   className="flex-1 border rounded px-2 py-1 text-sm"
                   value={tempFocus || "Unisex"}
-                  onChange={(e) =>
-                    setTempFocus(
-                      e.target.value === "Unisex" ? "" : e.target.value,
-                    )
-                  }
+                  onChange={handleFocusChange}
                   autoFocus
                 >
                   <option value="Female">专攻女用</option>
@@ -1400,9 +1442,17 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
       </div>
 
       <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 space-y-3">
-        <div className="flex items-center gap-2 text-blue-700 font-bold text-sm">
-          <Sparkles size={16} />
-          AI 智能分析
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-blue-700 font-bold text-sm">
+            <Sparkles size={16} />
+            AI 智能分析
+          </div>
+          <button
+            onClick={() => setShowBrandHistoryModal(true)}
+            className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+          >
+            <History size={14} /> 历史数据
+          </button>
         </div>
         <p className="text-xs text-blue-800 leading-relaxed">
           点击下方按钮，AI
@@ -1582,6 +1632,74 @@ const CompetitorSidebar: React.FC<CompetitorSidebarProps> = ({
         competitor={competitor}
         onUpdateCompetitor={onUpdateCompetitor}
       />
+
+      {/* 历史分析记录弹窗 */}
+      {showBrandHistoryModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] p-4">
+          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl overflow-hidden">
+            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+              <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <History size={20} className="text-blue-500" />
+                历史品牌分析记录
+              </h3>
+              <button
+                onClick={() => setShowBrandHistoryModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="p-4 flex-1 overflow-y-auto bg-gray-50/50">
+              {brandCharacteristicsHistory?.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500 text-sm">暂无历史分析记录</p>
+                </div>
+              ) : (
+                <div className="grid gap-3">
+                  {brandCharacteristicsHistory?.map((record) => (
+                    <div
+                      key={record.id}
+                      className="bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer flex justify-between items-start group"
+                      onClick={() => {
+                        if (onUpdateCompetitor) {
+                          onUpdateCompetitor({
+                            ...competitor,
+                            brandCharacteristicAnalysis: record.analysisData,
+                          });
+                        }
+                        setShowBrandHistoryModal(false);
+                      }}
+                    >
+                      <div className="flex-1 pr-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-xs font-medium text-gray-500">
+                            {new Date(record.created_at).toLocaleString()}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-700 line-clamp-2">
+                          {record.analysisData.summary}
+                        </p>
+                      </div>
+                      <button
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          if (confirm("确定要删除这条记录吗？")) {
+                            await deleteBrandCharacteristicAnalysis(record.id);
+                          }
+                        }}
+                        className="text-gray-400 hover:text-red-500 p-2 rounded-md hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

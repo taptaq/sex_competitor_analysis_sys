@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 import { supabase } from './services/supabase';
-import { ViewType, Competitor, Product, ReviewAnalysis, AdCreative, SavedCompetitorReport } from './types';
+import { ViewType, Competitor, Product, ReviewAnalysis, AdCreative, SavedCompetitorReport, SavedBrandCharacteristicAnalysis } from './types';
 import { analyzeThought } from './services/gemini';
 import { applyMedicalVocabulary } from './utils/textProcessing';
 
@@ -110,6 +110,12 @@ interface AppState {
   fetchMedicalTerms: () => Promise<void>;
   addMedicalTerm: (term: string, replacement: string, category?: string) => Promise<void>;
   removeMedicalTerm: (id: string) => Promise<void>;
+
+  // Brand Characteristics History
+  brandCharacteristicsHistory: SavedBrandCharacteristicAnalysis[];
+  fetchBrandCharacteristicsHistory: (competitorId: string) => Promise<void>;
+  saveBrandCharacteristicAnalysis: (competitorId: string, analysisData: any) => Promise<void>;
+  deleteBrandCharacteristicAnalysis: (id: string) => Promise<void>;
 
   // Thinking Wall
   thinkingNotes: ThinkingNote[];
@@ -637,6 +643,55 @@ export const useStore = create<AppState>((set, get) => ({
     set(state => ({ medicalTerms: state.medicalTerms.filter(t => t.id !== id) }));
     const { error } = await supabase.from('medical_terminology').delete().eq('id', id);
     if (error) console.error("Failed to delete medical term", error);
+  },
+
+  // Brand Characteristics History
+  brandCharacteristicsHistory: [],
+  fetchBrandCharacteristicsHistory: async (competitorId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('brand_characteristics_history')
+        .select('*')
+        .eq('competitor_id', competitorId)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      set({ brandCharacteristicsHistory: data });
+    } catch (error) {
+      console.error('Failed to fetch brand characteristics history:', error);
+    }
+  },
+  saveBrandCharacteristicAnalysis: async (competitorId: string, analysisData: any) => {
+    try {
+      const { data, error } = await supabase.from('brand_characteristics_history').insert({
+        competitor_id: competitorId,
+        analysis_data: analysisData
+      }).select();
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        set(state => ({
+          brandCharacteristicsHistory: [data[0], ...state.brandCharacteristicsHistory]
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to save brand characteristic analysis:", error);
+    }
+  },
+  deleteBrandCharacteristicAnalysis: async (id: string) => {
+    if (checkGuest()) return;
+    set(state => ({
+      brandCharacteristicsHistory: state.brandCharacteristicsHistory.filter(r => r.id !== id)
+    }));
+    try {
+      const { error } = await supabase.from('brand_characteristics_history').delete().eq('id', id);
+      if (error) throw error;
+    } catch (error) {
+       console.error("Failed to delete brand characteristic analysis:", error);
+       // We can't easily revert the fetch without knowing the competitorId, 
+       // but typically the list will just stay optimistically deleted or we'd refetch 
+       // if we tracked active competitor id carefully.
+    }
   },
 
   // Thinking Wall
