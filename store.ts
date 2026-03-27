@@ -50,6 +50,7 @@ interface AppState {
   removeAd: (competitorId: string, adId: string) => void;
 
   setProductAnalysis: (competitorId: string, productId: string, analysis: ReviewAnalysis) => void;
+  setProductUseScenario: (competitorId: string, productId: string, scenario: string, personaAnalysis?: string) => Promise<void>;
   setProductReviews: (competitorId: string, productId: string, reviews: any[]) => void;
   fetchCompetitors: () => Promise<void>;
   
@@ -160,7 +161,9 @@ export const useStore = create<AppState>((set, get) => ({
               ...p,
               launchDate: p.launch_date,
               priceHistory: p.price_history,
-              priceAnalysis: p.price_analysis
+              priceAnalysis: p.price_analysis,
+              useScenario: p.use_scenario,
+              personaAnalysis: p.persona_analysis
           })),
           savedAt: comp.created_at, // Map snake_case to camelCase
           foundedDate: comp.founded_date,
@@ -258,7 +261,9 @@ export const useStore = create<AppState>((set, get) => ({
           gender: product.gender,
           specs: product.specs,
           price_history: product.priceHistory,
-          analysis: product.analysis
+          analysis: product.analysis,
+          use_scenario: product.useScenario,
+          persona_analysis: product.personaAnalysis
       });
       if (error) {
         console.error("Failed to add product", error);
@@ -287,7 +292,9 @@ export const useStore = create<AppState>((set, get) => ({
           gender: product.gender,
           specs: product.specs,
           price_history: product.priceHistory,
-          analysis: product.analysis
+          analysis: product.analysis,
+          use_scenario: product.useScenario,
+          persona_analysis: product.personaAnalysis
       }).eq('id', product.id);
       
       if (error) {
@@ -361,6 +368,26 @@ export const useStore = create<AppState>((set, get) => ({
       
       const { error } = await supabase.from('products').update({ analysis }).eq('id', productId);
       if (error) console.error("Failed to update product analysis", error);
+  },
+  setProductUseScenario: async (competitorId, productId, useScenario, personaAnalysis) => {
+      if (checkGuest()) return;
+      set((state) => {
+        const newCompetitors = state.competitors.map(c => {
+          if (c.id !== competitorId) return c;
+          const updatedProducts = c.products?.map(p => {
+            if (p.id !== productId) return p;
+            return { ...p, useScenario, personaAnalysis: personaAnalysis || p.personaAnalysis };
+          }) || [];
+          return { ...c, products: updatedProducts };
+        });
+        return { competitors: newCompetitors };
+      });
+      
+      const updatePayload: any = { use_scenario: useScenario };
+      if (personaAnalysis) updatePayload.persona_analysis = personaAnalysis;
+
+      const { error } = await supabase.from('products').update(updatePayload).eq('id', productId);
+      if (error) console.error("Failed to update product use scenario and persona analysis", error);
   },
   setProductReviews: async (competitorId, productId, newReviews) => {
       if (checkGuest()) return;

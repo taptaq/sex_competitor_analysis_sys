@@ -25,6 +25,7 @@ const CompetitorDetail: React.FC = () => {
     medicalTerms, // Added medicalTerms
 
     setProductAnalysis,
+    setProductUseScenario,
     addProduct,
     updateProduct,
     removeProduct,
@@ -648,6 +649,14 @@ const CompetitorDetail: React.FC = () => {
                               productId,
                               analysis,
                             )
+                    }
+                    onUpdateProductUseScenario={(productId, scenario, personaAnalysis) =>
+                      setProductUseScenario(
+                        competitor.id,
+                        productId,
+                        scenario,
+                        personaAnalysis,
+                      )
                     }
                     onUploadReviews={
                       isGuest

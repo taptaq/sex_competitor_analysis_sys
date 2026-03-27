@@ -16,8 +16,10 @@ import {
   TrendingUp,
   Package,
   Loader2,
+  Wand2,
 } from "lucide-react";
 import ProductForm from "./ProductForm";
+import UseScenarioModal from "./UseScenarioModal";
 
 interface ProductCardProps {
   product: Product;
@@ -51,6 +53,11 @@ interface ProductCardProps {
   onSaveImageLink: (product: Product) => void;
   onCancelImageEdit: () => void;
   onStartEditImage?: (productId: string) => void;
+  onUpdateProductUseScenario?: (
+    productId: string,
+    scenario: string,
+    personaAnalysis?: string,
+  ) => Promise<void>;
   uploadingProductId: string | null;
   isSavingProduct: boolean;
 }
@@ -288,10 +295,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onSaveImageLink,
   onCancelImageEdit,
   onStartEditImage,
+  onUpdateProductUseScenario,
   uploadingProductId,
   isSavingProduct,
 }) => {
   const [showSpecsModal, setShowSpecsModal] = useState(false);
+  const [showUseScenarioModal, setShowUseScenarioModal] = useState(false);
 
   // Helper functions for analysis editing
   const handleArrayChange = (
@@ -535,20 +544,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 <h4 className="font-bold text-lg text-gray-800">
                   {product.name}（ ¥{product.price}）
                 </h4>
-                <div className="flex items-center gap-2 mb-2 mt-1">
+                <div className="flex flex-wrap items-center gap-2 mb-4 mt-2">
                   {product.category && (
-                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold border border-purple-200">
+                    <span className="h-7 px-2.5 flex items-center justify-center whitespace-nowrap text-[11px] bg-purple-50 text-purple-700 rounded-md font-bold border border-purple-200/50 shadow-sm">
                       {product.category}
                     </span>
                   )}
                   {product.gender && (
                     <span
-                      className={`text-xs px-2 py-0.5 rounded font-bold border ${
+                      className={`h-7 px-2.5 flex items-center justify-center whitespace-nowrap text-[11px] rounded-md font-bold border shadow-sm ${
                         product.gender === "Male"
-                          ? "bg-blue-100 text-blue-700 border-blue-200"
+                          ? "bg-blue-50 text-blue-700 border-blue-200/50"
                           : product.gender === "Female"
-                            ? "bg-pink-100 text-pink-700 border-pink-200"
-                            : "bg-gray-100 text-gray-700 border-gray-200"
+                            ? "bg-rose-50 text-rose-700 border-rose-200/50"
+                            : "bg-gray-50 text-gray-700 border-gray-200/50"
                       }`}
                     >
                       {product.gender === "Male"
@@ -559,7 +568,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     </span>
                   )}
                   {product.sales !== undefined && (
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold border border-green-200">
+                    <span className="h-7 px-2.5 flex items-center justify-center whitespace-nowrap text-[11px] bg-emerald-50 text-emerald-700 rounded-md font-bold border border-emerald-200/50 shadow-sm">
                       销量:{" "}
                       {product.sales >= 10000
                         ? `${(product.sales / 10000).toFixed(1)}w+`
@@ -567,21 +576,31 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     </span>
                   )}
                   {product.launchDate && product.launchDate.includes("-") && (
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold border border-blue-200">
+                    <span className="h-7 px-2.5 flex items-center justify-center whitespace-nowrap text-[11px] bg-sky-50 text-sky-700 rounded-md font-bold border border-sky-200/50 shadow-sm">
                       上市: {product.launchDate.split("-")[0]}年
                       {product.launchDate.split("-")[1]}月
                     </span>
                   )}
-                  {product.specs && (
+                  <div className="flex items-center gap-2">
+                    {product.specs && (
+                      <button
+                        onClick={() => setShowSpecsModal(true)}
+                        className="h-7 px-3 flex items-center justify-center gap-1.5 whitespace-nowrap text-[11px] bg-orange-50 text-orange-700 rounded-md font-bold border border-orange-200/50 hover:bg-orange-100 hover:border-orange-300 transition-all shadow-sm active:scale-95"
+                        title="查看规格参数"
+                      >
+                        <Package size={14} className="text-orange-500" />
+                        规格参数
+                      </button>
+                    )}
                     <button
-                      onClick={() => setShowSpecsModal(true)}
-                      className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-bold border border-orange-200 hover:bg-orange-200 transition-colors flex items-center gap-1"
-                      title="查看规格参数"
+                      onClick={() => setShowUseScenarioModal(true)}
+                      className="h-7 px-3 flex items-center justify-center gap-1.5 whitespace-nowrap text-[11px] bg-indigo-50 text-indigo-700 rounded-md font-bold border border-indigo-200/50 hover:bg-indigo-100 hover:border-indigo-300 transition-all shadow-sm active:scale-95"
+                      title="AI场景分析"
                     >
-                      <Package size={12} />
-                      规格参数
+                      <Wand2 size={14} className="text-indigo-500" />
+                      场景分析
                     </button>
-                  )}
+                  </div>
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
                   {product.tags.map((tag) => (
@@ -1039,9 +1058,24 @@ const ProductCard: React.FC<ProductCardProps> = ({
         isOpen={showSpecsModal}
         onClose={() => setShowSpecsModal(false)}
         onSave={(specs) => {
-          onUpdateProduct({ ...product, specs });
+          const updatedProduct = { ...product, specs };
+          if (onUpdateProduct) onUpdateProduct(updatedProduct);
           setShowSpecsModal(false);
         }}
+      />
+
+      {/* 场景分析弹窗 */}
+      <UseScenarioModal
+        product={product}
+        isOpen={showUseScenarioModal}
+        onClose={() => setShowUseScenarioModal(false)}
+        onSave={async (productId, scenario, personaAnalysis) => {
+          if (onUpdateProductUseScenario) {
+            await onUpdateProductUseScenario(productId, scenario, personaAnalysis);
+          }
+        }}
+        isDomestic={competitor.isDomestic}
+        userPersona={competitor.majorUserGroupProfile}
       />
     </div>
   );

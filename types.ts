@@ -148,6 +148,8 @@ export interface Product {
   gender?: 'Male' | 'Female' | 'Unisex'; // 产品适用性别：男用、女用、通用
   priceAnalysis?: PriceAnalysis; // 价格走势分析结果
   specs?: ProductSpecs; // 产品规格参数
+  useScenario?: string; // 使用场景分析结果
+  personaAnalysis?: string;
 }
 
 export interface AdCreative {

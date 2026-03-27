@@ -37,6 +37,7 @@ interface ProductListProps {
   onRemoveProduct?: (productId: string) => void;
   onAnalyzeProduct?: (product: Product) => Promise<void>;
   onUpdateProductAnalysis?: (productId: string, analysis: any) => void;
+  onUpdateProductUseScenario?: (productId: string, scenario: string, personaAnalysis?: string) => Promise<void>;
   onUploadReviews?: (productId: string, files: FileList) => Promise<void>;
   onUploadPriceHistory?: (productId: string, files: FileList) => Promise<void>;
   onClearPriceHistory?: (product: Product) => void;
@@ -107,6 +108,7 @@ const ProductList: React.FC<ProductListProps> = ({
   onSaveImageLink,
   onCancelImageEdit,
   onStartEditImage,
+  onUpdateProductUseScenario,
   uploadingProductId,
   isSavingProduct,
 }) => {
@@ -229,6 +231,7 @@ const ProductList: React.FC<ProductListProps> = ({
             onSaveImageLink={onSaveImageLink}
             onCancelImageEdit={onCancelImageEdit}
             onStartEditImage={onStartEditImage}
+            onUpdateProductUseScenario={onUpdateProductUseScenario}
             uploadingProductId={uploadingProductId}
             isSavingProduct={isSavingProduct}
           />

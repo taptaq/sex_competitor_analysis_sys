@@ -1565,8 +1565,6 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-
-
     if (action === 'standardize-analysis') {
         const { productName, tags, description, parameters, reviews, isDomestic } = payload;
         
@@ -1610,7 +1608,6 @@ Deno.serve(async (req) => {
         };
 
         const truncatedReviews = reviews ? reviews.slice(0, 20).map((r: any) => r.text).join('\n') : "No reviews available.";
-        // Sanitize review content for standardization analysis as well
         const sanitizedReviews = await sanitizeContent(truncatedReviews, supabase);
         
         const prompt = `You are a Medical Device Standards Engineer & Sensory Science Analyst. Please standardize and quantify the following product data:
@@ -1701,17 +1698,11 @@ Deno.serve(async (req) => {
         const { question, reviews } = payload;
         const safeQuestion = await sanitizeContent(question, supabase);
         
-        // Construct context from reviews (Truncate if too long to avoid token limits)
-        // Format: [Product Name]: Review Text
-        // Sanitize reviews not needed here strictly as they are many, but good practice if feasible. 
-        // Given performance, let's skip deep review sanitization loop here unless critical, 
-        // as they are already sanitized when stored or analyzed individually.
-        // But the question MUST be sanitized.
         const reviewsContext = reviews
-            .slice(0, 100) // Limit to 100 reviews max for now to be safe
+            .slice(0, 100)
             .map((r: any) => `[${r.productName}]: ${r.text}`)
             .join('\n\n')
-            .substring(0, 30000); // Max char limit
+            .substring(0, 30000);
 
         const schema = {
             "type": "object",
@@ -1752,6 +1743,61 @@ Deno.serve(async (req) => {
         3. sentiment: Overall sentiment about this topic.
         4. mentionedProducts: Products cited in your answer.
         `;
+
+        const data = await askAI(prompt, schema);
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    if (action === 'analyze-use-scenario') {
+        const { product, isDomestic, userPersona } = payload;
+        
+        const schema = {
+             "type": "object",
+             "properties": {
+                 "personaAnalysis": { "type": "string", "description": "Analysis of how the product aligns with the target persona." },
+                 "scenario": { "type": "string", "description": "The detailed use scenario analysis." }
+             },
+             "required": ["personaAnalysis", "scenario"]
+        };
+
+        const specsStr = product.specs ? `
+        规格参数:
+        - 尺寸: ${product.specs.dimensions || '未标注'}
+        - 材质: ${product.specs.material || '未标注'}
+        - 噪音: ${product.specs.noiseLevel || '未标注'}
+        - 续航: ${product.specs.usageTime || '未标注'}
+        - 充电: ${product.specs.chargingTime || '未标注'}
+        - 控制: ${product.specs.controlMethod || '未标注'}
+        - 重量: ${product.specs.weight || '未标注'}
+        - 防水: ${product.specs.ipRating || '未标注'}` : '';
+
+        const tagsStr = (product.tags || []).length > 0 ? product.tags.join('、') : '无';
+        const analysisSummary = product.analysis?.summary || '无';
+
+        const prompt = `你是一位专业的情趣用品评测专家和生活方式博主。请根据以下产品及目标人群信息，分析产品与人群的适配度，并描述其“最佳使用场景”。
+
+        【产品信息】
+        名称: ${product.name}
+        类别: ${product.category || '未分类'}
+        标签: ${tagsStr}
+        价格: ¥${product.price}
+        性别: ${product.gender === 'Female' ? '女性' : (product.gender === 'Male' ? '男性' : '通用')}
+        ${specsStr}
+        评价概要: ${analysisSummary}
+
+        【目标人群画像】
+        ${userPersona || '未明确指定，请根据产品特性推测最适合的人群'}
+
+        【分析要求】
+        1. **人群适配分析 (personaAnalysis)**：分析该产品精准触达了上述人群的哪些痛点或偏好？（字数 80-150字）
+        2. **垂直场景化 (scenario)**：描述 1-2个 具体的使用情境（如：异地互动的数字化连接、独自居家的沉浸式仪式感等）。
+        3. **情感化叙述**：文字需细腻、专业且富有生活气息。
+        4. **字数控制**：总字数 200-400字 左右。
+        5. **回避违规词**：保持专业且高级的语调，使用医学、生活化词汇。
+
+        ${isDomestic ? "背景: 中国市场消费者习惯与社交语境。" : "背景: 国际市场消费者习惯。"}
+
+        **请直接输出 JSON 格式: { "personaAnalysis": "适配分析内容...", "scenario": "使用场景描述内容..." }**`;
 
         const data = await askAI(prompt, schema);
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });

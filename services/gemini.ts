@@ -343,6 +343,20 @@ export const analyzeThought = async (content: string) => {
   return await invokeAI('analyze-thought', { content });
 };
 
+export const analyzeUseScenario = async (product: any, isDomestic: boolean = false, userPersona?: string) => {
+  try {
+    const sanitizedProduct = sanitizeProduct(product);
+    // Explicitly include specs as they are needed for scenario analysis
+    if (product.specs) {
+        (sanitizedProduct as any).specs = product.specs;
+    }
+    return await invokeAI('analyze-use-scenario', { product: sanitizedProduct, isDomestic, userPersona });
+  } catch (error) {
+    console.error('Use Scenario Analysis Service Error:', error);
+    throw error;
+  }
+};
+
 export const extractAdFromUrl = async (url: string) => {
   try {
     const data = await invokeAI('extract-ad', { url });
