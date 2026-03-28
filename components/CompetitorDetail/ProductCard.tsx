@@ -17,6 +17,11 @@ import {
   Package,
   Loader2,
   Wand2,
+  FlaskConical,
+  ShieldCheck,
+  Scale,
+  Activity,
+  Waves,
 } from "lucide-react";
 import ProductForm from "./ProductForm";
 import UseScenarioModal from "./UseScenarioModal";
@@ -58,6 +63,8 @@ interface ProductCardProps {
     scenario: string,
     personaAnalysis?: string,
   ) => Promise<void>;
+  onAnalyzeStandardization?: (product: Product) => Promise<void>;
+  analyzingStandardizationId: string | null;
   uploadingProductId: string | null;
   isSavingProduct: boolean;
 }
@@ -296,11 +303,62 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onCancelImageEdit,
   onStartEditImage,
   onUpdateProductUseScenario,
+  onAnalyzeStandardization,
+  analyzingStandardizationId,
   uploadingProductId,
   isSavingProduct,
 }) => {
   const [showSpecsModal, setShowSpecsModal] = useState(false);
   const [showUseScenarioModal, setShowUseScenarioModal] = useState(false);
+  const [showStandardizationDetail, setShowStandardizationDetail] =
+    useState(false);
+
+  const parseDeductions = (deductions: any) => {
+    if (!deductions || deductions === "None") return [];
+
+    // For uniform processing, convert to array of strings
+    const rawList = Array.isArray(deductions)
+      ? deductions
+      : typeof deductions === "string"
+        ? [deductions]
+        : [];
+
+    const result: { score: string; reason: string }[] = [];
+
+    rawList.forEach((item) => {
+      if (typeof item !== "string") return;
+      const trimmed = item.trim();
+      // Skip common "no deduction" signals
+      if (
+        !trimmed ||
+        /^none\.?$/i.test(trimmed) ||
+        trimmed === "无" ||
+        trimmed === "暂无"
+      )
+        return;
+
+      // Split by the pattern like "-2: " or "-10:" using \d+ for multi-digit
+      // We process each string which might contain one or more deductions
+      const parts = trimmed.split(/(-\d+:?\s*)/).filter((p) => p.trim());
+
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+        // Regex test for score-like prefix (e.g. -2, -2:, -10: )
+        if (/^-\d+:?\s*$/.test(part)) {
+          const score = part.trim().replace(":", "");
+          const reason = parts[i + 1]
+            ? parts[i + 1].trim().replace(/[;，,]\s*$/, "")
+            : "";
+          result.push({ score, reason });
+          i++; // Skip the reason part in the next iteration
+        } else if (part.trim()) {
+          // Fallback for non-matching strings or text before first deduction
+          result.push({ score: "•", reason: part.trim() });
+        }
+      }
+    });
+    return result;
+  };
 
   // Helper functions for analysis editing
   const handleArrayChange = (
@@ -600,6 +658,44 @@ const ProductCard: React.FC<ProductCardProps> = ({
                       <Wand2 size={14} className="text-indigo-500" />
                       场景分析
                     </button>
+                    <button
+                      onClick={() => {
+                        if (product.standardizationAnalysis) {
+                          setShowStandardizationDetail(
+                            !showStandardizationDetail,
+                          );
+                        } else if (onAnalyzeStandardization) {
+                          onAnalyzeStandardization(product);
+                        }
+                      }}
+                      disabled={analyzingStandardizationId === product.id}
+                      className={`h-7 px-3 flex items-center justify-center gap-1.5 whitespace-nowrap text-[11px] rounded-md font-bold border transition-all shadow-sm active:scale-95 ${
+                        product.standardizationAnalysis
+                          ? "bg-teal-50 text-teal-700 border-teal-200/50 hover:bg-teal-100"
+                          : "bg-gray-50 text-gray-500 border-gray-200/50 hover:bg-teal-50 hover:text-teal-600 hover:border-teal-200"
+                      }`}
+                      title={
+                        product.standardizationAnalysis
+                          ? "查看标准化分析"
+                          : "点击运行测谎仪分析"
+                      }
+                    >
+                      {analyzingStandardizationId === product.id ? (
+                        <Loader2 size={14} className="animate-spin" />
+                      ) : (
+                        <FlaskConical
+                          size={14}
+                          className={
+                            product.standardizationAnalysis
+                              ? "text-teal-500"
+                              : "text-gray-400"
+                          }
+                        />
+                      )}
+                      {product.standardizationAnalysis
+                        ? "测谎仪结果"
+                        : "产品测谎仪"}
+                    </button>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -630,8 +726,254 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     </a>
                   </div>
                 )}
+
+                {/* Standardization Summary (Trust Badge) */}
+                {product.standardizationAnalysis && (
+                  <div className="mt-3 flex items-center gap-4 bg-teal-50/50 p-2 rounded-lg border border-teal-100/50">
+                    <div className="flex flex-col items-center px-2 border-r border-teal-100">
+                      <span className="text-[10px] text-teal-600 font-bold">
+                        真实度
+                      </span>
+                      <span
+                        className={`text-sm font-black ${product.standardizationAnalysis.specVerification.realityScore >= 8 ? "text-green-600" : product.standardizationAnalysis.specVerification.realityScore >= 5 ? "text-yellow-600" : "text-red-600"}`}
+                      >
+                        {
+                          product.standardizationAnalysis.specVerification
+                            .realityScore
+                        }
+                      </span>
+                    </div>
+                    <div className="flex-1 grid grid-cols-3 gap-2">
+                      <div className="flex flex-col">
+                        <span className="text-[9px] text-gray-400">
+                          震感穿透
+                        </span>
+                        <div className="h-1 bg-gray-200 rounded-full mt-1">
+                          <div
+                            className="h-full bg-blue-400 rounded-full"
+                            style={{
+                              width: `${product.standardizationAnalysis.sensoryIndices.penetrationIndex * 10}%`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[9px] text-gray-400">
+                          声学隐秘
+                        </span>
+                        <div className="h-1 bg-gray-200 rounded-full mt-1">
+                          <div
+                            className="h-full bg-teal-400 rounded-full"
+                            style={{
+                              width: `${product.standardizationAnalysis.sensoryIndices.acousticPrivacy * 10}%`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[9px] text-gray-400">
+                          材质亲肤
+                        </span>
+                        <div className="h-1 bg-gray-200 rounded-full mt-1">
+                          <div
+                            className="h-full bg-pink-400 rounded-full"
+                            style={{
+                              width: `${product.standardizationAnalysis.sensoryIndices.skinAffinity * 10}%`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() =>
+                        setShowStandardizationDetail(!showStandardizationDetail)
+                      }
+                      className="p-1 text-teal-600 hover:bg-teal-100 rounded transition-colors"
+                    >
+                      <Activity size={14} />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* Standardization Detailed Results */}
+            {showStandardizationDetail && product.standardizationAnalysis && (
+              <div className="mx-6 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100 animate-in slide-in-from-top-2 duration-300">
+                <div className="flex justify-between items-center mb-4">
+                  <h5 className="text-xs font-bold text-teal-800 flex items-center gap-2">
+                    <ShieldCheck size={14} /> 深度标准化分析结果
+                  </h5>
+                  <button
+                    onClick={() => setShowStandardizationDetail(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
+                    <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                      <p className="text-[10px] font-bold text-gray-500 mb-2 flex items-center gap-1">
+                        <Waves size={12} className="text-blue-500" />{" "}
+                        感官穿透力:{" "}
+                        {
+                          product.standardizationAnalysis.sensoryIndices
+                            .penetrationIndex
+                        }
+                        /10
+                      </p>
+                      <p className="text-[11px] text-gray-600 leading-relaxed italic">
+                        {
+                          product.standardizationAnalysis.sensoryIndices
+                            .penetrationReasoning
+                        }
+                      </p>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                      <p className="text-[10px] font-bold text-gray-500 mb-2 flex items-center gap-1">
+                        <Scale size={12} className="text-teal-500" /> 合规级别:{" "}
+                        {
+                          product.standardizationAnalysis.complianceCheck
+                            .biocompatibilityLevel
+                        }
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {product.standardizationAnalysis.complianceCheck.safetyFlags.map(
+                          (flag, i) => (
+                            <span
+                              key={i}
+                              className="text-[9px] bg-red-50 text-red-600 px-1.5 py-0.5 rounded border border-red-100"
+                            >
+                              {flag}
+                            </span>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                      <p className="text-[10px] font-bold text-gray-500 mb-2">
+                        真实性验证 & 营销去噪
+                      </p>
+                      <div className="flex items-center gap-3 mb-3">
+                        <div
+                          className={`text-2xl font-black ${product.standardizationAnalysis.specVerification.realityScore >= 8 ? "text-green-600" : product.standardizationAnalysis.specVerification.realityScore >= 5 ? "text-yellow-600" : "text-red-600"}`}
+                        >
+                          {
+                            product.standardizationAnalysis.specVerification
+                              .realityScore
+                          }
+                        </div>
+                        <p className="text-[10px] text-gray-500 leading-tight">
+                          该评分反映了营销文案与用户实际体验/物理参数之间的一致性。分数越低代表水分越大。
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {product.standardizationAnalysis.specVerification
+                          .marketingNoise.length > 0 ? (
+                          product.standardizationAnalysis.specVerification.marketingNoise.map(
+                            (noise, i) => (
+                              <span
+                                key={i}
+                                className="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded border border-amber-100 line-through decoration-amber-300 opacity-70"
+                              >
+                                {noise}
+                              </span>
+                            ),
+                          )
+                        ) : (
+                          <span className="text-[10px] text-green-600">
+                            未发现夸大宣传词汇
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                      <p className="text-[10px] font-bold text-gray-500 mb-2 font-mono uppercase tracking-tighter">
+                        感官分项扣分详情 (Deduction Details)
+                      </p>
+                      <div className="space-y-3">
+                        {[
+                          {
+                            label: "震感",
+                            deductions:
+                              product.standardizationAnalysis.sensoryIndices
+                                .penetrationDeductions,
+                          },
+                          {
+                            label: "噪音",
+                            deductions:
+                              product.standardizationAnalysis.sensoryIndices
+                                .acousticPrivacyDeductions,
+                          },
+                          {
+                            label: "材质",
+                            deductions:
+                              product.standardizationAnalysis.sensoryIndices
+                                .skinAffinityDeductions,
+                          },
+                        ].map((group, idx) => {
+                          const deductionItems = parseDeductions(
+                            group.deductions,
+                          );
+                          return (
+                            <div key={idx} className="space-y-1">
+                              <div className="flex items-center gap-1">
+                                <div className="w-1 h-3 bg-red-400 rounded-full"></div>
+                                <span className="text-[10px] font-bold text-red-600">
+                                  {group.label}
+                                </span>
+                              </div>
+                              <div className="pl-2 space-y-1">
+                                {deductionItems.map((d, i) => (
+                                  <div
+                                    key={i}
+                                    className="flex items-start gap-1.5 text-[10px] leading-relaxed"
+                                  >
+                                    <span className="bg-red-50 text-red-600 px-1 py-0 rounded font-bold mt-0.5 border border-red-100 min-w-[18px] text-center">
+                                      {d.score}
+                                    </span>
+                                    <span className="text-gray-600">
+                                      {d.reason}
+                                    </span>
+                                  </div>
+                                ))}
+                                {deductionItems.length === 0 && (
+                                  <span className="text-[10px] text-green-600 pl-1 italic">
+                                    未发现明显短板
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex justify-center">
+                  <button
+                    onClick={() => onAnalyzeStandardization?.(product)}
+                    disabled={analyzingStandardizationId === product.id}
+                    className={`text-[10px] font-bold hover:underline py-1 flex items-center gap-1.5 ${analyzingStandardizationId === product.id ? "text-gray-400 cursor-not-allowed" : "text-teal-600"}`}
+                  >
+                    {analyzingStandardizationId === product.id ? (
+                      <>
+                        <div className="w-2.5 h-2.5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                        <span>分析中...</span>
+                      </>
+                    ) : (
+                      "重新运行检测"
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Analysis Section */}
             {editingAnalysisProductId === product.id ? (
@@ -1071,7 +1413,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
         onClose={() => setShowUseScenarioModal(false)}
         onSave={async (productId, scenario, personaAnalysis) => {
           if (onUpdateProductUseScenario) {
-            await onUpdateProductUseScenario(productId, scenario, personaAnalysis);
+            await onUpdateProductUseScenario(
+              productId,
+              scenario,
+              personaAnalysis,
+            );
           }
         }}
         isDomestic={competitor.isDomestic}

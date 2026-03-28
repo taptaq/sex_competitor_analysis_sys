@@ -120,6 +120,29 @@ export interface QAAnalysis {
   summary: string;      // 综合总结
 }
 
+export interface StandardizationAnalysis {
+  sensoryIndices: {
+    penetrationIndex: number;
+    penetrationReasoning: string;
+    penetrationDeductions: string;
+    acousticPrivacy: number;
+    acousticPrivacyReasoning: string;
+    acousticPrivacyDeductions: string;
+    skinAffinity: number;
+    skinAffinityReasoning: string;
+    skinAffinityDeductions: string;
+  };
+  complianceCheck: {
+    biocompatibilityLevel: "医用级" | "食品级" | "工业/玩具级";
+    ergonomicsScore: number;
+    safetyFlags: string[];
+  };
+  specVerification: {
+    realityScore: number;
+    marketingNoise: string[];
+  };
+}
+
 export interface ProductSpecs {
   dimensions?: string; // 产品尺寸，如 "长x宽x高" 或 "直径x长度"
   material?: string; // 产品材质
@@ -148,8 +171,9 @@ export interface Product {
   gender?: 'Male' | 'Female' | 'Unisex'; // 产品适用性别：男用、女用、通用
   priceAnalysis?: PriceAnalysis; // 价格走势分析结果
   specs?: ProductSpecs; // 产品规格参数
-  useScenario?: string; // 使用场景分析结果
+  useScenario?: string; // 使用场景 analysis 结果
   personaAnalysis?: string;
+  standardizationAnalysis?: StandardizationAnalysis;
 }
 
 export interface AdCreative {

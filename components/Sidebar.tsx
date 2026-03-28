@@ -64,11 +64,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       icon: <Zap size={20} />,
       label: "产品技术验证",
     },
-    {
-      type: ViewType.STANDARDIZATION_LAB,
-      icon: <FlaskConical size={20} />,
-      label: "产品测谎仪",
-    },
+    // {
+    //   type: ViewType.STANDARDIZATION_LAB,
+    //   icon: <FlaskConical size={20} />,
+    //   label: "产品测谎仪",
+    // },
     {
       type: ViewType.MEDICAL_VOCAB,
       icon: <BookOpen size={20} />,

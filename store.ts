@@ -51,6 +51,7 @@ interface AppState {
 
   setProductAnalysis: (competitorId: string, productId: string, analysis: ReviewAnalysis) => void;
   setProductUseScenario: (competitorId: string, productId: string, scenario: string, personaAnalysis?: string) => Promise<void>;
+  setProductStandardization: (competitorId: string, productId: string, analysis: any) => Promise<void>;
   setProductReviews: (competitorId: string, productId: string, reviews: any[]) => void;
   fetchCompetitors: () => Promise<void>;
   
@@ -163,7 +164,8 @@ export const useStore = create<AppState>((set, get) => ({
               priceHistory: p.price_history,
               priceAnalysis: p.price_analysis,
               useScenario: p.use_scenario,
-              personaAnalysis: p.persona_analysis
+              personaAnalysis: p.persona_analysis,
+              standardizationAnalysis: p.standardization_analysis
           })),
           savedAt: comp.created_at, // Map snake_case to camelCase
           foundedDate: comp.founded_date,
@@ -294,7 +296,8 @@ export const useStore = create<AppState>((set, get) => ({
           price_history: product.priceHistory,
           analysis: product.analysis,
           use_scenario: product.useScenario,
-          persona_analysis: product.personaAnalysis
+          persona_analysis: product.personaAnalysis,
+          standardization_analysis: product.standardizationAnalysis
       }).eq('id', product.id);
       
       if (error) {
@@ -368,6 +371,23 @@ export const useStore = create<AppState>((set, get) => ({
       
       const { error } = await supabase.from('products').update({ analysis }).eq('id', productId);
       if (error) console.error("Failed to update product analysis", error);
+  },
+  setProductStandardization: async (competitorId, productId, analysis) => {
+      if (checkGuest()) return;
+      set((state) => {
+        const newCompetitors = state.competitors.map(c => {
+          if (c.id !== competitorId) return c;
+          const updatedProducts = c.products?.map(p => {
+            if (p.id !== productId) return p;
+            return { ...p, standardizationAnalysis: analysis };
+          }) || [];
+          return { ...c, products: updatedProducts };
+        });
+        return { competitors: newCompetitors };
+      });
+      
+      const { error } = await supabase.from('products').update({ standardization_analysis: analysis }).eq('id', productId);
+      if (error) console.error("Failed to update product standardization analysis", error);
   },
   setProductUseScenario: async (competitorId, productId, useScenario, personaAnalysis) => {
       if (checkGuest()) return;

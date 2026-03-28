@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useStore } from "../store";
 import { Product, AdCreative } from "../types";
 import { ChevronLeft } from "lucide-react";
-import { analyzeReviews } from "../services/gemini";
+import { analyzeReviews, analyzeStandardization } from "../services/gemini";
 import * as XLSX from "xlsx";
 import CompetitorSidebar from "./CompetitorDetail/CompetitorSidebar";
 import ProductForm from "./CompetitorDetail/ProductForm";
@@ -26,6 +26,7 @@ const CompetitorDetail: React.FC = () => {
 
     setProductAnalysis,
     setProductUseScenario,
+    setProductStandardization,
     addProduct,
     updateProduct,
     removeProduct,
@@ -54,6 +55,9 @@ const CompetitorDetail: React.FC = () => {
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [isAddingAd, setIsAddingAd] = useState(false);
   const [analyzingProductId, setAnalyzingProductId] = useState<string | null>(
+    null,
+  );
+  const [analyzingStandardizationId, setAnalyzingStandardizationId] = useState<string | null>(
     null,
   );
   const [priceSortOrder, setPriceSortOrder] = useState<"none" | "asc" | "desc">(
@@ -658,6 +662,51 @@ const CompetitorDetail: React.FC = () => {
                         personaAnalysis,
                       )
                     }
+                    onAnalyzeStandardization={async (product) => {
+                      if (isGuest) {
+                        alert("访客模式无法运行测谎仪分析。");
+                        return;
+                      }
+                      setAnalyzingStandardizationId(product.id);
+                      try {
+                        // Prepare reviews text: Default to raw reviews, fallback to analysis pros/cons/summary
+                        let reviewsText = product.reviews?.map(r => r.text) || [];
+                        
+                        if (reviewsText.length === 0 && product.analysis) {
+                          const pros = product.analysis.pros?.map(p => `用户好评: ${p}`) || [];
+                          const cons = product.analysis.cons?.map(c => `需优化点: ${c}`) || [];
+                          reviewsText = [
+                            ...pros,
+                            ...cons,
+                            `分析总结: ${product.analysis.summary}`
+                          ];
+                        }
+
+                        if (reviewsText.length === 0) {
+                          reviewsText = ["暂无用户评价"];
+                        }
+
+                        const contextualDescription = applyMedicalVocabulary(
+                          product.analysis?.summary || "",
+                          medicalTerms,
+                        );
+                        const result = await analyzeStandardization(
+                          product.name,
+                          product.tags?.join("，") || "",
+                          contextualDescription,
+                          product.specs || {},
+                          reviewsText,
+                          competitor?.isDomestic ?? true,
+                        );
+                        await setProductStandardization(competitor.id, product.id, result);
+                      } catch (error) {
+                        console.error("Standardization analysis failed:", error);
+                        alert("测谎仪分析失败，请稍后重试。");
+                      } finally {
+                        setAnalyzingStandardizationId(null);
+                      }
+                    }}
+                    analyzingStandardizationId={analyzingStandardizationId}
                     onUploadReviews={
                       isGuest
                         ? undefined
